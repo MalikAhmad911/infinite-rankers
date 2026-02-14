@@ -1,0 +1,147 @@
+THIS IS A FINAL AND CRITICAL TASK.
+
+You must prepare this entire project for professional production deployment.
+
+STRICT RULES — NON NEGOTIABLE:
+
+• DO NOT modify website design
+• DO NOT modify UI/UX
+• DO NOT modify animations
+• DO NOT modify backend logic
+• DO NOT modify chatbot logic
+• DO NOT refactor code
+• DO NOT update dependencies
+• DO NOT remove any functionality
+
+You are ONLY responsible for packaging, organizing, and preparing the project for deployment.
+
+----------------------------------------------------
+
+STEP 1 — FULL PROJECT AUDIT
+
+Analyze the entire project and confirm:
+
+• React + Vite frontend working
+• Node.js + Express backend working
+• PostgreSQL database connection intact
+• OpenAI chatbot system intact
+• SMTP email system intact
+• Environment variables working
+
+----------------------------------------------------
+
+STEP 2 — CREATE PROFESSIONAL PROJECT STRUCTURE
+
+Re-organize ONLY if required for clarity but WITHOUT breaking functionality.
+
+Expected structure example:
+
+/client (React frontend)
+/server (Node + Express backend)
+/database or migrations
+/public assets
+/config files
+/package.json
+/README.md
+
+DO NOT MOVE FILES IF IT BREAKS THE APP.
+
+----------------------------------------------------
+
+STEP 3 — CREATE PRODUCTION SAFE .gitignore
+
+The .gitignore MUST exclude:
+
+node_modules
+.env
+.env.local
+build
+dist
+.cache
+logs
+.tmp
+database dumps
+system temp files
+Replit hidden system files (if not required)
+
+----------------------------------------------------
+
+STEP 4 — VERIFY SECURITY
+
+Confirm that:
+
+• OpenAI API keys are NOT committed
+• SMTP credentials are NOT committed
+• Database credentials are NOT committed
+• Secrets remain only inside environment variables
+
+----------------------------------------------------
+
+STEP 5 — CREATE PROFESSIONAL README
+
+README must include:
+
+Project Overview  
+Tech Stack  
+Deployment Instructions  
+Environment Variables Template  
+Build Commands  
+Start Commands  
+
+NO real keys allowed.
+
+----------------------------------------------------
+
+STEP 6 — CREATE PRODUCTION BUILD CHECK
+
+Verify project can:
+
+• Install dependencies successfully
+• Run frontend build successfully
+• Start backend server successfully
+• Connect database successfully
+• Load chatbot successfully
+
+----------------------------------------------------
+
+STEP 7 — CREATE DEPLOYMENT BUNDLE
+
+Prepare a clean deploy-ready project bundle that includes ONLY required production files.
+
+Remove all junk files, temp logs, and unused artifacts.
+
+----------------------------------------------------
+
+STEP 8 — INITIALIZE AND CONNECT GIT
+
+• Initialize git if not already initialized
+• Stage safe files
+• Create professional commit message:
+
+"Production Ready Full Stack Deployment Package"
+
+----------------------------------------------------
+
+STEP 9 — PUSH PROJECT TO GITHUB
+
+Push full project safely to GitHub main branch.
+
+----------------------------------------------------
+
+STEP 10 — FINAL VERIFICATION REPORT
+
+Provide confirmation checklist:
+
+✔ Project functionality unchanged
+✔ Git repository clean and organized
+✔ Sensitive data protected
+✔ Production bundle ready
+✔ Deployment compatible with VPS / Node hosting
+
+----------------------------------------------------
+
+IMPORTANT WARNING:
+
+You must NOT change ANY business logic or website functionality.
+
+Your ONLY responsibility is deployment readiness and professional packaging.
