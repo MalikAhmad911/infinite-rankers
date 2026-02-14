@@ -317,32 +317,44 @@ function HeroSection() {
 }
 
 function AchievementsSection() {
+  const icons = [Building2, DollarSign, Users, Shield];
+
   return (
-    <section className="py-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 relative overflow-hidden" data-testid="achievements-section">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 relative overflow-hidden" data-testid="achievements-section">
       <div className="absolute inset-0 opacity-10"
         style={{
           backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
           backgroundSize: "24px 24px",
         }}
       />
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {ACHIEVEMENTS.map((a, i) => (
-            <motion.div
-              key={a.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="text-center"
-              data-testid={`achievement-${i}`}
-            >
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
-                <AnimatedCounter value={a.value} />
-              </div>
-              <div className="text-sm text-white/80">{a.label}</div>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {ACHIEVEMENTS.map((a, i) => {
+            const Icon = icons[i];
+            return (
+              <motion.div
+                key={a.label}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: i * 0.12, duration: 0.5, ease: "easeOut" }}
+                whileHover={{ scale: 1.05, y: -4 }}
+                className="text-center p-4 sm:p-6 rounded-2xl bg-white/[0.08] backdrop-blur-sm border border-white/[0.12] hover:bg-white/[0.14] hover:border-white/[0.2] transition-colors duration-300 cursor-default group"
+                data-testid={`achievement-${i}`}
+              >
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/[0.12] flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:bg-white/[0.2] transition-colors duration-300">
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white/90" />
+                </div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-1 sm:mb-2 tracking-tight">
+                  <AnimatedCounter value={a.value} />
+                </div>
+                <div className="text-xs sm:text-sm text-white/70 font-medium">{a.label}</div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -650,8 +662,8 @@ function TrustSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { value: "500+", label: "Clients Worldwide", icon: Users },
-            { value: "$2.4M+", label: "Revenue Generated", icon: DollarSign },
+            { value: "4500+", label: "Clients Worldwide", icon: Users },
+            { value: "$50M+", label: "Revenue Generated", icon: DollarSign },
             { value: "98%", label: "Client Retention", icon: Award },
             { value: "24/7", label: "AI Systems Active", icon: Cpu },
           ].map((stat, i) => (
