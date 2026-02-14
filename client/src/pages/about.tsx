@@ -99,7 +99,7 @@ export default function About() {
               { icon: Cpu, title: "AI-First Approach", desc: "Every solution we build is powered by artificial intelligence — from lead capture to appointment booking to follow-up." },
               { icon: Globe, title: "Global Reach, Local Focus", desc: "We serve businesses worldwide with a primary focus on USA and UK markets, understanding local consumer behavior and compliance." },
               { icon: Rocket, title: "Revenue-Focused Results", desc: "We measure success by one metric: your revenue growth. Everything we build is designed to directly impact your bottom line." },
-              { icon: Shield, title: "No Long-Term Contracts", desc: "We earn your business month over month. Our systems deliver results, not lock-ins. Stay because you're growing, not because you're stuck." },
+              { icon: Shield, title: "Flexible Plans Available", desc: "We offer monthly, quarterly, and annual partnerships designed to fit your business needs. Choose the plan that works best for your growth goals." },
               { icon: Lightbulb, title: "Full-Stack Automation", desc: "From the first ad impression to closed deal, every touchpoint is automated and optimized for maximum conversion." },
               { icon: Zap, title: "Speed to Results", desc: "Most clients see measurable improvements within 30 days. Our proven frameworks are battle-tested across 9,500+ businesses." },
             ].map((item, i) => (

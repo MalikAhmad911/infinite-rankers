@@ -504,16 +504,20 @@ export default function LandingPage({ slug }: { slug?: string }) {
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button variant="outline" className="w-full sm:w-auto backdrop-blur bg-white/10" data-testid="button-cta-contact">
+                <Button variant="outline" className="w-full sm:w-auto backdrop-blur bg-white/90 text-gray-900 border-white" data-testid="button-cta-contact">
                   Contact Us
                 </Button>
               </Link>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8 text-white/60 text-xs sm:text-sm">
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Free Strategy Session</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> No Long-Term Contracts</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Results in 30 Days</span>
-              <GooglePartnerBadge variant="compact" />
+            <div className="flex flex-col items-center mt-8">
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/60 text-xs sm:text-sm">
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Free Strategy Session</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Flexible Plans Available</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Results in 30 Days</span>
+              </div>
+              <div className="mt-4">
+                <GooglePartnerBadge variant="compact" />
+              </div>
             </div>
           </motion.div>
         </div>

@@ -295,7 +295,7 @@ function HeroSection() {
             </div>
             <div className="flex flex-wrap items-center gap-4 sm:gap-6 mt-6 sm:mt-10">
               {[
-                { icon: Shield, text: "No Long-Term Contracts" },
+                { icon: Shield, text: "Flexible Plans Available" },
                 { icon: Clock, text: "Results in 30 Days" },
                 { icon: Users, text: "9,500+ Clients" },
               ].map((item) => (
@@ -1030,11 +1030,15 @@ function PricingSection() {
         </div>
 
         <div className="text-center mt-8">
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground mb-6">
-            <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
-            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
-            <GooglePartnerBadge variant="inline" />
+          <div className="flex flex-col items-center mb-6">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground">
+              <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
+            </div>
+            <div className="mt-3">
+              <GooglePartnerBadge variant="inline" />
+            </div>
           </div>
           <Link href="/pricing">
             <Button data-testid="button-view-full-pricing">
@@ -1090,14 +1094,14 @@ function FinalCTASection() {
               </Button>
             </Link>
             <Link href="/contact">
-              <Button variant="outline" className="w-full sm:w-auto backdrop-blur bg-white/10" data-testid="button-cta-contact">
+              <Button variant="outline" className="w-full sm:w-auto backdrop-blur bg-white/90 text-gray-900 border-white" data-testid="button-cta-contact">
                 Contact Us
               </Button>
             </Link>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 mt-8 sm:mt-10">
             {[
-              { icon: Shield, text: "No Long-Term Contracts" },
+              { icon: Shield, text: "Flexible Plans Available" },
               { icon: Clock, text: "Results in 30 Days" },
               { icon: CheckCircle2, text: "Money-Back Guarantee" },
             ].map((item) => (

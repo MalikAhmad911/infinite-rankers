@@ -93,16 +93,20 @@ function CTASection({ title, subtitle, buttonText, href }: { title: string; subt
               </Button>
             </a>
             <Link href="/book-demo">
-              <Button variant="outline" className="backdrop-blur bg-white/10" data-testid="button-cta-demo">
+              <Button variant="outline" className="backdrop-blur bg-white/90 text-gray-900 border-white" data-testid="button-cta-demo">
                 Book Free Demo <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8 text-white/60 text-xs sm:text-sm">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Free Strategy Session</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> No Long-Term Contracts</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Results in 30 Days</span>
-            <GooglePartnerBadge variant="compact" />
+          <div className="flex flex-col items-center mt-8">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/60 text-xs sm:text-sm">
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Free Strategy Session</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Flexible Plans Available</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Results in 30 Days</span>
+            </div>
+            <div className="mt-4">
+              <GooglePartnerBadge variant="compact" />
+            </div>
           </div>
         </motion.div>
       </div>
@@ -123,7 +127,7 @@ export function InfiniteRankersAgency() {
   const reasons = [
     { icon: Cpu, title: "AI-First Approach", desc: "Every solution is built with artificial intelligence at its core, delivering faster results and smarter optimization than traditional agencies." },
     { icon: TrendingUp, title: "Revenue-Focused Results", desc: "We measure success by one metric: your revenue growth. Everything we build directly impacts your bottom line." },
-    { icon: Shield, title: "No Long-Term Contracts", desc: "Month-to-month partnerships. Stay because you're growing, not because you're stuck in a contract." },
+    { icon: Shield, title: "Flexible Plans Available", desc: "Monthly, quarterly, or annual partnerships designed to fit your business goals. Choose the plan that matches your growth ambitions." },
     { icon: Rocket, title: "Results in 30 Days", desc: "Most clients see measurable improvements within the first month. Our proven frameworks are battle-tested across 9,500+ businesses." },
     { icon: Users, title: "Dedicated Growth Team", desc: "Your own team of AI strategists, marketers, designers, and developers working together to scale your revenue." },
     { icon: Clock, title: "24/7 AI Systems", desc: "Our automation systems work around the clock — nights, weekends, holidays — so you never miss a lead or opportunity." },
