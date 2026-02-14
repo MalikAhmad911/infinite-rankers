@@ -72,9 +72,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between gap-4 h-16 lg:h-20">
             <Link href="/" data-testid="link-home-logo">
               <div className="flex items-center gap-2 flex-shrink-0">
-                <div className="w-8 h-8 rounded-md bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">IR</span>
-                </div>
+                <img src="/images/logo-icon.png" alt="Infinite Rankers" className="w-8 h-8 rounded-md object-contain" />
                 <span className="font-bold text-lg text-gray-900 hidden sm:block">
                   {COMPANY.name}
                 </span>
