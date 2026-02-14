@@ -1751,3 +1751,201 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["conversion-rate-optimization", "google-ads", "crm-setup", "marketing-automation-setup"]
   },
 };
+
+export type HeroMockupType = "analytics-dashboard" | "chat-interface" | "phone-ui" | "ad-performance" | "funnel-diagram" | "code-editor" | "social-feed" | "calendar-ui";
+export type SectionLayoutVariant = "A" | "B" | "C";
+
+export interface ServiceVisualTheme {
+  heroMockup: HeroMockupType;
+  accentFrom: string;
+  accentTo: string;
+  accentGlow: string;
+  heroGradient: string;
+  problemSolutionLayout: SectionLayoutVariant;
+  featuresLayout: SectionLayoutVariant;
+  workflowLayout: SectionLayoutVariant;
+  faqLayout: SectionLayoutVariant;
+}
+
+export const SERVICE_VISUAL_THEMES: Record<string, ServiceVisualTheme> = {
+  "ai-calling-agent": {
+    heroMockup: "phone-ui",
+    accentFrom: "from-blue-500", accentTo: "to-cyan-400", accentGlow: "blue-500",
+    heroGradient: "from-[#060B1A] via-[#0A1A2F] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "A", workflowLayout: "A", faqLayout: "A",
+  },
+  "ai-receptionist": {
+    heroMockup: "phone-ui",
+    accentFrom: "from-cyan-500", accentTo: "to-blue-400", accentGlow: "cyan-500",
+    heroGradient: "from-[#061A1A] via-[#0A1F2F] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "B", workflowLayout: "B", faqLayout: "B",
+  },
+  "ai-lead-qualification": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-indigo-500", accentTo: "to-blue-400", accentGlow: "indigo-500",
+    heroGradient: "from-[#0B0B1A] via-[#0D1530] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "A", workflowLayout: "C", faqLayout: "A",
+  },
+  "ai-appointment-booking": {
+    heroMockup: "calendar-ui",
+    accentFrom: "from-violet-500", accentTo: "to-purple-400", accentGlow: "violet-500",
+    heroGradient: "from-[#0D0B1A] via-[#120D2A] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "ai-follow-up": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-blue-600", accentTo: "to-indigo-400", accentGlow: "blue-600",
+    heroGradient: "from-[#060B1A] via-[#0A1530] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "C",
+  },
+  "ai-sales-assistant": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-emerald-500", accentTo: "to-teal-400", accentGlow: "emerald-500",
+    heroGradient: "from-[#060B14] via-[#0A1A20] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "A",
+  },
+  "ai-chatbot": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-cyan-500", accentTo: "to-teal-400", accentGlow: "cyan-500",
+    heroGradient: "from-[#061A1A] via-[#0A1F25] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "ai-email-automation": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-purple-500", accentTo: "to-pink-400", accentGlow: "purple-500",
+    heroGradient: "from-[#0D0B1A] via-[#150D2A] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "ai-sms-automation": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-green-500", accentTo: "to-emerald-400", accentGlow: "green-500",
+    heroGradient: "from-[#060B14] via-[#0A1A18] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "C",
+  },
+  "crm-automation": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-purple-500", accentTo: "to-violet-400", accentGlow: "purple-500",
+    heroGradient: "from-[#0D061A] via-[#150A2A] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "workflow-automation": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-blue-500", accentTo: "to-purple-500", accentGlow: "blue-500",
+    heroGradient: "from-[#060B1A] via-[#0D1B2A] to-[#0D0D2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "google-ads": {
+    heroMockup: "ad-performance",
+    accentFrom: "from-green-500", accentTo: "to-emerald-400", accentGlow: "green-500",
+    heroGradient: "from-[#060B14] via-[#0A1A18] to-[#0D1B1A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "C",
+  },
+  "meta-ads": {
+    heroMockup: "ad-performance",
+    accentFrom: "from-blue-600", accentTo: "to-sky-400", accentGlow: "blue-600",
+    heroGradient: "from-[#060B1A] via-[#0A1530] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "seo-authority": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-emerald-500", accentTo: "to-green-400", accentGlow: "emerald-500",
+    heroGradient: "from-[#060B14] via-[#0A1A1A] to-[#0D1B1A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "local-seo": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-teal-500", accentTo: "to-cyan-400", accentGlow: "teal-500",
+    heroGradient: "from-[#061A14] via-[#0A1F1A] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "C",
+  },
+  "conversion-funnels": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-amber-500", accentTo: "to-orange-400", accentGlow: "amber-500",
+    heroGradient: "from-[#1A0F06] via-[#1A1508] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "landing-page-optimization": {
+    heroMockup: "code-editor",
+    accentFrom: "from-orange-500", accentTo: "to-amber-400", accentGlow: "orange-500",
+    heroGradient: "from-[#1A0B06] via-[#1A1208] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "conversion-rate-optimization": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-lime-500", accentTo: "to-green-400", accentGlow: "lime-500",
+    heroGradient: "from-[#0B1406] via-[#0D1A0A] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "C",
+  },
+  "social-media-marketing": {
+    heroMockup: "social-feed",
+    accentFrom: "from-orange-500", accentTo: "to-pink-500", accentGlow: "orange-500",
+    heroGradient: "from-[#1A0B0D] via-[#1A1215] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "instagram-growth": {
+    heroMockup: "social-feed",
+    accentFrom: "from-pink-500", accentTo: "to-rose-400", accentGlow: "pink-500",
+    heroGradient: "from-[#1A060D] via-[#1A0A15] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "facebook-growth": {
+    heroMockup: "social-feed",
+    accentFrom: "from-blue-600", accentTo: "to-indigo-400", accentGlow: "blue-600",
+    heroGradient: "from-[#060B1A] via-[#0A1530] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "C",
+  },
+  "content-writing": {
+    heroMockup: "code-editor",
+    accentFrom: "from-amber-500", accentTo: "to-yellow-400", accentGlow: "amber-500",
+    heroGradient: "from-[#1A1206] via-[#1A1508] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "branding-design": {
+    heroMockup: "social-feed",
+    accentFrom: "from-fuchsia-500", accentTo: "to-purple-400", accentGlow: "fuchsia-500",
+    heroGradient: "from-[#1A0614] via-[#1A0A1A] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "video-marketing": {
+    heroMockup: "social-feed",
+    accentFrom: "from-red-500", accentTo: "to-rose-400", accentGlow: "red-500",
+    heroGradient: "from-[#1A0606] via-[#1A0A0A] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "C",
+  },
+  "website-development": {
+    heroMockup: "code-editor",
+    accentFrom: "from-violet-500", accentTo: "to-indigo-400", accentGlow: "violet-500",
+    heroGradient: "from-[#0D0B1A] via-[#120D2A] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "landing-page-development": {
+    heroMockup: "code-editor",
+    accentFrom: "from-sky-500", accentTo: "to-blue-400", accentGlow: "sky-500",
+    heroGradient: "from-[#06101A] via-[#0A1A30] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "crm-setup": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-indigo-500", accentTo: "to-violet-400", accentGlow: "indigo-500",
+    heroGradient: "from-[#0B0B1A] via-[#0D1530] to-[#0D1B2A]",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "C", faqLayout: "C",
+  },
+  "saas-integrations": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-purple-500", accentTo: "to-blue-400", accentGlow: "purple-500",
+    heroGradient: "from-[#0D061A] via-[#150A2A] to-[#0D1B2A]",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "marketing-automation-setup": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-teal-500", accentTo: "to-blue-400", accentGlow: "teal-500",
+    heroGradient: "from-[#061A14] via-[#0A1F1A] to-[#0D1B2A]",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "analytics-dashboard": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-blue-500", accentTo: "to-purple-500", accentGlow: "blue-500",
+    heroGradient: "from-[#060B1A] via-[#0D1B2A] to-background",
+    problemSolutionLayout: "C", featuresLayout: "C", workflowLayout: "C", faqLayout: "C",
+  },
+};
