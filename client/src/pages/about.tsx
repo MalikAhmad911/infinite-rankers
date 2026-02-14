@@ -18,8 +18,8 @@ export default function About() {
         description="We're not a marketing agency. We're a revenue growth engine powered by AI automation. Learn about our mission, vision, and approach."
       />
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50/50 to-white dark:from-blue-950/30 dark:via-purple-950/20 dark:to-background" />
-        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#060B1A] via-[#0D1B2A] to-background" />
+        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -87,7 +87,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-card dark:bg-card">
+      <section className="py-20 lg:py-28 bg-[#0A1628]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             label="Why Us"
@@ -104,8 +104,8 @@ export default function About() {
               { icon: Zap, title: "Speed to Results", desc: "Most clients see measurable improvements within 30 days. Our proven frameworks are battle-tested across 500+ businesses." },
             ].map((item, i) => (
               <GlassCard key={item.title} delay={i * 0.08}>
-                <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center mb-4">
-                  <item.icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500/15 to-purple-500/15 flex items-center justify-center mb-4">
+                  <item.icon className="w-5 h-5 text-blue-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
@@ -138,7 +138,7 @@ export default function About() {
                 transition={{ delay: i * 0.1 }}
                 className="flex items-start gap-3"
               >
-                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <p className="text-muted-foreground leading-relaxed">{item}</p>
               </motion.div>
             ))}

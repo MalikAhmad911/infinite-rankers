@@ -6,9 +6,10 @@ interface GlassCardProps {
   className?: string;
   hover?: boolean;
   delay?: number;
+  glow?: boolean;
 }
 
-export default function GlassCard({ children, className, hover = true, delay = 0 }: GlassCardProps) {
+export default function GlassCard({ children, className, hover = true, delay = 0, glow = false }: GlassCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -16,8 +17,9 @@ export default function GlassCard({ children, className, hover = true, delay = 0
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
       className={cn(
-        "relative rounded-md p-6 bg-white/60 dark:bg-white/5 backdrop-blur-lg border border-white/20 dark:border-white/10",
-        hover && "transition-all duration-300 hover:border-blue-500/30 hover:bg-white/80 dark:hover:bg-white/10",
+        "relative rounded-md p-6 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]",
+        hover && "transition-all duration-300 hover:border-blue-500/30 hover:bg-white/[0.06]",
+        glow && "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
         className
       )}
     >

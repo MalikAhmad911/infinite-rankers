@@ -36,8 +36,8 @@ export default function ChatbotPlaceholder() {
             <div className="p-4 h-64 flex flex-col">
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-500/10 dark:to-purple-500/10 flex items-center justify-center mx-auto mb-3">
-                    <MessageSquare className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center mx-auto mb-3">
+                    <MessageSquare className="w-6 h-6 text-blue-400" />
                   </div>
                   <p className="text-sm text-muted-foreground mb-1">AI Chat Coming Soon</p>
                   <p className="text-xs text-muted-foreground">Our AI assistant is being trained to help you.</p>

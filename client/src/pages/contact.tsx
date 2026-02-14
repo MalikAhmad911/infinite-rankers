@@ -46,8 +46,8 @@ export default function Contact() {
     <div>
       {seo}
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50/50 to-white dark:from-blue-950/30 dark:via-purple-950/20 dark:to-background" />
-        <div className="absolute bottom-10 left-10 w-72 h-72 bg-purple-400/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#060B1A] via-[#0D1B2A] to-background" />
+        <div className="absolute bottom-10 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
@@ -152,26 +152,26 @@ export default function Contact() {
                 <h3 className="text-lg font-semibold text-foreground mb-4">Contact Information</h3>
                 <div className="space-y-4">
                   <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-email">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <div className="w-10 h-10 rounded-md bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-blue-400" />
                     </div>
                     {COMPANY.email}
                   </a>
                   <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-phone">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <div className="w-10 h-10 rounded-md bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-blue-400" />
                     </div>
                     {COMPANY.phone}
                   </a>
                   <div className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <div className="w-10 h-10 rounded-md bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-blue-400" />
                     </div>
                     {COMPANY.address}
                   </div>
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <div className="w-10 h-10 rounded-md bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-blue-400" />
                     </div>
                     Mon - Fri: 9:00 AM - 6:00 PM EST
                   </div>

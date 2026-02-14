@@ -24,7 +24,7 @@ function ROICalculator() {
   const revenueIncrease = projectedRevenue - currentRevenue;
 
   return (
-    <section className="py-20 lg:py-28 bg-card dark:bg-card" data-testid="roi-calculator">
+    <section className="py-20 lg:py-28 bg-[#0A1628]" data-testid="roi-calculator">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           label="ROI Calculator"
@@ -38,7 +38,7 @@ function ROICalculator() {
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <Label className="text-sm font-medium">Monthly Leads</Label>
-                    <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">{monthlyLeads[0]}</span>
+                    <span className="text-sm font-semibold text-blue-400">{monthlyLeads[0]}</span>
                   </div>
                   <Slider
                     value={monthlyLeads}
@@ -52,7 +52,7 @@ function ROICalculator() {
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <Label className="text-sm font-medium">Average Deal Value ($)</Label>
-                    <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">${avgDealValue[0]}</span>
+                    <span className="text-sm font-semibold text-blue-400">${avgDealValue[0]}</span>
                   </div>
                   <Slider
                     value={avgDealValue}
@@ -66,7 +66,7 @@ function ROICalculator() {
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <Label className="text-sm font-medium">Current Close Rate (%)</Label>
-                    <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">{closeRate[0]}%</span>
+                    <span className="text-sm font-semibold text-blue-400">{closeRate[0]}%</span>
                   </div>
                   <Slider
                     value={closeRate}
@@ -84,15 +84,15 @@ function ROICalculator() {
                   <div className="text-xs text-muted-foreground mb-1">Current Monthly Revenue</div>
                   <div className="text-2xl font-bold text-foreground">${currentRevenue.toLocaleString()}</div>
                 </div>
-                <div className="p-4 rounded-md bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-500/10 dark:to-purple-500/10">
+                <div className="p-4 rounded-md bg-gradient-to-br from-blue-500/10 to-purple-500/10">
                   <div className="text-xs text-muted-foreground mb-1">Projected Monthly Revenue with AI</div>
                   <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     ${Math.round(projectedRevenue).toLocaleString()}
                   </div>
                 </div>
-                <div className="p-4 rounded-md bg-green-50 dark:bg-green-500/10 border border-green-200/50 dark:border-green-500/10">
+                <div className="p-4 rounded-md bg-green-500/10 border border-green-500/10">
                   <div className="text-xs text-muted-foreground mb-1">Potential Revenue Increase</div>
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                  <div className="text-2xl font-bold text-green-400">
                     +${Math.round(revenueIncrease).toLocaleString()}/mo
                   </div>
                 </div>
@@ -118,8 +118,8 @@ export default function Pricing() {
         description="Transparent, results-driven pricing for AI automation and revenue growth systems. Choose the plan that matches your growth stage."
       />
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50/50 to-white dark:from-blue-950/30 dark:via-purple-950/20 dark:to-background" />
-        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#060B1A] via-[#0D1B2A] to-background" />
+        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
@@ -161,7 +161,7 @@ export default function Pricing() {
                 <ul className="space-y-3 mb-8">
                   {tier.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                       <span className="text-muted-foreground">{f}</span>
                     </li>
                   ))}
