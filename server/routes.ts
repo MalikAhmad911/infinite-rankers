@@ -3,11 +3,13 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContactSchema, insertDemoBookingSchema } from "@shared/schema";
 import { sendContactEmail, sendDemoBookingEmail } from "./email";
+import { registerChatbotRoutes } from "./chatbot";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  registerChatbotRoutes(app);
   app.post("/api/contacts", async (req, res) => {
     try {
       const parsed = insertContactSchema.safeParse(req.body);

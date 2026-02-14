@@ -12,7 +12,7 @@ Premium multi-page business website for Infinite Rankers, an AI Revenue Growth A
 ## Project Structure
 ```
 client/src/
-  components/       # Shared components (navbar, footer, glass-card, chatbot, seo-head, section-header, theme-provider)
+  components/       # Shared components (navbar, footer, glass-card, ai-chatbot, seo-head, section-header, theme-provider, google-partner-badge)
   pages/            # All page components (home, about, services, portfolio, pricing, contact, blog, book-demo, service-detail)
   lib/              # Utilities and constants (constants.ts has SERVICE_CATEGORIES, SERVICE_CONTENT, CASE_STUDIES, PRICING_TIERS, etc.)
   hooks/            # Custom hooks
@@ -74,7 +74,8 @@ Each page has: hero, USA pain points, AI system explanation, pipeline visualizat
 - Mega menu navigation with 30+ service links
 - Framer Motion animations throughout (staggered reveals, floating elements, auto-sliding carousels)
 - SEO metadata per page (OG tags, Twitter cards, canonical URLs, keywords)
-- AI chatbot placeholder UI
+- AI chatbot powered by OpenAI (gpt-5-nano via Replit AI Integrations) with streaming responses, lead capture, and service qualification
+- Email notifications for contact form, demo booking, and chatbot lead submissions via SMTP
 - Interactive ROI calculator
 - Contact form and demo booking with database persistence
 - Portfolio filtering by category tags

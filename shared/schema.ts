@@ -35,3 +35,5 @@ export type InsertContact = z.infer<typeof insertContactSchema>;
 export type Contact = typeof contacts.$inferSelect;
 export type InsertDemoBooking = z.infer<typeof insertDemoBookingSchema>;
 export type DemoBooking = typeof demoBookings.$inferSelect;
+
+export * from "./models/chat";

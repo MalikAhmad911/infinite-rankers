@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import ScrollToTop from "@/components/scroll-to-top";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import ChatbotPlaceholder from "@/components/chatbot-placeholder";
+import AIChatbot from "@/components/ai-chatbot";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Services from "@/pages/services";
@@ -50,7 +50,7 @@ function App() {
               <Router />
             </main>
             <Footer />
-            <ChatbotPlaceholder />
+            <AIChatbot />
           </div>
           <Toaster />
         </TooltipProvider>
