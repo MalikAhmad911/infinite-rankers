@@ -20,7 +20,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-8">
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-1.5 sm:gap-2 mb-4">
-              <img src="/images/logo-icon-white.png" alt="Infinite Rankers" className="w-7 h-7 sm:w-8 sm:h-8 rounded-md object-contain" />
+              <img src="/images/logo-icon-white.png" alt="Infinite Rankers" className="w-9 h-9 sm:w-10 sm:h-10 object-contain" />
               <span className="font-bold text-sm sm:text-base lg:text-lg text-white">{COMPANY.name}</span>
             </div>
             <p className="text-sm text-gray-400 mb-6 leading-relaxed">
