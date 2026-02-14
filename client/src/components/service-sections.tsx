@@ -78,28 +78,28 @@ function ProblemSolutionB({ problems, solutions, accentFrom, accentTo }: { probl
   const pairs = problems.map((p, i) => ({ problem: p, solution: solutions[i] || "" }));
   return (
     <div className="relative max-w-4xl mx-auto">
-      <div className={`absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b ${accentFrom} ${accentTo} opacity-30`} />
+      <div className={`hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b ${accentFrom} ${accentTo} opacity-30`} />
       {pairs.map((pair, i) => (
-        <div key={i} className="relative grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 mb-8 md:mb-12 last:mb-0 items-center">
+        <div key={i} className="relative grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-3 md:gap-4 mb-6 md:mb-12 last:mb-0 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.2 }}
+            transition={{ duration: 0.5, delay: i * 0.15 }}
             className="flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60"
           >
             <X className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
             <span className="text-muted-foreground text-sm">{pair.problem}</span>
           </motion.div>
-          <div className="relative flex items-center justify-center w-10">
+          <div className="hidden md:flex relative items-center justify-center w-10">
             <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo}`} />
             <div className="absolute left-0 right-0 h-px bg-gray-200/60" />
           </div>
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.2 + 0.1 }}
+            transition={{ duration: 0.5, delay: i * 0.15 + 0.1 }}
             className="flex items-start gap-3 p-4 rounded-md bg-white/80 border border-gray-200/60 shadow-sm"
           >
             <CheckCircle2 className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
@@ -261,7 +261,7 @@ function FeaturesB({ features, accentFrom, accentTo }: { features: string[]; acc
 
 function FeaturesC({ features, accentFrom, accentTo }: { features: string[]; accentFrom: string; accentTo: string }) {
   return (
-    <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "thin" }}>
+    <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: "thin", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
       {features.map((feature, i) => (
         <motion.div
           key={i}
@@ -269,7 +269,7 @@ function FeaturesC({ features, accentFrom, accentTo }: { features: string[]; acc
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: i * 0.06 }}
-          className="flex-none w-64 snap-start rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm p-5 flex flex-col"
+          className="flex-none w-56 sm:w-64 snap-start rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm p-4 sm:p-5 flex flex-col"
         >
           <span className={`inline-flex items-center justify-center w-8 h-8 rounded-md bg-gradient-to-r ${accentFrom} ${accentTo} text-white text-sm font-bold mb-4`}>
             {String(i + 1).padStart(2, "0")}
@@ -338,20 +338,20 @@ function WorkflowA({ steps, accentFrom, accentTo }: { steps: { step: string; des
 function WorkflowB({ steps, accentFrom, accentTo }: { steps: { step: string; desc: string }[]; accentFrom: string; accentTo: string }) {
   return (
     <div className="relative max-w-3xl mx-auto">
-      <div className={`absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b ${accentFrom} ${accentTo} opacity-30 -translate-x-1/2`} />
+      <div className={`absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b ${accentFrom} ${accentTo} opacity-30 md:-translate-x-1/2`} />
       {steps.map((s, i) => {
         const isLeft = i % 2 === 0;
         return (
           <motion.div
             key={i}
-            initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.15 }}
-            className={`relative flex items-center mb-12 last:mb-0 ${isLeft ? "justify-start" : "justify-end"}`}
+            transition={{ duration: 0.5, delay: i * 0.12 }}
+            className={`relative flex items-center mb-8 md:mb-12 last:mb-0 pl-10 md:pl-0 ${isLeft ? "md:justify-start" : "md:justify-end"}`}
           >
-            <div className={`absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo} z-10`} />
-            <div className={`w-5/12 p-5 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm ${isLeft ? "mr-auto text-right" : "ml-auto text-left"}`}>
+            <div className={`absolute left-4 md:left-1/2 md:-translate-x-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo} z-10`} />
+            <div className={`w-full md:w-5/12 p-5 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm text-left ${isLeft ? "md:mr-auto" : "md:ml-auto"}`}>
               <span className={`inline-block text-xs font-bold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent mb-2`}>
                 Step {String(i + 1).padStart(2, "0")}
               </span>
@@ -371,19 +371,19 @@ function WorkflowC({ steps, accentFrom, accentTo }: { steps: { step: string; des
       {steps.map((s, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: i * 0.12 }}
-          style={{ marginLeft: `${i * 1.5}rem` }}
+          style={{ marginLeft: `min(${i * 1.5}rem, ${i * 2}vw)` }}
           className="flex items-stretch rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm overflow-hidden"
         >
           <div className={`w-1 bg-gradient-to-b ${accentFrom} ${accentTo} shrink-0`} />
-          <div className="flex items-center gap-6 p-5 flex-1">
-            <span className={`text-3xl font-bold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent shrink-0`}>
+          <div className="flex items-center gap-4 sm:gap-6 p-4 sm:p-5 flex-1 min-w-0">
+            <span className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent shrink-0`}>
               {String(i + 1).padStart(2, "0")}
             </span>
-            <div>
+            <div className="min-w-0">
               <h4 className="text-foreground font-semibold mb-1">{s.step}</h4>
               <p className="text-muted-foreground text-sm">{s.desc}</p>
             </div>
