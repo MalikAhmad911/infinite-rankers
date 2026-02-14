@@ -23,7 +23,8 @@ export async function registerRoutes(
         console.error("Failed to send contact email:", emailErr);
       }
       res.status(201).json(contact);
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Contact save error:", error?.message || error);
       res.status(500).json({ error: "Failed to save contact" });
     }
   });
@@ -50,7 +51,8 @@ export async function registerRoutes(
         console.error("Failed to send demo booking email:", emailErr);
       }
       res.status(201).json(booking);
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Demo booking save error:", error?.message || error);
       res.status(500).json({ error: "Failed to save booking" });
     }
   });
