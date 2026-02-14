@@ -80,16 +80,16 @@ function ProblemSolutionB({ problems, solutions, accentFrom, accentTo }: { probl
     <div className="relative max-w-4xl mx-auto">
       <div className={`absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b ${accentFrom} ${accentTo} opacity-30`} />
       {pairs.map((pair, i) => (
-        <div key={i} className="relative grid grid-cols-[1fr_auto_1fr] gap-4 mb-12 last:mb-0 items-center">
+        <div key={i} className="relative grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 mb-8 md:mb-12 last:mb-0 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.2 }}
-            className="flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60 text-right justify-end"
+            className="flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60"
           >
-            <span className="text-muted-foreground text-sm">{pair.problem}</span>
             <X className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
+            <span className="text-muted-foreground text-sm">{pair.problem}</span>
           </motion.div>
           <div className="relative flex items-center justify-center w-10">
             <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo}`} />

@@ -1,0 +1,101 @@
+🔥 FINAL UI/UX FIX + RESPONSIVENESS + QA TESTING PROMPT
+
+I need you to perform a full professional UI/UX audit and implementation across the entire website. This is a high-priority final polishing phase. Carefully follow all instructions below.
+
+✅ Text Alignment & Layout Fix
+
+Some pages currently have incorrect text flow and alignment issues.
+
+You MUST:
+
+• Ensure ALL English content follows Left-to-Right (LTR) reading structure
+• Fix any section where content starts from the right side incorrectly
+• All headings, paragraphs, lists, buttons, and UI elements must follow proper alignment
+• Maintain visual hierarchy (Heading → Subheading → Paragraph → CTA)
+
+DO NOT change writing style or branding tone — only fix alignment and structure.
+
+✅ UI/UX Professional SaaS Standard Implementation
+
+Make the entire website feel like a premium SaaS software product website.
+
+Requirements:
+
+• Maintain current branding and design style
+• Improve spacing, padding, margins, and layout balance
+• Ensure strong visual consistency across all pages
+• Improve section transitions and content readability
+• Ensure CTA buttons are clearly visible and conversion focused
+• Maintain modern SaaS feel (clean, structured, premium, tech-focused)
+
+✅ Fully Responsive Optimization (Very Important)
+
+The website MUST work perfectly on:
+
+• Mobile devices
+• Tablets
+• Laptops
+• Large desktop screens
+• All modern browsers
+
+Fix:
+
+• Broken layouts
+• Overflow content
+• Image scaling
+• Animation responsiveness
+• Menu and navigation usability
+• Touch interaction and tap targets
+• Font scaling and readability
+
+The mobile experience must feel native-app level smooth and premium.
+
+✅ Animation & Visual Stability
+
+• Make sure all animations run smoothly on all devices
+• Fix any animation causing layout breaking or slow loading
+• Ensure animations enhance UX, not distract users
+• Maintain performance optimization
+
+✅ Section-By-Section Manual Testing Requirement
+
+You MUST:
+
+• Manually review every single page
+• Manually test every section inside each page
+• Test navigation flows
+• Test forms, buttons, pricing actions, booking flows
+• Test chatbot interaction
+• Test animations and transitions
+• Test responsiveness across multiple screen sizes
+
+✅ Quality Assurance Verification
+
+Before marking the project complete:
+
+• Record screen testing or perform visual QA validation
+• Confirm no UI breaking
+• Confirm alignment consistency
+• Confirm responsive behaviour
+• Confirm professional SaaS website appearance
+
+🚫 Restrictions
+
+• DO NOT change existing design theme or brand identity
+• DO NOT modify content tone or structure
+• DO NOT redesign layouts — only improve usability, responsiveness, and alignment
+
+🎯 Final Goal
+
+The website should:
+
+✔ Look like a premium enterprise SaaS platform
+✔ Be fully responsive on all devices
+✔ Have clean professional UI/UX
+✔ Maintain design consistency
+✔ Provide smooth user experience
+✔ Be ready for production launch
+
+If any UI or UX issue exists anywhere on the site, fix it completely before final delivery.
+
+اگر تم چاہو تو میں ایک Ultra-Strict QA Checklist Prompt بھی بنا سکتا ہوں جو وہ ہر page deploy کرنے سے پہ
