@@ -76,6 +76,40 @@ export default function CaseStudyDetail() {
         title={`${cs.title} - Case Study | Infinite Rankers`}
         description={`${cs.business}: ${cs.challenge.slice(0, 150)}`}
         keywords={cs.tags.join(", ")}
+        canonical={`https://infiniterankers.io/portfolio/${cs.id}`}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://infiniterankers.io/" },
+              { "@type": "ListItem", "position": 2, "name": "Portfolio", "item": "https://infiniterankers.io/portfolio" },
+              { "@type": "ListItem", "position": 3, "name": cs.title, "item": `https://infiniterankers.io/portfolio/${cs.id}` }
+            ]
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": cs.title,
+            "description": `${cs.business}: ${cs.challenge.slice(0, 150)}`,
+            "image": `https://infiniterankers.io${PORTFOLIO_IMAGES[cs.id] || ""}`,
+            "author": { "@type": "Organization", "name": "Infinite Rankers", "url": "https://infiniterankers.io" },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Infinite Rankers",
+              "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
+            },
+            "mainEntityOfPage": `https://infiniterankers.io/portfolio/${cs.id}`
+          })
+        }}
       />
 
       <section className="relative pt-28 pb-16 overflow-hidden" data-testid="case-hero">

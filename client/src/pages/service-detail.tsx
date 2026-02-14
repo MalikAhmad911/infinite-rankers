@@ -144,6 +144,39 @@ export default function ServiceDetail() {
       <SEOHead
         title={`${service.title} - Infinite Rankers | AI Revenue Growth`}
         description={service.shortDesc}
+        canonical={`https://infiniterankers.io/services/${service.slug}`}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://infiniterankers.io/" },
+              { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://infiniterankers.io/services" },
+              { "@type": "ListItem", "position": 3, "name": service.title, "item": `https://infiniterankers.io/services/${service.slug}` }
+            ]
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": service.title,
+            "description": service.shortDesc,
+            "provider": {
+              "@type": "Organization",
+              "name": "Infinite Rankers",
+              "url": "https://infiniterankers.io"
+            },
+            "areaServed": { "@type": "Country", "name": "United States" },
+            "url": `https://infiniterankers.io/services/${service.slug}`
+          })
+        }}
       />
 
       <section className="relative pt-32 pb-20 overflow-hidden">
