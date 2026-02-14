@@ -1,16 +1,55 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { insertContactSchema, insertDemoBookingSchema } from "@shared/schema";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // put application routes here
-  // prefix all routes with /api
+  app.post("/api/contacts", async (req, res) => {
+    try {
+      const parsed = insertContactSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.message });
+      }
+      const contact = await storage.createContact(parsed.data);
+      res.status(201).json(contact);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to save contact" });
+    }
+  });
 
-  // use storage to perform CRUD operations on the storage interface
-  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+  app.get("/api/contacts", async (req, res) => {
+    try {
+      const contacts = await storage.getContacts();
+      res.json(contacts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch contacts" });
+    }
+  });
+
+  app.post("/api/demo-bookings", async (req, res) => {
+    try {
+      const parsed = insertDemoBookingSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.message });
+      }
+      const booking = await storage.createDemoBooking(parsed.data);
+      res.status(201).json(booking);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to save booking" });
+    }
+  });
+
+  app.get("/api/demo-bookings", async (req, res) => {
+    try {
+      const bookings = await storage.getDemoBookings();
+      res.json(bookings);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch bookings" });
+    }
+  });
 
   return httpServer;
 }

@@ -1,0 +1,216 @@
+import { motion } from "framer-motion";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import SEOHead from "@/components/seo-head";
+import GlassCard from "@/components/glass-card";
+import { COMPANY } from "@/lib/constants";
+import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertContactSchema } from "@shared/schema";
+import type { InsertContact } from "@shared/schema";
+import { Mail, Phone, MapPin, ArrowRight, Send, Clock } from "lucide-react";
+
+export default function Contact() {
+  const seo = (
+    <SEOHead
+      title="Contact Us - Infinite Rankers | Get in Touch"
+      description="Have a question or ready to get started? Contact Infinite Rankers and our team will respond within 24 hours."
+    />
+  );
+  const { toast } = useToast();
+  const form = useForm<InsertContact>({
+    resolver: zodResolver(insertContactSchema),
+    defaultValues: { name: "", email: "", phone: "", company: "", message: "" },
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (data: InsertContact) => {
+      return apiRequest("POST", "/api/contacts", data);
+    },
+    onSuccess: () => {
+      toast({ title: "Message Sent!", description: "We'll get back to you within 24 hours." });
+      form.reset();
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
+    },
+  });
+
+  return (
+    <div>
+      {seo}
+      <section className="relative pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50/50 to-white dark:from-blue-950/30 dark:via-purple-950/20 dark:to-background" />
+        <div className="absolute bottom-10 left-10 w-72 h-72 bg-purple-400/10 rounded-full blur-3xl" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+              Contact Us
+            </span>
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight">
+              Let's Build Your{" "}
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Revenue Engine</span>
+            </h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Have a question or ready to get started? Reach out and our team will respond within 24 hours.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-5 gap-12">
+            <div className="lg:col-span-3">
+              <GlassCard>
+                <h2 className="text-xl font-bold text-foreground mb-6">Send Us a Message</h2>
+                <form
+                  onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
+                  className="space-y-5"
+                  data-testid="form-contact"
+                >
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <Label htmlFor="name" className="text-sm mb-1.5 block">Full Name *</Label>
+                      <Input
+                        id="name"
+                        placeholder="John Smith"
+                        {...form.register("name")}
+                        data-testid="input-contact-name"
+                      />
+                      {form.formState.errors.name && (
+                        <p className="text-xs text-red-500 mt-1">{form.formState.errors.name.message}</p>
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="email" className="text-sm mb-1.5 block">Email Address *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="john@company.com"
+                        {...form.register("email")}
+                        data-testid="input-contact-email"
+                      />
+                      {form.formState.errors.email && (
+                        <p className="text-xs text-red-500 mt-1">{form.formState.errors.email.message}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <Label htmlFor="phone" className="text-sm mb-1.5 block">Phone Number</Label>
+                      <Input
+                        id="phone"
+                        placeholder="(555) 123-4567"
+                        {...form.register("phone")}
+                        data-testid="input-contact-phone"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="company" className="text-sm mb-1.5 block">Company Name</Label>
+                      <Input
+                        id="company"
+                        placeholder="Your Company"
+                        {...form.register("company")}
+                        data-testid="input-contact-company"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="message" className="text-sm mb-1.5 block">Message *</Label>
+                    <Textarea
+                      id="message"
+                      placeholder="Tell us about your business and goals..."
+                      className="resize-none min-h-[120px]"
+                      {...form.register("message")}
+                      data-testid="input-contact-message"
+                    />
+                    {form.formState.errors.message && (
+                      <p className="text-xs text-red-500 mt-1">{form.formState.errors.message.message}</p>
+                    )}
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0"
+                    disabled={mutation.isPending}
+                    data-testid="button-contact-submit"
+                  >
+                    {mutation.isPending ? "Sending..." : "Send Message"} <Send className="w-4 h-4 ml-1" />
+                  </Button>
+                </form>
+              </GlassCard>
+            </div>
+
+            <div className="lg:col-span-2 space-y-6">
+              <GlassCard>
+                <h3 className="text-lg font-semibold text-foreground mb-4">Contact Information</h3>
+                <div className="space-y-4">
+                  <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-email">
+                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    {COMPANY.email}
+                  </a>
+                  <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-phone">
+                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    {COMPANY.phone}
+                  </a>
+                  <div className="flex items-start gap-3 text-sm text-muted-foreground">
+                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    {COMPANY.address}
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <div className="w-10 h-10 rounded-md bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    Mon - Fri: 9:00 AM - 6:00 PM EST
+                  </div>
+                </div>
+              </GlassCard>
+
+              <GlassCard className="bg-gradient-to-br from-blue-600 to-purple-700 border-0">
+                <h3 className="text-lg font-semibold text-white mb-2">Book a Free Strategy Session</h3>
+                <p className="text-sm text-white/80 mb-4">
+                  Get a personalized AI revenue growth plan for your business. No obligation.
+                </p>
+                <Link href="/book-demo">
+                  <Button className="w-full bg-white text-blue-700 hover:bg-white/90 border-0" data-testid="button-contact-book-demo">
+                    Book Demo <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </Link>
+              </GlassCard>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-md overflow-hidden border border-border h-[400px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3090.4567!2d-75.5243!3d39.1582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c764a5ae02a53d%3A0x0!2s203+N+Caroline+Pl%2C+Dover%2C+DE+19904!5e0!3m2!1sen!2sus!4v1234567890"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Infinite Rankers Location"
+              data-testid="map-embed"
+            />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

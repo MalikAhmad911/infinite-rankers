@@ -1,38 +1,32 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { type InsertContact, type Contact, type InsertDemoBooking, type DemoBooking, contacts, demoBookings } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  createContact(contact: InsertContact): Promise<Contact>;
+  getContacts(): Promise<Contact[]>;
+  createDemoBooking(booking: InsertDemoBooking): Promise<DemoBooking>;
+  getDemoBookings(): Promise<DemoBooking[]>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
+export class DatabaseStorage implements IStorage {
+  async createContact(contact: InsertContact): Promise<Contact> {
+    const [result] = await db.insert(contacts).values(contact).returning();
+    return result;
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getContacts(): Promise<Contact[]> {
+    return db.select().from(contacts);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async createDemoBooking(booking: InsertDemoBooking): Promise<DemoBooking> {
+    const [result] = await db.insert(demoBookings).values(booking).returning();
+    return result;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async getDemoBookings(): Promise<DemoBooking[]> {
+    return db.select().from(demoBookings);
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
