@@ -140,13 +140,36 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-3 mt-6 text-sm sm:text-base">Partner Platform</h4>
             <ul className="space-y-2">
               <li>
-                <a href="https://infiniterankers.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-home">
-                  infiniterankers.com <ExternalLink className="w-3 h-3" />
-                </a>
+                <Link href="/infinite-rankers-agency">
+                  <span className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-agency">
+                    About Infinite Rankers
+                  </span>
+                </Link>
               </li>
               <li>
-                <a href="https://infiniterankers.com/services" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-services">
-                  Marketing Services <ExternalLink className="w-3 h-3" />
+                <Link href="/infinite-rankers-seo-services">
+                  <span className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-seo">
+                    SEO Services
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/infinite-rankers-paid-advertising">
+                  <span className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-ads">
+                    Paid Advertising
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/infinite-rankers-ai-automation">
+                  <span className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-automation">
+                    AI Automation
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <a href="https://infiniterankers.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-home">
+                  infiniterankers.com <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>

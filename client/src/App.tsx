@@ -19,6 +19,7 @@ import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import BookDemo from "@/pages/book-demo";
 import LandingPage from "@/pages/landing-page";
+import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -34,6 +35,10 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/book-demo" component={BookDemo} />
+      <Route path="/infinite-rankers-agency" component={InfiniteRankersAgency} />
+      <Route path="/infinite-rankers-seo-services" component={InfiniteRankersSEO} />
+      <Route path="/infinite-rankers-paid-advertising" component={InfiniteRankersAds} />
+      <Route path="/infinite-rankers-ai-automation" component={InfiniteRankersAutomation} />
       <Route path="/:slug">{(params) => <LandingPage slug={params.slug} />}</Route>
       <Route component={NotFound} />
     </Switch>
