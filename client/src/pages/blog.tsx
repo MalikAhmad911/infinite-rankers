@@ -16,8 +16,8 @@ export default function Blog() {
         description="Actionable strategies, AI automation insights, and growth frameworks to help your business scale faster."
       />
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#060B1A] via-[#0D1B2A] to-background" />
-        <div className="absolute top-20 right-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
+        <div className="absolute top-20 right-20 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
@@ -39,7 +39,7 @@ export default function Blog() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {BLOG_POSTS.map((post, i) => (
               <GlassCard key={post.id} delay={i * 0.08} className="flex flex-col">
-                <div className="h-40 rounded-md bg-gradient-to-br from-blue-500/10 to-purple-500/10 mb-4 flex items-center justify-center">
+                <div className="h-40 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 mb-4 flex items-center justify-center">
                   <span className="text-4xl font-bold bg-gradient-to-r from-blue-600/20 to-purple-600/20 bg-clip-text text-transparent">
                     IR
                   </span>
@@ -56,7 +56,7 @@ export default function Blog() {
                       <Clock className="w-3 h-3" /> {post.readTime}
                     </span>
                   </div>
-                  <span className="text-sm font-medium text-blue-400 flex items-center gap-1 cursor-pointer">
+                  <span className="text-sm font-medium text-blue-600 flex items-center gap-1 cursor-pointer">
                     Read <ArrowRight className="w-3 h-3" />
                   </span>
                 </div>

@@ -84,8 +84,8 @@ export default function BookDemo() {
     <div>
       {seo}
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#060B1A] via-[#0D1B2A] to-background" />
-        <div className="absolute top-10 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
+        <div className="absolute top-10 right-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
@@ -108,7 +108,7 @@ export default function BookDemo() {
             <div className="lg:col-span-3">
               <GlassCard>
                 <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                  <CalendarCheck className="w-5 h-5 text-blue-400" />
+                  <CalendarCheck className="w-5 h-5 text-blue-600" />
                   Schedule Your Session
                 </h2>
 
@@ -131,7 +131,7 @@ export default function BookDemo() {
                           className={`p-3 rounded-md text-sm text-center border transition-all ${
                             selectedDate === d.value
                               ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-blue-500"
-                              : "border-border/50 text-muted-foreground bg-white/[0.03] hover:border-blue-500/30"
+                              : "border-gray-200/60 text-muted-foreground bg-white hover:border-blue-300/50"
                           }`}
                           data-testid={`button-date-${d.value}`}
                         >
@@ -156,7 +156,7 @@ export default function BookDemo() {
                             className={`p-2 rounded-md text-xs text-center border transition-all ${
                               selectedTime === t
                                 ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-blue-500"
-                                : "border-border/50 text-muted-foreground bg-white/[0.03] hover:border-blue-500/30"
+                                : "border-gray-200/60 text-muted-foreground bg-white hover:border-blue-300/50"
                             }`}
                             data-testid={`button-time-${t.replace(/\s/g, "-")}`}
                           >
@@ -271,7 +271,7 @@ export default function BookDemo() {
                     "No hard sell, no obligation, no pressure",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                       <span className="text-muted-foreground">{item}</span>
                     </li>
                   ))}
@@ -293,7 +293,7 @@ export default function BookDemo() {
 
               <GlassCard>
                 <div className="text-center">
-                  <Clock className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+                  <Clock className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                   <h3 className="text-sm font-semibold text-foreground mb-1">Limited Availability</h3>
                   <p className="text-xs text-muted-foreground">We take on a limited number of new clients each month to ensure quality results.</p>
                 </div>

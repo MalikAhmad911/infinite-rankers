@@ -37,8 +37,8 @@ export default function Services() {
         description="Explore our complete suite of AI automation, lead generation, social media, and development services designed to grow your revenue."
       />
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#060B1A] via-[#0D1B2A] to-background" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-100/40 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
@@ -60,7 +60,7 @@ export default function Services() {
         return (
           <section
             key={cat.id}
-            className={`py-20 lg:py-28 ${catIndex % 2 === 1 ? "bg-[#0A1628]" : ""}`}
+            className={`py-20 lg:py-28 ${catIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`}
             data-testid={`section-${cat.id}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,12 +85,12 @@ export default function Services() {
                   return (
                     <Link key={service.slug} href={`/services/${service.slug}`}>
                       <GlassCard delay={i * 0.05} className="cursor-pointer h-full">
-                        <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-500/15 to-purple-500/15 flex items-center justify-center mb-4">
-                          <Icon className="w-5 h-5 text-blue-400" />
+                        <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4">
+                          <Icon className="w-5 h-5 text-blue-600" />
                         </div>
                         <h3 className="text-lg font-semibold text-foreground mb-2">{service.title}</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed mb-4">{service.shortDesc}</p>
-                        <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-400">
+                        <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600">
                           Learn More <ArrowRight className="w-3 h-3" />
                         </span>
                       </GlassCard>

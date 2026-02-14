@@ -27,9 +27,9 @@ export default function Portfolio() {
       />
 
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#060B1A] via-[#0D1B2A] to-background" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-100/30 rounded-full blur-3xl animate-float" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -62,7 +62,7 @@ export default function Portfolio() {
               className={`flex-shrink-0 px-5 py-2 rounded-md text-sm font-medium transition-all ${
                 selectedTag === "All"
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                  : "bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover-elevate"
+                  : "bg-white border border-gray-200/60 text-muted-foreground hover-elevate"
               }`}
             >
               All
@@ -75,7 +75,7 @@ export default function Portfolio() {
                 className={`flex-shrink-0 px-5 py-2 rounded-md text-sm font-medium transition-all ${
                   selectedTag === tag
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                    : "bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover-elevate"
+                    : "bg-white border border-gray-200/60 text-muted-foreground hover-elevate"
                 }`}
               >
                 {tag}
@@ -140,32 +140,32 @@ export default function Portfolio() {
                             Results
                           </h4>
                           <div className="grid grid-cols-2 gap-3">
-                            <div className="p-3 rounded-md bg-blue-500/10 text-center">
-                              <div className="text-lg font-bold text-blue-400">
+                            <div className="p-3 rounded-md bg-blue-50 text-center">
+                              <div className="text-lg font-bold text-blue-600">
                                 {cs.results.metric1}
                               </div>
                               <div className="text-xs text-muted-foreground">
                                 {cs.results.label1}
                               </div>
                             </div>
-                            <div className="p-3 rounded-md bg-purple-500/10 text-center">
-                              <div className="text-lg font-bold text-purple-400">
+                            <div className="p-3 rounded-md bg-indigo-50 text-center">
+                              <div className="text-lg font-bold text-purple-600">
                                 {cs.results.metric2}
                               </div>
                               <div className="text-xs text-muted-foreground">
                                 {cs.results.label2}
                               </div>
                             </div>
-                            <div className="p-3 rounded-md bg-blue-500/10 text-center">
-                              <div className="text-lg font-bold text-blue-400">
+                            <div className="p-3 rounded-md bg-blue-50 text-center">
+                              <div className="text-lg font-bold text-blue-600">
                                 {cs.results.metric3}
                               </div>
                               <div className="text-xs text-muted-foreground">
                                 {cs.results.label3}
                               </div>
                             </div>
-                            <div className="p-3 rounded-md bg-purple-500/10 text-center">
-                              <div className="text-lg font-bold text-purple-400">
+                            <div className="p-3 rounded-md bg-indigo-50 text-center">
+                              <div className="text-lg font-bold text-purple-600">
                                 {cs.results.metric4}
                               </div>
                               <div className="text-xs text-muted-foreground">

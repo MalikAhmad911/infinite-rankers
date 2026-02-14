@@ -17,9 +17,9 @@ export default function GlassCard({ children, className, hover = true, delay = 0
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
       className={cn(
-        "relative rounded-md p-6 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]",
-        hover && "transition-all duration-300 hover:border-blue-500/30 hover:bg-white/[0.06]",
-        glow && "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
+        "relative rounded-md p-6 bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm",
+        hover && "transition-all duration-300 hover:border-blue-300/50 hover:shadow-md hover:shadow-blue-100/30",
+        glow && "hover:shadow-[0_0_30px_rgba(99,102,241,0.1)]",
         className
       )}
     >

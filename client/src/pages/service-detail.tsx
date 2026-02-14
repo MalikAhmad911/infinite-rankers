@@ -82,7 +82,7 @@ const defaultTheme: ServiceVisualTheme = {
   accentFrom: "from-blue-500",
   accentTo: "to-purple-500",
   accentGlow: "blue-500",
-  heroGradient: "from-[#060B1A] via-[#0D1B2A] to-background",
+  heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
   problemSolutionLayout: "A",
   featuresLayout: "A",
   workflowLayout: "A",
@@ -113,6 +113,10 @@ export default function ServiceDetail() {
   const theme = SERVICE_VISUAL_THEMES[params.slug] || defaultTheme;
   const categoryId = service.categoryId;
 
+  const heroGradient = theme.heroGradient.includes("#")
+    ? "from-gray-50/80 via-blue-50/30 to-white"
+    : theme.heroGradient;
+
   const relatedServiceData = content.relatedServices
     .map((slug) => ALL_SERVICES.find((s) => s.slug === slug))
     .filter(Boolean)
@@ -140,24 +144,24 @@ export default function ServiceDetail() {
       />
 
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className={`absolute inset-0 bg-gradient-to-br ${theme.heroGradient}`} />
+        <div className={`absolute inset-0 bg-gradient-to-br ${heroGradient}`} />
 
         {categoryId === "ai-automation" && (
           <>
-            <div className="absolute top-16 right-16 w-64 h-64 opacity-[0.06]">
+            <div className="absolute top-16 right-16 w-64 h-64 opacity-[0.08]">
               <div className="relative w-full h-full">
-                <div className="absolute inset-0 border-2 border-cyan-400 rounded-full animate-pulse-ring" />
-                <div className="absolute inset-6 border border-cyan-400/50 rounded-full animate-pulse-ring" style={{ animationDelay: "0.5s" }} />
-                <div className="absolute inset-12 border border-cyan-400/30 rounded-full animate-pulse-ring" style={{ animationDelay: "1s" }} />
-                <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-cyan-400 rounded-full -translate-x-1/2 -translate-y-1/2" />
-                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-orbit" />
-                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-orbit" style={{ animationDelay: "2s", animationDuration: "6s" }} />
+                <div className="absolute inset-0 border-2 border-cyan-500 rounded-full animate-pulse-ring" />
+                <div className="absolute inset-6 border border-cyan-500/50 rounded-full animate-pulse-ring" style={{ animationDelay: "0.5s" }} />
+                <div className="absolute inset-12 border border-cyan-500/30 rounded-full animate-pulse-ring" style={{ animationDelay: "1s" }} />
+                <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-cyan-500 rounded-full -translate-x-1/2 -translate-y-1/2" />
+                <div className="w-2 h-2 bg-cyan-500 rounded-full animate-orbit" />
+                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-orbit" style={{ animationDelay: "2s", animationDuration: "6s" }} />
               </div>
             </div>
-            <div className="absolute bottom-20 left-8 w-48 h-48 opacity-[0.04]">
+            <div className="absolute bottom-20 left-8 w-48 h-48 opacity-[0.06]">
               <svg viewBox="0 0 100 100" className="w-full h-full">
-                <path d="M10 50 L30 30 L50 50 L70 20 L90 40" stroke="currentColor" strokeWidth="1" fill="none" className="text-blue-400" />
-                <path d="M10 60 L30 70 L50 55 L70 65 L90 50" stroke="currentColor" strokeWidth="0.5" fill="none" className="text-cyan-400" />
+                <path d="M10 50 L30 30 L50 50 L70 20 L90 40" stroke="currentColor" strokeWidth="1" fill="none" className="text-blue-500" />
+                <path d="M10 60 L30 70 L50 55 L70 65 L90 50" stroke="currentColor" strokeWidth="0.5" fill="none" className="text-cyan-500" />
               </svg>
             </div>
           </>
@@ -165,17 +169,17 @@ export default function ServiceDetail() {
 
         {categoryId === "lead-generation" && (
           <>
-            <div className="absolute top-20 right-10 w-72 h-72 opacity-[0.05]">
+            <div className="absolute top-20 right-10 w-72 h-72 opacity-[0.07]">
               <svg viewBox="0 0 200 200" className="w-full h-full">
                 {[0, 1, 2, 3, 4].map((i) => (
-                  <rect key={i} x={20 + i * 35} y={200 - (40 + i * 30)} width="25" height={40 + i * 30} rx="3" fill="currentColor" className="text-emerald-400" opacity={0.3 + i * 0.15} />
+                  <rect key={i} x={20 + i * 35} y={200 - (40 + i * 30)} width="25" height={40 + i * 30} rx="3" fill="currentColor" className="text-emerald-500" opacity={0.3 + i * 0.15} />
                 ))}
-                <path d="M10 180 Q60 140 100 120 T200 60" stroke="currentColor" strokeWidth="2" fill="none" className="text-green-400" opacity="0.4" />
+                <path d="M10 180 Q60 140 100 120 T200 60" stroke="currentColor" strokeWidth="2" fill="none" className="text-green-500" opacity="0.4" />
               </svg>
             </div>
-            <div className="absolute bottom-16 left-12 opacity-[0.04]">
-              <div className="w-32 h-32 border-2 border-dashed border-green-400 rounded-full flex items-center justify-center">
-                <Target className="w-8 h-8 text-green-400" />
+            <div className="absolute bottom-16 left-12 opacity-[0.06]">
+              <div className="w-32 h-32 border-2 border-dashed border-green-500 rounded-full flex items-center justify-center">
+                <Target className="w-8 h-8 text-green-500" />
               </div>
             </div>
           </>
@@ -183,18 +187,18 @@ export default function ServiceDetail() {
 
         {categoryId === "social-content" && (
           <>
-            <div className="absolute top-24 right-12 opacity-[0.06]">
+            <div className="absolute top-24 right-12 opacity-[0.08]">
               <div className="flex gap-3">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-16 h-20 rounded-md border border-pink-400/30 bg-pink-400/5" style={{ transform: `rotate(${-5 + i * 5}deg)`, animationDelay: `${i * 0.3}s` }}>
-                    <div className="w-4 h-4 bg-pink-400/20 rounded-full mx-auto mt-2" />
-                    <div className="w-10 h-1 bg-pink-400/15 rounded-full mx-auto mt-2" />
-                    <div className="w-8 h-1 bg-pink-400/10 rounded-full mx-auto mt-1" />
+                  <div key={i} className="w-16 h-20 rounded-md border border-pink-400/30 bg-pink-50/50" style={{ transform: `rotate(${-5 + i * 5}deg)`, animationDelay: `${i * 0.3}s` }}>
+                    <div className="w-4 h-4 bg-pink-200/40 rounded-full mx-auto mt-2" />
+                    <div className="w-10 h-1 bg-pink-200/30 rounded-full mx-auto mt-2" />
+                    <div className="w-8 h-1 bg-pink-200/20 rounded-full mx-auto mt-1" />
                   </div>
                 ))}
               </div>
             </div>
-            <div className="absolute bottom-24 left-8 opacity-[0.04]">
+            <div className="absolute bottom-24 left-8 opacity-[0.06]">
               <div className="flex items-end gap-1">
                 {[3, 5, 4, 7, 6, 8, 5, 7, 9, 6, 8, 7].map((h, i) => (
                   <div key={i} className="w-1.5 bg-orange-400 rounded-full animate-wave" style={{ height: `${h * 4}px`, animationDelay: `${i * 0.1}s` }} />
@@ -206,20 +210,20 @@ export default function ServiceDetail() {
 
         {categoryId === "development" && (
           <>
-            <div className="absolute top-20 right-8 opacity-[0.05] font-mono text-xs text-violet-400 leading-relaxed">
+            <div className="absolute top-20 right-8 opacity-[0.07] font-mono text-xs text-violet-500 leading-relaxed">
               <div>{"const deploy = async () => {"}</div>
               <div className="ml-4">{"await build();"}</div>
               <div className="ml-4">{"await optimize();"}</div>
               <div className="ml-4">{"return success;"}</div>
               <div>{"}"}</div>
             </div>
-            <div className="absolute bottom-20 left-10 w-48 h-48 opacity-[0.04]">
+            <div className="absolute bottom-20 left-10 w-48 h-48 opacity-[0.06]">
               <svg viewBox="0 0 100 100" className="w-full h-full">
-                <rect x="10" y="10" width="35" height="35" rx="3" stroke="currentColor" strokeWidth="1" fill="none" className="text-purple-400" />
-                <rect x="55" y="10" width="35" height="35" rx="3" stroke="currentColor" strokeWidth="1" fill="none" className="text-violet-400" />
-                <rect x="30" y="55" width="40" height="35" rx="3" stroke="currentColor" strokeWidth="1" fill="none" className="text-indigo-400" />
-                <line x1="27" y1="45" x2="27" y2="55" stroke="currentColor" strokeWidth="0.5" className="text-purple-400" />
-                <line x1="72" y1="45" x2="72" y2="55" stroke="currentColor" strokeWidth="0.5" className="text-violet-400" />
+                <rect x="10" y="10" width="35" height="35" rx="3" stroke="currentColor" strokeWidth="1" fill="none" className="text-purple-500" />
+                <rect x="55" y="10" width="35" height="35" rx="3" stroke="currentColor" strokeWidth="1" fill="none" className="text-violet-500" />
+                <rect x="30" y="55" width="40" height="35" rx="3" stroke="currentColor" strokeWidth="1" fill="none" className="text-indigo-500" />
+                <line x1="27" y1="45" x2="27" y2="55" stroke="currentColor" strokeWidth="0.5" className="text-purple-500" />
+                <line x1="72" y1="45" x2="72" y2="55" stroke="currentColor" strokeWidth="0.5" className="text-violet-500" />
               </svg>
             </div>
           </>
@@ -306,7 +310,7 @@ export default function ServiceDetail() {
       </section>
 
       {relatedCaseStudies.length > 0 && (
-        <section className="py-20 lg:py-28 bg-[#0A1628]">
+        <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader label="Results" title="Related Case Studies" description="See how businesses like yours have achieved real results with our systems." />
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -316,19 +320,19 @@ export default function ServiceDetail() {
                   <h3 className="text-lg font-semibold text-foreground mb-2" data-testid={`text-case-study-title-${cs.id}`}>{cs.title}</h3>
                   <p className="text-sm text-muted-foreground mb-4">{cs.business}</p>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="p-2 rounded-md bg-white/[0.03] text-center">
+                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
                       <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric1}</p>
                       <p className="text-xs text-muted-foreground">{cs.results.label1}</p>
                     </div>
-                    <div className="p-2 rounded-md bg-white/[0.03] text-center">
+                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
                       <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric2}</p>
                       <p className="text-xs text-muted-foreground">{cs.results.label2}</p>
                     </div>
-                    <div className="p-2 rounded-md bg-white/[0.03] text-center">
+                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
                       <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric3}</p>
                       <p className="text-xs text-muted-foreground">{cs.results.label3}</p>
                     </div>
-                    <div className="p-2 rounded-md bg-white/[0.03] text-center">
+                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
                       <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric4}</p>
                       <p className="text-xs text-muted-foreground">{cs.results.label4}</p>
                     </div>
@@ -353,7 +357,7 @@ export default function ServiceDetail() {
       />
 
       {relatedServiceData.length > 0 && (
-        <section className="py-20 lg:py-28 bg-[#0A1628]">
+        <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader label="Explore More" title="Related Services" description="Complement your growth strategy with these related systems." />
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -363,8 +367,8 @@ export default function ServiceDetail() {
                 return (
                   <Link key={rs.slug} href={`/services/${rs.slug}`}>
                     <GlassCard delay={i * 0.1} glow className="cursor-pointer h-full">
-                      <div className={`w-10 h-10 rounded-md bg-gradient-to-br ${theme.accentFrom}/20 ${theme.accentTo}/20 flex items-center justify-center mb-4`}>
-                        <RsIcon className="w-5 h-5 text-blue-400" />
+                      <div className={`w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4`}>
+                        <RsIcon className="w-5 h-5 text-blue-600" />
                       </div>
                       <h3 className="text-sm font-semibold text-foreground mb-2" data-testid={`text-related-service-${rs.slug}`}>{rs.title}</h3>
                       <p className="text-xs text-muted-foreground leading-relaxed">{rs.shortDesc}</p>

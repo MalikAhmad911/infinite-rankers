@@ -15,7 +15,7 @@ interface ProblemSolutionProps {
 
 export function ProblemSolutionSection({ problems, solutions, serviceTitle, accentFrom, accentTo, variant }: ProblemSolutionProps) {
   return (
-    <section className="py-20 lg:py-28 bg-[#0A1628]">
+    <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           label={serviceTitle}
@@ -39,7 +39,7 @@ function ProblemSolutionA({ problems, solutions, accentFrom, accentTo }: { probl
   return (
     <div className="grid md:grid-cols-2 gap-8">
       <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-red-400 mb-6">Without Us</h3>
+        <h3 className="text-xl font-semibold text-red-500 mb-6">Without Us</h3>
         {problems.map((problem, i) => (
           <motion.div
             key={i}
@@ -47,9 +47,9 @@ function ProblemSolutionA({ problems, solutions, accentFrom, accentTo }: { probl
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="flex items-start gap-3 p-4 rounded-md bg-red-500/[0.05] border border-red-500/[0.1]"
+            className="flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60"
           >
-            <X className="w-5 h-5 text-red-400 mt-0.5 shrink-0" />
+            <X className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
             <span className="text-muted-foreground">{problem}</span>
           </motion.div>
         ))}
@@ -63,9 +63,9 @@ function ProblemSolutionA({ problems, solutions, accentFrom, accentTo }: { probl
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            className={`flex items-start gap-3 p-4 rounded-md bg-white/[0.03] border border-white/[0.06]`}
+            className="flex items-start gap-3 p-4 rounded-md bg-white/80 border border-gray-200/60 shadow-sm"
           >
-            <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 text-emerald-400`} />
+            <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0 text-emerald-600" />
             <span className="text-muted-foreground">{solution}</span>
           </motion.div>
         ))}
@@ -86,23 +86,23 @@ function ProblemSolutionB({ problems, solutions, accentFrom, accentTo }: { probl
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.2 }}
-            className="flex items-start gap-3 p-4 rounded-md bg-red-500/[0.05] border border-red-500/[0.1] text-right justify-end"
+            className="flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60 text-right justify-end"
           >
             <span className="text-muted-foreground text-sm">{pair.problem}</span>
-            <X className="w-5 h-5 text-red-400 mt-0.5 shrink-0" />
+            <X className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
           </motion.div>
           <div className="relative flex items-center justify-center w-10">
             <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo}`} />
-            <div className="absolute left-0 right-0 h-px bg-white/10" />
+            <div className="absolute left-0 right-0 h-px bg-gray-200/60" />
           </div>
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.2 + 0.1 }}
-            className="flex items-start gap-3 p-4 rounded-md bg-white/[0.03] border border-white/[0.06]"
+            className="flex items-start gap-3 p-4 rounded-md bg-white/80 border border-gray-200/60 shadow-sm"
           >
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
             <span className="text-muted-foreground text-sm">{pair.solution}</span>
           </motion.div>
         </div>
@@ -120,7 +120,7 @@ function ProblemSolutionC({ problems, solutions, accentFrom, accentTo }: { probl
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
       >
-        <h3 className="text-lg font-semibold text-red-400 mb-4 text-center">Before</h3>
+        <h3 className="text-lg font-semibold text-red-500 mb-4 text-center">Before</h3>
         <div className="grid sm:grid-cols-2 gap-3">
           {problems.map((problem, i) => (
             <motion.div
@@ -129,9 +129,9 @@ function ProblemSolutionC({ problems, solutions, accentFrom, accentTo }: { probl
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="flex items-start gap-3 p-4 rounded-md bg-red-500/[0.05] border border-red-500/[0.1]"
+              className="flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60"
             >
-              <X className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+              <X className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
               <span className="text-muted-foreground text-sm">{problem}</span>
             </motion.div>
           ))}
@@ -147,7 +147,7 @@ function ProblemSolutionC({ problems, solutions, accentFrom, accentTo }: { probl
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mx-4"
         >
-          <ArrowDown className={`w-8 h-8 text-white/60`} />
+          <ArrowDown className="w-8 h-8 text-gray-400" />
         </motion.div>
         <div className={`h-px flex-1 bg-gradient-to-r from-transparent ${accentFrom} ${accentTo} to-transparent opacity-40`} />
       </div>
@@ -167,9 +167,9 @@ function ProblemSolutionC({ problems, solutions, accentFrom, accentTo }: { probl
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.08 + 0.3 }}
-              className="flex items-start gap-3 p-4 rounded-md bg-white/[0.03] border border-white/[0.06]"
+              className="flex items-start gap-3 p-4 rounded-md bg-white/80 border border-gray-200/60 shadow-sm"
             >
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
               <span className="text-muted-foreground text-sm">{solution}</span>
             </motion.div>
           ))}
@@ -188,7 +188,7 @@ interface FeaturesSectionProps {
 
 export function FeaturesSection({ features, accentFrom, accentTo, variant }: FeaturesSectionProps) {
   return (
-    <section className="py-20 lg:py-28 bg-[#0A1628]">
+    <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader label="Features" title="What's Included" />
         {variant === "A" && (
@@ -215,9 +215,9 @@ function FeaturesA({ features, accentFrom, accentTo }: { features: string[]; acc
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: i * 0.06 }}
-          className="flex items-start gap-3 p-4 rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]"
+          className="flex items-start gap-3 p-4 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm"
         >
-          <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-emerald-400`} />
+          <CheckCircle2 className={`w-5 h-5 mt-0.5 shrink-0 text-emerald-600`} />
           <span className="text-muted-foreground text-sm">{feature}</span>
         </motion.div>
       ))}
@@ -237,7 +237,7 @@ function FeaturesB({ features, accentFrom, accentTo }: { features: string[]; acc
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.07 }}
-            className={`p-5 rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] ${isLarge ? "sm:col-span-2 flex flex-col items-center text-center py-8" : ""}`}
+            className={`p-5 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm ${isLarge ? "sm:col-span-2 flex flex-col items-center text-center py-8" : ""}`}
           >
             {isLarge ? (
               <>
@@ -248,7 +248,7 @@ function FeaturesB({ features, accentFrom, accentTo }: { features: string[]; acc
               </>
             ) : (
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0 text-emerald-400" />
+                <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0 text-emerald-600" />
                 <span className="text-muted-foreground text-sm">{feature}</span>
               </div>
             )}
@@ -269,7 +269,7 @@ function FeaturesC({ features, accentFrom, accentTo }: { features: string[]; acc
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: i * 0.06 }}
-          className="flex-none w-64 snap-start rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] p-5 flex flex-col"
+          className="flex-none w-64 snap-start rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm p-5 flex flex-col"
         >
           <span className={`inline-flex items-center justify-center w-8 h-8 rounded-md bg-gradient-to-r ${accentFrom} ${accentTo} text-white text-sm font-bold mb-4`}>
             {String(i + 1).padStart(2, "0")}
@@ -351,7 +351,7 @@ function WorkflowB({ steps, accentFrom, accentTo }: { steps: { step: string; des
             className={`relative flex items-center mb-12 last:mb-0 ${isLeft ? "justify-start" : "justify-end"}`}
           >
             <div className={`absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo} z-10`} />
-            <div className={`w-5/12 p-5 rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] ${isLeft ? "mr-auto text-right" : "ml-auto text-left"}`}>
+            <div className={`w-5/12 p-5 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm ${isLeft ? "mr-auto text-right" : "ml-auto text-left"}`}>
               <span className={`inline-block text-xs font-bold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent mb-2`}>
                 Step {String(i + 1).padStart(2, "0")}
               </span>
@@ -376,7 +376,7 @@ function WorkflowC({ steps, accentFrom, accentTo }: { steps: { step: string; des
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: i * 0.12 }}
           style={{ marginLeft: `${i * 1.5}rem` }}
-          className="flex items-stretch rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] overflow-hidden"
+          className="flex items-stretch rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm overflow-hidden"
         >
           <div className={`w-1 bg-gradient-to-b ${accentFrom} ${accentTo} shrink-0`} />
           <div className="flex items-center gap-6 p-5 flex-1">
@@ -445,7 +445,7 @@ function FAQB({ faqs, accentFrom, accentTo }: { faqs: { q: string; a: string }[]
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: i * 0.08 }}
-          className="rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] overflow-hidden"
+          className="rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm overflow-hidden"
         >
           <button
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
@@ -458,7 +458,7 @@ function FAQB({ faqs, accentFrom, accentTo }: { faqs: { q: string; a: string }[]
               transition={{ duration: 0.3 }}
               className="shrink-0"
             >
-              <ChevronDown className={`w-5 h-5 text-muted-foreground`} />
+              <ChevronDown className="w-5 h-5 text-muted-foreground" />
             </motion.span>
           </button>
           <AnimatePresence>
@@ -494,7 +494,7 @@ function FAQC({ faqs, accentFrom, accentTo }: { faqs: { q: string; a: string }[]
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: i * 0.1 }}
-      className="flex rounded-md bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] overflow-hidden"
+      className="flex rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm overflow-hidden"
     >
       <div className={`w-[2px] bg-gradient-to-b ${accentFrom} ${accentTo} shrink-0`} />
       <div className="p-5">

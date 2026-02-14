@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SERVICE_CATEGORIES, COMPANY } from "@/lib/constants";
-import { useTheme } from "@/components/theme-provider";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -24,7 +23,6 @@ export default function Navbar() {
   const [mobileExpandedCategory, setMobileExpandedCategory] = useState<string | null>(null);
   const [location] = useLocation();
   const megaMenuTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -65,7 +63,7 @@ export default function Navbar() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-[#060B1A]/90 backdrop-blur-xl border-b border-white/[0.06]"
+            ? "bg-white/80 backdrop-blur-xl border-b border-gray-200/60 shadow-sm"
             : "bg-transparent"
         }`}
         data-testid="navbar"
@@ -74,10 +72,10 @@ export default function Navbar() {
           <div className="flex items-center justify-between gap-4 h-16 lg:h-20">
             <Link href="/" data-testid="link-home-logo">
               <div className="flex items-center gap-2 flex-shrink-0">
-                <div className="w-8 h-8 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-md bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
                   <span className="text-white font-bold text-sm">IR</span>
                 </div>
-                <span className="font-bold text-lg text-foreground hidden sm:block">
+                <span className="font-bold text-lg text-gray-900 hidden sm:block">
                   {COMPANY.name}
                 </span>
               </div>
@@ -96,8 +94,8 @@ export default function Navbar() {
                       type="button"
                       className={`flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                         location.startsWith("/services")
-                          ? "text-foreground bg-white/[0.06]"
-                          : "text-muted-foreground hover:text-foreground"
+                          ? "text-gray-900 bg-gray-100"
+                          : "text-gray-600 hover:text-gray-900"
                       }`}
                       onClick={() => setMegaMenuOpen((prev) => !prev)}
                       data-testid="link-nav-services"
@@ -115,8 +113,8 @@ export default function Navbar() {
                     <span
                       className={`px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                         location === link.href
-                          ? "text-foreground bg-white/[0.06]"
-                          : "text-muted-foreground hover:text-foreground"
+                          ? "text-gray-900 bg-gray-100"
+                          : "text-gray-600 hover:text-gray-900"
                       }`}
                       data-testid={`link-nav-${link.label.toLowerCase()}`}
                     >
@@ -128,21 +126,9 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={toggleTheme}
-                data-testid="button-theme-toggle"
-              >
-                {theme === "light" ? (
-                  <Moon className="w-4 h-4" />
-                ) : (
-                  <Sun className="w-4 h-4" />
-                )}
-              </Button>
               <Link href="/book-demo">
                 <Button
-                  className="hidden sm:inline-flex bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0"
+                  className="hidden sm:inline-flex bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0"
                   data-testid="button-book-demo-nav"
                 >
                   Book Demo
@@ -180,11 +166,11 @@ export default function Navbar() {
             data-testid="mega-menu"
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="bg-[#0A1628]/98 backdrop-blur-xl border border-white/[0.06] rounded-lg p-6">
+              <div className="bg-white/95 backdrop-blur-xl border border-gray-200/80 rounded-lg p-6 shadow-xl shadow-gray-200/40">
                 <div className="grid grid-cols-4 gap-6">
                   {SERVICE_CATEGORIES.map((category) => (
                     <div key={category.id}>
-                      <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-3">
+                      <h3 className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">
                         {category.title}
                       </h3>
                       <ul className="space-y-1.5">
@@ -195,7 +181,7 @@ export default function Navbar() {
                               onClick={closeMegaMenu}
                             >
                               <span
-                                className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer block py-0.5"
+                                className="text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer block py-0.5"
                                 data-testid={`link-mega-${service.slug}`}
                               >
                                 {service.title}
@@ -207,9 +193,9 @@ export default function Navbar() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-4 border-t border-white/[0.06]">
+                <div className="mt-6 pt-4 border-t border-gray-200/60">
                   <Link href="/services" onClick={closeMegaMenu}>
-                    <span className="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors cursor-pointer" data-testid="link-mega-view-all">
+                    <span className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors cursor-pointer" data-testid="link-mega-view-all">
                       View All Services →
                     </span>
                   </Link>
@@ -227,7 +213,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 bg-background/95 backdrop-blur-xl border-b border-border lg:hidden max-h-[calc(100vh-4rem)] overflow-y-auto"
+            className="fixed inset-x-0 top-16 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 lg:hidden max-h-[calc(100vh-4rem)] overflow-y-auto"
             data-testid="mobile-menu"
           >
             <div className="px-4 py-4 space-y-1">
@@ -238,8 +224,8 @@ export default function Navbar() {
                       type="button"
                       className={`flex items-center justify-between w-full px-4 py-3 rounded-md text-sm font-medium transition-colors ${
                         location.startsWith("/services")
-                          ? "text-foreground bg-muted"
-                          : "text-muted-foreground"
+                          ? "text-gray-900 bg-gray-100"
+                          : "text-gray-600"
                       }`}
                       onClick={() => setMobileServicesOpen((prev) => !prev)}
                       data-testid="link-mobile-services"
@@ -265,7 +251,7 @@ export default function Navbar() {
                               <div key={category.id}>
                                 <button
                                   type="button"
-                                  className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-blue-400 uppercase tracking-wider"
+                                  className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-blue-600 uppercase tracking-wider"
                                   onClick={() =>
                                     setMobileExpandedCategory((prev) =>
                                       prev === category.id ? null : category.id
@@ -298,7 +284,7 @@ export default function Navbar() {
                                               href={`/services/${service.slug}`}
                                             >
                                               <span
-                                                className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                                                className="block px-3 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
                                                 data-testid={`link-mobile-service-${service.slug}`}
                                               >
                                                 {service.title}
@@ -313,7 +299,7 @@ export default function Navbar() {
                               </div>
                             ))}
                             <Link href="/services">
-                              <span className="block px-3 py-2 text-sm font-medium text-blue-400">
+                              <span className="block px-3 py-2 text-sm font-medium text-blue-600">
                                 View All Services →
                               </span>
                             </Link>
@@ -327,8 +313,8 @@ export default function Navbar() {
                     <span
                       className={`block px-4 py-3 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                         location === link.href
-                          ? "text-foreground bg-muted"
-                          : "text-muted-foreground"
+                          ? "text-gray-900 bg-gray-100"
+                          : "text-gray-600"
                       }`}
                       data-testid={`link-mobile-${link.label.toLowerCase()}`}
                     >
@@ -339,7 +325,7 @@ export default function Navbar() {
               )}
               <Link href="/book-demo">
                 <Button
-                  className="w-full mt-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0"
+                  className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0"
                   data-testid="button-book-demo-mobile"
                 >
                   Book Demo
