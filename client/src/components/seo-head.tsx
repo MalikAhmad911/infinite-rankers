@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 
-interface SEOHeadProps {
+export interface SEOHeadProps {
   title: string;
   description: string;
   ogTitle?: string;
   ogDescription?: string;
+  ogImage?: string;
   keywords?: string;
   canonical?: string;
 }
@@ -13,7 +14,8 @@ export default function SEOHead({
   title, 
   description, 
   ogTitle, 
-  ogDescription, 
+  ogDescription,
+  ogImage,
   keywords,
   canonical 
 }: SEOHeadProps) {
@@ -54,6 +56,11 @@ export default function SEOHead({
     setMeta("og:site_name", "Infinite Rankers", true);
     setMeta("og:url", canonical || window.location.href, true);
 
+    if (ogImage) {
+      setMeta("og:image", ogImage, true);
+      setMeta("twitter:image", ogImage);
+    }
+
     // Twitter Card tags
     setMeta("twitter:card", "summary_large_image");
     setMeta("twitter:title", ogTitle || title);
@@ -63,7 +70,7 @@ export default function SEOHead({
     if (canonical) {
       setLink("canonical", canonical);
     }
-  }, [title, description, ogTitle, ogDescription, keywords, canonical]);
+  }, [title, description, ogTitle, ogDescription, ogImage, keywords, canonical]);
 
   return null;
 }

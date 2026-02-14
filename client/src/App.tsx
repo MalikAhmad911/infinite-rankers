@@ -16,6 +16,7 @@ import Portfolio from "@/pages/portfolio";
 import Pricing from "@/pages/pricing";
 import Contact from "@/pages/contact";
 import Blog from "@/pages/blog";
+import BlogPost from "@/pages/blog-post";
 import BookDemo from "@/pages/book-demo";
 import LandingPage from "@/pages/landing-page";
 import NotFound from "@/pages/not-found";
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/pricing" component={Pricing} />
       <Route path="/contact" component={Contact} />
       <Route path="/blog" component={Blog} />
+      <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/book-demo" component={BookDemo} />
       <Route path="/:slug">{(params) => <LandingPage slug={params.slug} />}</Route>
       <Route component={NotFound} />
