@@ -1,0 +1,128 @@
+CRITICAL BRANDING TASK — HIGH PRIORITY
+
+You must refine and finalize the existing logo design using the provided reference image.
+
+The provided image is a HIGH-LEVEL visual reference. You must analyze it carefully and recreate a production-ready brand logo from it.
+
+------------------------------------------------
+
+PRIMARY GOAL
+
+Create a premium SaaS-grade logo similar in quality and visual polish to top AI brands like ChatGPT, Gemini, Claude, and Perplexity.
+
+The final logo must look modern, clean, luxury, and highly professional.
+
+------------------------------------------------
+
+STRICT DESIGN RULES
+
+• KEEP the exact swirl / circular AI style concept
+• DO NOT redesign or change brand identity
+• Maintain the same overall shape and structure
+• Improve quality, polish, and rendering only
+
+------------------------------------------------
+
+REMOVE THESE ELEMENTS (MANDATORY)
+
+• Remove all HEX color codes written inside the logo
+• Remove any temporary or debug text
+• Remove the background completely
+
+Final logo MUST be transparent.
+
+------------------------------------------------
+
+COLOR SYSTEM REQUIREMENT
+
+You must rebuild the gradient using colors that match the website brand style.
+
+• Use premium SaaS style gradients
+• Smooth and luxury color blending
+• Colors must feel modern and high-end
+• Ensure gradient works on both light and dark UI if needed
+• Avoid harsh or oversaturated tones
+
+------------------------------------------------
+
+QUALITY IMPROVEMENTS
+
+You must:
+
+• Smooth all edges
+• Improve vector sharpness
+• Improve gradient blending
+• Remove pixel roughness
+• Improve symmetry and balance
+• Improve lighting and depth feel
+• Make logo visually heavier and premium
+• Ensure retina / high DPI optimization
+
+------------------------------------------------
+
+EXPORT REQUIREMENTS (VERY IMPORTANT)
+
+You must generate:
+
+1. MAIN LOGO
+• Transparent background
+• High resolution PNG
+• SVG vector version (production ready)
+
+2. FAVICON PACKAGE
+Generate full favicon set including:
+
+• favicon.svg
+• favicon.ico
+• 16x16 PNG
+• 32x32 PNG
+• 48x48 PNG
+• 180x180 Apple touch icon
+• 192x192 Android icon
+• 512x512 PWA icon
+
+------------------------------------------------
+
+PERFORMANCE REQUIREMENT
+
+• SVG must be clean and optimized
+• Remove unnecessary vector nodes
+• Ensure fast loading
+• Ensure cross-browser compatibility
+
+------------------------------------------------
+
+VISUAL BRAND FEEL
+
+Logo must feel:
+
+• AI powered
+• SaaS premium
+• Trustworthy
+• Modern
+• Clean
+• Tech luxury
+
+------------------------------------------------
+
+FINAL RESULT CHECKLIST
+
+✔ Same concept and structure
+✔ No color codes text
+✔ Transparent background
+✔ Website-matching gradient
+✔ Ultra smooth vector finish
+✔ Full favicon export
+✔ Production ready SVG
+✔ Retina optimized
+✔ Premium SaaS brand quality
+
+------------------------------------------------
+
+DO NOT:
+• Change logo concept
+• Replace design
+• Add random elements
+• Use stock icons
+
+ONLY refine and professionalize the existing design.
