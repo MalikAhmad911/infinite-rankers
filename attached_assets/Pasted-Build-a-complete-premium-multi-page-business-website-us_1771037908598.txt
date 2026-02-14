@@ -1,0 +1,243 @@
+Build a complete premium multi-page business website using React + Next.js + Tailwind CSS + Framer Motion animations.
+
+Business Details:
+
+Company Name: Infinite Rankers
+Domain: infiniterankers.io
+Email: contact@infiniterankers.io
+Phone: (703) 415-9373
+Address: 203 N Caroline Pl, Dover, DE 19904, USA
+
+--------------------------------------------
+
+CORE BUSINESS POSITIONING:
+
+This is NOT a traditional digital marketing agency.
+
+This company is an AI Revenue Growth Agency that helps businesses generate customers and revenue using AI automation, marketing systems, and sales automation tools.
+
+Main target market:
+Primary: USA local businesses
+Secondary: UK businesses
+Global service availability.
+
+Messaging tone:
+Professional
+Futuristic
+Revenue-focused
+Automation-driven
+
+--------------------------------------------
+
+DESIGN REQUIREMENTS:
+
+• Light modern premium SaaS style interface
+• Clean white/light gradient background
+• Use modern blue and purple accent colors
+• Smooth Framer Motion animations
+• Glassmorphism cards
+• Hover animations
+• Modern tech startup feel
+• Fully responsive mobile + desktop
+
+--------------------------------------------
+
+WEBSITE STRUCTURE:
+
+Create a fully structured multi-page website with navigation and routing.
+
+Pages Required:
+
+1. Homepage
+2. About Us
+3. Services Overview Page
+4. Individual Service Landing Pages (separate pages for each service)
+5. Portfolio / Case Studies
+6. Pricing Page
+7. Contact Page
+8. Blog Section
+9. Book Demo Page
+
+--------------------------------------------
+
+HOMEPAGE STRUCTURE:
+
+Hero Section:
+Headline: Turn Your Business Into an AI-Powered Revenue Machine
+Subheadline: We build automated systems that generate customers and revenue.
+CTA buttons: Book Demo, Explore Services
+
+Include animated automation flow illustration.
+
+Sections:
+
+• AI Systems Overview (tool/module style cards)
+• How It Works (Traffic → AI → Qualification → CRM → Booking → Revenue)
+• Services Categories Grid
+• Results / Achievements Section
+• Portfolio Preview
+• Pricing Preview
+• Testimonials Section
+• Strong Final CTA
+
+--------------------------------------------
+
+SERVICES ARCHITECTURE:
+
+Create one main services overview page and separate landing pages for each service below.
+
+CATEGORY 1 — AI & AUTOMATION SYSTEMS
+Create separate pages for:
+
+- AI Calling Agent
+- AI Receptionist
+- AI Lead Qualification Bot
+- AI Appointment Booking System
+- AI Follow-Up Automation
+- AI Sales Assistant
+- AI Chatbot (Website + WhatsApp + Messenger)
+- AI Email Automation
+- AI SMS Automation
+- CRM Automation
+- Workflow Automation
+
+--------------------------------------------
+
+CATEGORY 2 — LEAD GENERATION SYSTEMS
+
+- Google Ads Revenue Engine
+- Meta Ads Growth Engine
+- SEO Authority Growth System
+- Local SEO & Google Business Optimization
+- Conversion Funnel Building
+- Landing Page Optimization
+- Conversion Rate Optimization
+
+--------------------------------------------
+
+CATEGORY 3 — SOCIAL MEDIA & CONTENT
+
+- Social Media Marketing
+- Instagram Growth & Posting
+- Facebook Growth & Posting
+- Content Writing & Strategy
+- Branding & Creative Design
+- Short Form Video Marketing
+
+--------------------------------------------
+
+CATEGORY 4 — DEVELOPMENT & TECHNOLOGY
+
+- Website Development
+- Landing Page Development
+- CRM Setup & Integration
+- SaaS Integrations
+- Marketing Automation Setup
+- Dashboard & Analytics Setup
+
+--------------------------------------------
+
+INDIVIDUAL SERVICE PAGE STRUCTURE:
+
+Each service page must include:
+
+• Result-based hero section
+• Problem explanation
+• AI or marketing solution explanation
+• Visual automation workflow diagram
+• Features grid
+• Industry use cases
+• Pricing tier cards
+• FAQ section
+• CTA to book demo
+
+--------------------------------------------
+
+PORTFOLIO PAGE:
+
+Create 6–8 realistic sample case studies clearly labeled as "Sample Case Study".
+
+Each case study must include:
+• Business type
+• Challenge
+• Solution implemented
+• Results metrics
+• Visual performance cards
+
+--------------------------------------------
+
+ABOUT PAGE:
+
+Include:
+• Company mission
+• Vision
+• Why Infinite Rankers is different
+• AI automation philosophy
+• Global client focus
+• USA-focused service approach
+
+--------------------------------------------
+
+PRICING PAGE:
+
+Create 3 pricing tiers:
+
+Starter System
+Growth System
+Scale System
+
+Use SaaS style pricing cards.
+
+--------------------------------------------
+
+CONTACT PAGE:
+
+Include:
+• Contact form
+• Google Maps location embed
+• Business info display
+• Book demo CTA
+• Phone + Email display
+
+--------------------------------------------
+
+BOOK DEMO PAGE:
+
+Include:
+• Calendar style booking UI
+• Short qualification form
+• Lead capture system
+
+--------------------------------------------
+
+EXTRA FEATURES:
+
+Add:
+• Sticky navigation bar
+• Sticky "Book Demo" button
+• Interactive ROI calculator section
+• Live AI chatbot placeholder UI
+• Animated service cards
+• Modern footer with sitemap
+
+--------------------------------------------
+
+TECH REQUIREMENTS:
+
+• Use reusable components
+• Clean scalable folder structure
+• SEO friendly structure
+• Fast loading optimization
+• Modern accessibility support
+
+--------------------------------------------
+
+COPY STYLE:
+
+Focus heavily on revenue generation, automation, AI sales systems, and business growth instead of traditional marketing wording.
+
+--------------------------------------------
+
+FINAL GOAL:
+
+Create a high-end SaaS-style AI automation agency website that looks premium, modern, trustworthy, and conversion focused.
