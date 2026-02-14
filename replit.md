@@ -44,6 +44,19 @@ shared/
 7. Contact - Contact form, Google Maps, business info
 8. Blog - 6 blog post previews
 9. Book Demo - Calendar date picker, time slots, qualification form
+10. Landing Pages (10 pages) - High-converting funnel pages at /:slug with 10 sections each (hero, pain points, AI system, pipeline, results, features, ecosystem, testimonials, FAQ, CTA)
+
+## Landing Pages (10 conversion funnels)
+Location-based: ai-automation-new-york, ai-automation-los-angeles, ai-automation-chicago
+Industry-specific: ai-revenue-growth-real-estate, ai-revenue-growth-healthcare, ai-revenue-growth-law-firms, ai-revenue-growth-ecommerce, ai-revenue-growth-restaurants
+Service funnels: ai-lead-generation-usa, ai-marketing-automation-usa
+
+Each page has: hero, USA pain points, AI system explanation, pipeline visualization, case study results, features, ecosystem section (linking infiniterankers.com), testimonials, FAQ, CTA. Cross-linked between pages, to main services, and to infiniterankers.com partner platform.
+
+## Brand Ecosystem
+- **infiniterankers.io** (this site) - AI Infrastructure & Automation SaaS platform
+- **infiniterankers.com** (WordPress) - Marketing Authority & Content platform
+- Both sites are interconnected via contextual outbound links in landing pages, ecosystem sections, and footer
 
 ## Navigation
 - **Desktop**: Mega menu dropdown on hover over "Services" with 4-category columns (30+ services)

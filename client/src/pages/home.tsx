@@ -267,7 +267,7 @@ function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <Badge variant="secondary" className="mb-4 sm:mb-6 bg-blue-50 text-blue-700 border-blue-200/60" data-testid="badge-hero-agency">
+            <Badge variant="secondary" className="mb-4 sm:mb-6" data-testid="badge-hero-agency">
               <Sparkles className="w-3 h-3 mr-1" /> AI Revenue Growth Agency
             </Badge>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.12] mb-4 sm:mb-6" style={{ fontSize: "clamp(1.75rem, 5vw, 3.75rem)" }}>
@@ -281,12 +281,12 @@ function HeroSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/book-demo">
-                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0 shadow-lg shadow-blue-600/20 w-full sm:w-auto" data-testid="button-hero-book-demo">
+                <Button className="w-full sm:w-auto" data-testid="button-hero-book-demo">
                   Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
               <Link href="/services">
-                <Button variant="outline" className="border-gray-300 text-gray-700 w-full sm:w-auto" data-testid="button-hero-services">
+                <Button variant="outline" className="w-full sm:w-auto" data-testid="button-hero-services">
                   Explore Services
                 </Button>
               </Link>
@@ -566,7 +566,7 @@ function PortfolioSection() {
             >
               <div className="h-1.5 sm:h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
               <div className="p-4 sm:p-6">
-                <Badge variant="secondary" className="mb-2 sm:mb-3 text-xs bg-blue-50 text-blue-700 border-blue-200/50" data-testid={`case-study-label-${cs.id}`}>{cs.label}</Badge>
+                <Badge variant="secondary" className="mb-2 sm:mb-3 text-xs" data-testid={`case-study-label-${cs.id}`}>{cs.label}</Badge>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1.5 sm:mb-2" data-testid={`case-study-title-${cs.id}`}>{cs.title}</h3>
                 <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-5">{cs.business}</p>
 
@@ -940,7 +940,7 @@ function MidCTASection() {
             Get a free strategy session and custom growth roadmap for your business.
           </p>
           <Link href="/book-demo">
-            <Button className="bg-white text-blue-700 border-0 shadow-xl w-full sm:w-auto" data-testid="button-mid-cta">
+            <Button variant="secondary" className="w-full sm:w-auto" data-testid="button-mid-cta">
               Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>
@@ -988,12 +988,12 @@ function FinalCTASection() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <Link href="/book-demo">
-              <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white border-0 shadow-xl shadow-blue-900/30 px-6 sm:px-8 w-full sm:w-auto" data-testid="button-cta-book-demo">
+              <Button className="w-full sm:w-auto" data-testid="button-cta-book-demo">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>
             <Link href="/contact">
-              <Button variant="outline" className="text-white border-white/20 bg-white/5 backdrop-blur-sm w-full sm:w-auto" data-testid="button-cta-contact">
+              <Button variant="outline" className="w-full sm:w-auto backdrop-blur bg-white/10" data-testid="button-cta-contact">
                 Contact Us
               </Button>
             </Link>

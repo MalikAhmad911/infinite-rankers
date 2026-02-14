@@ -29,7 +29,7 @@ export default function ChatbotPlaceholder() {
                   <div className="text-xs text-white/70">Online</div>
                 </div>
               </div>
-              <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)} className="text-white hover:bg-white/20 no-default-hover-elevate">
+              <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)} className="text-white">
                 <X className="w-4 h-4" />
               </Button>
             </div>

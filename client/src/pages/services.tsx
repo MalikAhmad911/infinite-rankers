@@ -114,7 +114,7 @@ export default function Services() {
               Book a free strategy session and we'll build a custom AI revenue plan for your business.
             </p>
             <Link href="/book-demo">
-              <Button className="bg-white text-blue-700 hover:bg-white/90 border-0" data-testid="button-services-cta">
+              <Button variant="secondary" data-testid="button-services-cta">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>

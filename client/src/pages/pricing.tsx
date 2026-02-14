@@ -97,7 +97,7 @@ function ROICalculator() {
                   </div>
                 </div>
                 <Link href="/book-demo">
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 mt-2" data-testid="button-roi-cta">
+                  <Button className="w-full mt-2" data-testid="button-roi-cta">
                     Get Your Custom Growth Plan <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
@@ -147,7 +147,7 @@ export default function Pricing() {
               >
                 {tier.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">Most Popular</Badge>
+                    <Badge>Most Popular</Badge>
                   </div>
                 )}
                 <div className="text-center mb-8">
@@ -192,7 +192,7 @@ export default function Pricing() {
               Every business is unique. Book a strategy session and we'll build a custom AI revenue system tailored to your specific needs and budget.
             </p>
             <Link href="/book-demo">
-              <Button className="bg-white text-blue-700 hover:bg-white/90 border-0" data-testid="button-pricing-cta">
+              <Button variant="secondary" data-testid="button-pricing-cta">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>

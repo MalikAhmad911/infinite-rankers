@@ -77,7 +77,7 @@ export default function Blog() {
               Book a free strategy session and let our team build a custom AI revenue growth plan for your business.
             </p>
             <Link href="/book-demo">
-              <Button className="bg-white text-blue-700 hover:bg-white/90 border-0" data-testid="button-blog-cta">
+              <Button variant="secondary" data-testid="button-blog-cta">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>

@@ -242,7 +242,7 @@ export default function ServiceDetail() {
               <p className="text-base text-muted-foreground leading-relaxed mb-8">{content.longDesc}</p>
               <div className="flex flex-wrap gap-3">
                 <Link href="/book-demo">
-                  <Button className={`bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} text-white border-0`} data-testid="button-service-book-demo">
+                  <Button data-testid="button-service-book-demo">
                     Book Demo <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
@@ -390,7 +390,7 @@ export default function ServiceDetail() {
               Book a free strategy session and see how this system can be customized for your business.
             </p>
             <Link href="/book-demo">
-              <Button className="bg-white text-gray-900 border-0" data-testid="button-cta-book-demo">
+              <Button variant="secondary" data-testid="button-cta-book-demo">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>

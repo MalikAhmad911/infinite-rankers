@@ -157,7 +157,7 @@ export default function About() {
               See how our AI systems can be customized for your business. Book a free strategy session with our team.
             </p>
             <Link href="/book-demo">
-              <Button className="bg-white text-blue-700 hover:bg-white/90 border-0" data-testid="button-about-cta">
+              <Button variant="secondary" data-testid="button-about-cta">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>

@@ -184,7 +184,7 @@ export default function Contact() {
                   Get a personalized AI revenue growth plan for your business. No obligation.
                 </p>
                 <Link href="/book-demo">
-                  <Button className="w-full bg-white text-blue-700 hover:bg-white/90 border-0" data-testid="button-contact-book-demo">
+                  <Button variant="secondary" className="w-full" data-testid="button-contact-book-demo">
                     Book Demo <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
