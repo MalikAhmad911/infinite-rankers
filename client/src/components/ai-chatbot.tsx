@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, User, Loader2, Phone, Calendar, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY } from "@/lib/constants";
-import botLogo from "@assets/image_1771061933307.png";
+const botLogo = "/images/logo-icon.png";
 
 interface Message {
   id: string;
