@@ -195,9 +195,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Web Design & Development", description: "High-converting websites and landing pages built for lead generation." },
       ],
       comLinks: [
-        { label: "SEO Services", url: "https://infiniterankers.com/services/seo" },
-        { label: "Web Design", url: "https://infiniterankers.com/services/web-design" },
-        { label: "AI Automation Guide", url: "https://infiniterankers.com/blog/ai-automation-guide" },
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
       ],
     },
     testimonials: [
@@ -238,9 +238,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-automation-los-angeles", "ai-automation-chicago", "ai-lead-generation-usa"],
     relatedServices: ["ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "local-seo"],
     comLinks: [
-      { label: "NYC SEO Services", url: "https://infiniterankers.com/services/local-seo-new-york" },
-      { label: "Web Design NYC", url: "https://infiniterankers.com/services/web-design" },
-      { label: "AI Automation Guide", url: "https://infiniterankers.com/blog/ai-automation-guide" },
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
+      { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" },
     ],
   },
 
@@ -347,9 +347,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Branding & Design", description: "Premium brand identity that resonates with LA's style-conscious market." },
       ],
       comLinks: [
-        { label: "Content Strategy", url: "https://infiniterankers.com/services/content-marketing" },
-        { label: "Social Media Marketing", url: "https://infiniterankers.com/services/social-media" },
-        { label: "LA Business Growth Blog", url: "https://infiniterankers.com/blog/la-business-growth-guide" },
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
       ],
     },
     testimonials: [
@@ -390,9 +390,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-automation-new-york", "ai-automation-chicago", "ai-marketing-automation-usa"],
     relatedServices: ["ai-calling-agent", "ai-chatbot", "google-ads", "meta-ads"],
     comLinks: [
-      { label: "LA SEO Services", url: "https://infiniterankers.com/services/local-seo-los-angeles" },
-      { label: "Social Media Marketing", url: "https://infiniterankers.com/services/social-media" },
-      { label: "PPC Advertising", url: "https://infiniterankers.com/services/google-ads" },
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "Pricing Plans", url: "https://infiniterankers.com/pricing-plan/" },
     ],
   },
 
@@ -509,9 +509,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Website Development", description: "Fast, conversion-optimized websites designed for Chicago audiences." },
       ],
       comLinks: [
-        { label: "Local SEO Chicago", url: "https://infiniterankers.com/services/local-seo-chicago" },
-        { label: "Google Ads Management", url: "https://infiniterankers.com/services/google-ads" },
-        { label: "Web Development", url: "https://infiniterankers.com/services/web-design" },
+        { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
       ],
     },
     testimonials: [
@@ -552,9 +552,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-automation-new-york", "ai-automation-los-angeles", "ai-lead-generation-usa"],
     relatedServices: ["ai-receptionist", "ai-appointment-booking", "local-seo", "google-ads"],
     comLinks: [
-      { label: "Chicago SEO Services", url: "https://infiniterankers.com/services/local-seo-chicago" },
-      { label: "PPC Management", url: "https://infiniterankers.com/services/google-ads" },
-      { label: "Business Growth Blog", url: "https://infiniterankers.com/blog/chicago-business-growth" },
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
+      { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" },
     ],
   },
 
@@ -671,9 +671,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Social Media Marketing", description: "Instagram and Facebook strategies that showcase listings and build agent brands." },
       ],
       comLinks: [
-        { label: "Real Estate SEO", url: "https://infiniterankers.com/services/real-estate-seo" },
-        { label: "Real Estate Web Design", url: "https://infiniterankers.com/services/real-estate-websites" },
-        { label: "Agent Marketing Guide", url: "https://infiniterankers.com/blog/real-estate-marketing-guide" },
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
       ],
     },
     testimonials: [
@@ -714,9 +714,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-revenue-growth-law-firms", "ai-lead-generation-usa", "ai-automation-new-york"],
     relatedServices: ["ai-lead-qualification", "ai-calling-agent", "ai-appointment-booking", "ai-follow-up"],
     comLinks: [
-      { label: "Real Estate Marketing", url: "https://infiniterankers.com/services/real-estate-marketing" },
-      { label: "IDX Websites", url: "https://infiniterankers.com/services/real-estate-websites" },
-      { label: "Realtor SEO Guide", url: "https://infiniterankers.com/blog/realtor-seo-guide" },
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+      { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
     ],
   },
 
@@ -823,9 +823,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Reputation Management", description: "Proactive review generation and management across healthcare platforms." },
       ],
       comLinks: [
-        { label: "Healthcare SEO", url: "https://infiniterankers.com/services/healthcare-seo" },
-        { label: "Medical Practice Marketing", url: "https://infiniterankers.com/services/healthcare-marketing" },
-        { label: "Patient Acquisition Guide", url: "https://infiniterankers.com/blog/patient-acquisition-guide" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
       ],
     },
     testimonials: [
@@ -866,9 +866,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-revenue-growth-law-firms", "ai-revenue-growth-real-estate", "ai-lead-generation-usa"],
     relatedServices: ["ai-receptionist", "ai-appointment-booking", "ai-follow-up", "ai-sms-automation"],
     comLinks: [
-      { label: "Healthcare Marketing", url: "https://infiniterankers.com/services/healthcare-marketing" },
-      { label: "Medical SEO", url: "https://infiniterankers.com/services/healthcare-seo" },
-      { label: "Patient Growth Blog", url: "https://infiniterankers.com/blog/healthcare-patient-growth" },
+      { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" },
     ],
   },
 
@@ -975,9 +975,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Law Firm Web Design", description: "Authority-building websites designed for trust, credibility, and lead capture." },
       ],
       comLinks: [
-        { label: "Attorney SEO", url: "https://infiniterankers.com/services/attorney-seo" },
-        { label: "Legal PPC", url: "https://infiniterankers.com/services/legal-google-ads" },
-        { label: "Law Firm Marketing Guide", url: "https://infiniterankers.com/blog/law-firm-marketing-guide" },
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
       ],
     },
     testimonials: [
@@ -1018,9 +1018,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-revenue-growth-real-estate", "ai-revenue-growth-healthcare", "ai-lead-generation-usa"],
     relatedServices: ["ai-receptionist", "ai-lead-qualification", "ai-follow-up", "seo-authority"],
     comLinks: [
-      { label: "Law Firm SEO", url: "https://infiniterankers.com/services/attorney-seo" },
-      { label: "Legal Marketing", url: "https://infiniterankers.com/services/law-firm-marketing" },
-      { label: "Legal Intake Guide", url: "https://infiniterankers.com/blog/legal-intake-automation" },
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
+      { label: "Pricing Plans", url: "https://infiniterankers.com/pricing-plan/" },
     ],
   },
 
@@ -1137,9 +1137,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "CRO & UX Design", description: "Data-driven checkout optimization and user experience improvements." },
       ],
       comLinks: [
-        { label: "E-Commerce SEO", url: "https://infiniterankers.com/services/ecommerce-seo" },
-        { label: "Shopify Marketing", url: "https://infiniterankers.com/services/shopify-marketing" },
-        { label: "E-Commerce Growth Guide", url: "https://infiniterankers.com/blog/ecommerce-growth-guide" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
       ],
     },
     testimonials: [
@@ -1180,9 +1180,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-revenue-growth-restaurants", "ai-marketing-automation-usa", "ai-lead-generation-usa"],
     relatedServices: ["ai-email-automation", "ai-chatbot", "conversion-rate-optimization", "meta-ads"],
     comLinks: [
-      { label: "E-Commerce Marketing", url: "https://infiniterankers.com/services/ecommerce-marketing" },
-      { label: "Shopify SEO", url: "https://infiniterankers.com/services/shopify-seo" },
-      { label: "DTC Growth Blog", url: "https://infiniterankers.com/blog/dtc-growth-strategies" },
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
     ],
   },
 
@@ -1289,9 +1289,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Social Media Marketing", description: "Instagram and TikTok strategies that showcase your food and build community." },
       ],
       comLinks: [
-        { label: "Restaurant SEO", url: "https://infiniterankers.com/services/restaurant-seo" },
-        { label: "Food Photography", url: "https://infiniterankers.com/services/food-photography" },
-        { label: "Restaurant Marketing Guide", url: "https://infiniterankers.com/blog/restaurant-marketing-guide" },
+        { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
       ],
     },
     testimonials: [
@@ -1332,9 +1332,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-revenue-growth-ecommerce", "ai-lead-generation-usa", "ai-automation-new-york"],
     relatedServices: ["ai-sms-automation", "local-seo", "social-media-marketing", "ai-chatbot"],
     comLinks: [
-      { label: "Restaurant Marketing", url: "https://infiniterankers.com/services/restaurant-marketing" },
-      { label: "Local SEO for Restaurants", url: "https://infiniterankers.com/services/restaurant-local-seo" },
-      { label: "Restaurant Growth Blog", url: "https://infiniterankers.com/blog/restaurant-growth-strategies" },
+      { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+      { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" },
     ],
   },
 
@@ -1451,9 +1451,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Landing Page Optimization", description: "High-converting landing pages A/B tested for maximum lead capture rates." },
       ],
       comLinks: [
-        { label: "SEO Services", url: "https://infiniterankers.com/services/seo" },
-        { label: "Google Ads Management", url: "https://infiniterankers.com/services/google-ads" },
-        { label: "Lead Generation Guide", url: "https://infiniterankers.com/blog/small-business-lead-generation" },
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
       ],
     },
     testimonials: [
@@ -1494,9 +1494,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-marketing-automation-usa", "ai-automation-new-york", "ai-automation-los-angeles"],
     relatedServices: ["ai-lead-qualification", "ai-calling-agent", "google-ads", "conversion-funnels"],
     comLinks: [
-      { label: "SEO Services", url: "https://infiniterankers.com/services/seo" },
-      { label: "PPC Management", url: "https://infiniterankers.com/services/google-ads" },
-      { label: "Lead Gen Blog", url: "https://infiniterankers.com/blog/lead-generation-strategies" },
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+      { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
     ],
   },
 
@@ -1613,9 +1613,9 @@ export const LANDING_PAGES: LandingPageData[] = [
         { title: "Conversion Optimization", description: "Landing page design and CRO strategies that maximize lead capture and conversion." },
       ],
       comLinks: [
-        { label: "Content Marketing", url: "https://infiniterankers.com/services/content-marketing" },
-        { label: "Brand Strategy", url: "https://infiniterankers.com/services/branding" },
-        { label: "Marketing Automation Guide", url: "https://infiniterankers.com/blog/marketing-automation-guide" },
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
       ],
     },
     testimonials: [
@@ -1656,9 +1656,9 @@ export const LANDING_PAGES: LandingPageData[] = [
     relatedLandingPages: ["ai-lead-generation-usa", "ai-automation-new-york", "ai-revenue-growth-ecommerce"],
     relatedServices: ["ai-email-automation", "ai-sms-automation", "workflow-automation", "social-media-marketing"],
     comLinks: [
-      { label: "Marketing Services", url: "https://infiniterankers.com/services/digital-marketing" },
-      { label: "Content Strategy", url: "https://infiniterankers.com/services/content-marketing" },
-      { label: "Automation Blog", url: "https://infiniterankers.com/blog/marketing-automation-strategies" },
+      { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "Pricing Plans", url: "https://infiniterankers.com/pricing-plan/" },
     ],
   },
 ];
