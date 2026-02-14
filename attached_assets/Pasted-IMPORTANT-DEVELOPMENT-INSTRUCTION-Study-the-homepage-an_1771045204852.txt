@@ -1,0 +1,175 @@
+IMPORTANT DEVELOPMENT INSTRUCTION:
+
+Study the homepage animation style, motion behavior, and layout inspiration from:
+
+• https://tab.com
+• https://stripe.com
+
+Do NOT copy design directly. Use them only as inspiration for animation quality, visual depth, and premium SaaS experience.
+
+-----------------------------------------------------
+
+1. FULL HOMEPAGE MUST BE ANIMATION-DRIVEN
+
+Build a homepage that feels alive, dynamic, and highly interactive like modern enterprise SaaS websites.
+
+Every major section should include subtle or advanced motion design.
+
+-----------------------------------------------------
+
+2. HERO SECTION – TAB.COM STYLE MOTION EXPERIENCE
+
+Create a high-end animated hero background.
+
+Requirements:
+
+• Continuous moving background animation
+• Floating UI elements
+• Cursor-style moving company logos
+• Automatic motion elements moving across screen
+• AI / automation themed visual particles or data flows
+• Multi-layer parallax animation
+• Smooth performance optimized motion
+
+Animation must feel premium and enterprise level.
+
+Hero must communicate:
+
+"AI Automation Infrastructure"
+"Revenue Pipeline Systems"
+"Connected Digital Growth Engine"
+
+-----------------------------------------------------
+
+3. DASHBOARD VISUAL ANIMATION (TAB STYLE)
+
+Add animated dashboard mockups inside hero or next section:
+
+• Dashboard screenshots sliding left/right
+• Revenue graphs animating live
+• Floating UI cards moving slowly
+• Auto-changing analytics numbers
+• Hover interactive UI panels
+
+Images must not be static. They must have subtle motion.
+
+-----------------------------------------------------
+
+4. PIPELINE / SYSTEM CONNECTION VISUAL (CUSTOM BRAND FEATURE)
+
+Create a visual animated system diagram showing how the agency works.
+
+Example Structure:
+
+AI Rankers Control Center
+↓
+Data Pipeline
+↓
+Automation Engine
+↓
+Marketing Platforms
+↓
+Client Revenue System
+
+Add animated connection lines showing data flowing between systems.
+
+Include connected nodes such as:
+
+• CRM Systems
+• Ad Platforms
+• AI Chatbots
+• Automation Engines
+• Analytics Dashboards
+• App Marketplace Integrations
+
+The pipeline must visually show automation flow and system integration.
+
+-----------------------------------------------------
+
+5. STRIPE-STYLE PREMIUM VISUAL DESIGN
+
+Take inspiration from Stripe’s visual polish:
+
+• Layered gradients
+• Soft glow lighting
+• Multi-tone blended backgrounds
+• Floating UI cards
+• Spacious clean layout
+• Smooth typography hierarchy
+
+Use luxury SaaS style visual language.
+
+-----------------------------------------------------
+
+6. MULTIPLE ANIMATED IMAGE SHOWCASE SECTIONS
+
+Across homepage add multiple sections that include:
+
+• Sliding dashboard previews
+• Floating analytics screens
+• Layered UI product showcase
+• Scroll-triggered image motion
+• Parallax moving interface panels
+
+-----------------------------------------------------
+
+7. TRUST & ENTERPRISE AUTHORITY SECTION
+
+Create a section inspired by enterprise SaaS credibility:
+
+• Animated partner or technology logos
+• Industry integrations visualization
+• Live stats counters
+• Growth metric visualization
+
+-----------------------------------------------------
+
+8. TESTIMONIAL & SOCIAL PROOF SYSTEM
+
+Create advanced testimonial system:
+
+• Infinite moving testimonial carousel
+• Multiple testimonial cards visible
+• Smooth horizontal scroll
+• Include client avatar, rating, and company name
+• US business-focused branding style
+
+-----------------------------------------------------
+
+9. MULTIPLE FEATURE STORY SECTIONS
+
+Add storytelling blocks explaining:
+
+• Automation Infrastructure
+• AI Revenue Engine
+• Multi-Platform Integration
+• Growth System Architecture
+• Enterprise Scaling Capability
+
+Each section must include animated graphics or UI visuals.
+
+-----------------------------------------------------
+
+10. PERFORMANCE & EXPERIENCE RULES
+
+• Animations must be smooth and lightweight
+• Use hardware accelerated motion
+• Optimize for mobile responsiveness
+• Avoid performance lag
+
+-----------------------------------------------------
+
+11. BRAND EXPERIENCE GOAL
+
+The homepage must feel like:
+
+Enterprise SaaS Platform
+High-Ticket AI Agency
+Automation Technology Company
+Luxury Digital Infrastructure Brand
+
+-----------------------------------------------------
+
+FINAL EXPERIENCE TARGET:
+
+The website should immediately build trust, authority, and innovation perception when users land on homepage.

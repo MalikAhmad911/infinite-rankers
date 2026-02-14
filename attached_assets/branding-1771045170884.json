@@ -1,0 +1,135 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Sohne",
+      "role": "body"
+    },
+    {
+      "family": "SF Pro Display",
+      "role": "heading"
+    }
+  ],
+  "colors": {
+    "primary": "#0D1738",
+    "accent": "#533AFD",
+    "background": "#FFFFFF",
+    "textPrimary": "#533AFD",
+    "link": "#533AFD"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Sohne",
+      "heading": "SF Pro Display"
+    },
+    "fontStacks": {
+      "heading": [
+        "Sohne",
+        "SF Pro Display",
+        "sans-serif"
+      ],
+      "body": [
+        "Sohne",
+        "SF Pro Display",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Sohne",
+        "SF Pro Display",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "48px",
+      "h2": "32px",
+      "body": "32px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 8,
+    "borderRadius": "0px"
+  },
+  "components": {
+    "buttonPrimary": {
+      "background": "#533AFD",
+      "textColor": "#FFFFFF",
+      "borderRadius": "4px",
+      "borderRadiusCorners": {
+        "topLeft": "4px",
+        "topRight": "4px",
+        "bottomRight": "4px",
+        "bottomLeft": "4px"
+      },
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#FFFFFF",
+      "textColor": "#533AFD",
+      "borderColor": "#B9B9F9",
+      "borderRadius": "4px",
+      "borderRadiusCorners": {
+        "topLeft": "4px",
+        "topRight": "4px",
+        "bottomRight": "4px",
+        "bottomLeft": "4px"
+      },
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "File saved at: attached_assets/logo.svg",
+    "favicon": "File saved at: attached_assets/favicon.svg",
+    "ogImage": "File saved at: attached_assets/ogImage.jpg",
+    "logoHref": "File saved at: attached_assets/logoHref.html",
+    "logoAlt": "Stripe logo"
+  },
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and the alt text matches the brand 'Stripe'.",
+    "confidence": 0.95,
+    "source": "llm"
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 10,
+      "text": "Get started",
+      "reasoning": "Button #0 has a vibrant brand color (#533AFD) and action-oriented text 'Get started', making it the primary CTA."
+    },
+    "secondary": {
+      "index": 3,
+      "text": "Sign up with Google",
+      "reasoning": "Button #2 has a different background color (#FFFFFF) and serves as a secondary action with 'Sign up with Google'."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "professional",
+    "energy": "medium",
+    "targetAudience": "businesses and developers"
+  },
+  "designSystem": {
+    "framework": "custom",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": true,
+      "llmSucceeded": true,
+      "finalSource": "llm",
+      "rawLogoSelection": {
+        "selectedLogoIndex": 0,
+        "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and the alt text matches the brand 'Stripe'.",
+        "confidence": 0.95
+      }
+    },
+    "buttonClassification": {
+      "llmCalled": true,
+      "llmSucceeded": true
+    }
+  }
+}
