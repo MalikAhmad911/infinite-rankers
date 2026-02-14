@@ -174,7 +174,7 @@ export default function BlogPost() {
           <div className="mt-12 pt-8 border-t border-border">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">A</span>
+                <span className="text-white font-bold text-lg">{post.author.charAt(0)}</span>
               </div>
               <div>
                 <div className="font-semibold text-foreground" data-testid="text-author">{post.author}</div>
