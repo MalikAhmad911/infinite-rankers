@@ -26,7 +26,7 @@ const PORTFOLIO_IMAGES = [
 const ALL_TAGS = Array.from(new Set(CASE_STUDIES.flatMap((cs) => cs.tags)));
 
 const STATS = [
-  { icon: BarChart3, target: 20, suffix: "+", label: "Projects" },
+  { icon: BarChart3, target: 2500, suffix: "+", label: "Projects" },
   { icon: Users, target: 9500, suffix: "+", label: "Clients" },
   { icon: TrendingUp, target: 12, prefix: "$", suffix: "M+", label: "Revenue Generated" },
   { icon: Award, target: 98, suffix: "%", label: "Client Satisfaction" },
