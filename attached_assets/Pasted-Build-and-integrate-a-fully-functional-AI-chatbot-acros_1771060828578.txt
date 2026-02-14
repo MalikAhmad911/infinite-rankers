@@ -1,0 +1,171 @@
+Build and integrate a fully functional AI chatbot across the entire Infinite Rankers website.
+
+Brand Details:
+Business Name: Infinite Rankers
+Website Domain: infiniterankers.io
+Email: contact@infiniterankers.io
+Phone: (703) 415-9373
+Location: 203 N Caroline Pl, Dover, DE 19904, USA
+
+MAIN GOAL:
+Create a premium AI-powered chatbot that works as both a Lead Generation Agent and Customer Support Assistant. The chatbot must feel like a real intelligent sales representative, not a basic support bot.
+
+---------------------------------------------------
+
+CHATBOT BEHAVIOR & PERSONALITY:
+
+• Friendly, professional, confident US-based agency tone
+• Focus on revenue growth and AI automation services
+• Speak in natural conversational English
+• Sales-oriented but not spammy
+• Understand user intent and guide them toward booking a call or requesting services
+
+Bot Name:
+"IR AI Assistant" or "Infinite AI Growth Assistant"
+
+---------------------------------------------------
+
+CORE FEATURES:
+
+1. WEBSITE-WIDE INTEGRATION
+- Chatbot must appear on every page
+- Floating chat widget bottom-right corner
+- Smooth open/close animation
+- Mobile optimized
+- Tablet responsive
+
+---------------------------------------------------
+
+2. LEAD CAPTURE SYSTEM
+
+Bot must automatically collect:
+
+• Name
+• Email
+• Phone number
+• Business type
+• Monthly marketing budget
+• Interested service
+• Location (especially USA targeting)
+
+Store leads into:
+- CRM / database / email notification
+- Send confirmation message after submission
+
+---------------------------------------------------
+
+3. SERVICE QUALIFICATION FLOW
+
+Bot must ask intelligent questions like:
+
+• What service are you interested in?
+• Are you currently running ads or SEO?
+• What is your monthly revenue goal?
+• Are you targeting local or nationwide clients?
+
+Then suggest services such as:
+
+AI Automation
+Google Ads Revenue Engine
+SEO Growth System
+AI Chatbots
+Website Development
+Lead Generation Funnels
+CRM Automation
+
+---------------------------------------------------
+
+4. SALES CONVERSION ACTIONS
+
+Bot must guide users toward:
+
+• Booking consultation call
+• Requesting pricing
+• Scheduling demo
+• Contacting support team
+
+Include buttons like:
+
+"Book Strategy Call"
+"Get Pricing"
+"See AI Demo"
+"Talk To Expert"
+
+---------------------------------------------------
+
+5. BRANDING & UI DESIGN
+
+Chatbot design must match website theme:
+
+• Stripe-inspired modern UI
+• Soft gradient highlights
+• Light elegant design
+• Smooth typing animation
+• Animated avatar or AI icon
+• Display Infinite Rankers logo inside chat header
+
+---------------------------------------------------
+
+6. SMART AUTOMATION RESPONSES
+
+Bot must handle:
+
+• Pricing questions
+• Service explanations
+• Portfolio / case study references
+• FAQ responses
+• Business consultation guidance
+
+---------------------------------------------------
+
+7. LIVE SUPPORT HANDOFF
+
+Include option:
+"Talk to Human Agent"
+
+If user requests human help:
+• Collect contact info
+• Notify admin via email
+• Save conversation history
+
+---------------------------------------------------
+
+8. ADVANCED FEATURES
+
+• Typing indicator animation
+• Auto greeting after 5 seconds on homepage
+• Reopen chat memory for returning visitors
+• Suggest services dynamically based on user answers
+• Detect USA visitors and prioritize US-focused messaging
+
+---------------------------------------------------
+
+9. SEO & AIO OPTIMIZATION
+
+Ensure chatbot content supports:
+• AI search visibility
+• FAQ schema integration
+• Structured conversational data
+• Crawl-friendly implementation
+
+---------------------------------------------------
+
+10. PERFORMANCE REQUIREMENTS
+
+• Fast loading
+• No impact on website speed
+• Fully responsive
+• Error-free behavior
+
+---------------------------------------------------
+
+FINAL EXPERIENCE GOAL:
+
+The chatbot must feel like a premium AI revenue consultant that:
+
+• Educates visitors
+• Builds trust
+• Captures leads
+• Converts visitors into booked clients
+• Reflects Infinite Rankers as a high-end AI automation agency
+
