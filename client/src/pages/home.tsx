@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/seo-head";
@@ -50,7 +50,7 @@ function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: strin
   );
 }
 
-function GradientMeshBackground() {
+function StripeMeshGradient() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -62,34 +62,93 @@ function GradientMeshBackground() {
     let animationId: number;
     let time = 0;
 
+    let currentDpr = 1;
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      currentDpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = window.innerWidth * currentDpr;
+      canvas.height = window.innerHeight * currentDpr;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(currentDpr, 0, 0, currentDpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
 
-    const orbs = [
-      { x: 0.2, y: 0.3, r: 300, color: "rgba(99, 102, 241, 0.12)", speed: 0.0003, phase: 0 },
-      { x: 0.7, y: 0.2, r: 350, color: "rgba(139, 92, 246, 0.10)", speed: 0.0004, phase: 1 },
-      { x: 0.5, y: 0.7, r: 280, color: "rgba(6, 182, 212, 0.08)", speed: 0.0005, phase: 2 },
-      { x: 0.8, y: 0.6, r: 320, color: "rgba(59, 130, 246, 0.09)", speed: 0.0003, phase: 3 },
-      { x: 0.3, y: 0.8, r: 260, color: "rgba(168, 85, 247, 0.07)", speed: 0.0004, phase: 4 },
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
+
+    const blobs = [
+      { cx: 0.62, cy: 0.25, rx: 0.38, ry: 0.45, color: [120, 80, 255], speed: 0.0006, phase: 0, drift: 0.04 },
+      { cx: 0.78, cy: 0.35, rx: 0.35, ry: 0.50, color: [200, 60, 255], speed: 0.0005, phase: 1.2, drift: 0.05 },
+      { cx: 0.70, cy: 0.55, rx: 0.32, ry: 0.40, color: [255, 80, 160], speed: 0.0007, phase: 2.4, drift: 0.03 },
+      { cx: 0.85, cy: 0.50, rx: 0.30, ry: 0.38, color: [255, 120, 50], speed: 0.0004, phase: 3.6, drift: 0.04 },
+      { cx: 0.90, cy: 0.30, rx: 0.25, ry: 0.35, color: [255, 180, 30], speed: 0.0008, phase: 4.8, drift: 0.03 },
+      { cx: 0.55, cy: 0.70, rx: 0.30, ry: 0.35, color: [80, 120, 255], speed: 0.0005, phase: 5.5, drift: 0.04 },
+      { cx: 0.75, cy: 0.15, rx: 0.28, ry: 0.30, color: [60, 200, 255], speed: 0.0006, phase: 0.8, drift: 0.03 },
+      { cx: 0.65, cy: 0.45, rx: 0.35, ry: 0.42, color: [180, 40, 240], speed: 0.0004, phase: 2.0, drift: 0.05 },
     ];
 
     const animate = () => {
       time += 1;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = W();
+      const h = H();
 
-      orbs.forEach((orb) => {
-        const x = canvas.width * (orb.x + Math.sin(time * orb.speed + orb.phase) * 0.08);
-        const y = canvas.height * (orb.y + Math.cos(time * orb.speed * 0.7 + orb.phase) * 0.06);
-        const gradient = ctx.createRadialGradient(x, y, 0, x, y, orb.r * (canvas.width / 1400));
-        gradient.addColorStop(0, orb.color);
-        gradient.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.globalCompositeOperation = "source-over";
+
+      blobs.forEach((blob) => {
+        const cx = w * (blob.cx + Math.sin(time * blob.speed + blob.phase) * blob.drift);
+        const cy = h * (blob.cy + Math.cos(time * blob.speed * 0.8 + blob.phase) * blob.drift * 0.7);
+        const rx = w * blob.rx;
+        const ry = h * blob.ry;
+
+        const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
+        const [r, g, b] = blob.color;
+        gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.85)`);
+        gradient.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, 0.55)`);
+        gradient.addColorStop(0.6, `rgba(${r}, ${g}, ${b}, 0.25)`);
+        gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        const segments = 64;
+        for (let i = 0; i <= segments; i++) {
+          const angle = (i / segments) * Math.PI * 2;
+          const wobble1 = 1 + Math.sin(angle * 3 + time * 0.002 + blob.phase) * 0.08;
+          const wobble2 = 1 + Math.cos(angle * 2 + time * 0.003 + blob.phase * 1.5) * 0.06;
+          const x = cx + Math.cos(angle) * rx * wobble1 * wobble2;
+          const y = cy + Math.sin(angle) * ry * wobble1 * wobble2;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fill();
       });
+
+      const fadeW = w * 0.45;
+      const fadeGradient = ctx.createLinearGradient(0, 0, fadeW, 0);
+      fadeGradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+      fadeGradient.addColorStop(0.6, "rgba(255, 255, 255, 0.95)");
+      fadeGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = fadeGradient;
+      ctx.fillRect(0, 0, fadeW, h);
+
+      const bottomFade = ctx.createLinearGradient(0, h - 120, 0, h);
+      bottomFade.addColorStop(0, "rgba(255, 255, 255, 0)");
+      bottomFade.addColorStop(1, "rgba(255, 255, 255, 1)");
+      ctx.fillStyle = bottomFade;
+      ctx.fillRect(0, h - 120, w, 120);
+
+      const topFade = ctx.createLinearGradient(0, 0, 0, 80);
+      topFade.addColorStop(0, "rgba(255, 255, 255, 1)");
+      topFade.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = topFade;
+      ctx.fillRect(0, 0, w, 80);
 
       animationId = requestAnimationFrame(animate);
     };
@@ -101,217 +160,106 @@ function GradientMeshBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" style={{ willChange: "transform" }} />;
-}
-
-function FloatingGridLines() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: "linear-gradient(rgba(99,102,241,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.5) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-        }}
-      />
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent"
-          style={{ top: `${20 + i * 15}%`, width: "100%" }}
-          animate={{ opacity: [0.1, 0.3, 0.1], x: ["-5%", "5%", "-5%"] }}
-          transition={{ duration: 8 + i * 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-        />
-      ))}
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full"
+      style={{ willChange: "transform" }}
+    />
   );
 }
 
-function LiveDashboard() {
-  const [revenue, setRevenue] = useState(47832);
-  const [leads, setLeads] = useState(1247);
-  const [conversion, setConversion] = useState(12.4);
+function LiveCounter() {
+  const [value, setValue] = useState(1.57358014);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRevenue(prev => prev + Math.floor(Math.random() * 50 + 10));
-      setLeads(prev => prev + Math.floor(Math.random() * 3));
-      setConversion(prev => Math.min(15, prev + (Math.random() * 0.1 - 0.03)));
-    }, 2000);
+      setValue(prev => prev + Math.random() * 0.00000005);
+    }, 50);
     return () => clearInterval(interval);
   }, []);
 
-  const sparklinePoints = useRef(
-    Array.from({ length: 20 }, (_, i) => 30 + Math.sin(i * 0.5) * 15 + Math.random() * 10)
-  ).current;
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, rotateY: -5 }}
-      animate={{ opacity: 1, y: 0, rotateY: 0 }}
-      transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-      className="relative"
-      style={{ perspective: "1200px" }}
-    >
-      <div className="absolute -inset-4 bg-gradient-to-br from-blue-200/30 via-indigo-200/20 to-purple-200/30 rounded-2xl blur-2xl" />
-      <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-2xl shadow-indigo-200/20 p-6 overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-100/50 to-transparent rounded-bl-full" />
-
-        <div className="flex items-center gap-2 mb-5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
-            <Activity className="w-4 h-4 text-white" />
-          </div>
-          <div className="text-sm font-semibold text-gray-800">AI Revenue Pipeline</div>
-          <div className="ml-auto flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-medium text-emerald-600">Live</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3 mb-5">
-          {[
-            { label: "Revenue", value: `$${revenue.toLocaleString()}`, change: "+23%", color: "text-blue-600" },
-            { label: "Leads", value: leads.toLocaleString(), change: "+18%", color: "text-indigo-600" },
-            { label: "Conversion", value: `${conversion.toFixed(1)}%`, change: "+5.2%", color: "text-purple-600" },
-          ].map((metric, i) => (
-            <motion.div
-              key={metric.label}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8 + i * 0.1 }}
-              className="bg-gray-50/80 rounded-lg p-3 border border-gray-100"
-              data-testid={`metric-${metric.label.toLowerCase()}`}
-            >
-              <div className="text-xs text-gray-500 mb-1">{metric.label}</div>
-              <div className={`text-lg font-bold ${metric.color} tabular-nums`}>{metric.value}</div>
-              <div className="text-xs text-emerald-600 font-medium mt-0.5">{metric.change}</div>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="bg-gray-50/80 rounded-lg p-4 border border-gray-100 mb-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-gray-500">Revenue Growth</span>
-            <span className="text-xs text-emerald-600 font-medium">+34% MoM</span>
-          </div>
-          <svg viewBox="0 0 200 60" className="w-full h-12">
-            <defs>
-              <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="rgb(99, 102, 241)" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="rgb(99, 102, 241)" stopOpacity="0.02" />
-              </linearGradient>
-            </defs>
-            <path
-              d={`M0,${60 - sparklinePoints[0]} ${sparklinePoints.map((p, i) => `L${(i / 19) * 200},${60 - p}`).join(" ")} L200,60 L0,60 Z`}
-              fill="url(#sparkGrad)"
-            />
-            <path
-              d={`M0,${60 - sparklinePoints[0]} ${sparklinePoints.map((p, i) => `L${(i / 19) * 200},${60 - p}`).join(" ")}`}
-              fill="none"
-              stroke="rgb(99, 102, 241)"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-
-        <div className="space-y-2">
-          {HOW_IT_WORKS_STEPS.slice(0, 4).map((step, i) => (
-            <motion.div
-              key={step.step}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.0 + i * 0.12 }}
-              className="flex items-center gap-3 p-2.5 rounded-lg bg-white/60 border border-gray-100 transition-all duration-300 hover:border-blue-200 hover:bg-blue-50/30 group"
-              data-testid={`pipeline-step-${step.step}`}
-            >
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <span className="text-white text-xs font-bold">{step.step}</span>
-              </div>
-              <span className="text-sm font-medium text-gray-700 flex-1">{step.title}</span>
-              {i < 3 ? (
-                <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500 transition-colors" />
-              ) : (
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-              )}
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6 }}
-          className="mt-4 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
-        >
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <span className="text-xs text-gray-500">Projected Monthly Revenue</span>
-            <span className="text-sm font-bold text-blue-700">+$48,000</span>
-          </div>
-        </motion.div>
-      </div>
-    </motion.div>
+    <span className="tabular-nums">{value.toFixed(8)}%</span>
   );
 }
 
 function HeroSection() {
+  const trustLogos = [
+    "Amazon", "NVIDIA", "Ford", "Coinbase", "Google", "Shopify", "HubSpot",
+  ];
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" data-testid="hero-section">
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-blue-50/30 to-indigo-50/40" />
-      <GradientMeshBackground />
-      <FloatingGridLines />
+    <section className="relative min-h-screen flex flex-col overflow-hidden" data-testid="hero-section">
+      <StripeMeshGradient />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <Badge variant="secondary" className="mb-6 bg-blue-50 text-blue-700 border-blue-200/60" data-testid="badge-hero-agency">
-              <Sparkles className="w-3 h-3 mr-1" /> AI Revenue Growth Agency
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-[1.1] mb-6">
-              Turn Your Business Into an{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                AI-Powered Revenue Machine
-              </span>
-            </h1>
-            <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-xl">
-              We build automated systems that generate customers and revenue. Stop chasing leads manually — let AI do the heavy lifting.
-            </p>
-            <div className="flex flex-wrap gap-3">
+      <div className="relative flex-1 flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-12 lg:pt-36 lg:pb-20">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <p className="text-sm text-gray-500 mb-6 tracking-wide" data-testid="text-hero-gdp">
+                Revenue generated through {COMPANY.name}: <LiveCounter />
+              </p>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              className="text-[2.75rem] sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-semibold text-gray-900 leading-[1.15] mb-6"
+            >
+              <span className="text-gray-900">AI infrastructure to </span>
+              <span className="text-gray-400">grow your revenue. Automate marketing, </span>
+              <span className="text-gray-400">generate leads, and </span>
+              <span className="text-gray-400">scale your business</span>
+              <span className="text-gray-900">—from your first customer to your thousandth.</span>
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
+              className="flex flex-wrap gap-3 mt-10"
+            >
               <Link href="/book-demo">
-                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0 shadow-lg shadow-blue-600/20" data-testid="button-hero-book-demo">
-                  Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
+                <Button className="bg-gray-900 text-white border-0 rounded-full px-6" data-testid="button-hero-book-demo">
+                  Get started <ArrowRight className="w-4 h-4 ml-1.5" />
                 </Button>
               </Link>
-              <Link href="/services">
-                <Button variant="outline" className="border-gray-300 text-gray-700" data-testid="button-hero-services">
-                  Explore Services
+              <Link href="/contact">
+                <Button variant="outline" className="rounded-full px-6 border-gray-300 text-gray-700 bg-white/60 backdrop-blur-sm" data-testid="button-hero-contact">
+                  Contact sales <ArrowRight className="w-4 h-4 ml-1.5" />
                 </Button>
               </Link>
-            </div>
-            <div className="flex flex-wrap items-center gap-6 mt-10">
-              {[
-                { icon: Shield, text: "No Long-Term Contracts" },
-                { icon: Clock, text: "Results in 30 Days" },
-                { icon: Users, text: "500+ Clients" },
-              ].map((item) => (
-                <div key={item.text} className="flex items-center gap-2 text-sm text-gray-500" data-testid={`trust-${item.text.toLowerCase().replace(/\s/g, "-")}`}>
-                  <item.icon className="w-4 h-4 text-blue-600" />
-                  <span>{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <div className="hidden lg:block">
-            <LiveDashboard />
+            </motion.div>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="relative pb-12 lg:pb-16"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center gap-x-10 gap-y-4">
+            {trustLogos.map((name) => (
+              <span
+                key={name}
+                className="text-gray-400 font-semibold text-sm sm:text-base tracking-wide select-none"
+                data-testid={`logo-${name.toLowerCase()}`}
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
