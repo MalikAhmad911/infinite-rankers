@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { COMPANY, NAV_LINKS, SERVICE_CATEGORIES } from "@/lib/constants";
 import { ALL_LANDING_PAGES } from "@/lib/landing-pages";
 import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import { GooglePartnerBadge } from "@/components/google-partner-badge";
 
 const LOCATION_PAGES = ALL_LANDING_PAGES.filter(p => p.type === "location");
 const INDUSTRY_PAGES = ALL_LANDING_PAGES.filter(p => p.type === "industry");
@@ -25,7 +26,7 @@ export default function Footer() {
             <p className="text-sm text-gray-400 mb-6 leading-relaxed">
               AI Revenue Growth Agency. We build automated systems that generate customers and revenue for businesses worldwide.
             </p>
-            <div className="space-y-3">
+            <div className="space-y-3 mb-6">
               <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-email">
                 <Mail className="w-4 h-4 flex-shrink-0" /> {COMPANY.email}
               </a>
@@ -36,6 +37,7 @@ export default function Footer() {
                 <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" /> {COMPANY.address}
               </div>
             </div>
+            <GooglePartnerBadge variant="footer" />
           </div>
 
           <div>

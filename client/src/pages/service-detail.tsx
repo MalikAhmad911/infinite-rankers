@@ -9,6 +9,7 @@ import ServiceHeroMockup from "@/components/service-mockups";
 import { ProblemSolutionSection, FeaturesSection, WorkflowSection, FAQSection } from "@/components/service-sections";
 import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, type ServiceVisualTheme, getServicePricing } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
+import { GooglePartnerBadge } from "@/components/google-partner-badge";
 import {
   ArrowRight, CheckCircle2, ArrowLeft,
   Bot, Target, Globe, Zap, Phone, Headphones, UserCheck,
@@ -448,6 +449,9 @@ export default function ServiceDetail() {
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>
+            <div className="mt-6">
+              <GooglePartnerBadge variant="compact" />
+            </div>
           </motion.div>
         </div>
       </section>

@@ -7,6 +7,7 @@ import GlassCard from "@/components/glass-card";
 import SectionHeader from "@/components/section-header";
 import { getLandingPage, ALL_LANDING_PAGES } from "@/lib/landing-pages";
 import { ALL_SERVICES } from "@/lib/constants";
+import { GooglePartnerBadge } from "@/components/google-partner-badge";
 import {
   ArrowRight, CheckCircle2, Star, ExternalLink,
   Bot, Target, Globe, Zap, Phone, TrendingUp, BarChart3, Search,
@@ -512,6 +513,7 @@ export default function LandingPage({ slug }: { slug?: string }) {
               <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Free Strategy Session</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> No Long-Term Contracts</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Results in 30 Days</span>
+              <GooglePartnerBadge variant="compact" />
             </div>
           </motion.div>
         </div>

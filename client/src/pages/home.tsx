@@ -16,6 +16,7 @@ import {
   TESTIMONIALS, CASE_STUDIES, COMPANY, PRICING_TIERS,
 } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
+import { GooglePartnerBadge } from "@/components/google-partner-badge";
 
 function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -671,6 +672,15 @@ function TrustSection() {
             </motion.div>
           ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="flex justify-center mt-6 sm:mt-8"
+        >
+          <GooglePartnerBadge variant="inline" />
+        </motion.div>
       </div>
     </section>
   );
@@ -1024,6 +1034,7 @@ function PricingSection() {
             <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
             <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
+            <GooglePartnerBadge variant="inline" />
           </div>
           <Link href="/pricing">
             <Button data-testid="button-view-full-pricing">

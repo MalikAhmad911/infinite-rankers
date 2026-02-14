@@ -10,6 +10,7 @@ import SEOHead from "@/components/seo-head";
 import SectionHeader from "@/components/section-header";
 import GlassCard from "@/components/glass-card";
 import { PRICING_TIERS, SERVICE_PRICING } from "@/lib/constants";
+import { GooglePartnerBadge } from "@/components/google-partner-badge";
 import {
   ArrowRight, CheckCircle2, Shield, Clock, DollarSign,
   ChevronDown, ChevronUp,
@@ -224,6 +225,7 @@ function ServicePricingBreakdown() {
           <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
           <span className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-primary" /> No Setup Fees</span>
+          <GooglePartnerBadge variant="inline" />
         </div>
       </div>
     </section>
