@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const TO_EMAIL = "contact@infiniterankers.com";
+const TO_EMAIL = "contact@infiniterankers.io";
 const FROM_EMAIL = process.env.SMTP_USER || "noreply@infiniterankers.com";
 
 export async function sendContactEmail(data: {
