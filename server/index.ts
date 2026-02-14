@@ -3,10 +3,6 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = "production";
-}
-
 const app = express();
 const httpServer = createServer(app);
 
@@ -85,8 +81,13 @@ app.use((req, res, next) => {
   if (process.env.NODE_ENV === "production") {
     serveStatic(app);
   } else {
-    const { setupVite } = await import("./vite");
-    await setupVite(httpServer, app);
+    try {
+      const { setupVite } = await import("./vite");
+      await setupVite(httpServer, app);
+    } catch {
+      console.log("Vite not available, falling back to static serving");
+      serveStatic(app);
+    }
   }
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
