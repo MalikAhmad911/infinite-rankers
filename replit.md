@@ -45,6 +45,8 @@ shared/
 8. Blog - 6 blog post previews
 9. Book Demo - Calendar date picker, time slots, qualification form
 10. Landing Pages (10 pages) - High-converting funnel pages at /:slug with 10 sections each (hero, pain points, AI system, pipeline, results, features, ecosystem, testimonials, FAQ, CTA)
+11. Terms of Service (/terms) - 14-section legal page referencing both .io and .com domains
+12. Privacy Policy (/privacy) - 14-section privacy page with CCPA, cookies, data rights
 
 ## Landing Pages (10 conversion funnels)
 Location-based: ai-automation-new-york, ai-automation-los-angeles, ai-automation-chicago
@@ -74,8 +76,8 @@ Each page has: hero, USA pain points, AI system explanation, pipeline visualizat
 - Mega menu navigation with 30+ service links
 - Framer Motion animations throughout (staggered reveals, floating elements, auto-sliding carousels)
 - SEO metadata per page (OG tags, Twitter cards, canonical URLs, keywords)
-- AI chatbot powered by OpenAI (gpt-5-nano via Replit AI Integrations) with streaming responses, lead capture, and service qualification
-- Email notifications for contact form, demo booking, and chatbot lead submissions via SMTP
+- AI chatbot (currently hidden, component exists at ai-chatbot.tsx for future re-enablement)
+- Email notifications for contact form, demo booking submissions via SMTP
 - Interactive ROI calculator
 - Contact form and demo booking with database persistence
 - Portfolio filtering by category tags

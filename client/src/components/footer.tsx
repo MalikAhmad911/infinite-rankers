@@ -117,8 +117,8 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-4 flex-wrap justify-center">
-            <span className="text-xs text-gray-500 cursor-pointer hover:text-white transition-colors">Privacy Policy</span>
-            <span className="text-xs text-gray-500 cursor-pointer hover:text-white transition-colors">Terms of Service</span>
+            <Link href="/privacy" className="text-xs text-gray-500 hover:text-white transition-colors" data-testid="link-footer-privacy">Privacy Policy</Link>
+            <Link href="/terms" className="text-xs text-gray-500 hover:text-white transition-colors" data-testid="link-footer-terms">Terms of Service</Link>
           </div>
         </div>
       </div>
