@@ -3,6 +3,10 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = "production";
+}
+
 const app = express();
 const httpServer = createServer(app);
 
