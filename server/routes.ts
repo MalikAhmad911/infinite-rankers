@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContactSchema, insertDemoBookingSchema } from "@shared/schema";
+import { sendContactEmail, sendDemoBookingEmail } from "./email";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -14,6 +15,11 @@ export async function registerRoutes(
         return res.status(400).json({ error: parsed.error.message });
       }
       const contact = await storage.createContact(parsed.data);
+      try {
+        await sendContactEmail(parsed.data);
+      } catch (emailErr) {
+        console.error("Failed to send contact email:", emailErr);
+      }
       res.status(201).json(contact);
     } catch (error) {
       res.status(500).json({ error: "Failed to save contact" });
@@ -36,6 +42,11 @@ export async function registerRoutes(
         return res.status(400).json({ error: parsed.error.message });
       }
       const booking = await storage.createDemoBooking(parsed.data);
+      try {
+        await sendDemoBookingEmail(parsed.data);
+      } catch (emailErr) {
+        console.error("Failed to send demo booking email:", emailErr);
+      }
       res.status(201).json(booking);
     } catch (error) {
       res.status(500).json({ error: "Failed to save booking" });
