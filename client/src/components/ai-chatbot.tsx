@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Bot, User, Loader2, Phone, Calendar, DollarSign } from "lucide-react";
+import { X, Send, User, Loader2, Phone, Calendar, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY } from "@/lib/constants";
+import botLogo from "@assets/image_1771061933307.png";
 
 interface Message {
   id: string;
@@ -72,11 +73,18 @@ export default function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([GREETING_MESSAGE]);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
-  const [showPulse, setShowPulse] = useState(true);
+  const [showBubble, setShowBubble] = useState(false);
+  const [bubbleDismissed, setBubbleDismissed] = useState(false);
   const leadDataRef = useRef<LeadData>({});
   const leadSubmittedRef = useRef(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (bubbleDismissed || isOpen) return;
+    const timer = setTimeout(() => setShowBubble(true), 2500);
+    return () => clearTimeout(timer);
+  }, [bubbleDismissed, isOpen]);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -120,7 +128,8 @@ export default function AIChatbot() {
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isStreaming) return;
 
-    setShowPulse(false);
+    setShowBubble(false);
+    setBubbleDismissed(true);
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
@@ -213,6 +222,12 @@ export default function AIChatbot() {
     ));
   };
 
+  const handleOpen = () => {
+    setIsOpen(true);
+    setShowBubble(false);
+    setBubbleDismissed(true);
+  };
+
   return (
     <>
       <AnimatePresence>
@@ -222,17 +237,17 @@ export default function AIChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed bottom-20 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-background border border-border rounded-md shadow-xl overflow-hidden flex flex-col"
-            style={{ maxHeight: "min(600px, calc(100vh - 8rem))" }}
+            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-background border border-border rounded-md shadow-xl overflow-hidden flex flex-col"
+            style={{ maxHeight: "min(560px, calc(100vh - 8rem))" }}
             data-testid="chatbot-window"
           >
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-3 flex items-center justify-between gap-2 shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-full bg-white border-2 border-white/30 overflow-hidden shrink-0 flex items-center justify-center">
+                  <img src={botLogo} alt="Infinite Rankers" className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-white">IR AI Assistant</div>
+                  <div className="text-sm font-bold text-white tracking-wide">INFINITE RANKERS</div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                     <span className="text-xs text-white/80">Online</span>
@@ -256,13 +271,13 @@ export default function AIChatbot() {
                   key={msg.id}
                   className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
                 >
-                  <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center ${
+                  <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center overflow-hidden ${
                     msg.role === "assistant"
-                      ? "bg-gradient-to-br from-blue-500 to-purple-500"
+                      ? "bg-white border border-gray-200"
                       : "bg-muted"
                   }`}>
                     {msg.role === "assistant" ? (
-                      <Bot className="w-3.5 h-3.5 text-white" />
+                      <img src={botLogo} alt="" className="w-full h-full object-cover" />
                     ) : (
                       <User className="w-3.5 h-3.5 text-muted-foreground" />
                     )}
@@ -367,19 +382,55 @@ export default function AIChatbot() {
         )}
       </AnimatePresence>
 
-      <motion.button
+      <AnimatePresence>
+        {showBubble && !isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed bottom-24 right-4 sm:right-6 z-50"
+            data-testid="chatbot-bubble"
+          >
+            <div className="relative bg-white rounded-md shadow-lg border border-gray-200 px-4 py-3 max-w-[220px]">
+              <button
+                onClick={(e) => { e.stopPropagation(); setShowBubble(false); setBubbleDismissed(true); }}
+                className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-500 text-white flex items-center justify-center text-xs leading-none"
+                data-testid="button-bubble-close"
+              >
+                <X className="w-3 h-3" />
+              </button>
+              <p
+                className="text-sm text-gray-800 font-medium cursor-pointer"
+                onClick={handleOpen}
+              >
+                Hi, How can I help you today?
+              </p>
+              <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b border-gray-200 rotate-45" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
-        onClick={() => { setIsOpen(!isOpen); setShowPulse(false); }}
-        className="fixed bottom-5 right-4 sm:right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg flex items-center justify-center"
+        onClick={() => { if (isOpen) { setIsOpen(false); } else { handleOpen(); } }}
+        className="fixed bottom-5 right-4 sm:right-6 z-50 w-[60px] h-[60px] rounded-full bg-white border-2 border-blue-500/30 shadow-lg cursor-pointer overflow-hidden flex items-center justify-center"
         data-testid="button-chatbot-toggle"
       >
-        {showPulse && !isOpen && (
-          <span className="absolute inset-0 rounded-full bg-blue-500/30 animate-ping" />
+        {!isOpen && !bubbleDismissed && (
+          <span className="absolute inset-0 rounded-full bg-blue-400/20 animate-ping" />
         )}
-        {isOpen ? <X className="w-5 h-5" /> : <MessageSquare className="w-5 h-5" />}
-      </motion.button>
+        {isOpen ? (
+          <div className="w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
+            <X className="w-5 h-5 text-white" />
+          </div>
+        ) : (
+          <img src={botLogo} alt="Chat with us" className="w-[52px] h-[52px] object-cover rounded-full" />
+        )}
+      </motion.div>
     </>
   );
 }
