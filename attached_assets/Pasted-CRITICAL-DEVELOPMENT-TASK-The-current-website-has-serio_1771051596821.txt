@@ -1,0 +1,133 @@
+CRITICAL DEVELOPMENT TASK:
+
+The current website has serious UI/UX and responsive design issues that must be fully fixed.
+
+The website must be rebuilt using MOBILE-FIRST DESIGN principles.
+
+--------------------------------------------
+
+1. RESPONSIVE DESIGN REQUIREMENT (TOP PRIORITY)
+
+The entire website must work perfectly across all devices:
+
+• Mobile phones (320px – 480px)
+• Large mobile phones (481px – 767px)
+• Tablets (768px – 1024px)
+• Laptops (1025px – 1440px)
+• Large desktops (1441px+)
+
+Every page must be fully responsive.
+
+--------------------------------------------
+
+2. MOBILE-FIRST DESIGN IMPLEMENTATION
+
+Rebuild layout starting from mobile first then scale upward.
+
+Rules:
+
+• No overlapping text or buttons
+• No broken layouts
+• No hidden or cut content
+• Text must remain readable without zoom
+• Buttons must be thumb-friendly
+• Proper spacing between elements
+• Sections must stack vertically on mobile
+
+--------------------------------------------
+
+3. ANIMATION RESPONSIVENESS FIX
+
+Currently animations do not work on mobile.
+
+Fix animation logic using:
+
+• Scroll-based animations must work on touch devices
+• Replace heavy desktop animations with lightweight mobile animations
+• Use performance optimized animation libraries
+• Disable GPU heavy effects on small screens
+• Maintain smooth 60 FPS motion
+
+Animations must degrade gracefully but still exist on mobile.
+
+--------------------------------------------
+
+4. IMAGE & MEDIA OPTIMIZATION
+
+Fix image visibility and loading issues:
+
+• Use responsive images (srcset)
+• Convert images to WebP format
+• Lazy load images
+• Ensure dashboard mockups scale properly
+• Prevent images from overflowing containers
+
+--------------------------------------------
+
+5. NAVIGATION & HEADER FIX
+
+Mobile navigation must include:
+
+• Smooth hamburger menu
+• Sticky optimized header
+• Proper dropdown behavior
+• Touch-friendly menu spacing
+
+--------------------------------------------
+
+6. SECTION LAYOUT FIXES
+
+All homepage and service page sections must:
+
+• Auto-adjust grid to single column on mobile
+• Convert multi-column layouts into stacked layout
+• Maintain consistent spacing and padding
+• Preserve visual hierarchy
+
+--------------------------------------------
+
+7. PERFORMANCE OPTIMIZATION
+
+The mobile page speed must be optimized:
+
+• Reduce animation file size
+• Remove unused CSS & JS
+• Implement code splitting
+• Compress images and assets
+• Target fast loading under 3 seconds
+
+--------------------------------------------
+
+8. ACCESSIBILITY & UX IMPROVEMENT
+
+Ensure:
+
+• Proper contrast ratio
+• Readable font scaling
+• Clear call-to-action buttons
+• Visible hover and touch states
+• Smooth scroll behavior
+
+--------------------------------------------
+
+9. TESTING REQUIREMENTS
+
+Website must be tested on:
+
+• iPhone devices
+• Android devices
+• iPad / Tablet
+• Chrome DevTools mobile simulation
+• Real device performance testing
+
+--------------------------------------------
+
+10. FINAL EXPERIENCE GOAL
+
+Mobile users must experience:
+
+• Smooth navigation
+• Visible animations
+• Clear service information
+• Professional SaaS agency feel
+• Fast loading and responsive interface
