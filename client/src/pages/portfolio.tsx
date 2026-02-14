@@ -9,19 +9,29 @@ import SectionHeader from "@/components/section-header";
 import { CASE_STUDIES, COMPANY } from "@/lib/constants";
 import { ArrowRight, BarChart3, TrendingUp, Users, Award } from "lucide-react";
 
-const PORTFOLIO_IMAGES = [
-  "/images/portfolio/real-analytics-dashboard.jpg",
-  "/images/portfolio/real-seo-work.jpg",
-  "/images/portfolio/real-ads-campaign.jpg",
-  "/images/portfolio/real-social-media-work.jpg",
-  "/images/portfolio/real-web-development.jpg",
-  "/images/portfolio/real-crm-pipeline.jpg",
-  "/images/portfolio/real-email-automation.jpg",
-  "/images/portfolio/real-revenue-growth.jpg",
-  "/images/portfolio/real-ai-chatbot.jpg",
-  "/images/portfolio/real-ecommerce-dashboard.jpg",
-  "/images/portfolio/real-marketing-strategy.jpg",
-];
+const PORTFOLIO_IMAGES: Record<string, string> = {
+  "1": "/images/portfolio/project-1-dental.jpg",
+  "2": "/images/portfolio/project-2-ecommerce.jpg",
+  "3": "/images/portfolio/project-3-realestate.jpg",
+  "4": "/images/portfolio/project-4-saas.jpg",
+  "5": "/images/portfolio/project-5-lawfirm.jpg",
+  "6": "/images/portfolio/project-6-fitness.jpg",
+  "7": "/images/portfolio/project-7-restaurant.jpg",
+  "8": "/images/portfolio/project-8-clinic.jpg",
+  "9": "/images/portfolio/project-9-finance.jpg",
+  "10": "/images/portfolio/project-10-homeservices.jpg",
+  "11": "/images/portfolio/project-11-dealership.jpg",
+  "12": "/images/portfolio/project-12-coaching.jpg",
+  "13": "/images/portfolio/project-13-hotel.jpg",
+  "14": "/images/portfolio/project-14-insurance.jpg",
+  "15": "/images/portfolio/project-15-construction.jpg",
+  "16": "/images/portfolio/project-16-accounting.jpg",
+  "17": "/images/portfolio/project-17-salon.jpg",
+  "18": "/images/portfolio/project-18-immigration.jpg",
+  "19": "/images/portfolio/project-19-logistics.jpg",
+  "20": "/images/portfolio/project-20-manufacturing.jpg",
+  "21": "/images/portfolio/project-21-veterinary.jpg",
+};
 
 const ALL_TAGS = Array.from(new Set(CASE_STUDIES.flatMap((cs) => cs.tags)));
 
@@ -199,7 +209,7 @@ export default function Portfolio() {
                   <Card className="overflow-visible hover-elevate h-full flex flex-col">
                     <div className="relative h-48 overflow-hidden rounded-t-md">
                       <img
-                        src={PORTFOLIO_IMAGES[i % PORTFOLIO_IMAGES.length]}
+                        src={PORTFOLIO_IMAGES[cs.id] || "/images/portfolio/project-1-dental.jpg"}
                         alt={cs.title}
                         className="w-full h-full object-cover"
                         loading="lazy"

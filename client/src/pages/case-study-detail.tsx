@@ -6,21 +6,31 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { CASE_STUDIES } from "@/lib/constants";
-import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Quote } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star } from "lucide-react";
 
-const PORTFOLIO_IMAGES = [
-  "/images/portfolio/real-analytics-dashboard.jpg",
-  "/images/portfolio/real-seo-work.jpg",
-  "/images/portfolio/real-ads-campaign.jpg",
-  "/images/portfolio/real-social-media-work.jpg",
-  "/images/portfolio/real-web-development.jpg",
-  "/images/portfolio/real-crm-pipeline.jpg",
-  "/images/portfolio/real-email-automation.jpg",
-  "/images/portfolio/real-revenue-growth.jpg",
-  "/images/portfolio/real-ai-chatbot.jpg",
-  "/images/portfolio/real-ecommerce-dashboard.jpg",
-  "/images/portfolio/real-marketing-strategy.jpg",
-];
+const PORTFOLIO_IMAGES: Record<string, string> = {
+  "1": "/images/portfolio/project-1-dental.jpg",
+  "2": "/images/portfolio/project-2-ecommerce.jpg",
+  "3": "/images/portfolio/project-3-realestate.jpg",
+  "4": "/images/portfolio/project-4-saas.jpg",
+  "5": "/images/portfolio/project-5-lawfirm.jpg",
+  "6": "/images/portfolio/project-6-fitness.jpg",
+  "7": "/images/portfolio/project-7-restaurant.jpg",
+  "8": "/images/portfolio/project-8-clinic.jpg",
+  "9": "/images/portfolio/project-9-finance.jpg",
+  "10": "/images/portfolio/project-10-homeservices.jpg",
+  "11": "/images/portfolio/project-11-dealership.jpg",
+  "12": "/images/portfolio/project-12-coaching.jpg",
+  "13": "/images/portfolio/project-13-hotel.jpg",
+  "14": "/images/portfolio/project-14-insurance.jpg",
+  "15": "/images/portfolio/project-15-construction.jpg",
+  "16": "/images/portfolio/project-16-accounting.jpg",
+  "17": "/images/portfolio/project-17-salon.jpg",
+  "18": "/images/portfolio/project-18-immigration.jpg",
+  "19": "/images/portfolio/project-19-logistics.jpg",
+  "20": "/images/portfolio/project-20-manufacturing.jpg",
+  "21": "/images/portfolio/project-21-veterinary.jpg",
+};
 
 const METRIC_GRADIENTS = [
   "from-blue-500 to-blue-600",
@@ -49,7 +59,6 @@ export default function CaseStudyDetail() {
     );
   }
 
-  const imageIndex = csIndex >= 0 ? csIndex % PORTFOLIO_IMAGES.length : 0;
   const relatedStudies = CASE_STUDIES.filter(
     (s) => s.id !== cs.id && s.tags.some((t) => cs.tags.includes(t))
   ).slice(0, 3);
@@ -72,7 +81,7 @@ export default function CaseStudyDetail() {
       <section className="relative pt-28 pb-16 overflow-hidden" data-testid="case-hero">
         <div className="absolute inset-0">
           <img
-            src={PORTFOLIO_IMAGES[imageIndex]}
+            src={PORTFOLIO_IMAGES[cs.id] || "/images/portfolio/project-1-dental.jpg"}
             alt={cs.title}
             className="w-full h-full object-cover"
             loading="eager"
@@ -238,19 +247,52 @@ export default function CaseStudyDetail() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16 bg-gray-50/60" data-testid="testimonial-section">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 sm:py-20 relative overflow-hidden" data-testid="testimonial-section">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900" />
+        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <Card className="p-8 sm:p-10 text-center" data-testid="card-testimonial">
-              <Quote className="w-10 h-10 text-blue-200 mx-auto mb-4" />
-              <p className="text-lg sm:text-xl text-foreground leading-relaxed italic mb-6">
-                "{cs.testimonial.quote}"
-              </p>
-              <div>
-                <p className="font-semibold text-foreground">{cs.testimonial.author}</p>
-                <p className="text-sm text-muted-foreground">{cs.testimonial.role}</p>
+            <div className="text-center mb-10">
+              <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
+                Client Testimonial
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-white">What Our Client Says</h3>
+            </div>
+
+            <div className="rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 lg:p-12" data-testid="card-testimonial">
+              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                <div className="flex-shrink-0 text-center">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold mx-auto mb-4">
+                    {cs.testimonial.author.split(" ").map(n => n[0]).join("")}
+                  </div>
+                  <p className="font-semibold text-white text-lg">{cs.testimonial.author}</p>
+                  <p className="text-sm text-white/60 mt-0.5">{cs.testimonial.role}</p>
+                  <div className="flex items-center justify-center gap-0.5 mt-3">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <svg className="w-10 h-10 text-blue-400/30 mb-4 hidden sm:block" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
+                  </svg>
+                  <p className="text-lg sm:text-xl text-white/90 leading-relaxed font-light italic">
+                    "{cs.testimonial.quote}"
+                  </p>
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                    <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20 text-xs">
+                      <CheckCircle2 className="w-3 h-3 mr-1" /> Verified Client
+                    </Badge>
+                    <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-xs">
+                      {cs.industry}
+                    </Badge>
+                  </div>
+                </div>
               </div>
-            </Card>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -261,7 +303,6 @@ export default function CaseStudyDetail() {
             <h3 className="text-xl font-bold text-foreground mb-8">Related Case Studies</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedStudies.map((related, i) => {
-                const relIdx = CASE_STUDIES.findIndex((s) => s.id === related.id);
                 return (
                   <motion.div
                     key={related.id}
@@ -273,7 +314,7 @@ export default function CaseStudyDetail() {
                     <Card className="overflow-visible hover-elevate" data-testid={`related-${related.id}`}>
                       <div className="relative h-40 overflow-hidden rounded-t-md">
                         <img
-                          src={PORTFOLIO_IMAGES[relIdx % PORTFOLIO_IMAGES.length]}
+                          src={PORTFOLIO_IMAGES[related.id] || "/images/portfolio/project-1-dental.jpg"}
                           alt={related.title}
                           className="w-full h-full object-cover"
                           loading="lazy"
