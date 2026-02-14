@@ -295,7 +295,7 @@ function HeroSection() {
               {[
                 { icon: Shield, text: "No Long-Term Contracts" },
                 { icon: Clock, text: "Results in 30 Days" },
-                { icon: Users, text: "500+ Clients" },
+                { icon: Users, text: "9,500+ Clients" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-2 text-sm text-gray-500" data-testid={`trust-${item.text.toLowerCase().replace(/\s/g, "-")}`}>
                   <item.icon className="w-4 h-4 text-blue-600" />
@@ -659,7 +659,7 @@ function TrustSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { value: "4500+", label: "Clients Worldwide", icon: Users },
+            { value: "9500+", label: "Clients Worldwide", icon: Users },
             { value: "$50M+", label: "Revenue Generated", icon: DollarSign },
             { value: "98%", label: "Client Retention", icon: Award },
             { value: "24/7", label: "AI Systems Active", icon: Cpu },
@@ -755,9 +755,9 @@ function TestimonialsCarousel() {
 function TeamSection() {
   const experts = [
     { name: "AI Automation", desc: "Custom AI agents and chatbots that convert leads 24/7", icon: Brain, stat: "200+ Automations Built" },
-    { name: "Revenue Strategy", desc: "Data-driven growth strategies tailored to your business", icon: LineChart, stat: "$2.4M+ Generated" },
+    { name: "Revenue Strategy", desc: "Data-driven growth strategies tailored to your business", icon: LineChart, stat: "$50M+ Generated" },
     { name: "Ad Management", desc: "Google & Meta campaigns optimized by AI for maximum ROAS", icon: Target, stat: "15x Average ROAS" },
-    { name: "Development", desc: "High-converting websites and landing pages that sell", icon: Layers, stat: "500+ Projects Delivered" },
+    { name: "Development", desc: "High-converting websites and landing pages that sell", icon: Layers, stat: "9,500+ Projects Delivered" },
   ];
 
   return (
@@ -996,7 +996,7 @@ function FinalCTASection() {
             </span>
           </h2>
           <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join 500+ businesses already using AI automation to generate more customers and revenue. Book a free strategy session today.
+            Join 9,500+ businesses already using AI automation to generate more customers and revenue. Book a free strategy session today.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/book-demo">
