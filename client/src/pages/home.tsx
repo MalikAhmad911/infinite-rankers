@@ -13,8 +13,10 @@ import {
 } from "lucide-react";
 import {
   SERVICE_CATEGORIES, ACHIEVEMENTS, HOW_IT_WORKS_STEPS,
-  TESTIMONIALS, CASE_STUDIES, COMPANY,
+  TESTIMONIALS, CASE_STUDIES, COMPANY, PRICING_TIERS,
+  SERVICE_PRICING,
 } from "@/lib/constants";
+import { Card } from "@/components/ui/card";
 
 function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -950,6 +952,201 @@ function MidCTASection() {
   );
 }
 
+function PricingSection() {
+  const [showAllServices, setShowAllServices] = useState(false);
+
+  const serviceCategories = [
+    {
+      title: "AI & Automation",
+      services: SERVICE_PRICING.filter(sp =>
+        ["ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "ai-appointment-booking", "ai-follow-up", "ai-sales-assistant", "ai-chatbot", "ai-email-automation", "ai-sms-automation", "crm-automation", "workflow-automation"].includes(sp.slug)
+      ),
+    },
+    {
+      title: "Lead Generation",
+      services: SERVICE_PRICING.filter(sp =>
+        ["google-ads", "meta-ads", "seo-authority", "local-seo", "conversion-funnels", "landing-page-optimization", "conversion-rate-optimization"].includes(sp.slug)
+      ),
+    },
+    {
+      title: "Social & Content",
+      services: SERVICE_PRICING.filter(sp =>
+        ["social-media-marketing", "content-writing"].includes(sp.slug)
+      ),
+    },
+    {
+      title: "Development & Technology",
+      services: SERVICE_PRICING.filter(sp =>
+        ["website-development", "landing-page-development", "saas-integrations", "crm-setup", "analytics-dashboard", "marketing-automation-setup"].includes(sp.slug)
+      ),
+    },
+  ];
+
+  const visibleCategories = showAllServices ? serviceCategories : serviceCategories.slice(0, 2);
+
+  return (
+    <section className="py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/80 to-white" data-testid="pricing-section">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-10 sm:mb-14"
+        >
+          <Badge variant="secondary" className="mb-4" data-testid="badge-pricing">
+            <DollarSign className="w-3 h-3 mr-1" /> Transparent Pricing
+          </Badge>
+          <h2 className="font-bold text-gray-900 mb-3 sm:mb-4" style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}>
+            Transparent, Results-Driven Pricing
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }}>
+            Choose the AI revenue system that matches your growth stage. No hidden fees, no long-term contracts.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mb-14 sm:mb-20">
+          {PRICING_TIERS.map((tier, i) => (
+            <motion.div
+              key={tier.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className={`p-5 sm:p-6 h-full relative ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-card-${tier.name.toLowerCase()}`}>
+                {tier.discount && (
+                  <div className="absolute -top-3 right-4">
+                    <Badge data-testid={`badge-discount-${tier.name.toLowerCase()}`}>{tier.discount}</Badge>
+                  </div>
+                )}
+                {tier.popular && (
+                  <div className="absolute -top-3 left-4">
+                    <Badge variant="secondary" data-testid="badge-popular">Most Popular</Badge>
+                  </div>
+                )}
+                <div className="text-center mb-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-1">{tier.name}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{tier.description}</p>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-3xl sm:text-4xl font-bold text-foreground">{tier.price}</span>
+                    <span className="text-sm text-muted-foreground">{tier.period}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Month-to-month, cancel anytime</p>
+                </div>
+                <ul className="space-y-2.5 mb-6">
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/book-demo">
+                  <Button className="w-full" variant={tier.popular ? "default" : "outline"} data-testid={`button-pricing-${tier.name.toLowerCase()}`}>
+                    {tier.cta} <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </Link>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-8 sm:mb-10"
+        >
+          <h3 className="font-bold text-gray-900 mb-2" style={{ fontSize: "clamp(1.25rem, 3vw, 1.75rem)" }}>
+            Individual Service Pricing
+          </h3>
+          <p className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
+            All services available month-to-month. Mix and match to build your perfect growth stack.
+          </p>
+        </motion.div>
+
+        {visibleCategories.map((cat, ci) => (
+          <motion.div
+            key={cat.title}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: ci * 0.05 }}
+            className="mb-8"
+          >
+            <h4 className="text-base sm:text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-primary rounded-full" />
+              {cat.title}
+            </h4>
+            <Card className="overflow-x-auto">
+              <table className="w-full text-sm" data-testid={`table-pricing-${cat.title.toLowerCase().replace(/\s+/g, "-")}`}>
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-3 sm:p-4 font-medium text-muted-foreground min-w-[180px]">Service</th>
+                    <th className="text-center p-3 sm:p-4 font-medium text-muted-foreground">Growth</th>
+                    <th className="text-center p-3 sm:p-4 font-medium text-muted-foreground">Scale</th>
+                    <th className="text-center p-3 sm:p-4 font-medium text-muted-foreground">Enterprise</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cat.services.map((service, si) => (
+                    <tr key={service.slug} className={si < cat.services.length - 1 ? "border-b border-border/50" : ""}>
+                      <td className="p-3 sm:p-4">
+                        <Link href={`/services/${service.slug}`}>
+                          <span className="font-medium text-foreground text-xs sm:text-sm cursor-pointer" data-testid={`link-service-${service.slug}`}>
+                            {service.title}
+                          </span>
+                        </Link>
+                        {service.combinedNote && !service.combinedNote.startsWith("Combined") && (
+                          <p className="text-xs text-muted-foreground mt-0.5">{service.combinedNote}</p>
+                        )}
+                        {service.combinedNote?.startsWith("Combined") && (
+                          <p className="text-xs text-muted-foreground mt-0.5 italic">{service.combinedNote}</p>
+                        )}
+                      </td>
+                      {service.tiers.map((tier) => (
+                        <td key={tier.name} className="text-center p-3 sm:p-4">
+                          <span className="font-semibold text-foreground text-sm sm:text-base">${tier.price.toLocaleString()}</span>
+                          <span className="text-xs text-muted-foreground">{service.unit}</span>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          </motion.div>
+        ))}
+
+        {!showAllServices && (
+          <div className="text-center mt-6">
+            <Button variant="outline" onClick={() => setShowAllServices(true)} data-testid="button-show-all-services">
+              View All Service Pricing <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+        )}
+
+        {showAllServices && (
+          <div className="text-center mt-8">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground">
+              <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
+            </div>
+            <div className="mt-6">
+              <Link href="/pricing">
+                <Button data-testid="button-view-full-pricing">
+                  View Full Pricing Details <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function FinalCTASection() {
   return (
     <section className="py-16 sm:py-24 lg:py-28 relative overflow-hidden" data-testid="cta-section">
@@ -1034,6 +1231,7 @@ export default function Home() {
       <TestimonialsCarousel />
       <TeamSection />
       <ResultsGallery />
+      <PricingSection />
       <FinalCTASection />
     </div>
   );

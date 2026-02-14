@@ -27,11 +27,11 @@ shared/
 ```
 
 ## Design System
-- **Theme**: Dark mode default, with working light mode toggle
-- **Colors**: :root has light palette, .dark has dark luxury palette (bg #060B1A to #0D1B2A)
+- **Theme**: Permanent light mode (Stripe-inspired aesthetic, no dark mode toggle)
+- **Colors**: Clean light palette with blue/purple gradient accents
 - **Accents**: Blue (#3B82F6), Purple (#8B5CF6), Cyan (#06B6D4) gradients
-- **Cards**: GlassCard component with optional glow effect (bg-white/[0.03] border-white/[0.06])
-- **Sections**: Alternating bg-[#0A1628] and default background for visual rhythm
+- **Cards**: Card component (shadcn) for pricing/content, GlassCard for special sections (ROI calculator)
+- **Interactions**: toggle-elevate + toggle-elevated pattern for selectable elements (date/time pickers)
 - **Custom animations**: animate-glow-pulse, animate-float, animate-slide-left (defined in index.css)
 
 ## Pages
@@ -67,10 +67,10 @@ Each page has: hero, USA pain points, AI system explanation, pipeline visualizat
 - **SERVICE_CATEGORIES**: 4 categories (AI & Automation, Lead Generation, Social & Content, Development) with 7-8 services each
 - **SERVICE_CONTENT**: Per-service unique content (longDesc, problems, solutions, features, workflowSteps, industries, faqs, relatedServices)
 - **CASE_STUDIES**: 7 case studies with tags for filtering
-- **PRICING_TIERS**: 3-tier pricing (Growth, Scale, Enterprise)
+- **PRICING_TIERS**: 3-tier pricing (Growth $1,599, Scale $2,999, Enterprise $5,999) with discount badges
+- **SERVICE_PRICING**: Individual pricing for all 30+ services (3 tiers each), centralized config with getServicePricing() helper
 
 ## Features
-- Dark/light mode toggle (dark default, class-based switching)
 - Mega menu navigation with 30+ service links
 - Framer Motion animations throughout (staggered reveals, floating elements, auto-sliding carousels)
 - SEO metadata per page (OG tags, Twitter cards, canonical URLs, keywords)

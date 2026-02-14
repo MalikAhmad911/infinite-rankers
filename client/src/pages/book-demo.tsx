@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useSearch } from "wouter";
 import SEOHead from "@/components/seo-head";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertDemoBookingSchema } from "@shared/schema";
 import type { InsertDemoBooking } from "@shared/schema";
+import { ALL_SERVICES } from "@/lib/constants";
 import { CalendarCheck, CheckCircle2, ArrowRight, Clock, Star } from "lucide-react";
 
 const timeSlots = [
@@ -38,6 +40,10 @@ function generateDates() {
 }
 
 export default function BookDemo() {
+  const searchString = useSearch();
+  const urlParams = new URLSearchParams(searchString);
+  const serviceFromUrl = urlParams.get("service") || "";
+
   const seo = (
     <SEOHead
       title="Book a Demo - Infinite Rankers | Free Strategy Session"
@@ -53,9 +59,15 @@ export default function BookDemo() {
     resolver: zodResolver(insertDemoBookingSchema),
     defaultValues: {
       name: "", email: "", phone: "", company: "", website: "",
-      revenue: "", service: "", date: "", time: "", message: "",
+      revenue: "", service: serviceFromUrl, date: "", time: "", message: "",
     },
   });
+
+  useEffect(() => {
+    if (serviceFromUrl) {
+      form.setValue("service", serviceFromUrl);
+    }
+  }, [serviceFromUrl, form]);
 
   const mutation = useMutation({
     mutationFn: async (data: InsertDemoBooking) => {
@@ -121,22 +133,20 @@ export default function BookDemo() {
                     <Label className="text-sm font-medium mb-3 block">Select a Date *</Label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                       {dates.map((d) => (
-                        <button
+                        <Button
                           key={d.value}
                           type="button"
+                          variant="outline"
+                          size="sm"
                           onClick={() => {
                             setSelectedDate(d.value);
                             form.setValue("date", d.value);
                           }}
-                          className={`p-3 rounded-md text-sm text-center border transition-all ${
-                            selectedDate === d.value
-                              ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-blue-500"
-                              : "border-gray-200/60 text-muted-foreground bg-white hover:border-blue-300/50"
-                          }`}
+                          className={`toggle-elevate ${selectedDate === d.value ? "toggle-elevated" : ""}`}
                           data-testid={`button-date-${d.value}`}
                         >
                           {d.label}
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   </div>
@@ -146,22 +156,20 @@ export default function BookDemo() {
                       <Label className="text-sm font-medium mb-3 block">Select a Time *</Label>
                       <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                         {timeSlots.map((t) => (
-                          <button
+                          <Button
                             key={t}
                             type="button"
+                            variant="outline"
+                            size="sm"
                             onClick={() => {
                               setSelectedTime(t);
                               form.setValue("time", t);
                             }}
-                            className={`p-2 rounded-md text-xs text-center border transition-all ${
-                              selectedTime === t
-                                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-blue-500"
-                                : "border-gray-200/60 text-muted-foreground bg-white hover:border-blue-300/50"
-                            }`}
+                            className={`text-xs toggle-elevate ${selectedTime === t ? "toggle-elevated" : ""}`}
                             data-testid={`button-time-${t.replace(/\s/g, "-")}`}
                           >
                             {t}
-                          </button>
+                          </Button>
                         ))}
                       </div>
                     </motion.div>
@@ -225,15 +233,19 @@ export default function BookDemo() {
                               <SelectValue placeholder="Select a service" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="ai-automation">AI & Automation Systems</SelectItem>
-                              <SelectItem value="lead-generation">Lead Generation Systems</SelectItem>
-                              <SelectItem value="social-content">Social Media & Content</SelectItem>
-                              <SelectItem value="development">Development & Technology</SelectItem>
-                              <SelectItem value="full-stack">Full Revenue System</SelectItem>
+                              <SelectItem value="Full Revenue System (All Services)">Full Revenue System (All Services)</SelectItem>
+                              {ALL_SERVICES.map((s) => (
+                                <SelectItem key={s.slug} value={s.title}>{s.title}</SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         )}
                       />
+                      {serviceFromUrl && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Pre-selected: {serviceFromUrl}
+                        </p>
+                      )}
                     </div>
                     <div className="mt-4">
                       <Label htmlFor="demo-message" className="text-sm mb-1.5 block">Additional Notes</Label>
@@ -249,7 +261,7 @@ export default function BookDemo() {
 
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0"
+                    className="w-full"
                     disabled={mutation.isPending || !selectedDate || !selectedTime}
                     data-testid="button-demo-submit"
                   >

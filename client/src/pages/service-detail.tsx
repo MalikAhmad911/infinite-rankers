@@ -7,7 +7,8 @@ import GlassCard from "@/components/glass-card";
 import SectionHeader from "@/components/section-header";
 import ServiceHeroMockup from "@/components/service-mockups";
 import { ProblemSolutionSection, FeaturesSection, WorkflowSection, FAQSection } from "@/components/service-sections";
-import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, type ServiceVisualTheme } from "@/lib/constants";
+import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, type ServiceVisualTheme, getServicePricing } from "@/lib/constants";
+import { Card } from "@/components/ui/card";
 import {
   ArrowRight, CheckCircle2, ArrowLeft,
   Bot, Target, Globe, Zap, Phone, Headphones, UserCheck,
@@ -112,6 +113,7 @@ export default function ServiceDetail() {
   const content = SERVICE_CONTENT[params.slug] || defaultContent;
   const theme = SERVICE_VISUAL_THEMES[params.slug] || defaultTheme;
   const categoryId = service.categoryId;
+  const pricing = getServicePricing(params.slug);
 
   const heroGradient = theme.heroGradient.includes("#")
     ? "from-gray-50/80 via-blue-50/30 to-white"
@@ -241,14 +243,14 @@ export default function ServiceDetail() {
               <p className="text-lg text-muted-foreground leading-relaxed mb-4">{service.shortDesc}</p>
               <p className="text-base text-muted-foreground leading-relaxed mb-8">{content.longDesc}</p>
               <div className="flex flex-wrap gap-3">
-                <Link href="/book-demo">
+                <Link href={`/book-demo?service=${encodeURIComponent(service.title)}`}>
                   <Button data-testid="button-service-book-demo">
                     Book Demo <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
-                <Link href="/pricing">
+                <a href="#service-pricing">
                   <Button variant="outline" data-testid="button-service-pricing">View Pricing</Button>
-                </Link>
+                </a>
               </div>
             </motion.div>
             <motion.div
@@ -290,7 +292,59 @@ export default function ServiceDetail() {
         variant={theme.featuresLayout}
       />
 
-      <section className="py-20 lg:py-28">
+      {pricing && (
+        <section id="service-pricing" className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-service-pricing">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              label="Pricing"
+              title={`${service.title} Pricing`}
+              description={`Choose the plan that fits your needs. All plans are month-to-month with no long-term contracts.${pricing.combinedNote ? ` ${pricing.combinedNote}` : ""}`}
+            />
+            <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+              {pricing.tiers.map((tier, i) => (
+                <motion.div
+                  key={tier.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Card className={`p-5 sm:p-6 h-full relative ${i === 1 ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-tier-${tier.name.toLowerCase()}`}>
+                    {i === 1 && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <Badge variant="secondary">Most Popular</Badge>
+                      </div>
+                    )}
+                    <div className="text-center mb-5">
+                      <h3 className="text-base font-semibold text-foreground mb-3">{tier.name}</h3>
+                      <div className="flex items-baseline justify-center gap-1">
+                        <span className="text-3xl sm:text-4xl font-bold text-foreground">${tier.price.toLocaleString()}</span>
+                        <span className="text-sm text-muted-foreground">{pricing.unit}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">Month-to-month</p>
+                    </div>
+                    <ul className="space-y-2 mb-6">
+                      {tier.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href={`/book-demo?service=${encodeURIComponent(service.title)}`}>
+                      <Button className="w-full" variant={i === 1 ? "default" : "outline"} data-testid={`button-get-started-${tier.name.toLowerCase()}`}>
+                        Get Started <ArrowRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </Link>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader label="Industries" title="Industry Use Cases" description="Our systems are trusted across industries with tailored configurations for each." />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -385,11 +439,11 @@ export default function ServiceDetail() {
         <div className={`absolute inset-0 bg-gradient-to-br ${theme.accentFrom} ${theme.accentTo}`} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Ready to Implement {service.title}?</h2>
-            <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">Ready to Implement {service.title}?</h2>
+            <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
               Book a free strategy session and see how this system can be customized for your business.
             </p>
-            <Link href="/book-demo">
+            <Link href={`/book-demo?service=${encodeURIComponent(service.title)}`}>
               <Button variant="secondary" data-testid="button-cta-book-demo">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>

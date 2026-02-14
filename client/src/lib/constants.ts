@@ -161,67 +161,398 @@ export const CASE_STUDIES = [
 
 export const PRICING_TIERS = [
   {
-    name: "Starter System",
-    price: "$1,497",
+    name: "Growth",
+    price: "$1,599",
     period: "/month",
     description: "Perfect for small businesses ready to automate their first revenue systems.",
     features: [
       "AI Chatbot (Website)",
-      "Basic CRM Setup",
+      "Basic CRM Setup & Automation",
       "Email Automation (up to 1,000 contacts)",
+      "SMS Automation (up to 500 contacts)",
       "1 Landing Page",
-      "Monthly Performance Report",
+      "Basic SEO Audit & Optimization",
       "Google Business Optimization",
-      "Basic SEO Audit",
+      "Monthly Performance Report",
       "Email Support",
     ],
     cta: "Get Started",
     popular: false,
+    discount: null,
   },
   {
-    name: "Growth System",
-    price: "$3,497",
+    name: "Scale",
+    price: "$2,999",
     period: "/month",
     description: "For growing businesses that need a complete AI-powered revenue engine.",
     features: [
-      "Everything in Starter, plus:",
+      "Everything in Growth, plus:",
       "AI Calling Agent",
       "AI Lead Qualification Bot",
       "AI Appointment Booking",
+      "AI Follow-Up Automation",
       "Google Ads Management",
       "Meta Ads Management",
       "Full CRM Automation",
-      "3 Landing Pages",
-      "Social Media Management (2 platforms)",
+      "3 Conversion Funnels",
+      "Social Media (2 Platforms)",
+      "Content Writing & Strategy",
       "Weekly Strategy Calls",
       "Priority Support",
     ],
     cta: "Scale Now",
     popular: true,
+    discount: "Save 20%",
   },
   {
-    name: "Scale System",
-    price: "$6,997",
+    name: "Enterprise",
+    price: "$5,999",
     period: "/month",
     description: "Enterprise-grade AI automation for businesses ready to dominate their market.",
     features: [
-      "Everything in Growth, plus:",
+      "Everything in Scale, plus:",
       "AI Receptionist (24/7)",
       "AI Sales Assistant",
       "Full Workflow Automation",
       "Advanced Analytics Dashboard",
-      "SEO Authority System",
-      "Content Writing & Strategy",
+      "SEO Authority Growth System",
+      "Local SEO & Google Business",
       "Video Marketing",
       "Unlimited Landing Pages",
       "Social Media (All Platforms)",
+      "SaaS Integrations",
       "Dedicated Account Manager",
       "Daily Reporting",
     ],
     cta: "Dominate Your Market",
     popular: false,
+    discount: "Save 35%",
   },
 ];
+
+export interface ServicePricing {
+  slug: string;
+  title: string;
+  tiers: {
+    name: string;
+    price: number;
+    features: string[];
+  }[];
+  unit: string;
+  combinedNote?: string;
+}
+
+export const SERVICE_PRICING: ServicePricing[] = [
+  {
+    slug: "ai-calling-agent",
+    title: "AI Calling Agent",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Up to 200 calls/mo", "Basic call scripts", "Call recording", "Lead capture", "Email notifications"] },
+      { name: "Scale", price: 599, features: ["Up to 500 calls/mo", "Custom call scripts", "Call recording & analytics", "CRM integration", "SMS follow-ups", "Priority support"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited calls", "Advanced AI scripts", "Full analytics dashboard", "Multi-CRM integration", "SMS + email follow-ups", "Dedicated account manager", "Custom integrations"] },
+    ],
+  },
+  {
+    slug: "ai-receptionist",
+    title: "AI Receptionist",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["24/7 call answering", "Basic call routing", "Message taking", "Call transcripts", "Email notifications"] },
+      { name: "Scale", price: 599, features: ["24/7 call answering", "Smart call routing", "Appointment scheduling", "CRM integration", "Call analytics", "Priority support"] },
+      { name: "Enterprise", price: 999, features: ["24/7 call answering", "Advanced AI routing", "Full scheduling integration", "Multi-location support", "Custom workflows", "Dedicated manager", "API access"] },
+    ],
+  },
+  {
+    slug: "ai-lead-qualification",
+    title: "AI Lead Qualification Bot",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 500 leads/mo", "Basic scoring model", "Email notifications", "Lead capture forms", "Monthly reports"] },
+      { name: "Scale", price: 399, features: ["Up to 2,000 leads/mo", "Advanced scoring", "CRM sync", "Custom qualification criteria", "Real-time alerts", "Weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["Unlimited leads", "AI-powered scoring", "Multi-CRM sync", "Custom workflows", "API access", "Dedicated manager", "Daily reports"] },
+    ],
+  },
+  {
+    slug: "ai-appointment-booking",
+    title: "AI Appointment Booking System",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Calendar integration", "Automated reminders", "Basic booking page", "Email confirmations", "Up to 100 bookings/mo"] },
+      { name: "Scale", price: 599, features: ["Multi-calendar sync", "SMS + email reminders", "Custom booking pages", "CRM integration", "Up to 500 bookings/mo", "Rescheduling automation"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited bookings", "Multi-location calendars", "Advanced reminders", "Full CRM integration", "Custom workflows", "API access", "Dedicated support"] },
+    ],
+  },
+  {
+    slug: "ai-follow-up",
+    title: "AI Follow-Up Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 500 contacts", "Email sequences (3 steps)", "Basic templates", "Open tracking", "Monthly reports"] },
+      { name: "Scale", price: 399, features: ["Up to 2,000 contacts", "Email + SMS sequences", "Custom templates", "Behavior triggers", "A/B testing", "Weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["Unlimited contacts", "Multi-channel sequences", "AI-optimized timing", "Advanced triggers", "Full analytics", "API access", "Dedicated manager"] },
+    ],
+  },
+  {
+    slug: "ai-sales-assistant",
+    title: "AI Sales Assistant",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Lead research", "Email drafting", "Basic objection handling", "CRM updates", "Sales script templates"] },
+      { name: "Scale", price: 599, features: ["Advanced lead research", "Personalized outreach", "Objection handling AI", "Pipeline analytics", "CRM automation", "Deal scoring"] },
+      { name: "Enterprise", price: 999, features: ["Full AI sales co-pilot", "Multi-channel outreach", "Advanced deal scoring", "Revenue forecasting", "Custom integrations", "Team analytics", "Dedicated support"] },
+    ],
+  },
+  {
+    slug: "ai-chatbot",
+    title: "AI Chatbot",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 99, features: ["Website chatbot", "Basic Q&A responses", "Lead capture", "Email notifications", "Up to 500 conversations/mo"] },
+      { name: "Scale", price: 199, features: ["Website + WhatsApp", "Smart AI responses", "Appointment booking", "CRM integration", "Up to 2,000 conversations/mo", "Custom branding"] },
+      { name: "Enterprise", price: 299, features: ["All channels (Web, WhatsApp, Messenger, SMS)", "Advanced AI engine", "Full CRM sync", "Custom workflows", "Unlimited conversations", "Multi-language", "API access"] },
+    ],
+  },
+  {
+    slug: "ai-email-automation",
+    title: "AI Email Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 1,000 contacts", "5 email sequences", "Basic templates", "Open & click tracking", "Monthly reports"] },
+      { name: "Scale", price: 399, features: ["Up to 5,000 contacts", "15 email sequences", "Custom templates", "A/B testing", "Behavior triggers", "Weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["Unlimited contacts", "Unlimited sequences", "AI-optimized content", "Advanced segmentation", "Revenue attribution", "API access", "Dedicated manager"] },
+    ],
+  },
+  {
+    slug: "ai-sms-automation",
+    title: "AI SMS Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 500 SMS/mo", "Basic campaigns", "Opt-in management", "Delivery reports", "Template library"] },
+      { name: "Scale", price: 399, features: ["Up to 2,000 SMS/mo", "Automated sequences", "Personalization", "CRM integration", "Click tracking", "A/B testing"] },
+      { name: "Enterprise", price: 599, features: ["Up to 10,000 SMS/mo", "AI-optimized timing", "Multi-step campaigns", "Advanced analytics", "API access", "Dedicated number", "Priority support"] },
+    ],
+  },
+  {
+    slug: "crm-automation",
+    title: "CRM Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 499, features: ["Basic pipeline setup", "Lead auto-assignment", "Email sync", "Task automation", "Up to 1,000 contacts", "Monthly reports"] },
+      { name: "Scale", price: 999, features: ["Advanced pipelines", "Multi-stage automation", "Full email/SMS sync", "Custom fields & tags", "Up to 10,000 contacts", "Weekly reports"] },
+      { name: "Enterprise", price: 1499, features: ["Enterprise pipelines", "AI-powered automation", "Multi-team setup", "Revenue forecasting", "Unlimited contacts", "Custom integrations", "Dedicated manager"] },
+    ],
+  },
+  {
+    slug: "workflow-automation",
+    title: "Workflow Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Up to 5 workflows", "Basic triggers", "Email notifications", "2 app integrations", "Monthly reports"] },
+      { name: "Scale", price: 599, features: ["Up to 20 workflows", "Advanced triggers", "Multi-step automations", "10 app integrations", "Error handling", "Weekly reports"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited workflows", "AI-powered triggers", "Complex logic branches", "Unlimited integrations", "Custom API connectors", "Dedicated support"] },
+    ],
+  },
+  {
+    slug: "google-ads",
+    title: "Google Ads Revenue Engine",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["Up to $2K ad spend management", "Keyword research", "Ad copywriting", "Basic bid optimization", "Monthly reporting"] },
+      { name: "Scale", price: 299, features: ["Up to $10K ad spend management", "Advanced keyword strategy", "A/B ad testing", "Conversion tracking", "Landing page recommendations", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 399, features: ["Unlimited ad spend management", "Full-funnel strategy", "AI bid optimization", "Custom audiences", "Multi-campaign management", "Weekly strategy calls", "Dedicated manager"] },
+    ],
+  },
+  {
+    slug: "meta-ads",
+    title: "Meta Ads Growth Engine",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["Up to $2K ad spend management", "Audience targeting", "Ad creative design", "Basic retargeting", "Monthly reporting"] },
+      { name: "Scale", price: 299, features: ["Up to $10K ad spend management", "Lookalike audiences", "Dynamic creatives", "Full retargeting funnel", "Conversion optimization", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 399, features: ["Unlimited ad spend management", "Full-funnel campaigns", "AI audience optimization", "Cross-platform sync", "Custom dashboards", "Weekly strategy calls", "Dedicated manager"] },
+    ],
+  },
+  {
+    slug: "seo-authority",
+    title: "SEO Authority Growth System",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Technical SEO audit", "On-page optimization (10 pages)", "Keyword research", "Monthly content plan", "Basic link building", "Monthly reports"] },
+      { name: "Scale", price: 499, features: ["Full technical SEO", "On-page optimization (25 pages)", "Advanced keyword strategy", "Content creation (4 articles/mo)", "Link building outreach", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 799, features: ["Enterprise technical SEO", "Unlimited page optimization", "AI content strategy", "Content creation (8+ articles/mo)", "Premium link building", "Schema markup", "Weekly strategy calls"] },
+    ],
+  },
+  {
+    slug: "local-seo",
+    title: "Local SEO & Google Business",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Google Business optimization", "Local citation building", "Review management", "Local keyword targeting", "Monthly reports"] },
+      { name: "Scale", price: 499, features: ["Multi-location GBP management", "Advanced citation network", "Review generation system", "Local content strategy", "Competitor analysis", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 799, features: ["Enterprise multi-location", "Full local authority building", "AI review management", "Local PR & link building", "Custom local landing pages", "Weekly strategy calls", "Dedicated manager"] },
+    ],
+  },
+  {
+    slug: "conversion-funnels",
+    title: "Conversion Funnel Building",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 499, features: ["1 conversion funnel", "Landing page design", "Email sequence (5 emails)", "Basic A/B testing", "Conversion tracking", "Monthly optimization"] },
+      { name: "Scale", price: 699, features: ["3 conversion funnels", "Custom design & copy", "Email + SMS sequences", "Advanced A/B testing", "Retargeting integration", "Bi-weekly optimization"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited funnels", "Premium design & copy", "Multi-channel sequences", "AI-powered optimization", "Revenue attribution", "Weekly strategy calls", "Dedicated manager"] },
+    ],
+  },
+  {
+    slug: "landing-page-optimization",
+    title: "Landing Page Optimization",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 99, features: ["1 landing page audit", "Conversion recommendations", "Heatmap analysis", "Basic A/B test setup", "Monthly report"] },
+      { name: "Scale", price: 150, features: ["3 landing page audits", "Full UX optimization", "Heatmap + session recording", "A/B testing (3 variants)", "CRO recommendations", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 199, features: ["Unlimited page audits", "AI-powered optimization", "Advanced testing framework", "Personalization setup", "Revenue tracking", "Weekly optimization calls"] },
+    ],
+  },
+  {
+    slug: "conversion-rate-optimization",
+    title: "Conversion Rate Optimization",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 99, features: ["Site-wide CRO audit", "Top 3 quick wins", "Heatmap setup", "Basic testing plan", "Monthly report"] },
+      { name: "Scale", price: 150, features: ["Full CRO strategy", "User behavior analysis", "Multivariate testing", "Form optimization", "Checkout optimization", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 199, features: ["Enterprise CRO program", "AI-powered testing", "Personalization engine", "Revenue optimization", "Custom dashboards", "Weekly strategy calls"] },
+    ],
+  },
+  {
+    slug: "social-media-marketing",
+    title: "Social Media Marketing",
+    unit: "/mo",
+    combinedNote: "Includes Instagram Growth & Posting, Facebook Growth & Posting, Branding & Creative Design, and Short Form Video Marketing",
+    tiers: [
+      { name: "Growth", price: 399, features: ["2 platforms", "12 posts/mo", "Basic content calendar", "Community management", "Monthly analytics", "Includes Instagram & Facebook posting"] },
+      { name: "Scale", price: 499, features: ["4 platforms", "20 posts/mo", "Content strategy & calendar", "Community management", "Graphic design & branding", "Short-form video (4/mo)", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["All platforms", "30+ posts/mo", "Full content strategy", "Brand identity management", "Short-form video (8+/mo)", "Influencer coordination", "Paid social amplification", "Weekly strategy calls"] },
+    ],
+  },
+  {
+    slug: "instagram-growth",
+    title: "Instagram Growth & Posting",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] },
+    ],
+  },
+  {
+    slug: "facebook-growth",
+    title: "Facebook Growth & Posting",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] },
+    ],
+  },
+  {
+    slug: "branding-design",
+    title: "Branding & Creative Design",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] },
+    ],
+  },
+  {
+    slug: "video-marketing",
+    title: "Short Form Video Marketing",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] },
+    ],
+  },
+  {
+    slug: "content-writing",
+    title: "Content Writing & Strategy",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["2 blog articles/mo", "Basic keyword targeting", "Content calendar", "Social media snippets", "Monthly strategy"] },
+      { name: "Scale", price: 299, features: ["4 blog articles/mo", "SEO-optimized content", "Content strategy", "Email newsletter copy", "Social media content", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 399, features: ["8+ articles/mo", "Full content engine", "Thought leadership pieces", "Whitepapers & guides", "Multi-channel distribution", "Weekly strategy calls"] },
+    ],
+  },
+  {
+    slug: "website-development",
+    title: "Website Development",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["5-page responsive website", "Mobile optimization", "Basic SEO setup", "Contact form integration", "SSL & security", "30 days support"] },
+      { name: "Scale", price: 499, features: ["10-page custom website", "Advanced animations", "CRM integration", "Blog setup", "Speed optimization", "Analytics setup", "60 days support"] },
+      { name: "Enterprise", price: 799, features: ["Unlimited pages", "Custom design & UX", "E-commerce capability", "Full CRM integration", "Advanced SEO", "Custom API integrations", "Ongoing support"] },
+    ],
+  },
+  {
+    slug: "landing-page-development",
+    title: "Landing Page Development",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["5 area pages", "Responsive design", "Lead capture forms", "Basic A/B testing", "Speed optimization", "30 days support"] },
+      { name: "Scale", price: 299, features: ["8 area pages", "Custom design", "Advanced forms", "CRM integration", "Conversion tracking", "A/B testing", "60 days support"] },
+      { name: "Enterprise", price: 399, features: ["12 area pages", "Premium design & copy", "Multi-step forms", "Full CRM integration", "Advanced analytics", "Personalization", "Ongoing support"] },
+    ],
+  },
+  {
+    slug: "saas-integrations",
+    title: "SaaS Integrations",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 999, features: ["Up to 5 integrations", "Basic API connections", "Data sync setup", "Error monitoring", "Documentation", "30 days support"] },
+      { name: "Scale", price: 1999, features: ["Up to 15 integrations", "Advanced API workflows", "Real-time data sync", "Custom middleware", "Error handling & alerts", "60 days support"] },
+      { name: "Enterprise", price: 2999, features: ["Unlimited integrations", "Enterprise API architecture", "Custom connectors", "Data transformation", "24/7 monitoring", "Dedicated engineer", "Ongoing support"] },
+    ],
+  },
+  {
+    slug: "crm-setup",
+    title: "CRM Setup & Integration",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 999, features: ["CRM selection & setup", "Basic pipeline configuration", "Contact import", "Team training (2 hrs)", "Email integration", "30 days support"] },
+      { name: "Scale", price: 1499, features: ["Advanced CRM setup", "Multi-pipeline config", "Custom fields & automation", "Data migration", "Team training (5 hrs)", "Marketing integration", "60 days support"] },
+      { name: "Enterprise", price: 1999, features: ["Enterprise CRM deployment", "Complex automation rules", "Multi-team setup", "Full data migration", "Custom reporting", "Ongoing training", "Dedicated support"] },
+    ],
+  },
+  {
+    slug: "analytics-dashboard",
+    title: "Dashboard & Analytics Setup",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Google Analytics setup", "Basic KPI dashboard", "Monthly report template", "Conversion tracking", "3 data sources"] },
+      { name: "Scale", price: 399, features: ["Advanced analytics suite", "Custom KPI dashboards", "Real-time reporting", "Attribution modeling", "10 data sources", "Bi-weekly insights"] },
+      { name: "Enterprise", price: 499, features: ["Enterprise analytics", "AI-powered insights", "Custom data warehouse", "Unlimited data sources", "Predictive analytics", "Revenue attribution", "Weekly strategy calls"] },
+    ],
+  },
+  {
+    slug: "marketing-automation-setup",
+    title: "Marketing Automation Setup",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Platform setup", "3 automation workflows", "Email template design", "Lead scoring basics", "Integration (2 tools)", "30 days support"] },
+      { name: "Scale", price: 399, features: ["Advanced platform config", "10 automation workflows", "Custom templates", "Advanced lead scoring", "Integration (5 tools)", "A/B testing", "60 days support"] },
+      { name: "Enterprise", price: 499, features: ["Enterprise automation", "Unlimited workflows", "AI-optimized journeys", "Multi-channel orchestration", "Unlimited integrations", "Revenue tracking", "Ongoing support"] },
+    ],
+  },
+];
+
+export function getServicePricing(slug: string): ServicePricing | undefined {
+  return SERVICE_PRICING.find(sp => sp.slug === slug);
+}
 
 export const TESTIMONIALS = [
   {
