@@ -13,9 +13,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <img src="/images/logo-icon-white.png" alt="Infinite Rankers" className="w-8 h-8 rounded-md object-contain" />
-              <span className="font-bold text-lg text-white">{COMPANY.name}</span>
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-4">
+              <img src="/images/logo-icon-white.png" alt="Infinite Rankers" className="w-7 h-7 sm:w-8 sm:h-8 rounded-md object-contain" />
+              <span className="font-bold text-sm sm:text-base lg:text-lg text-white">{COMPANY.name}</span>
             </div>
             <p className="text-sm text-gray-400 mb-6 leading-relaxed">
               AI Revenue Growth Agency. We build automated systems that generate customers and revenue for businesses worldwide.

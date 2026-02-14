@@ -512,7 +512,7 @@ function ServicesSection() {
                   <h3 className="text-xs sm:text-sm font-semibold text-gray-900 mb-1.5 sm:mb-2 leading-snug">{service.title}</h3>
                   <p className="text-[10px] sm:text-xs text-gray-500 leading-relaxed mb-2 sm:mb-3 line-clamp-2 hidden sm:block">{service.shortDesc}</p>
                   <span className="inline-flex items-center text-[10px] sm:text-xs font-medium text-blue-600 group-hover:gap-2 gap-1 transition-all">
-                    Learn More <ArrowUpRight className="w-3 h-3" />
+                    Explore Service <ArrowUpRight className="w-3 h-3" />
                   </span>
                 </div>
               </Link>

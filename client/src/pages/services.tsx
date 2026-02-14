@@ -91,7 +91,7 @@ export default function Services() {
                         <h3 className="text-lg font-semibold text-foreground mb-2">{service.title}</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed mb-4">{service.shortDesc}</p>
                         <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600">
-                          Learn More <ArrowRight className="w-3 h-3" />
+                          Explore Service <ArrowRight className="w-3 h-3" />
                         </span>
                       </GlassCard>
                     </Link>
