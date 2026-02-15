@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { injectSEO } from "./seo";
 
 const app = express();
 const httpServer = createServer(app);
@@ -75,9 +76,23 @@ app.use((req, res, next) => {
     return res.status(status).json({ message });
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/api") || req.path.includes(".")) {
+      return next();
+    }
+    const originalEnd = res.end.bind(res);
+    (res as any).end = function (this: any, chunk?: any, encoding?: any, cb?: any) {
+      if (
+        res.getHeader("content-type")?.toString().includes("text/html") &&
+        typeof chunk === "string"
+      ) {
+        chunk = injectSEO(chunk, req.originalUrl);
+      }
+      return originalEnd(chunk, encoding, cb);
+    };
+    next();
+  });
+
   if (process.env.NODE_ENV === "production") {
     serveStatic(app);
   } else {
