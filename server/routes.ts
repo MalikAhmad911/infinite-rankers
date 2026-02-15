@@ -4,12 +4,16 @@ import { storage } from "./storage";
 import { insertContactSchema, insertDemoBookingSchema } from "@shared/schema";
 import { sendContactEmail, sendDemoBookingEmail } from "./email";
 import { registerChatbotRoutes } from "./chatbot";
+import { registerSitemapRoutes } from "./sitemap";
+import { registerIndexingRoutes } from "./google-indexing";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   registerChatbotRoutes(app);
+  registerSitemapRoutes(app);
+  registerIndexingRoutes(app);
   app.post("/api/contacts", async (req, res) => {
     try {
       const parsed = insertContactSchema.safeParse(req.body);

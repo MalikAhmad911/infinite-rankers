@@ -42,3 +42,8 @@ waitForPort = 5000
 
 [agent]
 integrations = ["javascript_openai_ai_integrations:2.0.0"]
+
+[userenv]
+
+[userenv.shared]
+ADMIN_API_KEY = "ir-admin-2026-x9k4m7p2"

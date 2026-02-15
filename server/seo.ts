@@ -181,6 +181,118 @@ export function getSEOForRoute(url: string): SEOMeta | null {
   return null;
 }
 
+function getStructuredData(url: string, seo: SEOMeta): string {
+  const path = url.split("?")[0].split("#")[0];
+  const BASE_URL = "https://infiniterankers.io";
+  const ORG_SCHEMA = {
+    "@type": "Organization",
+    "name": "Infinite Rankers",
+    "url": BASE_URL,
+    "logo": `${BASE_URL}/logo.png`,
+    "sameAs": ["https://infiniterankers.com"],
+    "contactPoint": { "@type": "ContactPoint", "contactType": "sales", "availableLanguage": "English" }
+  };
+
+  if (path === "/") {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Infinite Rankers",
+      "url": BASE_URL,
+      "description": seo.description,
+      "publisher": ORG_SCHEMA,
+      "potentialAction": { "@type": "SearchAction", "target": `${BASE_URL}/services/{search_term_string}`, "query-input": "required name=search_term_string" }
+    });
+  }
+
+  if (path.startsWith("/services/")) {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": seo.title.replace(" - Infinite Rankers", ""),
+      "description": seo.description,
+      "url": seo.canonical,
+      "provider": ORG_SCHEMA,
+      "areaServed": { "@type": "Country", "name": "United States" },
+      "serviceType": "AI Marketing & Automation"
+    });
+  }
+
+  if (path.startsWith("/blog/")) {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": seo.title.replace(" | Infinite Rankers", ""),
+      "description": seo.description,
+      "url": seo.canonical,
+      "publisher": ORG_SCHEMA,
+      "author": { "@type": "Organization", "name": "Infinite Rankers" },
+      "datePublished": "2025-01-15",
+      "dateModified": new Date().toISOString().split("T")[0]
+    });
+  }
+
+  if (path.startsWith("/portfolio/")) {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": seo.title.replace(" - Case Study | Infinite Rankers", ""),
+      "description": seo.description,
+      "url": seo.canonical,
+      "author": ORG_SCHEMA
+    });
+  }
+
+  if (path === "/about") {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": seo.title,
+      "description": seo.description,
+      "url": seo.canonical,
+      "mainEntity": ORG_SCHEMA
+    });
+  }
+
+  if (path === "/contact") {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": seo.title,
+      "description": seo.description,
+      "url": seo.canonical,
+      "mainEntity": ORG_SCHEMA
+    });
+  }
+
+  if (path === "/pricing") {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": seo.title,
+      "description": seo.description,
+      "url": seo.canonical,
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          { "@type": "Offer", "name": "Growth Plan", "price": "1599", "priceCurrency": "USD" },
+          { "@type": "Offer", "name": "Scale Plan", "price": "2999", "priceCurrency": "USD" },
+          { "@type": "Offer", "name": "Enterprise Plan", "price": "5999", "priceCurrency": "USD" }
+        ]
+      }
+    });
+  }
+
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": seo.title,
+    "description": seo.description,
+    "url": seo.canonical,
+    "publisher": ORG_SCHEMA
+  });
+}
+
 export function injectSEO(html: string, url: string): string {
   const seo = getSEOForRoute(url);
   if (!seo) return html;
@@ -233,6 +345,9 @@ export function injectSEO(html: string, url: string): string {
   } else {
     extraTags.push(ogUrlTag);
   }
+
+  const jsonLd = getStructuredData(url, seo);
+  extraTags.push(`<script type="application/ld+json">${jsonLd}</script>`);
 
   if (extraTags.length > 0) {
     const insertion = extraTags.map(t => `    ${t}`).join("\n");
