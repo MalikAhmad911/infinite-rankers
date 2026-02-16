@@ -108,6 +108,16 @@ export default function Footer() {
                   infiniterankers.com <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
+              <li>
+                <a href="https://infiniterankers.com/blog" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-blog">
+                  Marketing Blog <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a href="https://infiniterankers.com/about" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-about">
+                  Content Hub <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
             </ul>
           </div>
         </div>

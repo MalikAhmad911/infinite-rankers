@@ -102,6 +102,36 @@ export function registerSitemapRoutes(app: Express) {
 
   app.get("/robots.txt", (_req, res) => {
     res.set("Content-Type", "text/plain");
-    res.send(`User-agent: *\nAllow: /\n\nSitemap: ${BASE}/sitemap.xml\n`);
+    res.send([
+      "User-agent: *",
+      "Allow: /",
+      "",
+      "User-agent: GPTBot",
+      "Allow: /",
+      "",
+      "User-agent: ChatGPT-User",
+      "Allow: /",
+      "",
+      "User-agent: Google-Extended",
+      "Allow: /",
+      "",
+      "User-agent: Googlebot",
+      "Allow: /",
+      "",
+      "User-agent: Bingbot",
+      "Allow: /",
+      "",
+      "User-agent: PerplexityBot",
+      "Allow: /",
+      "",
+      "User-agent: ClaudeBot",
+      "Allow: /",
+      "",
+      "User-agent: Applebot-Extended",
+      "Allow: /",
+      "",
+      `Sitemap: ${BASE}/sitemap.xml`,
+      "",
+    ].join("\n"));
   });
 }

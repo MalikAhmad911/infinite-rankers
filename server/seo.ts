@@ -189,8 +189,11 @@ function getStructuredData(url: string, seo: SEOMeta): string {
     "name": "Infinite Rankers",
     "url": BASE_URL,
     "logo": `${BASE_URL}/logo.png`,
-    "sameAs": ["https://infiniterankers.com"],
-    "contactPoint": { "@type": "ContactPoint", "contactType": "sales", "availableLanguage": "English" }
+    "description": "AI Revenue Growth Agency providing 30+ AI-powered marketing and automation services for businesses across the USA and worldwide.",
+    "sameAs": ["https://infiniterankers.com", "https://infiniterankers.com/blog", "https://infiniterankers.com/about"],
+    "address": { "@type": "PostalAddress", "streetAddress": "203 N Caroline Pl", "addressLocality": "Dover", "addressRegion": "DE", "postalCode": "19904", "addressCountry": "US" },
+    "contactPoint": { "@type": "ContactPoint", "telephone": "(703) 415-9373", "contactType": "sales", "email": "contact@infiniterankers.io", "availableLanguage": "English", "areaServed": "US" },
+    "knowsAbout": ["AI Automation", "Lead Generation", "Google Ads", "SEO", "CRM Automation", "AI Chatbot", "Digital Marketing", "Social Media Marketing", "Website Development"]
   };
 
   if (path === "/") {
