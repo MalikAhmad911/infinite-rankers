@@ -66,6 +66,13 @@ export default function Footer() {
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" /> {COMPANY.address}
               </div>
             </div>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 mb-4">
+              <span className="relative flex h-2 w-2 flex-shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
+              <span className="text-[10px] sm:text-xs text-emerald-400 font-medium whitespace-nowrap">24/7 Support — Weekends too</span>
+            </div>
             <GooglePartnerBadge variant="footer" />
           </div>
 
