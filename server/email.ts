@@ -1,17 +1,28 @@
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT) || 587,
-  secure: Number(process.env.SMTP_PORT) === 465,
+const SMTP_CONFIG = {
+  host: process.env.SMTP_HOST || "smtp.hostinger.com",
+  port: Number(process.env.SMTP_PORT) || 465,
+  secure: true,
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: process.env.SMTP_USER || "contact@infiniterankers.io",
+    pass: process.env.SMTP_PASS || "",
   },
-});
+};
+
+console.log("SMTP Config:", { host: SMTP_CONFIG.host, port: SMTP_CONFIG.port, user: SMTP_CONFIG.auth.user, passSet: !!SMTP_CONFIG.auth.pass });
+
+let transporter: nodemailer.Transporter | null = null;
+
+function getTransporter(): nodemailer.Transporter {
+  if (!transporter) {
+    transporter = nodemailer.createTransport(SMTP_CONFIG);
+  }
+  return transporter;
+}
 
 const TO_EMAIL = "contact@infiniterankers.io";
-const FROM_EMAIL = process.env.SMTP_USER || "noreply@infiniterankers.com";
+const FROM_EMAIL = SMTP_CONFIG.auth.user;
 
 export async function sendContactEmail(data: {
   name: string;
@@ -20,6 +31,11 @@ export async function sendContactEmail(data: {
   company?: string | null;
   message: string;
 }) {
+  if (!SMTP_CONFIG.auth.pass) {
+    console.error("SMTP_PASS not set - cannot send email. Set SMTP_PASS environment variable.");
+    return;
+  }
+
   const html = `
     <h2>New Contact Form Submission</h2>
     <table style="border-collapse:collapse;width:100%;max-width:600px;">
@@ -31,13 +47,19 @@ export async function sendContactEmail(data: {
     </table>
   `;
 
-  await transporter.sendMail({
-    from: `"Infinite Rankers Website" <${FROM_EMAIL}>`,
-    to: TO_EMAIL,
-    replyTo: data.email,
-    subject: `New Contact: ${data.name}${data.company ? ` from ${data.company}` : ""}`,
-    html,
-  });
+  try {
+    const info = await getTransporter().sendMail({
+      from: `"Infinite Rankers Website" <${FROM_EMAIL}>`,
+      to: TO_EMAIL,
+      replyTo: data.email,
+      subject: `New Contact: ${data.name}${data.company ? ` from ${data.company}` : ""}`,
+      html,
+    });
+    console.log("Contact email sent:", info.messageId, info.response);
+  } catch (err: any) {
+    console.error("Contact email FAILED:", err.message);
+    throw err;
+  }
 }
 
 export async function sendDemoBookingEmail(data: {
@@ -52,6 +74,11 @@ export async function sendDemoBookingEmail(data: {
   time?: string | null;
   message?: string | null;
 }) {
+  if (!SMTP_CONFIG.auth.pass) {
+    console.error("SMTP_PASS not set - cannot send email. Set SMTP_PASS environment variable.");
+    return;
+  }
+
   const html = `
     <h2>New Demo Booking Request</h2>
     <table style="border-collapse:collapse;width:100%;max-width:600px;">
@@ -68,11 +95,17 @@ export async function sendDemoBookingEmail(data: {
     </table>
   `;
 
-  await transporter.sendMail({
-    from: `"Infinite Rankers Website" <${FROM_EMAIL}>`,
-    to: TO_EMAIL,
-    replyTo: data.email,
-    subject: `New Demo Booking: ${data.name}${data.service ? ` - ${data.service}` : ""}`,
-    html,
-  });
+  try {
+    const info = await getTransporter().sendMail({
+      from: `"Infinite Rankers Website" <${FROM_EMAIL}>`,
+      to: TO_EMAIL,
+      replyTo: data.email,
+      subject: `New Demo Booking: ${data.name}${data.service ? ` - ${data.service}` : ""}`,
+      html,
+    });
+    console.log("Demo booking email sent:", info.messageId, info.response);
+  } catch (err: any) {
+    console.error("Demo booking email FAILED:", err.message);
+    throw err;
+  }
 }
