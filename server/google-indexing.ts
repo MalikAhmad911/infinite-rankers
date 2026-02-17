@@ -150,4 +150,48 @@ export function registerIndexingRoutes(app: Express) {
     const result = await submitUrlToGoogle(url, accessToken);
     res.json(result);
   });
+
+  app.get("/api/admin/indexing-status", adminAuth, async (_req, res) => {
+    const urls = getAllURLs();
+    const categories: Record<string, string[]> = {
+      main: [],
+      services: [],
+      portfolio: [],
+      blog: [],
+      landing: [],
+      partner: [],
+    };
+
+    for (const url of urls) {
+      const path = url.replace("https://infiniterankers.io", "");
+      if (path.startsWith("/services/")) categories.services.push(url);
+      else if (path.startsWith("/portfolio/")) categories.portfolio.push(url);
+      else if (path.startsWith("/blog/")) categories.blog.push(url);
+      else if (path.startsWith("/infinite-rankers-")) categories.partner.push(url);
+      else if (path.startsWith("/ai-")) categories.landing.push(url);
+      else categories.main.push(url);
+    }
+
+    res.json({
+      totalPages: urls.length,
+      breakdown: {
+        main: categories.main.length,
+        services: categories.services.length,
+        portfolio: categories.portfolio.length,
+        blog: categories.blog.length,
+        landing: categories.landing.length,
+        partner: categories.partner.length,
+      },
+      seoEndpoints: {
+        sitemap: "https://infiniterankers.io/sitemap.xml",
+        robots: "https://infiniterankers.io/robots.txt",
+        rss: "https://infiniterankers.io/rss.xml",
+        llms: "https://infiniterankers.io/llms.txt",
+        aiPlugin: "https://infiniterankers.io/.well-known/ai-plugin.json",
+        indexNowKey: "https://infiniterankers.io/indexnow-key.txt",
+        htmlSitemap: "https://infiniterankers.io/sitemap",
+      },
+      allUrls: urls,
+    });
+  });
 }

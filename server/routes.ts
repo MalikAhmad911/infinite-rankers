@@ -7,6 +7,7 @@ import { registerChatbotRoutes } from "./chatbot";
 import { registerSitemapRoutes } from "./sitemap";
 import { registerIndexingRoutes } from "./google-indexing";
 import { registerAIDiscoveryRoutes } from "./ai-discovery";
+import { registerIndexNowRoutes } from "./indexnow";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -16,6 +17,7 @@ export async function registerRoutes(
   registerSitemapRoutes(app);
   registerIndexingRoutes(app);
   registerAIDiscoveryRoutes(app);
+  registerIndexNowRoutes(app);
   app.post("/api/contacts", async (req, res) => {
     try {
       const parsed = insertContactSchema.safeParse(req.body);

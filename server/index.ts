@@ -1,10 +1,13 @@
 import express, { type Request, Response, NextFunction } from "express";
+import compression from "compression";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import { injectSEO } from "./seo";
 
 const app = express();
+
+app.use(compression());
 const httpServer = createServer(app);
 
 declare module "http" {
@@ -22,6 +25,16 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  if (req.path.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)) {
+    res.set("Cache-Control", "public, max-age=31536000, immutable");
+  }
+  res.set("X-Content-Type-Options", "nosniff");
+  res.set("X-Frame-Options", "SAMEORIGIN");
+  res.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  next();
+});
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {

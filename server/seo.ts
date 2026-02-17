@@ -112,6 +112,7 @@ const STATIC_PAGES: Record<string, SEOMeta> = {
   "/contact": { title: `Contact Us - ${BRAND}`, description: "Get in touch with Infinite Rankers. Contact our AI revenue growth team for a free consultation on automating your lead generation and sales.", canonical: `${BASE}/contact` },
   "/blog": { title: `Blog - AI Marketing & Automation Insights | ${BRAND}`, description: "Expert insights on AI automation, lead generation, digital marketing strategy, and revenue growth for businesses. Read our latest articles.", canonical: `${BASE}/blog` },
   "/book-demo": { title: `Book a Demo - ${BRAND}`, description: "Schedule a free demo to see how Infinite Rankers AI systems can automate your lead generation, appointment booking, and revenue growth.", canonical: `${BASE}/book-demo` },
+  "/sitemap": { title: `Sitemap - ${BRAND}`, description: "Browse all 90+ pages on infiniterankers.io. Complete directory of our AI marketing services, blog posts, case studies, and landing pages.", canonical: `${BASE}/sitemap` },
   "/terms": { title: `Terms of Service - ${BRAND}`, description: "Terms of Service for Infinite Rankers AI Revenue Growth Agency. Read our terms governing use of infiniterankers.io and infiniterankers.com.", canonical: `${BASE}/terms` },
   "/privacy": { title: `Privacy Policy - ${BRAND}`, description: "Privacy Policy for Infinite Rankers. Learn how we collect, use, and protect your data across infiniterankers.io and infiniterankers.com.", canonical: `${BASE}/privacy` },
 };
@@ -181,6 +182,36 @@ export function getSEOForRoute(url: string): SEOMeta | null {
   return null;
 }
 
+function getBreadcrumbs(path: string, seo: SEOMeta): object {
+  const BASE_URL = "https://infiniterankers.io";
+  const items: { name: string; url: string }[] = [{ name: "Home", url: BASE_URL }];
+
+  if (path.startsWith("/services/")) {
+    items.push({ name: "Services", url: `${BASE_URL}/services` });
+    items.push({ name: seo.title.replace(" - Infinite Rankers", ""), url: seo.canonical });
+  } else if (path.startsWith("/blog/")) {
+    items.push({ name: "Blog", url: `${BASE_URL}/blog` });
+    items.push({ name: seo.title.replace(" | Infinite Rankers", ""), url: seo.canonical });
+  } else if (path.startsWith("/portfolio/")) {
+    items.push({ name: "Portfolio", url: `${BASE_URL}/portfolio` });
+    items.push({ name: seo.title.replace(" - Case Study | Infinite Rankers", ""), url: seo.canonical });
+  } else if (path !== "/") {
+    const name = seo.title.replace(/ [-|] Infinite Rankers$/, "").replace(/ \| Infinite Rankers$/, "");
+    items.push({ name, url: seo.canonical });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": items.map((item, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": item.name,
+      "item": item.url,
+    })),
+  };
+}
+
 function getStructuredData(url: string, seo: SEOMeta): string {
   const path = url.split("?")[0].split("#")[0];
   const BASE_URL = "https://infiniterankers.io";
@@ -196,8 +227,11 @@ function getStructuredData(url: string, seo: SEOMeta): string {
     "knowsAbout": ["AI Automation", "Lead Generation", "Google Ads", "SEO", "CRM Automation", "AI Chatbot", "Digital Marketing", "Social Media Marketing", "Website Development"]
   };
 
+  const breadcrumb = getBreadcrumbs(path, seo);
+  let mainSchema: object;
+
   if (path === "/") {
-    return JSON.stringify({
+    mainSchema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Infinite Rankers",
@@ -205,71 +239,81 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "description": seo.description,
       "publisher": ORG_SCHEMA,
       "potentialAction": { "@type": "SearchAction", "target": `${BASE_URL}/services/{search_term_string}`, "query-input": "required name=search_term_string" }
-    });
+    };
+    return JSON.stringify(mainSchema);
   }
 
   if (path.startsWith("/services/")) {
-    return JSON.stringify({
+    const serviceName = seo.title.replace(" - Infinite Rankers", "");
+    mainSchema = {
       "@context": "https://schema.org",
       "@type": "Service",
-      "name": seo.title.replace(" - Infinite Rankers", ""),
+      "name": serviceName,
       "description": seo.description,
       "url": seo.canonical,
       "provider": ORG_SCHEMA,
       "areaServed": { "@type": "Country", "name": "United States" },
-      "serviceType": "AI Marketing & Automation"
-    });
+      "serviceType": "AI Marketing & Automation",
+      "offers": { "@type": "Offer", "availability": "https://schema.org/InStock", "priceCurrency": "USD", "url": `${BASE_URL}/pricing` }
+    };
+    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
   if (path.startsWith("/blog/")) {
-    return JSON.stringify({
+    mainSchema = {
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": seo.title.replace(" | Infinite Rankers", ""),
       "description": seo.description,
       "url": seo.canonical,
-      "publisher": ORG_SCHEMA,
-      "author": { "@type": "Organization", "name": "Infinite Rankers" },
+      "image": `${BASE_URL}/images/logo-full.png`,
+      "publisher": { ...ORG_SCHEMA, "@context": undefined },
+      "author": { "@type": "Organization", "name": "Infinite Rankers", "url": BASE_URL },
       "datePublished": "2025-01-15",
-      "dateModified": new Date().toISOString().split("T")[0]
-    });
+      "dateModified": new Date().toISOString().split("T")[0],
+      "mainEntityOfPage": { "@type": "WebPage", "@id": seo.canonical }
+    };
+    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
   if (path.startsWith("/portfolio/")) {
-    return JSON.stringify({
+    mainSchema = {
       "@context": "https://schema.org",
       "@type": "CreativeWork",
       "name": seo.title.replace(" - Case Study | Infinite Rankers", ""),
       "description": seo.description,
       "url": seo.canonical,
       "author": ORG_SCHEMA
-    });
+    };
+    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
   if (path === "/about") {
-    return JSON.stringify({
+    mainSchema = {
       "@context": "https://schema.org",
       "@type": "AboutPage",
       "name": seo.title,
       "description": seo.description,
       "url": seo.canonical,
       "mainEntity": ORG_SCHEMA
-    });
+    };
+    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
   if (path === "/contact") {
-    return JSON.stringify({
+    mainSchema = {
       "@context": "https://schema.org",
       "@type": "ContactPage",
       "name": seo.title,
       "description": seo.description,
       "url": seo.canonical,
       "mainEntity": ORG_SCHEMA
-    });
+    };
+    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
   if (path === "/pricing") {
-    return JSON.stringify({
+    mainSchema = {
       "@context": "https://schema.org",
       "@type": "WebPage",
       "name": seo.title,
@@ -283,17 +327,19 @@ function getStructuredData(url: string, seo: SEOMeta): string {
           { "@type": "Offer", "name": "Enterprise Plan", "price": "5999", "priceCurrency": "USD" }
         ]
       }
-    });
+    };
+    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
-  return JSON.stringify({
+  mainSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": seo.title,
     "description": seo.description,
     "url": seo.canonical,
     "publisher": ORG_SCHEMA
-  });
+  };
+  return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
 }
 
 export function injectSEO(html: string, url: string): string {
@@ -348,6 +394,15 @@ export function injectSEO(html: string, url: string): string {
   } else {
     extraTags.push(ogUrlTag);
   }
+
+  extraTags.push(`<meta name="robots" content="index, follow" />`);
+  extraTags.push(`<meta property="og:type" content="website" />`);
+  extraTags.push(`<meta property="og:site_name" content="Infinite Rankers" />`);
+  extraTags.push(`<meta property="og:image" content="${BASE}/images/logo-full.png" />`);
+  extraTags.push(`<meta name="twitter:card" content="summary_large_image" />`);
+  extraTags.push(`<meta name="twitter:title" content="${escapeAttr(seo.title)}" />`);
+  extraTags.push(`<meta name="twitter:description" content="${escapeAttr(seo.description)}" />`);
+  extraTags.push(`<link rel="alternate" type="application/rss+xml" title="Infinite Rankers Blog" href="${BASE}/rss.xml" />`);
 
   const jsonLd = getStructuredData(url, seo);
   extraTags.push(`<script type="application/ld+json">${jsonLd}</script>`);

@@ -7,6 +7,7 @@ import GlassCard from "@/components/glass-card";
 import SectionHeader from "@/components/section-header";
 import ServiceHeroMockup from "@/components/service-mockups";
 import { ProblemSolutionSection, FeaturesSection, WorkflowSection, FAQSection } from "@/components/service-sections";
+import RelatedLinks from "@/components/related-links";
 import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, type ServiceVisualTheme, getServicePricing } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
@@ -488,6 +489,8 @@ export default function ServiceDetail() {
           </motion.div>
         </div>
       </section>
+
+      <RelatedLinks currentPath={`/services/${params.slug}`} type="service" />
     </div>
   );
 }

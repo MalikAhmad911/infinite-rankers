@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import ScrollToTop from "@/components/scroll-to-top";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import Breadcrumbs from "@/components/breadcrumbs";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Services from "@/pages/services";
@@ -22,6 +23,8 @@ import LandingPage from "@/pages/landing-page";
 import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import Terms from "@/pages/terms";
 import Privacy from "@/pages/privacy";
+import SitemapPage from "@/pages/sitemap-page";
+import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -44,6 +47,8 @@ function Router() {
       <Route path="/infinite-rankers-ai-automation" component={InfiniteRankersAutomation} />
       <Route path="/terms" component={Terms} />
       <Route path="/privacy" component={Privacy} />
+      <Route path="/sitemap" component={SitemapPage} />
+      <Route path="/admin/indexing" component={AdminDashboard} />
       <Route path="/:slug">{(params) => <LandingPage slug={params.slug} />}</Route>
       <Route component={NotFound} />
     </Switch>
@@ -59,6 +64,7 @@ function App() {
             <ScrollToTop />
             <Navbar />
             <main>
+              <Breadcrumbs />
               <Router />
             </main>
             <Footer />

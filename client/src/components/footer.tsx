@@ -1,16 +1,53 @@
 import { Link } from "wouter";
-import { COMPANY, NAV_LINKS, SERVICE_CATEGORIES } from "@/lib/constants";
+import { COMPANY } from "@/lib/constants";
 import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
 
-export default function Footer() {
-  const topServices = SERVICE_CATEGORIES.flatMap(cat => cat.services.slice(0, 2));
+const QUICK_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+  { href: "/sitemap", label: "Sitemap" },
+];
 
+const RESOURCES = [
+  { href: "/blog", label: "Blog" },
+  { href: "/book-demo", label: "Book Demo" },
+  { href: "/contact", label: "Contact" },
+];
+
+const KEY_SERVICES = [
+  { slug: "ai-calling-agent", title: "AI Calling Agent" },
+  { slug: "ai-receptionist", title: "AI Receptionist" },
+  { slug: "google-ads", title: "Google Ads Revenue Engine" },
+  { slug: "meta-ads", title: "Meta Ads Growth Engine" },
+  { slug: "social-media-marketing", title: "Social Media Marketing" },
+  { slug: "instagram-growth", title: "Instagram Growth & Posting" },
+  { slug: "website-development", title: "Website Development" },
+  { slug: "landing-page-development", title: "Landing Page Development" },
+];
+
+const PARTNER_LINKS = [
+  { href: "/infinite-rankers-agency", label: "About Us", external: false },
+  { href: "/infinite-rankers-seo-services", label: "SEO Services", external: false },
+  { href: "/infinite-rankers-paid-advertising", label: "Paid Ads", external: false },
+  { href: "/infinite-rankers-ai-automation", label: "AI Automation", external: false },
+  { href: "https://infiniterankers.com", label: "infiniterankers.com", external: true },
+  { href: "https://infiniterankers.com/blog", label: "Marketing Blog", external: true },
+  { href: "https://infiniterankers.com/resources", label: "Content Hub", external: true },
+];
+
+export default function Footer() {
   return (
     <footer className="bg-[#0B1120] text-gray-300" data-testid="footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          <div className="col-span-2 sm:col-span-2 lg:col-span-1">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
+
+          <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <div className="flex items-center gap-1.5 mb-3">
               <img src="/images/logo-icon-white.png" alt="Infinite Rankers" className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
               <span className="font-bold text-sm sm:text-base text-white">{COMPANY.name}</span>
@@ -35,7 +72,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-white mb-3 text-sm">Quick Links</h4>
             <ul className="space-y-1.5">
-              {NAV_LINKS.map((link) => (
+              {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href}>
                     <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-${link.label.toLowerCase()}`}>
@@ -45,30 +82,27 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <h4 className="font-semibold text-white mb-2 mt-5 text-sm">Resources</h4>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-white mb-3 text-sm">Resources</h4>
             <ul className="space-y-1.5">
-              <li>
-                <Link href="/blog">
-                  <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-blog">Blog</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/book-demo">
-                  <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-resources-book-demo">Book Demo</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact">
-                  <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-resources-contact">Contact</span>
-                </Link>
-              </li>
+              {RESOURCES.map((link) => (
+                <li key={link.href + link.label}>
+                  <Link href={link.href}>
+                    <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-res-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
+                      {link.label}
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold text-white mb-3 text-sm">Services</h4>
             <ul className="space-y-1.5">
-              {topServices.map((service) => (
+              {KEY_SERVICES.map((service) => (
                 <li key={service.slug}>
                   <Link href={`/services/${service.slug}`}>
                     <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-service-${service.slug}`}>
@@ -80,44 +114,24 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="col-span-2 sm:col-span-1">
+          <div>
             <h4 className="font-semibold text-white mb-3 text-sm">Partner Platform</h4>
             <ul className="space-y-1.5">
-              <li>
-                <Link href="/infinite-rankers-agency">
-                  <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-agency">About Us</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/infinite-rankers-seo-services">
-                  <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-seo">SEO Services</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/infinite-rankers-paid-advertising">
-                  <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-ads">Paid Ads</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/infinite-rankers-ai-automation">
-                  <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid="link-footer-ir-automation">AI Automation</span>
-                </Link>
-              </li>
-              <li>
-                <a href="https://infiniterankers.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-home">
-                  infiniterankers.com <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-              <li>
-                <a href="https://infiniterankers.com/blog" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-blog">
-                  Marketing Blog <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-              <li>
-                <a href="https://infiniterankers.com/about" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-com-about">
-                  Content Hub <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
+              {PARTNER_LINKS.map((link) => (
+                <li key={link.href}>
+                  {link.external ? (
+                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid={`link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
+                      {link.label} <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    <Link href={link.href}>
+                      <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
+                        {link.label}
+                      </span>
+                    </Link>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
         </div>

@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import {
   SERVICE_CATEGORIES, ACHIEVEMENTS, HOW_IT_WORKS_STEPS,
-  TESTIMONIALS, CASE_STUDIES, COMPANY, PRICING_TIERS,
+  TESTIMONIALS, CASE_STUDIES, COMPANY, PRICING_TIERS, BLOG_POSTS,
 } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
@@ -1051,6 +1051,74 @@ function PricingSection() {
   );
 }
 
+function BlogSection() {
+  const posts = BLOG_POSTS.slice(0, 6);
+
+  return (
+    <section className="py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/80 to-white" data-testid="blog-section">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-8 sm:mb-16"
+        >
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
+            Latest Insights
+          </span>
+          <h2 className="font-bold text-gray-900 mb-3 sm:mb-4" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
+            Expert Resources for Business Growth
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }}>
+            Actionable strategies and insights to help you grow your revenue with AI and automation.
+          </p>
+        </motion.div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {posts.map((post, i) => (
+            <motion.div
+              key={post.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.06 }}
+            >
+              <Link href={`/blog/${post.slug}`}>
+                <Card className="overflow-hidden cursor-pointer h-full" data-testid={`blog-card-${post.slug}`}>
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-40 sm:h-44 object-cover"
+                    loading="lazy"
+                    data-testid={`img-blog-${post.slug}`}
+                  />
+                  <div className="p-4 sm:p-5">
+                    <Badge variant="secondary" className="mb-2 text-xs" data-testid={`badge-blog-category-${post.id}`}>{post.category}</Badge>
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2 leading-snug line-clamp-2" data-testid={`text-blog-title-${post.id}`}>{post.title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mb-3 line-clamp-2" data-testid={`text-blog-excerpt-${post.id}`}>{post.excerpt}</p>
+                    <div className="flex items-center gap-3 text-xs text-gray-400">
+                      <span data-testid={`text-blog-date-${post.id}`}>{post.date}</span>
+                      <span data-testid={`text-blog-readtime-${post.id}`}>{post.readTime}</span>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="text-center mt-8 sm:mt-10">
+          <Link href="/blog">
+            <Button variant="outline" className="border-gray-300 text-gray-700 w-full sm:w-auto" data-testid="button-view-all-blog">
+              Read All Articles <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCTASection() {
   return (
     <section className="py-16 sm:py-24 lg:py-28 relative overflow-hidden" data-testid="cta-section">
@@ -1202,6 +1270,7 @@ export default function Home() {
       <TestimonialsCarousel />
       <TeamSection />
       <ResultsGallery />
+      <BlogSection />
       <PricingSection />
       <FinalCTASection />
     </div>

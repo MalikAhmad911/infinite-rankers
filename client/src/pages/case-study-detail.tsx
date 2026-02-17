@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { CASE_STUDIES } from "@/lib/constants";
 import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star } from "lucide-react";
+import RelatedLinks from "@/components/related-links";
 
 const PORTFOLIO_IMAGES: Record<string, string> = {
   "1": "/images/portfolio/project-1-dental.jpg",
@@ -401,6 +402,7 @@ export default function CaseStudyDetail() {
           </motion.div>
         </div>
       </section>
+      <RelatedLinks currentPath={`/portfolio/${id}`} type="portfolio" />
     </div>
   );
 }
