@@ -170,10 +170,13 @@ export default function Contact() {
                     {COMPANY.address}
                   </div>
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-5 h-5 text-blue-600" />
+                    <div className="w-10 h-10 rounded-md bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-emerald-600" />
                     </div>
-                    Mon - Fri: 9:00 AM - 6:00 PM EST
+                    <div>
+                      <span className="font-medium text-foreground">24/7 Support Available</span>
+                      <p className="text-xs text-muted-foreground mt-0.5">Our team responds on weekends and holidays too</p>
+                    </div>
                   </div>
                 </div>
               </GlassCard>

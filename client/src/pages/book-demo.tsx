@@ -15,7 +15,6 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertDemoBookingSchema } from "@shared/schema";
 import type { InsertDemoBooking } from "@shared/schema";
-import { ALL_SERVICES } from "@/lib/constants";
 import { CalendarCheck, CheckCircle2, ArrowRight, Clock, Star } from "lucide-react";
 
 const timeSlots = [
@@ -223,29 +222,13 @@ export default function BookDemo() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <Label htmlFor="demo-service" className="text-sm mb-1.5 block">Interested Service</Label>
-                      <Controller
-                        control={form.control}
-                        name="service"
-                        render={({ field }) => (
-                          <Select onValueChange={field.onChange} value={field.value || ""}>
-                            <SelectTrigger data-testid="select-demo-service">
-                              <SelectValue placeholder="Select a service" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Full Revenue System (All Services)">Full Revenue System (All Services)</SelectItem>
-                              {ALL_SERVICES.map((s) => (
-                                <SelectItem key={s.slug} value={s.title}>{s.title}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        )}
+                      <Label htmlFor="demo-service" className="text-sm mb-1.5 block">What Service Are You Looking For?</Label>
+                      <Input
+                        id="demo-service"
+                        placeholder="e.g. AI Calling Agent, Lead Generation, SEO..."
+                        {...form.register("service")}
+                        data-testid="input-demo-service"
                       />
-                      {serviceFromUrl && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Pre-selected: {serviceFromUrl}
-                        </p>
-                      )}
                     </div>
                     <div className="mt-4">
                       <Label htmlFor="demo-message" className="text-sm mb-1.5 block">Additional Notes</Label>
@@ -281,6 +264,7 @@ export default function BookDemo() {
                     "AI automation opportunities identification",
                     "Actionable growth roadmap — even if you don't sign up",
                     "No hard sell, no obligation, no pressure",
+                    "24/7 support team — we respond on weekends too",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm">
                       <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />

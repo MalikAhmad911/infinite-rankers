@@ -948,7 +948,7 @@ function MidCTASection() {
             Ready to See What AI Can Do for Your Revenue?
           </h2>
           <p className="text-white/80 mb-5 sm:mb-6 max-w-xl mx-auto text-sm sm:text-base">
-            Get a free strategy session and custom growth roadmap for your business.
+            Get a free strategy session and custom growth roadmap for your business. Our support team is available 24/7 — including weekends.
           </p>
           <Link href="/book-demo">
             <Button variant="secondary" className="w-full sm:w-auto" data-testid="button-mid-cta">
@@ -1170,7 +1170,7 @@ function FinalCTASection() {
           <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 mt-8 sm:mt-10">
             {[
               { icon: Shield, text: "Flexible Plans Available" },
-              { icon: Clock, text: "Results in 30 Days" },
+              { icon: Clock, text: "24/7 Support — Weekends Too" },
               { icon: CheckCircle2, text: "Money-Back Guarantee" },
             ].map((item) => (
               <div key={item.text} className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-400">
