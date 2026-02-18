@@ -84,20 +84,6 @@ export default function CaseStudyDetail() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://infiniterankers.io/" },
-              { "@type": "ListItem", "position": 2, "name": "Portfolio", "item": "https://infiniterankers.io/portfolio" },
-              { "@type": "ListItem", "position": 3, "name": cs.title, "item": `https://infiniterankers.io/portfolio/${cs.id}` }
-            ]
-          })
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
             "@type": "Article",
             "headline": cs.title,
             "description": `${cs.business}: ${cs.challenge.slice(0, 150)}`,

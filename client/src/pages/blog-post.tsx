@@ -67,20 +67,6 @@ export default function BlogPost() {
           })
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://infiniterankers.io/" },
-              { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://infiniterankers.io/blog" },
-              { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://infiniterankers.io/blog/${post.slug}` }
-            ]
-          })
-        }}
-      />
 
       <section className="relative pt-32 pb-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
