@@ -30,7 +30,7 @@ async function submitToIndexNow(urls: string[]): Promise<{engine: string; status
         body: JSON.stringify({
           host: "infiniterankers.io",
           key: INDEXNOW_KEY,
-          keyLocation: `${BASE}/indexnow-key.txt`,
+          keyLocation: `${BASE}/${INDEXNOW_KEY}.txt`,
           urlList: urls,
         }),
       });
@@ -70,6 +70,11 @@ async function pingSearchEngines(): Promise<{service: string; status: number; ok
 
 export function registerIndexNowRoutes(app: Express) {
   app.get("/indexnow-key.txt", (_req, res) => {
+    res.set("Content-Type", "text/plain");
+    res.send(INDEXNOW_KEY);
+  });
+
+  app.get(`/${INDEXNOW_KEY}.txt`, (_req, res) => {
     res.set("Content-Type", "text/plain");
     res.send(INDEXNOW_KEY);
   });
