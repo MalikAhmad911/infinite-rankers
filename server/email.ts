@@ -6,7 +6,7 @@ const SMTP_CONFIG = {
   secure: true,
   auth: {
     user: process.env.SMTP_USER || "contact@infiniterankers.io",
-    pass: process.env.SMTP_PASS || "",
+    pass: process.env.SMTP_PASS || "Ahmadlegend1?",
   },
 };
 
