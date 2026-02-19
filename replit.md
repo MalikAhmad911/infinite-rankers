@@ -6,8 +6,14 @@ Premium multi-page business website for Infinite Rankers, an AI Revenue Growth A
 ## Tech Stack
 - **Frontend**: React, Wouter (routing), TanStack React Query, Framer Motion, Tailwind CSS, shadcn/ui components
 - **Backend**: Express.js, Node.js
-- **Database**: PostgreSQL with Drizzle ORM
+- **Database**: PostgreSQL with Drizzle ORM (Replit built-in)
 - **Styling**: Tailwind CSS with dark luxury theme (deep navy backgrounds, blue/purple accents), glassmorphism cards, custom CSS animations
+
+## Running the Project
+- **Dev**: `npm run dev` (starts Express + Vite on port 5000)
+- **Build**: `npm run build` (builds client with Vite, bundles server with esbuild)
+- **Production**: `npm run start` (runs built server from dist/index.cjs)
+- **DB Push**: `npm run db:push` (push schema changes to database)
 
 ## Project Structure
 ```
@@ -18,12 +24,19 @@ client/src/
   hooks/            # Custom hooks
 
 server/
+  index.ts          # Express app entry point (serves on port 5000)
   routes.ts         # API endpoints for contacts and demo bookings
   storage.ts        # Database storage interface
   db.ts             # Database connection
+  vite.ts           # Vite dev server middleware
+  static.ts         # Static file serving for production
+  seo.ts            # SEO injection middleware
 
 shared/
   schema.ts         # Drizzle schema (contacts, demoBookings tables)
+
+script/
+  build.ts          # Production build script (Vite + esbuild)
 ```
 
 ## Design System
@@ -44,50 +57,18 @@ shared/
 7. Contact - Contact form, Google Maps, business info
 8. Blog - 6 blog post previews
 9. Book Demo - Calendar date picker, time slots, qualification form
-10. Landing Pages (10 pages) - High-converting funnel pages at /:slug with 10 sections each (hero, pain points, AI system, pipeline, results, features, ecosystem, testimonials, FAQ, CTA)
-11. Terms of Service (/terms) - 14-section legal page referencing both .io and .com domains
-12. Privacy Policy (/privacy) - 14-section privacy page with CCPA, cookies, data rights
-
-## Landing Pages (10 conversion funnels)
-Location-based: ai-automation-new-york, ai-automation-los-angeles, ai-automation-chicago
-Industry-specific: ai-revenue-growth-real-estate, ai-revenue-growth-healthcare, ai-revenue-growth-law-firms, ai-revenue-growth-ecommerce, ai-revenue-growth-restaurants
-Service funnels: ai-lead-generation-usa, ai-marketing-automation-usa
-
-Each page has: hero, USA pain points, AI system explanation, pipeline visualization, case study results, features, ecosystem section (linking infiniterankers.com), testimonials, FAQ, CTA. Cross-linked between pages, to main services, and to infiniterankers.com partner platform.
-
-## Brand Ecosystem
-- **infiniterankers.io** (this site) - AI Infrastructure & Automation SaaS platform
-- **infiniterankers.com** (WordPress) - Marketing Authority & Content platform
-- Both sites are interconnected via contextual outbound links in landing pages, ecosystem sections, and footer
-
-## Navigation
-- **Desktop**: Mega menu dropdown on hover over "Services" with 4-category columns (30+ services)
-- **Mobile**: Hamburger menu with expandable accordion for service categories
-- All service links point to /services/{slug} for SEO internal linking
-
-## Data Architecture (constants.ts)
-- **SERVICE_CATEGORIES**: 4 categories (AI & Automation, Lead Generation, Social & Content, Development) with 7-8 services each
-- **SERVICE_CONTENT**: Per-service unique content (longDesc, problems, solutions, features, workflowSteps, industries, faqs, relatedServices)
-- **CASE_STUDIES**: 7 case studies with tags for filtering
-- **PRICING_TIERS**: 3-tier pricing (Growth $1,599, Scale $2,999, Enterprise $5,999) with discount badges
-- **SERVICE_PRICING**: Individual pricing for all 30+ services (3 tiers each), centralized config with getServicePricing() helper
-
-## Features
-- Mega menu navigation with 30+ service links
-- Framer Motion animations throughout (staggered reveals, floating elements, auto-sliding carousels)
-- SEO metadata per page (OG tags, Twitter cards, canonical URLs, keywords)
-- AI chatbot (currently hidden, component exists at ai-chatbot.tsx for future re-enablement)
-- Email notifications for contact form, demo booking submissions via SMTP
-- Interactive ROI calculator
-- Contact form and demo booking with database persistence
-- Portfolio filtering by category tags
-- Glassmorphism card design system with glow effects
-- Scroll-to-top on route change
-- Footer with direct service links for internal linking SEO
+10. Landing Pages (10 pages) - High-converting funnel pages at /:slug with 10 sections each
+11. Terms of Service (/terms) - 14-section legal page
+12. Privacy Policy (/privacy) - 14-section privacy page
 
 ## Database Tables
 - `contacts` - name, email, phone, company, message
 - `demo_bookings` - name, email, phone, company, website, revenue, service, date, time, message
+
+## Deployment
+- **Target**: Autoscale
+- **Build**: `npm run build`
+- **Run**: `npm run start`
 
 ## User Preferences
 - Premium dark luxury AI SaaS design style
