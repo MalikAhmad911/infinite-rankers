@@ -164,11 +164,14 @@ export function registerIndexingRoutes(app: Express) {
 
     for (const url of urls) {
       const path = url.replace("https://infiniterankers.io", "");
-      if (path.startsWith("/services/")) categories.services.push(url);
-      else if (path.startsWith("/portfolio/")) categories.portfolio.push(url);
-      else if (path.startsWith("/blog/")) categories.blog.push(url);
-      else if (path.startsWith("/infinite-rankers-")) categories.partner.push(url);
-      else if (path.startsWith("/ai-")) categories.landing.push(url);
+      const slug = path.replace(/^\//, "");
+      const serviceSlugs = ["ai-calling-agent","ai-receptionist","ai-lead-qualification","ai-appointment-booking","ai-follow-up","ai-sales-assistant","ai-chatbot","ai-email-automation","ai-sms-automation","crm-automation","workflow-automation","google-ads","meta-ads","seo-authority","local-seo","conversion-funnels","landing-page-optimization","conversion-rate-optimization","social-media-marketing","instagram-growth","facebook-growth","content-writing","branding-design","video-marketing","website-development","landing-page-development","crm-setup","saas-integrations","marketing-automation-setup","analytics-dashboard"];
+      const blogSlugs = ["ai-automation-revenue-growth-2025","google-ads-roi-local-business","ai-chatbot-lead-conversion","crm-automation-sales-pipeline","seo-vs-paid-ads-strategy","ai-follow-up-sequences","social-media-marketing-strategy-2025","local-business-digital-marketing","lead-generation-strategies-2025","website-conversion-optimization","content-marketing-seo-guide","ecommerce-growth-strategies","brand-identity-business-growth","healthcare-marketing-patient-acquisition","real-estate-lead-generation-ai"];
+      if (serviceSlugs.includes(slug)) categories.services.push(url);
+      else if (/^\d+$/.test(slug)) categories.portfolio.push(url);
+      else if (blogSlugs.includes(slug)) categories.blog.push(url);
+      else if (slug.startsWith("infinite-rankers-")) categories.partner.push(url);
+      else if (slug.startsWith("ai-")) categories.landing.push(url);
       else categories.main.push(url);
     }
 

@@ -130,7 +130,7 @@ export default function SitemapPage() {
                     {category.services.map((service) => (
                       <SitemapLink
                         key={service.slug}
-                        href={`/services/${service.slug}`}
+                        href={`/${service.slug}`}
                         title={service.title}
                         testId={`link-service-${service.slug}`}
                       />
@@ -146,7 +146,7 @@ export default function SitemapPage() {
               {CASE_STUDIES.map((cs) => (
                 <SitemapLink
                   key={cs.id}
-                  href={`/portfolio/${cs.id}`}
+                  href={`/${cs.id}`}
                   title={cs.title}
                   testId={`link-case-study-${cs.id}`}
                 />
@@ -159,7 +159,7 @@ export default function SitemapPage() {
               {BLOG_POSTS_FULL.map((post) => (
                 <SitemapLink
                   key={post.slug}
-                  href={`/blog/${post.slug}`}
+                  href={`/${post.slug}`}
                   title={post.title}
                   testId={`link-blog-${post.slug}`}
                 />

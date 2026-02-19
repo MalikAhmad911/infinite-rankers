@@ -295,7 +295,7 @@ export default function LandingPage({ slug }: { slug?: string }) {
               <p className="text-sm text-gray-500 mb-3">Explore related services on our platform:</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {relatedServiceData.map((s) => s && (
-                  <Link key={s.slug} href={`/services/${s.slug}`}>
+                  <Link key={s.slug} href={`/${s.slug}`}>
                     <Badge variant="outline" className="cursor-pointer text-xs" data-testid={`link-related-service-${s.slug}`}>
                       {s.title}
                     </Badge>

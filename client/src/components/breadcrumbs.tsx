@@ -1,5 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { ChevronRight, Home } from "lucide-react";
+import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
+import { getBlogPostBySlug } from "@/lib/blog-data";
 
 interface BreadcrumbItem {
   label: string;
@@ -11,8 +13,32 @@ function getBreadcrumbs(path: string): BreadcrumbItem[] {
 
   if (path === "/") return crumbs;
 
-  const segments = path.split("/").filter(Boolean);
+  const slug = path.replace("/", "");
 
+  const service = ALL_SERVICES.find(s => s.slug === slug);
+  if (service) {
+    crumbs.push({ label: "Services", href: "/services" });
+    crumbs.push({ label: service.title });
+    return crumbs;
+  }
+
+  const blogPost = getBlogPostBySlug(slug);
+  if (blogPost) {
+    crumbs.push({ label: "Blog", href: "/blog" });
+    const title = blogPost.title.length > 50 ? blogPost.title.substring(0, 50) + "..." : blogPost.title;
+    crumbs.push({ label: title });
+    return crumbs;
+  }
+
+  const caseStudy = CASE_STUDIES.find(cs => cs.id === slug);
+  if (caseStudy) {
+    crumbs.push({ label: "Portfolio", href: "/portfolio" });
+    const title = caseStudy.title.length > 50 ? caseStudy.title.substring(0, 50) + "..." : caseStudy.title;
+    crumbs.push({ label: title });
+    return crumbs;
+  }
+
+  const segments = path.split("/").filter(Boolean);
   if (segments[0] === "services") {
     crumbs.push({ label: "Services", href: "/services" });
     if (segments[1]) {

@@ -145,7 +145,7 @@ export default function ServiceDetail() {
       <SEOHead
         title={`${service.title} - Infinite Rankers | AI Revenue Growth`}
         description={service.shortDesc}
-        canonical={`https://infiniterankers.io/services/${service.slug}`}
+        canonical={`https://infiniterankers.io/${service.slug}`}
       />
       <script
         type="application/ld+json"
@@ -161,7 +161,7 @@ export default function ServiceDetail() {
               "url": "https://infiniterankers.io"
             },
             "areaServed": { "@type": "Country", "name": "United States" },
-            "url": `https://infiniterankers.io/services/${service.slug}`
+            "url": `https://infiniterankers.io/${service.slug}`
           })
         }}
       />
@@ -440,7 +440,7 @@ export default function ServiceDetail() {
                 if (!rs) return null;
                 const RsIcon = iconMap[rs.icon] || Zap;
                 return (
-                  <Link key={rs.slug} href={`/services/${rs.slug}`}>
+                  <Link key={rs.slug} href={`/${rs.slug}`}>
                     <GlassCard delay={i * 0.1} glow className="cursor-pointer h-full">
                       <div className={`w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4`}>
                         <RsIcon className="w-5 h-5 text-blue-600" />
@@ -476,7 +476,7 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      <RelatedLinks currentPath={`/services/${params.slug}`} type="service" />
+      <RelatedLinks currentPath={`/${params.slug}`} type="service" />
     </div>
   );
 }

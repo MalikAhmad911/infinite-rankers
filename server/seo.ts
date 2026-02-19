@@ -124,58 +124,50 @@ export function getSEOForRoute(url: string): SEOMeta | null {
     return STATIC_PAGES[path];
   }
 
-  const serviceMatch = path.match(/^\/services\/(.+)$/);
-  if (serviceMatch) {
-    const svc = SERVICES.find(s => s.slug === serviceMatch[1]);
-    if (svc) {
-      return {
-        title: `${svc.title} - ${BRAND}`,
-        description: svc.desc,
-        canonical: `${BASE}/services/${svc.slug}`,
-      };
-    }
-  }
+  const slug = path.replace(/^\//, "");
 
-  const blogMatch = path.match(/^\/blog\/(.+)$/);
-  if (blogMatch) {
-    const post = BLOG_POSTS.find(b => b.slug === blogMatch[1]);
-    if (post) {
-      return {
-        title: `${post.title} | ${BRAND}`,
-        description: post.desc,
-        canonical: `${BASE}/blog/${post.slug}`,
-      };
-    }
-  }
-
-  const caseMatch = path.match(/^\/portfolio\/(.+)$/);
-  if (caseMatch) {
-    const cs = CASE_STUDIES[caseMatch[1]];
-    if (cs) {
-      return {
-        title: `${cs.title} - Case Study | ${BRAND}`,
-        description: cs.desc,
-        canonical: `${BASE}/portfolio/${caseMatch[1]}`,
-      };
-    }
-  }
-
-  if (PARTNER_PAGES[path.replace("/", "")]) {
-    const pp = PARTNER_PAGES[path.replace("/", "")];
+  const svc = SERVICES.find(s => s.slug === slug);
+  if (svc) {
     return {
-      title: pp.title,
-      description: pp.desc,
-      canonical: `${BASE}${path}`,
+      title: `${svc.title} - ${BRAND}`,
+      description: svc.desc,
+      canonical: `${BASE}/${svc.slug}`,
     };
   }
 
-  const lpSlug = path.replace("/", "");
-  if (LANDING_PAGES[lpSlug]) {
-    const lp = LANDING_PAGES[lpSlug];
+  const post = BLOG_POSTS.find(b => b.slug === slug);
+  if (post) {
+    return {
+      title: `${post.title} | ${BRAND}`,
+      description: post.desc,
+      canonical: `${BASE}/${post.slug}`,
+    };
+  }
+
+  const cs = CASE_STUDIES[slug];
+  if (cs) {
+    return {
+      title: `${cs.title} - Case Study | ${BRAND}`,
+      description: cs.desc,
+      canonical: `${BASE}/${slug}`,
+    };
+  }
+
+  if (PARTNER_PAGES[slug]) {
+    const pp = PARTNER_PAGES[slug];
+    return {
+      title: pp.title,
+      description: pp.desc,
+      canonical: `${BASE}/${slug}`,
+    };
+  }
+
+  if (LANDING_PAGES[slug]) {
+    const lp = LANDING_PAGES[slug];
     return {
       title: lp.title,
       description: lp.desc,
-      canonical: `${BASE}/${lpSlug}`,
+      canonical: `${BASE}/${slug}`,
     };
   }
 
@@ -186,13 +178,18 @@ function getBreadcrumbs(path: string, seo: SEOMeta): object {
   const BASE_URL = "https://infiniterankers.io";
   const items: { name: string; url: string }[] = [{ name: "Home", url: BASE_URL }];
 
-  if (path.startsWith("/services/")) {
+  const slug = path.replace(/^\//, "");
+  const isService = SERVICES.some(s => s.slug === slug);
+  const isBlog = BLOG_POSTS.some(b => b.slug === slug);
+  const isCase = !!CASE_STUDIES[slug];
+
+  if (isService) {
     items.push({ name: "Services", url: `${BASE_URL}/services` });
     items.push({ name: seo.title.replace(" - Infinite Rankers", ""), url: seo.canonical });
-  } else if (path.startsWith("/blog/")) {
+  } else if (isBlog) {
     items.push({ name: "Blog", url: `${BASE_URL}/blog` });
     items.push({ name: seo.title.replace(" | Infinite Rankers", ""), url: seo.canonical });
-  } else if (path.startsWith("/portfolio/")) {
+  } else if (isCase) {
     items.push({ name: "Portfolio", url: `${BASE_URL}/portfolio` });
     items.push({ name: seo.title.replace(" - Case Study | Infinite Rankers", ""), url: seo.canonical });
   } else if (path !== "/") {
@@ -238,12 +235,17 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": BASE_URL,
       "description": seo.description,
       "publisher": ORG_SCHEMA,
-      "potentialAction": { "@type": "SearchAction", "target": `${BASE_URL}/services/{search_term_string}`, "query-input": "required name=search_term_string" }
+      "potentialAction": { "@type": "SearchAction", "target": `${BASE_URL}/{search_term_string}`, "query-input": "required name=search_term_string" }
     };
     return JSON.stringify(mainSchema);
   }
 
-  if (path.startsWith("/services/")) {
+  const ssSlug = path.replace(/^\//, "");
+  const isServicePage = SERVICES.some(s => s.slug === ssSlug);
+  const isBlogPage = BLOG_POSTS.some(b => b.slug === ssSlug);
+  const isCasePage = !!CASE_STUDIES[ssSlug];
+
+  if (isServicePage) {
     const serviceName = seo.title.replace(" - Infinite Rankers", "");
     mainSchema = {
       "@context": "https://schema.org",
@@ -259,7 +261,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
     return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
-  if (path.startsWith("/blog/")) {
+  if (isBlogPage) {
     mainSchema = {
       "@context": "https://schema.org",
       "@type": "Article",
@@ -276,7 +278,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
     return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
   }
 
-  if (path.startsWith("/portfolio/")) {
+  if (isCasePage) {
     mainSchema = {
       "@context": "https://schema.org",
       "@type": "CreativeWork",

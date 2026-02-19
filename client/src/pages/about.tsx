@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/seo-head";
 import SectionHeader from "@/components/section-header";
 import GlassCard from "@/components/glass-card";
+import RelatedLinks from "@/components/related-links";
 import { COMPANY, ACHIEVEMENTS } from "@/lib/constants";
 import {
   ArrowRight, Target, Eye, Cpu, Globe, Shield, Users,
@@ -164,6 +165,7 @@ export default function About() {
           </motion.div>
         </div>
       </section>
+      <RelatedLinks currentPath="/about" type="page" />
     </div>
   );
 }

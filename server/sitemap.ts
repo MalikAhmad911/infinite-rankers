@@ -45,11 +45,11 @@ function getAllSitemapEntries(): SitemapURL[] {
     "crm-setup", "saas-integrations", "marketing-automation-setup", "analytics-dashboard",
   ];
   for (const slug of services) {
-    entries.push({ loc: `${BASE}/services/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.7" });
+    entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.7" });
   }
 
   for (let i = 1; i <= 21; i++) {
-    entries.push({ loc: `${BASE}/portfolio/${i}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
+    entries.push({ loc: `${BASE}/${i}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
   }
 
   const landingPages = [
@@ -78,7 +78,7 @@ function getAllSitemapEntries(): SitemapURL[] {
     "seo-vs-paid-ads-strategy", "social-media-marketing-strategy-2025", "website-conversion-optimization",
   ];
   for (const slug of blogPosts) {
-    entries.push({ loc: `${BASE}/blog/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
+    entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
   }
 
   return entries;
@@ -114,8 +114,8 @@ const BLOG_RSS_ITEMS = [
 function buildRSSFeed(): string {
   const items = BLOG_RSS_ITEMS.map(post => `    <item>
       <title><![CDATA[${post.title}]]></title>
-      <link>${BASE}/blog/${post.slug}</link>
-      <guid>${BASE}/blog/${post.slug}</guid>
+      <link>${BASE}/${post.slug}</link>
+      <guid>${BASE}/${post.slug}</guid>
       <description><![CDATA[${post.desc}]]></description>
       <pubDate>${new Date("2025-01-15").toUTCString()}</pubDate>
       <author>contact@infiniterankers.io (Infinite Rankers)</author>

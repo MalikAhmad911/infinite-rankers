@@ -502,7 +502,7 @@ function ServicesSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.04 }}
             >
-              <Link href={`/services/${service.slug}`}>
+              <Link href={`/${service.slug}`}>
                 <div
                   className="group bg-white rounded-xl p-3.5 sm:p-5 border border-gray-200/60 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer h-full"
                   data-testid={`service-card-${service.slug}`}
@@ -1083,7 +1083,7 @@ function BlogSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
             >
-              <Link href={`/blog/${post.slug}`}>
+              <Link href={`/${post.slug}`}>
                 <Card className="overflow-hidden cursor-pointer h-full" data-testid={`blog-card-${post.slug}`}>
                   <img
                     src={post.image}

@@ -11,6 +11,7 @@ import SectionHeader from "@/components/section-header";
 import GlassCard from "@/components/glass-card";
 import { PRICING_TIERS, SERVICE_PRICING } from "@/lib/constants";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
+import RelatedLinks from "@/components/related-links";
 import {
   ArrowRight, CheckCircle2, Shield, Clock, DollarSign,
   ChevronDown, ChevronUp,
@@ -202,7 +203,7 @@ function ServicePricingBreakdown() {
                                 </td>
                               ))}
                               <td className="p-3 sm:p-4 text-right">
-                                <Link href={`/services/${service.slug}`}>
+                                <Link href={`/${service.slug}`}>
                                   <Button variant="ghost" size="sm" data-testid={`button-view-${service.slug}`}>
                                     Details <ArrowRight className="w-3 h-3 ml-1" />
                                   </Button>
@@ -332,6 +333,7 @@ export default function Pricing() {
           </motion.div>
         </div>
       </section>
+      <RelatedLinks currentPath="/pricing" type="page" />
     </div>
   );
 }

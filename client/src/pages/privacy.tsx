@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import SEOHead from "@/components/seo-head";
+import RelatedLinks from "@/components/related-links";
 import { COMPANY } from "@/lib/constants";
 
 export default function Privacy() {
@@ -184,6 +185,7 @@ export default function Privacy() {
           </motion.div>
         </div>
       </section>
+      <RelatedLinks currentPath="/privacy" type="page" />
     </>
   );
 }

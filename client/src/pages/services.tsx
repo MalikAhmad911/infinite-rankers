@@ -83,7 +83,7 @@ export default function Services() {
                 {cat.services.map((service, i) => {
                   const Icon = iconMap[service.icon] || Zap;
                   return (
-                    <Link key={service.slug} href={`/services/${service.slug}`}>
+                    <Link key={service.slug} href={`/${service.slug}`}>
                       <GlassCard delay={i * 0.05} className="cursor-pointer h-full">
                         <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4">
                           <Icon className="w-5 h-5 text-blue-600" />

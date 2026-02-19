@@ -175,7 +175,7 @@ export default function Navbar() {
                         {category.services.map((service) => (
                           <li key={service.slug}>
                             <Link
-                              href={`/services/${service.slug}`}
+                              href={`/${service.slug}`}
                               onClick={closeMegaMenu}
                             >
                               <span
@@ -279,7 +279,7 @@ export default function Navbar() {
                                         {category.services.map((service) => (
                                           <li key={service.slug}>
                                             <Link
-                                              href={`/services/${service.slug}`}
+                                              href={`/${service.slug}`}
                                             >
                                               <span
                                                 className="block px-3 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"

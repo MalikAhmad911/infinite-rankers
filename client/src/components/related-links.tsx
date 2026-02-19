@@ -6,13 +6,13 @@ const ALL_SERVICES = SERVICE_CATEGORIES.flatMap(cat => cat.services);
 
 interface RelatedLinksProps {
   currentPath: string;
-  type: "service" | "blog" | "portfolio";
+  type: "service" | "blog" | "portfolio" | "page";
 }
 
 export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
-  const relatedServices = ALL_SERVICES.filter(s => `/services/${s.slug}` !== currentPath).slice(0, 6);
-  const relatedBlogs = BLOG_POSTS.filter(b => `/blog/${b.slug}` !== currentPath).slice(0, 4);
-  const relatedCases = CASE_STUDIES.filter(c => `/portfolio/${c.id}` !== currentPath).slice(0, 4);
+  const relatedServices = ALL_SERVICES.filter(s => `/${s.slug}` !== currentPath).slice(0, 6);
+  const relatedBlogs = BLOG_POSTS.filter(b => `/${b.slug}` !== currentPath).slice(0, 4);
+  const relatedCases = CASE_STUDIES.filter(c => `/${c.id}` !== currentPath).slice(0, 4);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-border/50" data-testid="related-links">
@@ -23,7 +23,7 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
             <ul className="space-y-2">
               {relatedServices.slice(0, 6).map(s => (
                 <li key={s.slug}>
-                  <Link href={`/services/${s.slug}`}>
+                  <Link href={`/${s.slug}`}>
                     <span className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1" data-testid={`related-service-${s.slug}`}>
                       <ArrowRight className="w-3 h-3 text-blue-500" /> {s.title}
                     </span>
@@ -43,7 +43,7 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
             <ul className="space-y-2">
               {relatedServices.slice(0, 8).map(s => (
                 <li key={s.slug}>
-                  <Link href={`/services/${s.slug}`}>
+                  <Link href={`/${s.slug}`}>
                     <span className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1" data-testid={`related-service-${s.slug}`}>
                       <ArrowRight className="w-3 h-3 text-blue-500" /> {s.title}
                     </span>
@@ -59,7 +59,7 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
           <ul className="space-y-2">
             {relatedBlogs.map(b => (
               <li key={b.slug}>
-                <Link href={`/blog/${b.slug}`}>
+                <Link href={`/${b.slug}`}>
                   <span className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1 line-clamp-1" data-testid={`related-blog-${b.slug}`}>
                     <ArrowRight className="w-3 h-3 text-purple-500" /> {b.title}
                   </span>
@@ -77,7 +77,7 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
           <ul className="space-y-2">
             {relatedCases.map(c => (
               <li key={c.id}>
-                <Link href={`/portfolio/${c.id}`}>
+                <Link href={`/${c.id}`}>
                   <span className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1 line-clamp-1" data-testid={`related-case-${c.id}`}>
                     <ArrowRight className="w-3 h-3 text-cyan-500" /> {c.title}
                   </span>

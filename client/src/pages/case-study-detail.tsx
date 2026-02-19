@@ -77,7 +77,7 @@ export default function CaseStudyDetail() {
         title={`${cs.title} - Case Study | Infinite Rankers`}
         description={`${cs.business}: ${cs.challenge.slice(0, 150)}`}
         keywords={cs.tags.join(", ")}
-        canonical={`https://infiniterankers.io/portfolio/${cs.id}`}
+        canonical={`https://infiniterankers.io/${cs.id}`}
       />
       <script
         type="application/ld+json"
@@ -94,7 +94,7 @@ export default function CaseStudyDetail() {
               "name": "Infinite Rankers",
               "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
             },
-            "mainEntityOfPage": `https://infiniterankers.io/portfolio/${cs.id}`
+            "mainEntityOfPage": `https://infiniterankers.io/${cs.id}`
           })
         }}
       />
@@ -348,7 +348,7 @@ export default function CaseStudyDetail() {
                       <div className="p-4">
                         <h4 className="font-semibold text-foreground mb-1 line-clamp-1">{related.title}</h4>
                         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{related.business}</p>
-                        <Link href={`/portfolio/${related.id}`}>
+                        <Link href={`/${related.id}`}>
                           <Button variant="outline" size="sm" className="w-full" data-testid={`button-related-${related.id}`}>
                             View Case Study <ArrowRight className="w-3.5 h-3.5 ml-1" />
                           </Button>
@@ -388,7 +388,7 @@ export default function CaseStudyDetail() {
           </motion.div>
         </div>
       </section>
-      <RelatedLinks currentPath={`/portfolio/${id}`} type="portfolio" />
+      <RelatedLinks currentPath={`/${id}`} type="portfolio" />
     </div>
   );
 }

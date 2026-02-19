@@ -26,6 +26,16 @@ import Privacy from "@/pages/privacy";
 import SitemapPage from "@/pages/sitemap-page";
 import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
+import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
+import { getBlogPostBySlug } from "@/lib/blog-data";
+
+function SmartPage({ params }: { params: { slug: string } }) {
+  const slug = params.slug;
+  if (ALL_SERVICES.some(s => s.slug === slug)) return <ServiceDetail />;
+  if (getBlogPostBySlug(slug)) return <BlogPost />;
+  if (CASE_STUDIES.some(cs => cs.id === slug)) return <CaseStudyDetail />;
+  return <LandingPage slug={slug} />;
+}
 
 function Router() {
   return (
@@ -33,13 +43,10 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/services" component={Services} />
-      <Route path="/services/:slug" component={ServiceDetail} />
       <Route path="/portfolio" component={Portfolio} />
-      <Route path="/portfolio/:id" component={CaseStudyDetail} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/contact" component={Contact} />
       <Route path="/blog" component={Blog} />
-      <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/book-demo" component={BookDemo} />
       <Route path="/infinite-rankers-agency" component={InfiniteRankersAgency} />
       <Route path="/infinite-rankers-seo-services" component={InfiniteRankersSEO} />
@@ -49,7 +56,7 @@ function Router() {
       <Route path="/privacy" component={Privacy} />
       <Route path="/sitemap" component={SitemapPage} />
       <Route path="/admin/indexing" component={AdminDashboard} />
-      <Route path="/:slug">{(params) => <LandingPage slug={params.slug} />}</Route>
+      <Route path="/:slug">{(params) => <SmartPage params={params} />}</Route>
       <Route component={NotFound} />
     </Switch>
   );

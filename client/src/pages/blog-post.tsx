@@ -45,7 +45,7 @@ export default function BlogPost() {
         description={post.seoDescription}
         keywords={post.seoKeywords}
         ogImage={post.image}
-        canonical={`https://infiniterankers.io/blog/${post.slug}`}
+        canonical={`https://infiniterankers.io/${post.slug}`}
       />
       <script
         type="application/ld+json"
@@ -63,7 +63,7 @@ export default function BlogPost() {
               "name": "Infinite Rankers",
               "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
             },
-            "mainEntityOfPage": `https://infiniterankers.io/blog/${post.slug}`
+            "mainEntityOfPage": `https://infiniterankers.io/${post.slug}`
           })
         }}
       />
@@ -215,7 +215,7 @@ export default function BlogPost() {
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {related.map((rp) => (
-                <Link key={rp.id} href={`/blog/${rp.slug}`}>
+                <Link key={rp.id} href={`/${rp.slug}`}>
                   <Card className="overflow-hidden cursor-pointer hover-elevate" data-testid={`card-related-${rp.id}`}>
                     <img
                       src={rp.image}
@@ -259,7 +259,7 @@ export default function BlogPost() {
         </div>
       </section>
 
-      <RelatedLinks currentPath={`/blog/${slug}`} type="blog" />
+      <RelatedLinks currentPath={`/${slug}`} type="blog" />
     </div>
   );
 }

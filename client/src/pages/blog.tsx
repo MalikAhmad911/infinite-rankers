@@ -38,7 +38,7 @@ export default function Blog() {
       <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {BLOG_POSTS_FULL.length > 0 && (
-            <Link href={`/blog/${BLOG_POSTS_FULL[0].slug}`}>
+            <Link href={`/${BLOG_POSTS_FULL[0].slug}`}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export default function Blog() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {BLOG_POSTS_FULL.slice(1).map((post, i) => (
-              <Link key={post.id} href={`/blog/${post.slug}`}>
+              <Link key={post.id} href={`/${post.slug}`}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}

@@ -111,7 +111,7 @@ export default function Footer() {
             <ul className="space-y-1.5">
               {KEY_SERVICES.map((service) => (
                 <li key={service.slug}>
-                  <Link href={`/services/${service.slug}`}>
+                  <Link href={`/${service.slug}`}>
                     <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-service-${service.slug}`}>
                       {service.title}
                     </span>
