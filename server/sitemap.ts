@@ -27,6 +27,7 @@ function getAllSitemapEntries(): SitemapURL[] {
     { path: "/blog", changefreq: "weekly", priority: "0.8" },
     { path: "/book-demo", changefreq: "monthly", priority: "0.8" },
     { path: "/sitemap", changefreq: "monthly", priority: "0.4" },
+    { path: "/crawl-hub", changefreq: "weekly", priority: "0.5" },
     { path: "/terms", changefreq: "yearly", priority: "0.3" },
     { path: "/privacy", changefreq: "yearly", priority: "0.3" },
   ];
@@ -208,55 +209,17 @@ export function registerSitemapRoutes(app: Express) {
     res.send([
       "User-agent: *",
       "Allow: /",
-      "Disallow: /api/",
-      "Disallow: /admin/",
-      "",
-      "User-agent: Googlebot",
-      "Allow: /",
-      "Disallow: /api/",
-      "",
-      "User-agent: Googlebot-Image",
-      "Allow: /",
-      "",
-      "User-agent: Bingbot",
-      "Allow: /",
-      "Disallow: /api/",
-      "",
-      "User-agent: GPTBot",
-      "Allow: /",
-      "",
-      "User-agent: ChatGPT-User",
-      "Allow: /",
-      "",
-      "User-agent: Google-Extended",
-      "Allow: /",
-      "",
-      "User-agent: PerplexityBot",
-      "Allow: /",
-      "",
-      "User-agent: ClaudeBot",
-      "Allow: /",
-      "",
-      "User-agent: Applebot-Extended",
-      "Allow: /",
-      "",
-      "User-agent: Slurp",
-      "Allow: /",
-      "",
-      "User-agent: DuckDuckBot",
-      "Allow: /",
-      "",
-      "User-agent: Baiduspider",
-      "Allow: /",
-      "",
-      "User-agent: YandexBot",
-      "Allow: /",
-      "",
-      `Host: ${BASE}`,
       "",
       `Sitemap: ${BASE}/sitemap.xml`,
       "",
     ].join("\n"));
+  });
+
+  app.get("/crawl-hub", (_req, res) => {
+    const allUrls = getAllURLs();
+    res.set("Content-Type", "text/html; charset=utf-8");
+    res.set("Cache-Control", "public, max-age=3600");
+    res.send(buildCrawlHub(allUrls));
   });
 }
 
@@ -559,4 +522,43 @@ Book a free demo: infiniterankers.io/book-demo
 
 <p style="margin-top:40px;color:#9ca3af;font-size:.75rem">Generated: ${new Date().toISOString()} | Internal use only - Do not publish this page</p>
 </body></html>`;
+}
+
+function buildCrawlHub(allUrls: string[]): string {
+  const serviceUrls = allUrls.filter(u => !u.endsWith("/") && !u.includes("/blog") && !u.includes("/about") && !u.includes("/contact") && !u.includes("/pricing") && !u.includes("/portfolio") && !u.includes("/book-demo") && !u.includes("/services") && !u.includes("/sitemap") && !u.includes("/terms") && !u.includes("/privacy"));
+  const mainUrls = allUrls.filter(u => !serviceUrls.includes(u));
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All Pages - Infinite Rankers | AI Revenue Growth Agency</title>
+<meta name="description" content="Complete directory of all pages on Infinite Rankers - AI Revenue Growth Agency. Browse our services, blog posts, case studies, and resources.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://infiniterankers.io/crawl-hub">
+<style>body{font-family:Inter,system-ui,-apple-system,sans-serif;max-width:1100px;margin:0 auto;padding:24px 16px;background:#fff;color:#1f2937}h1{font-size:1.75rem;color:#111827;margin-bottom:8px}p.subtitle{color:#6b7280;margin-bottom:32px;font-size:.95rem}h2{font-size:1.25rem;color:#1e40af;margin-top:32px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #dbeafe}ul{list-style:none;padding:0;margin:0 0 24px}.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:6px}a{color:#2563eb;text-decoration:none;font-size:.9rem;padding:6px 0;display:block}a:hover{color:#1d4ed8;text-decoration:underline}.count{background:#eff6ff;color:#1e40af;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-left:8px}footer{margin-top:48px;padding-top:16px;border-top:1px solid #e5e7eb;text-align:center;color:#9ca3af;font-size:.75rem}</style>
+</head>
+<body>
+<h1>Infinite Rankers - Complete Site Directory</h1>
+<p class="subtitle">Browse all ${allUrls.length} pages across our AI Revenue Growth Agency website. Every page listed below is fully accessible and indexed.</p>
+
+<nav>
+<h2>Main Pages <span class="count">${mainUrls.length}</span></h2>
+<div class="link-grid">
+${mainUrls.map(u => { const path = u.replace("https://infiniterankers.io", "") || "/"; const label = path === "/" ? "Home" : path.slice(1).split("-").map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(" "); return `<a href="${path}">${label}</a>`; }).join("\n")}
+</div>
+
+<h2>All Services, Blog Posts & Resources <span class="count">${serviceUrls.length}</span></h2>
+<div class="link-grid">
+${serviceUrls.map(u => { const path = u.replace("https://infiniterankers.io", ""); const label = path.slice(1).split("-").map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(" "); return `<a href="${path}">${label}</a>`; }).join("\n")}
+</div>
+</nav>
+
+<footer>
+<p>&copy; ${new Date().getFullYear()} Infinite Rankers. AI Revenue Growth Agency.</p>
+<p><a href="/">Home</a> | <a href="/sitemap.xml">XML Sitemap</a> | <a href="/rss.xml">RSS Feed</a></p>
+</footer>
+</body>
+</html>`;
 }

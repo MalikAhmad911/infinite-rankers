@@ -12,6 +12,7 @@ const QUICK_LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
   { href: "/sitemap", label: "Sitemap" },
+  { href: "/crawl-hub", label: "All Pages" },
 ];
 
 const RESOURCES = [

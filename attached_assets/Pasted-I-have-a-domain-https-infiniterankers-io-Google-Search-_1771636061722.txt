@@ -1,0 +1,192 @@
+I have a domain: https://infiniterankers.io
+
+Google Search Console shows:
+“Discovered – currently not indexed”
+Crawl = N/A
+Indexing allowed = N/A
+
+This means Google has not crawled the pages yet.
+
+Your task is to implement a complete crawl priority and index readiness optimization system.
+
+Execute the following:
+
+1️⃣ Verify Robots.txt
+
+Ensure:
+
+/public/robots.txt exists and contains:
+
+User-agent: *
+Allow: /
+Sitemap: https://infiniterankers.io/sitemap.xml
+
+Confirm:
+
+No Disallow: /
+
+File returns HTTP 200
+
+Accessible at /robots.txt
+
+2️⃣ Validate All Pages Return 200
+
+Scan all 91 URLs.
+Ensure:
+
+HTTP status = 200
+
+Not soft 404
+
+No redirect chains
+
+If any page does not return 200, fix routing.
+
+3️⃣ Create Crawl Hub Page
+
+Create:
+
+/public/all-pages/index.html
+
+This page must:
+
+List all 91 pages using plain HTML <a href>
+
+No JavaScript links
+
+Be linked in homepage footer
+
+This forces crawl discovery.
+
+4️⃣ Improve Internal Linking
+
+For each page:
+
+Add minimum 5 contextual internal links
+
+Use descriptive anchor text
+
+Ensure no orphan pages exist
+
+Create script to detect orphan pages.
+
+5️⃣ Strengthen Sitemap
+
+Regenerate sitemap.xml dynamically.
+Include:
+
+All 91 URLs
+
+<lastmod> current date
+
+<priority> 0.8
+
+<changefreq> weekly
+
+Ensure sitemap:
+
+Returns HTTP 200
+
+Opens correctly in browser
+
+Contains exactly 91 URLs
+
+6️⃣ Add Structured Data
+
+Add Organization schema on homepage.
+Add FAQ schema on service pages.
+Add Breadcrumb schema site-wide.
+
+7️⃣ Add Crawl Trigger Signals
+
+Implement:
+
+RSS feed at /rss.xml
+
+Automatic ping to:
+https://www.google.com/ping?sitemap=https://infiniterankers.io/sitemap.xml
+
+https://www.bing.com/ping?sitemap=https://infiniterankers.io/sitemap.xml
+
+Run ping after sitemap generation.
+
+8️⃣ Increase Content Depth
+
+Ensure each service page:
+
+Minimum 800 words
+
+Unique content
+
+Clear H1
+
+Structured H2/H3
+
+FAQ section
+
+Remove thin pages under 400 words.
+
+9️⃣ Performance Optimization
+
+Enable:
+
+gzip compression
+
+image compression
+
+lazy loading
+
+remove unused JS
+
+Target:
+LCP < 2.5 seconds
+
+🔟 Create Indexing Checklist Page
+
+Create:
+/public/indexing-instructions.html
+
+Include step-by-step Google Search Console instructions:
+
+Add property
+
+Submit sitemap
+
+Use URL inspection
+
+Request indexing
+
+Monitor “Crawled – not indexed”
+
+Check coverage report
+
+IMPORTANT:
+
+Do NOT rely on client-side-only rendering.
+Ensure full HTML content visible in page source without JavaScript execution.
+
+Confirm:
+
+robots.txt valid
+
+sitemap valid
+
+91 URLs present
+
+no orphan pages
+
+all return 200
+
+no noindex tags
+
+🔥 AFTER THIS — WHAT YOU MUST DO
+
+In Search Console:
+
+Submit sitemap again
+
+Inspect 10 important pages
+
+Click “Request Indexing”
+
+Wait 3–10 days

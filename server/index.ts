@@ -130,6 +130,14 @@ app.use((req, res, next) => {
     },
     () => {
       log(`serving on port ${port}`);
+      setTimeout(async () => {
+        try {
+          const sitemapUrl = encodeURIComponent("https://infiniterankers.io/sitemap.xml");
+          await fetch(`https://www.google.com/ping?sitemap=${sitemapUrl}`);
+          await fetch(`https://www.bing.com/ping?sitemap=${sitemapUrl}`);
+          log("Pinged Google & Bing with sitemap");
+        } catch {}
+      }, 5000);
     },
   );
 })();
