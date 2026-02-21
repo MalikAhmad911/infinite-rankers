@@ -70,7 +70,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between gap-4 h-16 lg:h-20">
             <Link href="/" data-testid="link-home-logo">
               <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <img src="/images/logo-icon.png" alt="Infinite Rankers" className="w-9 h-9 sm:w-10 sm:h-10 object-contain" width="40" height="40" />
+                <img src="/images/logo-icon.png" alt="Infinite Rankers" className="w-9 h-9 sm:w-10 sm:h-10 object-contain" />
                 <span className="font-bold text-sm sm:text-base lg:text-lg text-gray-900">
                   {COMPANY.name}
                 </span>

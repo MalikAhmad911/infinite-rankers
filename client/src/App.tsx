@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import React from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,29 +9,25 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Breadcrumbs from "@/components/breadcrumbs";
 import Home from "@/pages/home";
+import About from "@/pages/about";
+import Services from "@/pages/services";
+import ServiceDetail from "@/pages/service-detail";
+import Portfolio from "@/pages/portfolio";
+import CaseStudyDetail from "@/pages/case-study-detail";
+import Pricing from "@/pages/pricing";
+import Contact from "@/pages/contact";
+import Blog from "@/pages/blog";
+import BlogPost from "@/pages/blog-post";
+import BookDemo from "@/pages/book-demo";
+import LandingPage from "@/pages/landing-page";
+import Terms from "@/pages/terms";
+import Privacy from "@/pages/privacy";
+import SitemapPage from "@/pages/sitemap-page";
+import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
+import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
 import { getBlogPostBySlug } from "@/lib/blog-data";
-
-const About = lazy(() => import("@/pages/about"));
-const Services = lazy(() => import("@/pages/services"));
-const ServiceDetail = lazy(() => import("@/pages/service-detail"));
-const Portfolio = lazy(() => import("@/pages/portfolio"));
-const CaseStudyDetail = lazy(() => import("@/pages/case-study-detail"));
-const Pricing = lazy(() => import("@/pages/pricing"));
-const Contact = lazy(() => import("@/pages/contact"));
-const Blog = lazy(() => import("@/pages/blog"));
-const BlogPost = lazy(() => import("@/pages/blog-post"));
-const BookDemo = lazy(() => import("@/pages/book-demo"));
-const LandingPage = lazy(() => import("@/pages/landing-page"));
-const Terms = lazy(() => import("@/pages/terms"));
-const Privacy = lazy(() => import("@/pages/privacy"));
-const SitemapPage = lazy(() => import("@/pages/sitemap-page"));
-const AdminDashboard = lazy(() => import("@/pages/admin-dashboard"));
-const InfiniteRankersAgency = lazy(() => import("@/pages/partner-pages").then(m => ({ default: m.InfiniteRankersAgency })));
-const InfiniteRankersSEO = lazy(() => import("@/pages/partner-pages").then(m => ({ default: m.InfiniteRankersSEO })));
-const InfiniteRankersAds = lazy(() => import("@/pages/partner-pages").then(m => ({ default: m.InfiniteRankersAds })));
-const InfiniteRankersAutomation = lazy(() => import("@/pages/partner-pages").then(m => ({ default: m.InfiniteRankersAutomation })));
 
 function SmartPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
@@ -43,28 +39,26 @@ function SmartPage({ params }: { params: { slug: string } }) {
 
 function AppRouter() {
   return (
-    <Suspense fallback={<div className="min-h-screen" />}>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/services" component={Services} />
-        <Route path="/portfolio" component={Portfolio} />
-        <Route path="/pricing" component={Pricing} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/book-demo" component={BookDemo} />
-        <Route path="/infinite-rankers-agency" component={InfiniteRankersAgency} />
-        <Route path="/infinite-rankers-seo-services" component={InfiniteRankersSEO} />
-        <Route path="/infinite-rankers-paid-advertising" component={InfiniteRankersAds} />
-        <Route path="/infinite-rankers-ai-automation" component={InfiniteRankersAutomation} />
-        <Route path="/terms" component={Terms} />
-        <Route path="/privacy" component={Privacy} />
-        <Route path="/sitemap" component={SitemapPage} />
-        <Route path="/admin/indexing" component={AdminDashboard} />
-        <Route path="/:slug">{(params) => <SmartPage params={params} />}</Route>
-        <Route component={NotFound} />
-      </Switch>
-    </Suspense>
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/services" component={Services} />
+      <Route path="/portfolio" component={Portfolio} />
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/blog" component={Blog} />
+      <Route path="/book-demo" component={BookDemo} />
+      <Route path="/infinite-rankers-agency" component={InfiniteRankersAgency} />
+      <Route path="/infinite-rankers-seo-services" component={InfiniteRankersSEO} />
+      <Route path="/infinite-rankers-paid-advertising" component={InfiniteRankersAds} />
+      <Route path="/infinite-rankers-ai-automation" component={InfiniteRankersAutomation} />
+      <Route path="/terms" component={Terms} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/sitemap" component={SitemapPage} />
+      <Route path="/admin/indexing" component={AdminDashboard} />
+      <Route path="/:slug">{(params) => <SmartPage params={params} />}</Route>
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 
