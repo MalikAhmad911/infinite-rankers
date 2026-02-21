@@ -96,6 +96,7 @@ app.use((req, res, next) => {
     const originalEnd = res.end.bind(res);
     (res as any).end = function (this: any, chunk?: any, encoding?: any, cb?: any) {
       if (
+        !(res as any).__seoInjected &&
         res.getHeader("content-type")?.toString().includes("text/html") &&
         typeof chunk === "string"
       ) {

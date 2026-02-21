@@ -5364,75 +5364,6 @@ function Home() {
         canonical: "https://infiniterankers.io/"
       }
     ),
-    /* @__PURE__ */ jsxRuntime.jsx(
-      "script",
-      {
-        type: "application/ld+json",
-        dangerouslySetInnerHTML: {
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "Organization",
-                "@id": "https://infiniterankers.io/#organization",
-                "name": "Infinite Rankers",
-                "url": "https://infiniterankers.io",
-                "logo": "https://infiniterankers.io/images/logo-icon-white.png",
-                "description": "AI Revenue Growth Agency - We build automated systems that generate customers and revenue for businesses across the USA.",
-                "email": "contact@infiniterankers.io",
-                "telephone": "(703) 415-9373",
-                "address": {
-                  "@type": "PostalAddress",
-                  "streetAddress": "203 N Caroline Pl",
-                  "addressLocality": "Dover",
-                  "addressRegion": "DE",
-                  "postalCode": "19904",
-                  "addressCountry": "US"
-                },
-                "sameAs": [
-                  "https://infiniterankers.com"
-                ],
-                "serviceArea": {
-                  "@type": "Country",
-                  "name": "United States"
-                }
-              },
-              {
-                "@type": "LocalBusiness",
-                "@id": "https://infiniterankers.io/#localbusiness",
-                "name": "Infinite Rankers",
-                "image": "https://infiniterankers.io/images/logo-icon-white.png",
-                "url": "https://infiniterankers.io",
-                "telephone": "(703) 415-9373",
-                "email": "contact@infiniterankers.io",
-                "address": {
-                  "@type": "PostalAddress",
-                  "streetAddress": "203 N Caroline Pl",
-                  "addressLocality": "Dover",
-                  "addressRegion": "DE",
-                  "postalCode": "19904",
-                  "addressCountry": "US"
-                },
-                "priceRange": "$$$",
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.9",
-                  "reviewCount": "150",
-                  "bestRating": "5"
-                }
-              },
-              {
-                "@type": "WebSite",
-                "@id": "https://infiniterankers.io/#website",
-                "url": "https://infiniterankers.io",
-                "name": "Infinite Rankers",
-                "publisher": { "@id": "https://infiniterankers.io/#organization" }
-              }
-            ]
-          })
-        }
-      }
-    ),
     /* @__PURE__ */ jsxRuntime.jsx(HeroSection$1, {}),
     /* @__PURE__ */ jsxRuntime.jsx(AchievementsSection, {}),
     /* @__PURE__ */ jsxRuntime.jsx(PipelineSection, {}),
@@ -7218,27 +7149,6 @@ function ServiceDetail() {
         canonical: `https://infiniterankers.io/${service.slug}`
       }
     ),
-    /* @__PURE__ */ jsxRuntime.jsx(
-      "script",
-      {
-        type: "application/ld+json",
-        dangerouslySetInnerHTML: {
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": service.title,
-            "description": service.shortDesc,
-            "provider": {
-              "@type": "Organization",
-              "name": "Infinite Rankers",
-              "url": "https://infiniterankers.io"
-            },
-            "areaServed": { "@type": "Country", "name": "United States" },
-            "url": `https://infiniterankers.io/${service.slug}`
-          })
-        }
-      }
-    ),
     /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
       /* @__PURE__ */ jsxRuntime.jsx("div", { className: `absolute inset-0 bg-gradient-to-br ${heroGradient}` }),
       categoryId === "ai-automation" && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
@@ -7928,28 +7838,6 @@ function CaseStudyDetail() {
         description: `${cs.business}: ${cs.challenge.slice(0, 150)}`,
         keywords: cs.tags.join(", "),
         canonical: `https://infiniterankers.io/${cs.id}`
-      }
-    ),
-    /* @__PURE__ */ jsxRuntime.jsx(
-      "script",
-      {
-        type: "application/ld+json",
-        dangerouslySetInnerHTML: {
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": cs.title,
-            "description": `${cs.business}: ${cs.challenge.slice(0, 150)}`,
-            "image": `https://infiniterankers.io${PORTFOLIO_IMAGES[cs.id] || ""}`,
-            "author": { "@type": "Organization", "name": "Infinite Rankers", "url": "https://infiniterankers.io" },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Infinite Rankers",
-              "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
-            },
-            "mainEntityOfPage": `https://infiniterankers.io/${cs.id}`
-          })
-        }
       }
     ),
     /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-28 pb-16 overflow-hidden", "data-testid": "case-hero", children: [
@@ -8942,29 +8830,6 @@ function BlogPost() {
         keywords: post.seoKeywords,
         ogImage: post.image,
         canonical: `https://infiniterankers.io/${post.slug}`
-      }
-    ),
-    /* @__PURE__ */ jsxRuntime.jsx(
-      "script",
-      {
-        type: "application/ld+json",
-        dangerouslySetInnerHTML: {
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.seoDescription,
-            "image": `https://infiniterankers.io${post.image}`,
-            "datePublished": post.date,
-            "author": { "@type": "Organization", "name": "Infinite Rankers", "url": "https://infiniterankers.io" },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Infinite Rankers",
-              "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
-            },
-            "mainEntityOfPage": `https://infiniterankers.io/${post.slug}`
-          })
-        }
       }
     ),
     /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-12 overflow-hidden", children: [

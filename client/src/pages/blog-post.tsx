@@ -47,26 +47,6 @@ export default function BlogPost() {
         ogImage={post.image}
         canonical={`https://infiniterankers.io/${post.slug}`}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.seoDescription,
-            "image": `https://infiniterankers.io${post.image}`,
-            "datePublished": post.date,
-            "author": { "@type": "Organization", "name": "Infinite Rankers", "url": "https://infiniterankers.io" },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Infinite Rankers",
-              "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
-            },
-            "mainEntityOfPage": `https://infiniterankers.io/${post.slug}`
-          })
-        }}
-      />
 
       <section className="relative pt-32 pb-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />

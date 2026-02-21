@@ -147,24 +147,6 @@ export default function ServiceDetail() {
         description={service.shortDesc}
         canonical={`https://infiniterankers.io/${service.slug}`}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": service.title,
-            "description": service.shortDesc,
-            "provider": {
-              "@type": "Organization",
-              "name": "Infinite Rankers",
-              "url": "https://infiniterankers.io"
-            },
-            "areaServed": { "@type": "Country", "name": "United States" },
-            "url": `https://infiniterankers.io/${service.slug}`
-          })
-        }}
-      />
 
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-br ${heroGradient}`} />

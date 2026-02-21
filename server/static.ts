@@ -41,6 +41,7 @@ export function serveStatic(app: Express) {
     }
 
     html = injectSEO(html, req.originalUrl);
+    (res as any).__seoInjected = true;
     res.status(200).set({
       "Content-Type": "text/html",
       "Cache-Control": "no-cache",

@@ -79,25 +79,6 @@ export default function CaseStudyDetail() {
         keywords={cs.tags.join(", ")}
         canonical={`https://infiniterankers.io/${cs.id}`}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": cs.title,
-            "description": `${cs.business}: ${cs.challenge.slice(0, 150)}`,
-            "image": `https://infiniterankers.io${PORTFOLIO_IMAGES[cs.id] || ""}`,
-            "author": { "@type": "Organization", "name": "Infinite Rankers", "url": "https://infiniterankers.io" },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Infinite Rankers",
-              "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
-            },
-            "mainEntityOfPage": `https://infiniterankers.io/${cs.id}`
-          })
-        }}
-      />
 
       <section className="relative pt-28 pb-16 overflow-hidden" data-testid="case-hero">
         <div className="absolute inset-0">
