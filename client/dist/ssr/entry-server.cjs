@@ -1,0 +1,12780 @@
+"use strict";
+Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+const jsxRuntime = require("react/jsx-runtime");
+const server = require("react-dom/server");
+const reactQuery = require("@tanstack/react-query");
+const wouter = require("wouter");
+const React = require("react");
+const ToastPrimitives = require("@radix-ui/react-toast");
+const classVarianceAuthority = require("class-variance-authority");
+const lucideReact = require("lucide-react");
+const clsx = require("clsx");
+const tailwindMerge = require("tailwind-merge");
+const TooltipPrimitive = require("@radix-ui/react-tooltip");
+const framerMotion = require("framer-motion");
+const reactSlot = require("@radix-ui/react-slot");
+const LabelPrimitive = require("@radix-ui/react-label");
+const SliderPrimitive = require("@radix-ui/react-slider");
+const reactHookForm = require("react-hook-form");
+const zod = require("@hookform/resolvers/zod");
+const drizzleOrm = require("drizzle-orm");
+const pgCore = require("drizzle-orm/pg-core");
+const drizzleZod = require("drizzle-zod");
+const SelectPrimitive = require("@radix-ui/react-select");
+function _interopNamespaceDefault(e) {
+  const n = Object.create(null, { [Symbol.toStringTag]: { value: "Module" } });
+  if (e) {
+    for (const k in e) {
+      if (k !== "default") {
+        const d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: () => e[k]
+        });
+      }
+    }
+  }
+  n.default = e;
+  return Object.freeze(n);
+}
+const React__namespace = /* @__PURE__ */ _interopNamespaceDefault(React);
+const ToastPrimitives__namespace = /* @__PURE__ */ _interopNamespaceDefault(ToastPrimitives);
+const TooltipPrimitive__namespace = /* @__PURE__ */ _interopNamespaceDefault(TooltipPrimitive);
+const LabelPrimitive__namespace = /* @__PURE__ */ _interopNamespaceDefault(LabelPrimitive);
+const SliderPrimitive__namespace = /* @__PURE__ */ _interopNamespaceDefault(SliderPrimitive);
+const SelectPrimitive__namespace = /* @__PURE__ */ _interopNamespaceDefault(SelectPrimitive);
+const TOAST_LIMIT = 1;
+const TOAST_REMOVE_DELAY = 1e6;
+let count = 0;
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER;
+  return count.toString();
+}
+const toastTimeouts = /* @__PURE__ */ new Map();
+const addToRemoveQueue = (toastId) => {
+  if (toastTimeouts.has(toastId)) {
+    return;
+  }
+  const timeout = setTimeout(() => {
+    toastTimeouts.delete(toastId);
+    dispatch({
+      type: "REMOVE_TOAST",
+      toastId
+    });
+  }, TOAST_REMOVE_DELAY);
+  toastTimeouts.set(toastId, timeout);
+};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_TOAST":
+      return {
+        ...state,
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT)
+      };
+    case "UPDATE_TOAST":
+      return {
+        ...state,
+        toasts: state.toasts.map(
+          (t) => t.id === action.toast.id ? { ...t, ...action.toast } : t
+        )
+      };
+    case "DISMISS_TOAST": {
+      const { toastId } = action;
+      if (toastId) {
+        addToRemoveQueue(toastId);
+      } else {
+        state.toasts.forEach((toast2) => {
+          addToRemoveQueue(toast2.id);
+        });
+      }
+      return {
+        ...state,
+        toasts: state.toasts.map(
+          (t) => t.id === toastId || toastId === void 0 ? {
+            ...t,
+            open: false
+          } : t
+        )
+      };
+    }
+    case "REMOVE_TOAST":
+      if (action.toastId === void 0) {
+        return {
+          ...state,
+          toasts: []
+        };
+      }
+      return {
+        ...state,
+        toasts: state.toasts.filter((t) => t.id !== action.toastId)
+      };
+  }
+};
+const listeners = [];
+let memoryState = { toasts: [] };
+function dispatch(action) {
+  memoryState = reducer(memoryState, action);
+  listeners.forEach((listener) => {
+    listener(memoryState);
+  });
+}
+function toast({ ...props }) {
+  const id = genId();
+  const update = (props2) => dispatch({
+    type: "UPDATE_TOAST",
+    toast: { ...props2, id }
+  });
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
+  dispatch({
+    type: "ADD_TOAST",
+    toast: {
+      ...props,
+      id,
+      open: true,
+      onOpenChange: (open) => {
+        if (!open) dismiss();
+      }
+    }
+  });
+  return {
+    id,
+    dismiss,
+    update
+  };
+}
+function useToast() {
+  const [state, setState] = React__namespace.useState(memoryState);
+  React__namespace.useEffect(() => {
+    listeners.push(setState);
+    return () => {
+      const index = listeners.indexOf(setState);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    };
+  }, [state]);
+  return {
+    ...state,
+    toast,
+    dismiss: (toastId) => dispatch({ type: "DISMISS_TOAST", toastId })
+  };
+}
+function cn(...inputs) {
+  return tailwindMerge.twMerge(clsx.clsx(inputs));
+}
+const ToastProvider = ToastPrimitives__namespace.Provider;
+const ToastViewport = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  ToastPrimitives__namespace.Viewport,
+  {
+    ref,
+    className: cn(
+      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+      className
+    ),
+    ...props
+  }
+));
+ToastViewport.displayName = ToastPrimitives__namespace.Viewport.displayName;
+const toastVariants = classVarianceAuthority.cva(
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  {
+    variants: {
+      variant: {
+        default: "border bg-background text-foreground",
+        destructive: "destructive group border-destructive bg-destructive text-destructive-foreground"
+      }
+    },
+    defaultVariants: {
+      variant: "default"
+    }
+  }
+);
+const Toast = React__namespace.forwardRef(({ className, variant, ...props }, ref) => {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    ToastPrimitives__namespace.Root,
+    {
+      ref,
+      className: cn(toastVariants({ variant }), className),
+      ...props
+    }
+  );
+});
+Toast.displayName = ToastPrimitives__namespace.Root.displayName;
+const ToastAction = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  ToastPrimitives__namespace.Action,
+  {
+    ref,
+    className: cn(
+      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
+      className
+    ),
+    ...props
+  }
+));
+ToastAction.displayName = ToastPrimitives__namespace.Action.displayName;
+const ToastClose = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  ToastPrimitives__namespace.Close,
+  {
+    ref,
+    className: cn(
+      "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
+      className
+    ),
+    "toast-close": "",
+    ...props,
+    children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "h-4 w-4" })
+  }
+));
+ToastClose.displayName = ToastPrimitives__namespace.Close.displayName;
+const ToastTitle = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  ToastPrimitives__namespace.Title,
+  {
+    ref,
+    className: cn("text-sm font-semibold", className),
+    ...props
+  }
+));
+ToastTitle.displayName = ToastPrimitives__namespace.Title.displayName;
+const ToastDescription = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  ToastPrimitives__namespace.Description,
+  {
+    ref,
+    className: cn("text-sm opacity-90", className),
+    ...props
+  }
+));
+ToastDescription.displayName = ToastPrimitives__namespace.Description.displayName;
+function Toaster() {
+  const { toasts } = useToast();
+  return /* @__PURE__ */ jsxRuntime.jsxs(ToastProvider, { children: [
+    toasts.map(function({ id, title, description, action, ...props }) {
+      return /* @__PURE__ */ jsxRuntime.jsxs(Toast, { ...props, children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid gap-1", children: [
+          title && /* @__PURE__ */ jsxRuntime.jsx(ToastTitle, { children: title }),
+          description && /* @__PURE__ */ jsxRuntime.jsx(ToastDescription, { children: description })
+        ] }),
+        action,
+        /* @__PURE__ */ jsxRuntime.jsx(ToastClose, {})
+      ] }, id);
+    }),
+    /* @__PURE__ */ jsxRuntime.jsx(ToastViewport, {})
+  ] });
+}
+const TooltipProvider = TooltipPrimitive__namespace.Provider;
+const TooltipContent = React__namespace.forwardRef(({ className, sideOffset = 4, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  TooltipPrimitive__namespace.Content,
+  {
+    ref,
+    sideOffset,
+    className: cn(
+      "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]",
+      className
+    ),
+    ...props
+  }
+));
+TooltipContent.displayName = TooltipPrimitive__namespace.Content.displayName;
+const ThemeContext = React.createContext({
+  theme: "light"
+});
+function ThemeProvider({ children }) {
+  return /* @__PURE__ */ jsxRuntime.jsx(ThemeContext.Provider, { value: { theme: "light" }, children });
+}
+function ScrollToTop() {
+  const [location] = wouter.useLocation();
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  return null;
+}
+const buttonVariants = classVarianceAuthority.cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover-elevate active-elevate-2",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground border border-primary-border",
+        destructive: "bg-destructive text-destructive-foreground border border-destructive-border",
+        outline: (
+          // Shows the background color of whatever card / sidebar / accent background it is inside of.
+          // Inherits the current text color.
+          " border [border-color:var(--button-outline)]  shadow-xs active:shadow-none "
+        ),
+        secondary: "border bg-secondary text-secondary-foreground border border-secondary-border ",
+        // Add a transparent border so that when someone toggles a border on later, it doesn't shift layout/size.
+        ghost: "border border-transparent"
+      },
+      // Heights are set as "min" heights, because sometimes Ai will place large amount of content
+      // inside buttons. With a min-height they will look appropriate with small amounts of content,
+      // but will expand to fit large amounts of content.
+      size: {
+        default: "min-h-9 px-4 py-2",
+        sm: "min-h-8 rounded-md px-3 text-xs",
+        lg: "min-h-10 rounded-md px-8",
+        icon: "h-9 w-9"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+);
+const Button = React__namespace.forwardRef(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? reactSlot.Slot : "button";
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      Comp,
+      {
+        className: cn(buttonVariants({ variant, size, className })),
+        ref,
+        ...props
+      }
+    );
+  }
+);
+Button.displayName = "Button";
+const COMPANY = {
+  name: "Infinite Rankers",
+  email: "contact@infiniterankers.io",
+  phone: "(703) 415-9373",
+  address: "203 N Caroline Pl, Dover, DE 19904, USA"
+};
+const SERVICE_CATEGORIES = [
+  {
+    id: "ai-automation",
+    title: "AI & Automation Systems",
+    description: "Intelligent automation that works 24/7 to capture, qualify, and convert leads into paying customers.",
+    icon: "Bot",
+    services: [
+      { slug: "ai-calling-agent", title: "AI Calling Agent", shortDesc: "Automated outbound and inbound calls that qualify leads and book appointments around the clock.", icon: "Phone" },
+      { slug: "ai-receptionist", title: "AI Receptionist", shortDesc: "Never miss a call again. AI answers, qualifies, and routes every inquiry instantly.", icon: "Headphones" },
+      { slug: "ai-lead-qualification", title: "AI Lead Qualification Bot", shortDesc: "Automatically score and qualify leads so your sales team only talks to buyers.", icon: "UserCheck" },
+      { slug: "ai-appointment-booking", title: "AI Appointment Booking System", shortDesc: "Let AI fill your calendar with qualified prospects while you focus on closing.", icon: "CalendarCheck" },
+      { slug: "ai-follow-up", title: "AI Follow-Up Automation", shortDesc: "Never lose a lead to poor follow-up. AI nurtures every prospect automatically.", icon: "MailCheck" },
+      { slug: "ai-sales-assistant", title: "AI Sales Assistant", shortDesc: "AI-powered sales support that helps your team close more deals faster.", icon: "TrendingUp" },
+      { slug: "ai-chatbot", title: "AI Chatbot", shortDesc: "Website, WhatsApp, and Messenger chatbot that engages visitors 24/7.", icon: "MessageSquare" },
+      { slug: "ai-email-automation", title: "AI Email Automation", shortDesc: "Smart email sequences that adapt to prospect behavior and maximize replies.", icon: "Mail" },
+      { slug: "ai-sms-automation", title: "AI SMS Automation", shortDesc: "High-response SMS campaigns powered by AI for instant engagement.", icon: "Smartphone" },
+      { slug: "crm-automation", title: "CRM Automation", shortDesc: "Automate your entire CRM workflow from lead entry to deal closure.", icon: "Database" },
+      { slug: "workflow-automation", title: "Workflow Automation", shortDesc: "Connect and automate every tool in your sales and marketing stack.", icon: "Workflow" }
+    ]
+  },
+  {
+    id: "lead-generation",
+    title: "Lead Generation Systems",
+    description: "High-performance advertising and SEO systems that drive qualified traffic and revenue.",
+    icon: "Target",
+    services: [
+      { slug: "google-ads", title: "Google Ads Revenue Engine", shortDesc: "Data-driven Google Ads campaigns that maximize ROI and revenue.", icon: "Search" },
+      { slug: "meta-ads", title: "Meta Ads Growth Engine", shortDesc: "Facebook and Instagram advertising that generates qualified leads at scale.", icon: "Megaphone" },
+      { slug: "seo-authority", title: "SEO Authority Growth System", shortDesc: "Dominate search rankings and build organic traffic that converts.", icon: "BarChart3" },
+      { slug: "local-seo", title: "Local SEO & Google Business", shortDesc: "Own your local market with optimized Google Business and local search presence.", icon: "MapPin" },
+      { slug: "conversion-funnels", title: "Conversion Funnel Building", shortDesc: "Multi-step funnels designed to turn cold traffic into paying customers.", icon: "Filter" },
+      { slug: "landing-page-optimization", title: "Landing Page Optimization", shortDesc: "High-converting landing pages that turn visitors into leads and revenue.", icon: "MousePointer" },
+      { slug: "conversion-rate-optimization", title: "Conversion Rate Optimization", shortDesc: "Data-backed testing and optimization to maximize every visitor's value.", icon: "Percent" }
+    ]
+  },
+  {
+    id: "social-content",
+    title: "Social Media & Content",
+    description: "Strategic content and social media presence that builds authority and drives engagement.",
+    icon: "Share2",
+    services: [
+      { slug: "social-media-marketing", title: "Social Media Marketing", shortDesc: "Strategic social presence across platforms to build brand authority.", icon: "Globe" },
+      { slug: "instagram-growth", title: "Instagram Growth & Posting", shortDesc: "Consistent, engaging Instagram content that grows your audience organically.", icon: "Camera" },
+      { slug: "facebook-growth", title: "Facebook Growth & Posting", shortDesc: "Facebook content strategy that builds community and drives leads.", icon: "ThumbsUp" },
+      { slug: "content-writing", title: "Content Writing & Strategy", shortDesc: "Authority-building content that positions you as the industry leader.", icon: "FileText" },
+      { slug: "branding-design", title: "Branding & Creative Design", shortDesc: "Premium brand identity that commands trust and recognition.", icon: "Palette" },
+      { slug: "video-marketing", title: "Short Form Video Marketing", shortDesc: "Scroll-stopping video content optimized for engagement and reach.", icon: "Video" }
+    ]
+  },
+  {
+    id: "development",
+    title: "Development & Technology",
+    description: "Custom-built technology solutions that power your growth infrastructure.",
+    icon: "Code",
+    services: [
+      { slug: "website-development", title: "Website Development", shortDesc: "High-performance websites designed for conversion and growth.", icon: "Monitor" },
+      { slug: "landing-page-development", title: "Landing Page Development", shortDesc: "Fast, responsive landing pages built to convert traffic into leads.", icon: "Layout" },
+      { slug: "crm-setup", title: "CRM Setup & Integration", shortDesc: "Professional CRM implementation customized for your sales process.", icon: "Settings" },
+      { slug: "saas-integrations", title: "SaaS Integrations", shortDesc: "Seamless integration between your tools for unified data flow.", icon: "Plug" },
+      { slug: "marketing-automation-setup", title: "Marketing Automation Setup", shortDesc: "End-to-end marketing automation configured for maximum impact.", icon: "Zap" },
+      { slug: "analytics-dashboard", title: "Dashboard & Analytics Setup", shortDesc: "Real-time dashboards and analytics to track every metric that matters.", icon: "PieChart" }
+    ]
+  }
+];
+const ALL_SERVICES$1 = SERVICE_CATEGORIES.flatMap(
+  (cat) => cat.services.map((s) => ({ ...s, category: cat.title, categoryId: cat.id }))
+);
+const CASE_STUDIES = [
+  {
+    id: "1",
+    title: "Local Dental Practice Revenue Transformation",
+    business: "Premier Dental Care — Multi-location dental practice",
+    challenge: "Struggling with inconsistent patient flow and relying on word-of-mouth referrals. Monthly new patient count had plateaued at 15-20.",
+    solution: "Deployed AI Calling Agent + Google Ads Revenue Engine + AI Appointment Booking System. Built automated follow-up sequences and optimized Google Business profile.",
+    results: { metric1: "340%", label1: "Increase in New Patients", metric2: "$14.2K", label2: "Monthly Revenue Growth", metric3: "89%", label3: "Appointment Show Rate", metric4: "4.2x", label4: "Return on Ad Spend" },
+    tags: ["AI Automation", "Google Ads", "Local SEO"],
+    label: "Sample Case Study",
+    industry: "Healthcare",
+    services: ["AI Calling Agent", "Google Ads", "AI Appointment Booking", "Local SEO"],
+    duration: "6 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "We went from struggling to fill chairs to having a 3-week waitlist. The AI calling system alone doubled our bookings in the first 60 days.", author: "Dr. Sarah Mitchell", role: "Owner, Premier Dental Care" },
+    workflow: [
+      { step: "Audit & Strategy", description: "Comprehensive review of patient acquisition channels, call handling, and local search presence across all locations." },
+      { step: "AI System Deployment", description: "Configured AI calling agent with dental-specific scripts, integrated appointment booking with practice management software." },
+      { step: "Ads & SEO Launch", description: "Launched geo-targeted Google Ads campaigns and optimized Google Business profiles for each location." },
+      { step: "Optimization & Scale", description: "Refined ad targeting based on conversion data, expanded to new service keywords, and automated patient follow-ups." }
+    ],
+    beforeAfter: [
+      { metric: "New Patients/Month", before: "18", after: "79" },
+      { metric: "Monthly Revenue", before: "$62K", after: "$110K" },
+      { metric: "Appointment Show Rate", before: "61%", after: "89%" }
+    ]
+  },
+  {
+    id: "2",
+    title: "E-Commerce Brand Scaling System",
+    business: "LuxeHome Essentials — Premium home goods e-commerce",
+    challenge: "High cart abandonment rate of 78%, low repeat customer rate, and inefficient ad spend across Meta and Google platforms.",
+    solution: "Implemented AI Email Automation + Meta Ads Growth Engine + Conversion Funnel Building. Created personalized retargeting sequences and abandoned cart recovery flows.",
+    results: { metric1: "62%", label1: "Cart Recovery Rate", metric2: "5.8x", label2: "ROAS Improvement", metric3: "$18.5K", label3: "Monthly Revenue Increase", metric4: "45%", label4: "Repeat Purchase Rate" },
+    tags: ["Meta Ads", "Email Automation", "CRO"],
+    label: "Sample Case Study",
+    industry: "E-Commerce",
+    services: ["AI Email Automation", "Meta Ads", "Conversion Funnel Building", "Conversion Rate Optimization"],
+    duration: "4 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "Our abandoned cart recovery alone is generating an extra $40K per month. The retargeting funnels they built are incredibly profitable.", author: "James Thornton", role: "CEO, LuxeHome Essentials" },
+    workflow: [
+      { step: "Data Analysis", description: "Deep dive into cart abandonment patterns, customer behavior analytics, and existing ad account audit." },
+      { step: "Funnel Architecture", description: "Built multi-step conversion funnels with personalized product recommendations and urgency triggers." },
+      { step: "Email & Retargeting", description: "Deployed AI-powered email sequences and dynamic Meta retargeting ads matched to browsing behavior." },
+      { step: "Revenue Optimization", description: "Continuous A/B testing of ad creatives, email subject lines, and funnel pages to maximize ROAS." }
+    ],
+    beforeAfter: [
+      { metric: "Cart Abandonment Rate", before: "78%", after: "38%" },
+      { metric: "Return on Ad Spend", before: "1.4x", after: "5.8x" },
+      { metric: "Repeat Purchase Rate", before: "12%", after: "45%" }
+    ]
+  },
+  {
+    id: "3",
+    title: "Real Estate Agency Lead Generation",
+    business: "Skyline Realty Group — Luxury real estate brokerage",
+    challenge: "Generating only 30 leads per month with a 5% conversion rate. Sales team spent 60% of time on unqualified prospects.",
+    solution: "Built AI Lead Qualification Bot + AI SMS Automation + Landing Page Optimization. Automated lead scoring and instant response system.",
+    results: { metric1: "280%", label1: "Lead Volume Increase", metric2: "34%", label2: "Lead-to-Client Rate", metric3: "12min", label3: "Avg Response Time", metric4: "$16.8K", label4: "Monthly Revenue Growth" },
+    tags: ["AI Qualification", "SMS Automation", "Landing Pages"],
+    label: "Sample Case Study",
+    industry: "Real Estate",
+    services: ["AI Lead Qualification Bot", "AI SMS Automation", "Landing Page Optimization"],
+    duration: "6 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "Our agents now only talk to serious buyers. The AI qualification system filters out tire-kickers before they ever reach our team.", author: "Michael Reeves", role: "Managing Broker, Skyline Realty Group" },
+    workflow: [
+      { step: "Lead Audit", description: "Analyzed existing lead sources, response times, and qualification criteria to identify bottlenecks." },
+      { step: "AI Qualification Setup", description: "Built intelligent lead scoring model with property-specific criteria and instant SMS engagement triggers." },
+      { step: "Landing Page Overhaul", description: "Redesigned property landing pages with AI chatbot integration and smart lead capture forms." },
+      { step: "Performance Tracking", description: "Implemented real-time dashboards tracking lead quality, agent response times, and conversion rates." }
+    ],
+    beforeAfter: [
+      { metric: "Qualified Leads/Month", before: "30", after: "114" },
+      { metric: "Lead-to-Client Rate", before: "5%", after: "34%" },
+      { metric: "Avg Response Time", before: "4 hours", after: "12 minutes" }
+    ]
+  },
+  {
+    id: "4",
+    title: "SaaS Company Growth Acceleration",
+    business: "CloudSync Pro — B2B SaaS platform",
+    challenge: "High churn rate of 8% monthly, lengthy sales cycle of 45 days, and inefficient demo booking process losing 40% of interested prospects.",
+    solution: "Deployed AI Sales Assistant + AI Chatbot + Workflow Automation + CRM Automation. Created intelligent demo scheduling and onboarding sequences.",
+    results: { metric1: "67%", label1: "Churn Reduction", metric2: "18 days", label2: "Sales Cycle Shortened", metric3: "420%", label3: "Demo Bookings Increase", metric4: "$12.4K", label4: "Monthly Revenue Growth" },
+    tags: ["AI Chatbot", "CRM Automation", "Sales Assistant"],
+    label: "Sample Case Study",
+    industry: "Technology",
+    services: ["AI Sales Assistant", "AI Chatbot", "Workflow Automation", "CRM Automation"],
+    duration: "5 months",
+    teamSize: "5 specialists",
+    testimonial: { quote: "Our demo-to-close rate jumped from 15% to 42%. The AI chatbot qualifies prospects before they even speak to a rep, so every demo is high-intent.", author: "Priya Kapoor", role: "VP of Sales, CloudSync Pro" },
+    workflow: [
+      { step: "Sales Process Mapping", description: "Documented the entire sales funnel from first touch to closed deal, identifying friction points and drop-off stages." },
+      { step: "AI Chatbot & Demo Automation", description: "Deployed website chatbot with product-aware responses and instant calendar integration for demo scheduling." },
+      { step: "CRM & Workflow Integration", description: "Automated lead assignment, follow-up sequences, and pipeline stage transitions within their CRM." },
+      { step: "Churn Prevention System", description: "Built automated health scoring and proactive outreach triggers for at-risk accounts." }
+    ],
+    beforeAfter: [
+      { metric: "Monthly Churn Rate", before: "8%", after: "2.6%" },
+      { metric: "Sales Cycle Length", before: "45 days", after: "18 days" },
+      { metric: "Monthly Recurring Revenue", before: "$120K", after: "$205K" }
+    ]
+  },
+  {
+    id: "5",
+    title: "Law Firm Client Acquisition System",
+    business: "Sterling & Associates — Personal injury law firm",
+    challenge: "Inconsistent case intake process, missed calls during off-hours, and no systematic follow-up resulting in lost potential clients.",
+    solution: "Implemented AI Receptionist + AI Follow-Up Automation + SEO Authority Growth System. Built 24/7 intake system with automated case qualification.",
+    results: { metric1: "190%", label1: "Case Intake Increase", metric2: "24/7", label2: "Response Coverage", metric3: "$19.5K", label3: "Monthly Revenue Growth", metric4: "92%", label4: "Client Satisfaction" },
+    tags: ["AI Receptionist", "SEO", "Follow-Up Automation"],
+    label: "Sample Case Study",
+    industry: "Legal",
+    services: ["AI Receptionist", "AI Follow-Up Automation", "SEO Authority Growth System"],
+    duration: "4 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "We used to miss 30% of after-hours calls. Now every single inquiry gets an immediate, professional response. Our caseload has nearly tripled.", author: "David Sterling", role: "Managing Partner, Sterling & Associates" },
+    workflow: [
+      { step: "Intake Analysis", description: "Reviewed call logs, intake forms, and follow-up processes to quantify missed opportunities." },
+      { step: "AI Receptionist Deployment", description: "Configured 24/7 AI receptionist with legal-specific scripts and case qualification criteria." },
+      { step: "SEO & Content Strategy", description: "Built authority content targeting high-value personal injury keywords with local search optimization." },
+      { step: "Follow-Up Automation", description: "Created multi-channel follow-up sequences for leads at every stage of the intake process." }
+    ],
+    beforeAfter: [
+      { metric: "Cases Intake/Month", before: "22", after: "64" },
+      { metric: "After-Hours Call Capture", before: "0%", after: "100%" },
+      { metric: "Quarterly Revenue", before: "$170K", after: "$320K" }
+    ]
+  },
+  {
+    id: "6",
+    title: "Fitness Studio Membership Growth",
+    business: "FitCore Studios — Boutique fitness chain",
+    challenge: "Membership growth stagnated at 200 active members. Social media presence was minimal and paid advertising had low ROI.",
+    solution: "Built Social Media Marketing + Instagram Growth + Meta Ads Growth Engine + AI Appointment Booking. Created community-driven content strategy with automated trial booking.",
+    results: { metric1: "520", label1: "Active Members (from 200)", metric2: "15K", label2: "Instagram Followers Gained", metric3: "78%", label3: "Trial-to-Member Rate", metric4: "3.6x", label4: "Revenue Growth" },
+    tags: ["Social Media", "Meta Ads", "AI Booking"],
+    label: "Sample Case Study",
+    industry: "Fitness",
+    services: ["Social Media Marketing", "Instagram Growth", "Meta Ads", "AI Appointment Booking"],
+    duration: "8 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "Instagram went from a dead account to our number one lead source. We now get 40+ trial bookings per week, all automated.", author: "Rachel Torres", role: "Owner, FitCore Studios" },
+    workflow: [
+      { step: "Brand & Content Audit", description: "Evaluated existing social media presence, brand positioning, and competitive landscape in the fitness market." },
+      { step: "Content & Community Strategy", description: "Developed transformation-focused content calendar with member spotlights, workout clips, and nutrition tips." },
+      { step: "Paid Acquisition Launch", description: "Launched Meta Ads campaigns targeting fitness-interested audiences within a 10-mile radius of each location." },
+      { step: "Booking Automation", description: "Integrated AI booking system with social ads for seamless trial class scheduling directly from Instagram and Facebook." }
+    ],
+    beforeAfter: [
+      { metric: "Active Members", before: "200", after: "520" },
+      { metric: "Instagram Followers", before: "800", after: "15,800" },
+      { metric: "Monthly Revenue", before: "$28K", after: "$101K" }
+    ]
+  },
+  {
+    id: "7",
+    title: "Restaurant Chain Digital Transformation",
+    business: "Harvest Kitchen — Farm-to-table restaurant group",
+    challenge: "No online ordering system, poor local visibility, and zero automated marketing. Each location managed marketing independently with inconsistent results.",
+    solution: "Deployed Website Development + Local SEO & Google Business + AI SMS Automation + Content Writing & Strategy. Unified marketing across all locations.",
+    results: { metric1: "240%", label1: "Online Orders Increase", metric2: "#1", label2: "Local Search Rankings", metric3: "4,200", label3: "Monthly SMS Subscribers", metric4: "$11.3K", label4: "Monthly Revenue Growth" },
+    tags: ["Local SEO", "Web Development", "SMS Automation"],
+    label: "Sample Case Study",
+    industry: "Food & Beverage",
+    services: ["Website Development", "Local SEO & Google Business", "AI SMS Automation", "Content Writing & Strategy"],
+    duration: "5 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "Our online orders went from almost nothing to 35% of total revenue. The unified marketing system finally made our brand consistent across all three locations.", author: "Chef Marco Delgado", role: "Founder, Harvest Kitchen" },
+    workflow: [
+      { step: "Multi-Location Audit", description: "Assessed each location's online presence, Google Business profiles, and current marketing efforts." },
+      { step: "Website & Ordering System", description: "Built a unified website with location-specific online ordering, menu management, and reservation system." },
+      { step: "Local SEO Optimization", description: "Optimized all Google Business profiles, built local citation network, and launched review generation campaigns." },
+      { step: "SMS & Content Engine", description: "Deployed weekly SMS promotions and seasonal content strategy to drive repeat visits and online orders." }
+    ],
+    beforeAfter: [
+      { metric: "Online Orders/Week", before: "25", after: "85" },
+      { metric: "Google Search Ranking", before: "Page 3", after: "#1 Local" },
+      { metric: "SMS Subscriber List", before: "0", after: "4,200" }
+    ]
+  },
+  {
+    id: "8",
+    title: "Multi-Specialty Clinic Patient Growth Engine",
+    business: "Meridian Health Partners — Multi-specialty medical clinic",
+    challenge: "Patient acquisition cost was $280 per new patient. Website generated minimal traffic, and the front desk missed 35% of calls during peak hours.",
+    solution: "Deployed AI Receptionist + Google Ads Revenue Engine + Local SEO & Google Business + AI Appointment Booking. Built an integrated patient acquisition and intake system.",
+    results: { metric1: "215%", label1: "New Patient Volume", metric2: "$82", label2: "Cost Per Acquisition", metric3: "98%", label3: "Call Answer Rate", metric4: "$15.7K", label4: "Monthly Revenue Growth" },
+    tags: ["AI Receptionist", "Google Ads", "Local SEO", "AI Booking"],
+    label: "Sample Case Study",
+    industry: "Healthcare",
+    services: ["AI Receptionist", "Google Ads", "Local SEO & Google Business", "AI Appointment Booking"],
+    duration: "6 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "The AI receptionist paid for itself in the first week. We stopped losing patients to voicemail, and our Google Ads are generating appointments at a third of the old cost.", author: "Dr. Alan Whitfield", role: "Medical Director, Meridian Health Partners" },
+    workflow: [
+      { step: "Practice Assessment", description: "Analyzed call volume patterns, website traffic, patient demographics, and existing marketing spend." },
+      { step: "AI Phone System", description: "Deployed AI receptionist trained on clinic services, insurance questions, and appointment availability." },
+      { step: "Digital Advertising", description: "Launched Google Ads campaigns targeting high-intent medical searches in the service area." },
+      { step: "Local Dominance", description: "Optimized Google Business profile, built medical citation network, and implemented review generation." }
+    ],
+    beforeAfter: [
+      { metric: "Patient Acquisition Cost", before: "$280", after: "$82" },
+      { metric: "Calls Answered", before: "65%", after: "98%" },
+      { metric: "New Patients/Month", before: "40", after: "126" }
+    ]
+  },
+  {
+    id: "9",
+    title: "Wealth Management Firm Digital Presence",
+    business: "Crestview Capital Advisors — Independent wealth management firm",
+    challenge: "Relied entirely on referrals for new clients. Had no digital marketing, outdated website, and zero online lead generation pipeline.",
+    solution: "Built Website Development + SEO Authority Growth System + AI Lead Qualification Bot + Content Writing & Strategy. Created a trust-building digital presence with automated prospect qualification.",
+    results: { metric1: "380%", label1: "Website Lead Increase", metric2: "$17.3K", label2: "Monthly Revenue Growth", metric3: "42%", label3: "Lead Qualification Rate", metric4: "28", label4: "New HNW Clients in 6 Months" },
+    tags: ["SEO", "Web Development", "AI Qualification", "Content Strategy"],
+    label: "Sample Case Study",
+    industry: "Financial Services",
+    services: ["Website Development", "SEO Authority Growth System", "AI Lead Qualification Bot", "Content Writing & Strategy"],
+    duration: "7 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "For 15 years we relied solely on referrals. Now our website brings in 8-10 qualified prospects monthly, and the AI bot filters out people who aren't a good fit before we ever pick up the phone.", author: "Thomas Hargrove", role: "Managing Partner, Crestview Capital Advisors" },
+    workflow: [
+      { step: "Brand & Compliance Review", description: "Assessed existing brand assets, compliance requirements, and competitive positioning in the wealth management space." },
+      { step: "Authority Website Build", description: "Designed and developed a premium website with thought leadership content, advisor profiles, and secure contact forms." },
+      { step: "SEO & Content Program", description: "Launched ongoing SEO strategy with financial planning articles, market commentary, and retirement guides." },
+      { step: "Lead Qualification Automation", description: "Deployed AI bot to pre-qualify prospects based on investable assets, financial goals, and timeline." }
+    ],
+    beforeAfter: [
+      { metric: "Monthly Website Leads", before: "2", after: "11" },
+      { metric: "Organic Search Traffic", before: "120/mo", after: "3,400/mo" },
+      { metric: "AUM Growth (6 months)", before: "$0", after: "$4.2M" }
+    ]
+  },
+  {
+    id: "10",
+    title: "Home Services Lead Machine",
+    business: "TrueFlow Plumbing & HVAC — Residential plumbing and HVAC services",
+    challenge: "Seasonal revenue swings of 40%, no recurring customer base, and spending $6,000/month on underperforming ads with no tracking in place.",
+    solution: "Implemented Google Ads Revenue Engine + Local SEO & Google Business + AI Calling Agent + AI Follow-Up Automation. Built year-round lead generation system with maintenance plan upsells.",
+    results: { metric1: "190%", label1: "Lead Volume Increase", metric2: "$13.6K", label2: "Monthly Revenue Growth", metric3: "3.9x", label3: "Return on Ad Spend", metric4: "340", label4: "Maintenance Plan Sign-Ups" },
+    tags: ["Google Ads", "Local SEO", "AI Calling", "Follow-Up Automation"],
+    label: "Sample Case Study",
+    industry: "Home Services",
+    services: ["Google Ads", "Local SEO & Google Business", "AI Calling Agent", "AI Follow-Up Automation"],
+    duration: "5 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "We used to dread the slow season. Now we have a waiting list in January. The maintenance plan upsell alone added $8K in predictable monthly revenue.", author: "Greg Paulson", role: "Owner, TrueFlow Plumbing & HVAC" },
+    workflow: [
+      { step: "Revenue & Lead Audit", description: "Analyzed seasonal patterns, existing ad performance, customer lifetime value, and service area coverage." },
+      { step: "Ad Campaign Rebuild", description: "Restructured Google Ads with service-specific campaigns, call tracking, and proper conversion attribution." },
+      { step: "Local SEO Domination", description: "Optimized Google Business, built service-area pages, and launched review generation for each service category." },
+      { step: "AI Follow-Up & Upsell", description: "Deployed AI calling agent for estimate follow-ups and automated maintenance plan offers to past customers." }
+    ],
+    beforeAfter: [
+      { metric: "Monthly Leads", before: "45", after: "130" },
+      { metric: "Revenue (Slow Season)", before: "$22K", after: "$48K" },
+      { metric: "Ad Spend ROI", before: "1.2x", after: "3.9x" }
+    ]
+  },
+  {
+    id: "11",
+    title: "Auto Dealership Sales Acceleration",
+    business: "Pinnacle Motors — Pre-owned vehicle dealership",
+    challenge: "Internet leads had a 6% close rate, response times averaged 4 hours, and the BDC team could not keep up with inbound inquiries during peak hours.",
+    solution: "Deployed AI Chatbot + AI SMS Automation + Meta Ads Growth Engine + CRM Automation. Created instant engagement system with automated test drive scheduling.",
+    results: { metric1: "310%", label1: "Internet Lead Conversion", metric2: "< 2 min", label2: "Average Response Time", metric3: "$19.8K", label3: "Monthly Revenue Growth", metric4: "62%", label4: "Test Drive Show Rate" },
+    tags: ["AI Chatbot", "SMS Automation", "Meta Ads", "CRM Automation"],
+    label: "Sample Case Study",
+    industry: "Auto Dealership",
+    services: ["AI Chatbot", "AI SMS Automation", "Meta Ads", "CRM Automation"],
+    duration: "4 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "The AI chatbot handles 200+ conversations a day and books test drives while our team focuses on closing. Our internet close rate went from 6% to nearly 19%.", author: "Tony Marchetti", role: "General Manager, Pinnacle Motors" },
+    workflow: [
+      { step: "BDC Process Audit", description: "Mapped the entire customer journey from online inquiry to vehicle delivery, identifying response gaps and drop-offs." },
+      { step: "AI Engagement System", description: "Deployed AI chatbot on website and Facebook with vehicle-specific inventory integration and test drive scheduling." },
+      { step: "Multi-Channel Ads", description: "Launched Meta Ads campaigns showcasing inventory with dynamic creative and instant messenger engagement." },
+      { step: "CRM Pipeline Automation", description: "Automated lead assignment, follow-up cadences, and pipeline stage tracking within their dealership CRM." }
+    ],
+    beforeAfter: [
+      { metric: "Internet Lead Close Rate", before: "6%", after: "18.6%" },
+      { metric: "Response Time", before: "4 hours", after: "< 2 minutes" },
+      { metric: "Monthly Vehicle Sales", before: "85", after: "142" }
+    ]
+  },
+  {
+    id: "12",
+    title: "Online Coaching Business Revenue System",
+    business: "Apex Performance Academy — Executive coaching & leadership training",
+    challenge: "Inconsistent enrollment with feast-or-famine cycles. No automated funnel, manual onboarding, and course completion rates below 40%.",
+    solution: "Built Conversion Funnel Building + AI Email Automation + AI Appointment Booking + Landing Page Development. Created end-to-end enrollment and engagement automation.",
+    results: { metric1: "450%", label1: "Enrollment Growth", metric2: "$10.9K", label2: "Monthly Revenue Growth", metric3: "82%", label3: "Course Completion Rate", metric4: "94%", label4: "Student Satisfaction" },
+    tags: ["Conversion Funnels", "Email Automation", "AI Booking", "Landing Pages"],
+    label: "Sample Case Study",
+    industry: "Education & Coaching",
+    services: ["Conversion Funnel Building", "AI Email Automation", "AI Appointment Booking", "Landing Page Development"],
+    duration: "90 days",
+    teamSize: "3 specialists",
+    testimonial: { quote: "I went from manually chasing every lead to having a waitlist for my coaching program. The automated funnel does the selling while I focus on delivering results.", author: "Dr. Natasha Williams", role: "Founder, Apex Performance Academy" },
+    workflow: [
+      { step: "Offer & Funnel Strategy", description: "Refined coaching program positioning, pricing tiers, and mapped the ideal enrollment journey." },
+      { step: "Funnel & Landing Pages", description: "Built high-converting webinar funnel with application landing page and automated scheduling for discovery calls." },
+      { step: "Email Nurture System", description: "Created 14-day email nurture sequence with value-driven content, social proof, and urgency triggers." },
+      { step: "Engagement Automation", description: "Deployed onboarding sequences and progress-based email triggers to boost course completion and retention." }
+    ],
+    beforeAfter: [
+      { metric: "Monthly Enrollments", before: "8", after: "44" },
+      { metric: "Course Completion Rate", before: "38%", after: "82%" },
+      { metric: "Monthly Revenue", before: "$12K", after: "$67K" }
+    ]
+  },
+  {
+    id: "13",
+    title: "Boutique Hotel Direct Booking Engine",
+    business: "Shoreline Retreats — Boutique coastal hotel collection",
+    challenge: "85% of bookings came through OTAs (Booking.com, Expedia) with 18-22% commission fees. Direct website bookings were nearly nonexistent.",
+    solution: "Deployed Website Development + Google Ads Revenue Engine + AI Email Automation + Social Media Marketing. Built a direct booking funnel with loyalty incentives and retargeting.",
+    results: { metric1: "58%", label1: "Direct Booking Rate (from 15%)", metric2: "$16.1K", label2: "Monthly Revenue Growth", metric3: "4.1x", label3: "Google Ads ROAS", metric4: "38%", label4: "Repeat Guest Rate" },
+    tags: ["Web Development", "Google Ads", "Email Automation", "Social Media"],
+    label: "Sample Case Study",
+    industry: "Travel & Hospitality",
+    services: ["Website Development", "Google Ads", "AI Email Automation", "Social Media Marketing"],
+    duration: "6 months",
+    teamSize: "5 specialists",
+    testimonial: { quote: "We were paying nearly $200K a year in OTA commissions. Now more than half our guests book direct, and the savings go straight to our bottom line.", author: "Claire Jennings", role: "Director of Revenue, Shoreline Retreats" },
+    workflow: [
+      { step: "Revenue Channel Analysis", description: "Audited booking sources, OTA commission costs, and identified the highest-value guest segments for direct targeting." },
+      { step: "Direct Booking Website", description: "Redesigned website with immersive photography, best-rate guarantee messaging, and frictionless booking engine." },
+      { step: "Paid & Social Campaigns", description: "Launched Google Ads for branded and destination keywords, plus Instagram content showcasing the guest experience." },
+      { step: "Guest Retention System", description: "Built automated email sequences for pre-arrival, post-stay reviews, loyalty offers, and seasonal promotions." }
+    ],
+    beforeAfter: [
+      { metric: "Direct Booking Rate", before: "15%", after: "58%" },
+      { metric: "Annual OTA Commissions", before: "$340K", after: "$130K" },
+      { metric: "Repeat Guest Rate", before: "12%", after: "38%" }
+    ]
+  },
+  {
+    id: "14",
+    title: "Insurance Agency Lead & Retention System",
+    business: "Guardian Shield Insurance — Independent insurance agency",
+    challenge: "Policy renewal rate dropping to 72%, no digital lead generation, and agents spent most of their time on manual quoting and follow-ups.",
+    solution: "Implemented AI Calling Agent + AI Follow-Up Automation + Google Ads Revenue Engine + CRM Automation. Automated renewal outreach and built a new policy acquisition funnel.",
+    results: { metric1: "91%", label1: "Policy Renewal Rate", metric2: "260%", label2: "New Policy Applications", metric3: "$14.8K", label3: "Monthly Revenue Growth", metric4: "3.2x", label4: "Agent Productivity" },
+    tags: ["AI Calling", "Follow-Up Automation", "Google Ads", "CRM Automation"],
+    label: "Sample Case Study",
+    industry: "Insurance",
+    services: ["AI Calling Agent", "AI Follow-Up Automation", "Google Ads", "CRM Automation"],
+    duration: "5 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "Our renewal rate jumped from 72% to 91% just from the automated calling system. Agents now spend their time selling instead of chasing renewals.", author: "Patricia Nguyen", role: "Agency Owner, Guardian Shield Insurance" },
+    workflow: [
+      { step: "Book of Business Analysis", description: "Reviewed policy portfolio, renewal patterns, lapse reasons, and agent workflow inefficiencies." },
+      { step: "Renewal Automation", description: "Deployed AI calling agent for renewal reminders 60, 30, and 7 days before expiration with personalized scripts." },
+      { step: "New Business Funnel", description: "Launched Google Ads campaigns for auto, home, and life insurance quotes with landing page integration." },
+      { step: "CRM & Pipeline Setup", description: "Configured CRM automation for lead tracking, quote follow-ups, and cross-sell opportunity identification." }
+    ],
+    beforeAfter: [
+      { metric: "Policy Renewal Rate", before: "72%", after: "91%" },
+      { metric: "New Applications/Month", before: "18", after: "65" },
+      { metric: "Agent Productivity", before: "8 policies/agent/mo", after: "26 policies/agent/mo" }
+    ]
+  },
+  {
+    id: "15",
+    title: "Commercial Contractor Brand & Lead System",
+    business: "Ironclad Builders — Commercial construction & renovation",
+    challenge: "Zero online presence beyond a basic one-page website. All leads came from networking and referrals, limiting growth to $1.8M annually.",
+    solution: "Built Website Development + SEO Authority Growth System + Google Ads Revenue Engine + Branding & Creative Design. Established digital authority in the commercial construction space.",
+    results: { metric1: "$18.2K", label1: "Monthly Revenue Growth", metric2: "14", label2: "Inbound RFPs Per Month", metric3: "#2", label3: "Google Ranking for Key Terms", metric4: "890%", label4: "Website Traffic Growth" },
+    tags: ["Web Development", "SEO", "Google Ads", "Branding"],
+    label: "Sample Case Study",
+    industry: "Construction",
+    services: ["Website Development", "SEO Authority Growth System", "Google Ads", "Branding & Creative Design"],
+    duration: "8 months",
+    teamSize: "5 specialists",
+    testimonial: { quote: "We went from being invisible online to getting called for projects we never would have known about. The website alone has brought in over $1M in new contracts.", author: "Robert Casillas", role: "President, Ironclad Builders" },
+    workflow: [
+      { step: "Brand Strategy", description: "Developed premium brand identity, messaging framework, and project portfolio showcasing commercial capabilities." },
+      { step: "Authority Website", description: "Built project-portfolio-driven website with case studies, certifications, and service area pages optimized for SEO." },
+      { step: "SEO Campaign", description: "Targeted commercial construction keywords with technical content, project case studies, and local authority building." },
+      { step: "Paid Lead Generation", description: "Launched Google Ads targeting commercial renovation, tenant improvement, and new construction searches." }
+    ],
+    beforeAfter: [
+      { metric: "Annual Revenue", before: "$1.8M", after: "$3.4M" },
+      { metric: "Inbound RFPs/Month", before: "2", after: "14" },
+      { metric: "Monthly Website Visitors", before: "90", after: "890" }
+    ]
+  },
+  {
+    id: "16",
+    title: "CPA Firm Client Growth & Automation",
+    business: "Clearpath Accounting Group — Full-service CPA firm",
+    challenge: "Client onboarding took 3 weeks on average, tax season overwhelmed the team, and the firm had no marketing beyond word-of-mouth referrals.",
+    solution: "Deployed AI Email Automation + Workflow Automation + Landing Page Development + Content Writing & Strategy. Streamlined onboarding and built a year-round client acquisition system.",
+    results: { metric1: "180%", label1: "New Client Growth", metric2: "3 days", label2: "Onboarding Time (from 3 weeks)", metric3: "$11.7K", label3: "Monthly Revenue Growth", metric4: "96%", label4: "Client Retention Rate" },
+    tags: ["Email Automation", "Workflow Automation", "Landing Pages", "Content Strategy"],
+    label: "Sample Case Study",
+    industry: "Accounting & CPA",
+    services: ["AI Email Automation", "Workflow Automation", "Landing Page Development", "Content Writing & Strategy"],
+    duration: "4 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "Client onboarding used to be our biggest bottleneck. Now it takes 3 days instead of 3 weeks, and we have a steady stream of new businesses finding us through our content.", author: "Linda Zhao", role: "Managing Partner, Clearpath Accounting Group" },
+    workflow: [
+      { step: "Process Mapping", description: "Documented the entire client onboarding workflow, identifying manual steps, bottlenecks, and document collection delays." },
+      { step: "Workflow Automation", description: "Built automated onboarding sequences with document request emails, e-signature integration, and checklist tracking." },
+      { step: "Content & SEO", description: "Created tax planning guides, small business accounting tips, and industry-specific content for organic lead generation." },
+      { step: "Landing Page Funnels", description: "Built service-specific landing pages for tax preparation, bookkeeping, and business advisory with consultation booking." }
+    ],
+    beforeAfter: [
+      { metric: "Client Onboarding Time", before: "3 weeks", after: "3 days" },
+      { metric: "New Clients/Quarter", before: "12", after: "34" },
+      { metric: "Client Retention", before: "82%", after: "96%" }
+    ]
+  },
+  {
+    id: "17",
+    title: "Luxury Salon Booking & Brand Expansion",
+    business: "Velour Beauty Lounge — High-end hair and beauty salon",
+    challenge: "No-show rate of 28%, inconsistent social media presence, and the booking system was manual (phone and walk-in only), limiting capacity utilization to 55%.",
+    solution: "Implemented AI Appointment Booking + Instagram Growth & Posting + AI SMS Automation + Landing Page Optimization. Built an automated booking ecosystem with social proof engine.",
+    results: { metric1: "87%", label1: "Capacity Utilization (from 55%)", metric2: "6%", label2: "No-Show Rate (from 28%)", metric3: "22K", label3: "Instagram Followers Gained", metric4: "$13.2K", label4: "Monthly Revenue Growth" },
+    tags: ["AI Booking", "Social Media", "SMS Automation", "Landing Pages"],
+    label: "Sample Case Study",
+    industry: "Beauty & Salon",
+    services: ["AI Appointment Booking", "Instagram Growth & Posting", "AI SMS Automation", "Landing Page Optimization"],
+    duration: "4 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "Our no-show rate dropped from 28% to 6% overnight with the automated reminders. And Instagram is now our biggest source of new clients.", author: "Vanessa Okafor", role: "Owner, Velour Beauty Lounge" },
+    workflow: [
+      { step: "Booking & Revenue Audit", description: "Analyzed appointment patterns, no-show data, peak hours, and revenue per chair to identify optimization opportunities." },
+      { step: "Online Booking System", description: "Deployed AI-powered booking with automated confirmations, reminders (24hr + 2hr), and waitlist management." },
+      { step: "Instagram Content Engine", description: "Created transformation-focused content strategy with before/after posts, reels, stylist spotlights, and booking CTAs." },
+      { step: "SMS Retention System", description: "Built automated rebooking reminders, birthday offers, and loyalty rewards triggered by appointment history." }
+    ],
+    beforeAfter: [
+      { metric: "Capacity Utilization", before: "55%", after: "87%" },
+      { metric: "No-Show Rate", before: "28%", after: "6%" },
+      { metric: "Monthly Revenue", before: "$42K", after: "$66K" }
+    ]
+  },
+  {
+    id: "18",
+    title: "Immigration Law Firm Digital Acquisition",
+    business: "Bridgepoint Immigration Law — Immigration and visa law firm",
+    challenge: "Competing with large national firms for visibility. Website was not multilingual, had no online consultation booking, and generated fewer than 5 leads per month.",
+    solution: "Deployed Website Development + Google Ads Revenue Engine + AI Chatbot + AI Follow-Up Automation. Built multilingual digital presence with automated consultation pipeline.",
+    results: { metric1: "640%", label1: "Monthly Lead Increase", metric2: "37", label2: "Consultations Booked/Month", metric3: "$20K", label3: "Monthly Revenue Growth", metric4: "4.8x", label4: "Return on Ad Spend" },
+    tags: ["Web Development", "Google Ads", "AI Chatbot", "Follow-Up Automation"],
+    label: "Sample Case Study",
+    industry: "Legal (Immigration)",
+    services: ["Website Development", "Google Ads", "AI Chatbot", "AI Follow-Up Automation"],
+    duration: "5 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "The multilingual chatbot handles inquiries in English, Spanish, and Portuguese 24/7. We went from 5 consultations a month to over 37, and our close rate actually improved.", author: "Attorney Maria Santos", role: "Founding Partner, Bridgepoint Immigration Law" },
+    workflow: [
+      { step: "Market & Competitor Analysis", description: "Researched immigration law search trends, competitor ad strategies, and underserved language communities in the service area." },
+      { step: "Multilingual Website", description: "Built professional website in English, Spanish, and Portuguese with visa category pages and online consultation scheduling." },
+      { step: "AI Chatbot & Ads", description: "Deployed multilingual chatbot for instant visa eligibility pre-screening and launched targeted Google Ads for high-intent immigration queries." },
+      { step: "Lead Nurture System", description: "Created follow-up automation with case-type-specific email sequences and document preparation guides." }
+    ],
+    beforeAfter: [
+      { metric: "Monthly Leads", before: "5", after: "37" },
+      { metric: "Consultation Close Rate", before: "22%", after: "41%" },
+      { metric: "Monthly Revenue", before: "$28K", after: "$106K" }
+    ]
+  },
+  {
+    id: "19",
+    title: "Freight Brokerage Efficiency & Growth",
+    business: "Nexus Freight Solutions — Third-party logistics and freight brokerage",
+    challenge: "Manual carrier matching taking 45 minutes per load, no CRM in place, and client communication relied on scattered emails and phone calls.",
+    solution: "Implemented CRM Automation + Workflow Automation + AI Email Automation + Dashboard & Analytics Setup. Built operational efficiency system with automated client reporting.",
+    results: { metric1: "68%", label1: "Faster Load Matching", metric2: "240%", label2: "Load Volume Growth", metric3: "$15.4K", label3: "Monthly Revenue Growth", metric4: "97%", label4: "Client Retention Rate" },
+    tags: ["CRM Automation", "Workflow Automation", "Email Automation", "Analytics"],
+    label: "Sample Case Study",
+    industry: "Logistics & Shipping",
+    services: ["CRM Automation", "Workflow Automation", "AI Email Automation", "Dashboard & Analytics Setup"],
+    duration: "6 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "Load matching went from 45 minutes to under 15. Our brokers handle triple the volume now, and clients get automated tracking updates without us lifting a finger.", author: "Derek Osman", role: "CEO, Nexus Freight Solutions" },
+    workflow: [
+      { step: "Operations Audit", description: "Mapped the entire load lifecycle from customer request to delivery confirmation, identifying manual bottlenecks." },
+      { step: "CRM & Pipeline Setup", description: "Configured logistics CRM with automated load tracking, carrier databases, and client communication workflows." },
+      { step: "Workflow Automation", description: "Built automated carrier matching, rate confirmation, and shipment status update sequences." },
+      { step: "Reporting & Analytics", description: "Deployed real-time dashboards for load performance, margin analysis, and automated weekly client reports." }
+    ],
+    beforeAfter: [
+      { metric: "Load Matching Time", before: "45 min", after: "14 min" },
+      { metric: "Loads Brokered/Month", before: "120", after: "408" },
+      { metric: "Client Retention", before: "78%", after: "97%" }
+    ]
+  },
+  {
+    id: "20",
+    title: "Precision Parts Manufacturer Digital Transformation",
+    business: "Apex Machining Works — CNC precision parts manufacturer",
+    challenge: "No digital marketing presence, 100% reliance on trade shows and existing relationships. RFQ pipeline was feast-or-famine with long gaps between contracts.",
+    solution: "Built Website Development + SEO Authority Growth System + Google Ads Revenue Engine + AI Lead Qualification Bot. Created an industrial-grade digital lead generation engine.",
+    results: { metric1: "520%", label1: "Website RFQ Submissions", metric2: "$17.9K", label2: "Monthly Revenue Growth", metric3: "22", label3: "New Manufacturing Clients", metric4: "#1", label4: "Google Rank for CNC Keywords" },
+    tags: ["Web Development", "SEO", "Google Ads", "AI Qualification"],
+    label: "Sample Case Study",
+    industry: "Manufacturing",
+    services: ["Website Development", "SEO Authority Growth System", "Google Ads", "AI Lead Qualification Bot"],
+    duration: "9 months",
+    teamSize: "4 specialists",
+    testimonial: { quote: "We used to fly to 6 trade shows a year hoping to meet the right buyer. Now qualified RFQs come to us every week through the website. It completely changed our business model.", author: "Karl Brennan", role: "VP of Business Development, Apex Machining Works" },
+    workflow: [
+      { step: "Industry Research", description: "Analyzed target industries, competitor digital presence, and high-value CNC machining search terms." },
+      { step: "Technical Website", description: "Built capabilities-focused website with material specs, tolerance charts, certifications, and RFQ submission portal." },
+      { step: "Industrial SEO", description: "Targeted long-tail manufacturing keywords with technical content, case studies, and capabilities pages." },
+      { step: "Lead Qualification & Ads", description: "Launched Google Ads for CNC machining queries and deployed AI qualification bot to filter RFQs by volume, material, and timeline." }
+    ],
+    beforeAfter: [
+      { metric: "Monthly RFQ Submissions", before: "3", after: "19" },
+      { metric: "New Clients (Year 1)", before: "4", after: "22" },
+      { metric: "Trade Show Dependency", before: "100%", after: "15%" }
+    ]
+  },
+  {
+    id: "21",
+    title: "Veterinary Clinic Growth & Automation",
+    business: "PawsCare Animal Hospital — Multi-vet companion animal clinic",
+    challenge: "Appointment scheduling was entirely phone-based causing 40% of calls to go unanswered during peak hours. No online presence beyond a basic Facebook page, and client retention dropped to 60%.",
+    solution: "Deployed AI Appointment Booking + Google Ads Revenue Engine + AI SMS Automation + Local SEO & Google Business. Built a complete digital client acquisition and retention system with automated appointment reminders.",
+    results: { metric1: "285%", label1: "New Client Growth", metric2: "$15.6K", label2: "Monthly Revenue Growth", metric3: "94%", label3: "Appointment Show Rate", metric4: "4.5x", label4: "Return on Ad Spend" },
+    tags: ["AI Booking", "Google Ads", "SMS Automation", "Local SEO"],
+    label: "Sample Case Study",
+    industry: "Veterinary",
+    services: ["AI Appointment Booking", "Google Ads", "AI SMS Automation", "Local SEO & Google Business"],
+    duration: "5 months",
+    teamSize: "3 specialists",
+    testimonial: { quote: "We were losing clients simply because they could not reach us by phone. Now 70% of appointments are booked online, our no-show rate dropped from 22% to 6%, and we have a steady flow of new pet owners finding us through Google every week.", author: "Dr. Natalie Reeves", role: "Owner, PawsCare Animal Hospital" },
+    workflow: [
+      { step: "Practice Analysis", description: "Audited patient flow, scheduling bottlenecks, call handling capacity, and existing marketing channels." },
+      { step: "Online Booking System", description: "Deployed AI appointment booking with automated confirmations, reminders, and rescheduling via SMS." },
+      { step: "Digital Visibility", description: "Optimized Google Business profile, launched targeted Google Ads, and built local SEO presence for pet care keywords." },
+      { step: "Retention Automation", description: "Created automated vaccination reminders, wellness check sequences, and loyalty program communications." }
+    ],
+    beforeAfter: [
+      { metric: "Monthly New Clients", before: "18", after: "69" },
+      { metric: "Phone Call Answer Rate", before: "60%", after: "99% (AI + Online)" },
+      { metric: "Client Retention Rate", before: "60%", after: "91%" }
+    ]
+  }
+];
+const PRICING_TIERS = [
+  {
+    name: "Growth",
+    price: "$1,599",
+    period: "/month",
+    description: "Perfect for small businesses ready to automate their first revenue systems.",
+    features: [
+      "AI Chatbot (Website)",
+      "Basic CRM Setup & Automation",
+      "Email Automation (up to 1,000 contacts)",
+      "SMS Automation (up to 500 contacts)",
+      "1 Landing Page",
+      "Basic SEO Audit & Optimization",
+      "Google Business Optimization",
+      "Monthly Performance Report",
+      "Email Support"
+    ],
+    cta: "Get Started",
+    popular: false,
+    discount: null
+  },
+  {
+    name: "Scale",
+    price: "$2,999",
+    period: "/month",
+    description: "For growing businesses that need a complete AI-powered revenue engine.",
+    features: [
+      "Everything in Growth, plus:",
+      "AI Calling Agent",
+      "AI Lead Qualification Bot",
+      "AI Appointment Booking",
+      "AI Follow-Up Automation",
+      "Google Ads Management",
+      "Meta Ads Management",
+      "Full CRM Automation",
+      "3 Conversion Funnels",
+      "Social Media (2 Platforms)",
+      "Content Writing & Strategy",
+      "Weekly Strategy Calls",
+      "Priority Support"
+    ],
+    cta: "Scale Now",
+    popular: true,
+    discount: "Save 20%"
+  },
+  {
+    name: "Enterprise",
+    price: "$5,999",
+    period: "/month",
+    description: "Enterprise-grade AI automation for businesses ready to dominate their market.",
+    features: [
+      "Everything in Scale, plus:",
+      "AI Receptionist (24/7)",
+      "AI Sales Assistant",
+      "Full Workflow Automation",
+      "Advanced Analytics Dashboard",
+      "SEO Authority Growth System",
+      "Local SEO & Google Business",
+      "Video Marketing",
+      "Unlimited Landing Pages",
+      "Social Media (All Platforms)",
+      "SaaS Integrations",
+      "Dedicated Account Manager",
+      "Daily Reporting"
+    ],
+    cta: "Dominate Your Market",
+    popular: false,
+    discount: "Save 35%"
+  }
+];
+const SERVICE_PRICING = [
+  {
+    slug: "ai-calling-agent",
+    title: "AI Calling Agent",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Up to 200 calls/mo", "Basic call scripts", "Call recording", "Lead capture", "Email notifications"] },
+      { name: "Scale", price: 599, features: ["Up to 500 calls/mo", "Custom call scripts", "Call recording & analytics", "CRM integration", "SMS follow-ups", "Priority support"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited calls", "Advanced AI scripts", "Full analytics dashboard", "Multi-CRM integration", "SMS + email follow-ups", "Dedicated account manager", "Custom integrations"] }
+    ]
+  },
+  {
+    slug: "ai-receptionist",
+    title: "AI Receptionist",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["24/7 call answering", "Basic call routing", "Message taking", "Call transcripts", "Email notifications"] },
+      { name: "Scale", price: 599, features: ["24/7 call answering", "Smart call routing", "Appointment scheduling", "CRM integration", "Call analytics", "Priority support"] },
+      { name: "Enterprise", price: 999, features: ["24/7 call answering", "Advanced AI routing", "Full scheduling integration", "Multi-location support", "Custom workflows", "Dedicated manager", "API access"] }
+    ]
+  },
+  {
+    slug: "ai-lead-qualification",
+    title: "AI Lead Qualification Bot",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 500 leads/mo", "Basic scoring model", "Email notifications", "Lead capture forms", "Monthly reports"] },
+      { name: "Scale", price: 399, features: ["Up to 2,000 leads/mo", "Advanced scoring", "CRM sync", "Custom qualification criteria", "Real-time alerts", "Weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["Unlimited leads", "AI-powered scoring", "Multi-CRM sync", "Custom workflows", "API access", "Dedicated manager", "Daily reports"] }
+    ]
+  },
+  {
+    slug: "ai-appointment-booking",
+    title: "AI Appointment Booking System",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Calendar integration", "Automated reminders", "Basic booking page", "Email confirmations", "Up to 100 bookings/mo"] },
+      { name: "Scale", price: 599, features: ["Multi-calendar sync", "SMS + email reminders", "Custom booking pages", "CRM integration", "Up to 500 bookings/mo", "Rescheduling automation"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited bookings", "Multi-location calendars", "Advanced reminders", "Full CRM integration", "Custom workflows", "API access", "Dedicated support"] }
+    ]
+  },
+  {
+    slug: "ai-follow-up",
+    title: "AI Follow-Up Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 500 contacts", "Email sequences (3 steps)", "Basic templates", "Open tracking", "Monthly reports"] },
+      { name: "Scale", price: 399, features: ["Up to 2,000 contacts", "Email + SMS sequences", "Custom templates", "Behavior triggers", "A/B testing", "Weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["Unlimited contacts", "Multi-channel sequences", "AI-optimized timing", "Advanced triggers", "Full analytics", "API access", "Dedicated manager"] }
+    ]
+  },
+  {
+    slug: "ai-sales-assistant",
+    title: "AI Sales Assistant",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Lead research", "Email drafting", "Basic objection handling", "CRM updates", "Sales script templates"] },
+      { name: "Scale", price: 599, features: ["Advanced lead research", "Personalized outreach", "Objection handling AI", "Pipeline analytics", "CRM automation", "Deal scoring"] },
+      { name: "Enterprise", price: 999, features: ["Full AI sales co-pilot", "Multi-channel outreach", "Advanced deal scoring", "Revenue forecasting", "Custom integrations", "Team analytics", "Dedicated support"] }
+    ]
+  },
+  {
+    slug: "ai-chatbot",
+    title: "AI Chatbot",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 99, features: ["Website chatbot", "Basic Q&A responses", "Lead capture", "Email notifications", "Up to 500 conversations/mo"] },
+      { name: "Scale", price: 199, features: ["Website + WhatsApp", "Smart AI responses", "Appointment booking", "CRM integration", "Up to 2,000 conversations/mo", "Custom branding"] },
+      { name: "Enterprise", price: 299, features: ["All channels (Web, WhatsApp, Messenger, SMS)", "Advanced AI engine", "Full CRM sync", "Custom workflows", "Unlimited conversations", "Multi-language", "API access"] }
+    ]
+  },
+  {
+    slug: "ai-email-automation",
+    title: "AI Email Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 1,000 contacts", "5 email sequences", "Basic templates", "Open & click tracking", "Monthly reports"] },
+      { name: "Scale", price: 399, features: ["Up to 5,000 contacts", "15 email sequences", "Custom templates", "A/B testing", "Behavior triggers", "Weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["Unlimited contacts", "Unlimited sequences", "AI-optimized content", "Advanced segmentation", "Revenue attribution", "API access", "Dedicated manager"] }
+    ]
+  },
+  {
+    slug: "ai-sms-automation",
+    title: "AI SMS Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Up to 500 SMS/mo", "Basic campaigns", "Opt-in management", "Delivery reports", "Template library"] },
+      { name: "Scale", price: 399, features: ["Up to 2,000 SMS/mo", "Automated sequences", "Personalization", "CRM integration", "Click tracking", "A/B testing"] },
+      { name: "Enterprise", price: 599, features: ["Up to 10,000 SMS/mo", "AI-optimized timing", "Multi-step campaigns", "Advanced analytics", "API access", "Dedicated number", "Priority support"] }
+    ]
+  },
+  {
+    slug: "crm-automation",
+    title: "CRM Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 499, features: ["Basic pipeline setup", "Lead auto-assignment", "Email sync", "Task automation", "Up to 1,000 contacts", "Monthly reports"] },
+      { name: "Scale", price: 999, features: ["Advanced pipelines", "Multi-stage automation", "Full email/SMS sync", "Custom fields & tags", "Up to 10,000 contacts", "Weekly reports"] },
+      { name: "Enterprise", price: 1499, features: ["Enterprise pipelines", "AI-powered automation", "Multi-team setup", "Revenue forecasting", "Unlimited contacts", "Custom integrations", "Dedicated manager"] }
+    ]
+  },
+  {
+    slug: "workflow-automation",
+    title: "Workflow Automation",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Up to 5 workflows", "Basic triggers", "Email notifications", "2 app integrations", "Monthly reports"] },
+      { name: "Scale", price: 599, features: ["Up to 20 workflows", "Advanced triggers", "Multi-step automations", "10 app integrations", "Error handling", "Weekly reports"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited workflows", "AI-powered triggers", "Complex logic branches", "Unlimited integrations", "Custom API connectors", "Dedicated support"] }
+    ]
+  },
+  {
+    slug: "google-ads",
+    title: "Google Ads Revenue Engine",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["Up to $2K ad spend management", "Keyword research", "Ad copywriting", "Basic bid optimization", "Monthly reporting"] },
+      { name: "Scale", price: 299, features: ["Up to $10K ad spend management", "Advanced keyword strategy", "A/B ad testing", "Conversion tracking", "Landing page recommendations", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 399, features: ["Unlimited ad spend management", "Full-funnel strategy", "AI bid optimization", "Custom audiences", "Multi-campaign management", "Weekly strategy calls", "Dedicated manager"] }
+    ]
+  },
+  {
+    slug: "meta-ads",
+    title: "Meta Ads Growth Engine",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["Up to $2K ad spend management", "Audience targeting", "Ad creative design", "Basic retargeting", "Monthly reporting"] },
+      { name: "Scale", price: 299, features: ["Up to $10K ad spend management", "Lookalike audiences", "Dynamic creatives", "Full retargeting funnel", "Conversion optimization", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 399, features: ["Unlimited ad spend management", "Full-funnel campaigns", "AI audience optimization", "Cross-platform sync", "Custom dashboards", "Weekly strategy calls", "Dedicated manager"] }
+    ]
+  },
+  {
+    slug: "seo-authority",
+    title: "SEO Authority Growth System",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Technical SEO audit", "On-page optimization (10 pages)", "Keyword research", "Monthly content plan", "Basic link building", "Monthly reports"] },
+      { name: "Scale", price: 499, features: ["Full technical SEO", "On-page optimization (25 pages)", "Advanced keyword strategy", "Content creation (4 articles/mo)", "Link building outreach", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 799, features: ["Enterprise technical SEO", "Unlimited page optimization", "AI content strategy", "Content creation (8+ articles/mo)", "Premium link building", "Schema markup", "Weekly strategy calls"] }
+    ]
+  },
+  {
+    slug: "local-seo",
+    title: "Local SEO & Google Business",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Google Business optimization", "Local citation building", "Review management", "Local keyword targeting", "Monthly reports"] },
+      { name: "Scale", price: 499, features: ["Multi-location GBP management", "Advanced citation network", "Review generation system", "Local content strategy", "Competitor analysis", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 799, features: ["Enterprise multi-location", "Full local authority building", "AI review management", "Local PR & link building", "Custom local landing pages", "Weekly strategy calls", "Dedicated manager"] }
+    ]
+  },
+  {
+    slug: "conversion-funnels",
+    title: "Conversion Funnel Building",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 499, features: ["1 conversion funnel", "Landing page design", "Email sequence (5 emails)", "Basic A/B testing", "Conversion tracking", "Monthly optimization"] },
+      { name: "Scale", price: 699, features: ["3 conversion funnels", "Custom design & copy", "Email + SMS sequences", "Advanced A/B testing", "Retargeting integration", "Bi-weekly optimization"] },
+      { name: "Enterprise", price: 999, features: ["Unlimited funnels", "Premium design & copy", "Multi-channel sequences", "AI-powered optimization", "Revenue attribution", "Weekly strategy calls", "Dedicated manager"] }
+    ]
+  },
+  {
+    slug: "landing-page-optimization",
+    title: "Landing Page Optimization",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 99, features: ["1 landing page audit", "Conversion recommendations", "Heatmap analysis", "Basic A/B test setup", "Monthly report"] },
+      { name: "Scale", price: 150, features: ["3 landing page audits", "Full UX optimization", "Heatmap + session recording", "A/B testing (3 variants)", "CRO recommendations", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 199, features: ["Unlimited page audits", "AI-powered optimization", "Advanced testing framework", "Personalization setup", "Revenue tracking", "Weekly optimization calls"] }
+    ]
+  },
+  {
+    slug: "conversion-rate-optimization",
+    title: "Conversion Rate Optimization",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 99, features: ["Site-wide CRO audit", "Top 3 quick wins", "Heatmap setup", "Basic testing plan", "Monthly report"] },
+      { name: "Scale", price: 150, features: ["Full CRO strategy", "User behavior analysis", "Multivariate testing", "Form optimization", "Checkout optimization", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 199, features: ["Enterprise CRO program", "AI-powered testing", "Personalization engine", "Revenue optimization", "Custom dashboards", "Weekly strategy calls"] }
+    ]
+  },
+  {
+    slug: "social-media-marketing",
+    title: "Social Media Marketing",
+    unit: "/mo",
+    combinedNote: "Includes Instagram Growth & Posting, Facebook Growth & Posting, Branding & Creative Design, and Short Form Video Marketing",
+    tiers: [
+      { name: "Growth", price: 399, features: ["2 platforms", "12 posts/mo", "Basic content calendar", "Community management", "Monthly analytics", "Includes Instagram & Facebook posting"] },
+      { name: "Scale", price: 499, features: ["4 platforms", "20 posts/mo", "Content strategy & calendar", "Community management", "Graphic design & branding", "Short-form video (4/mo)", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 599, features: ["All platforms", "30+ posts/mo", "Full content strategy", "Brand identity management", "Short-form video (8+/mo)", "Influencer coordination", "Paid social amplification", "Weekly strategy calls"] }
+    ]
+  },
+  {
+    slug: "instagram-growth",
+    title: "Instagram Growth & Posting",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] }
+    ]
+  },
+  {
+    slug: "facebook-growth",
+    title: "Facebook Growth & Posting",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] }
+    ]
+  },
+  {
+    slug: "branding-design",
+    title: "Branding & Creative Design",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] }
+    ]
+  },
+  {
+    slug: "video-marketing",
+    title: "Short Form Video Marketing",
+    unit: "/mo",
+    combinedNote: "Combined into Social Media Marketing package",
+    tiers: [
+      { name: "Growth", price: 399, features: ["Included in Social Media Marketing Growth plan"] },
+      { name: "Scale", price: 499, features: ["Included in Social Media Marketing Scale plan"] },
+      { name: "Enterprise", price: 599, features: ["Included in Social Media Marketing Enterprise plan"] }
+    ]
+  },
+  {
+    slug: "content-writing",
+    title: "Content Writing & Strategy",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["2 blog articles/mo", "Basic keyword targeting", "Content calendar", "Social media snippets", "Monthly strategy"] },
+      { name: "Scale", price: 299, features: ["4 blog articles/mo", "SEO-optimized content", "Content strategy", "Email newsletter copy", "Social media content", "Bi-weekly reports"] },
+      { name: "Enterprise", price: 399, features: ["8+ articles/mo", "Full content engine", "Thought leadership pieces", "Whitepapers & guides", "Multi-channel distribution", "Weekly strategy calls"] }
+    ]
+  },
+  {
+    slug: "website-development",
+    title: "Website Development",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["5-page responsive website", "Mobile optimization", "Basic SEO setup", "Contact form integration", "SSL & security", "30 days support"] },
+      { name: "Scale", price: 499, features: ["10-page custom website", "Advanced animations", "CRM integration", "Blog setup", "Speed optimization", "Analytics setup", "60 days support"] },
+      { name: "Enterprise", price: 799, features: ["Unlimited pages", "Custom design & UX", "E-commerce capability", "Full CRM integration", "Advanced SEO", "Custom API integrations", "Ongoing support"] }
+    ]
+  },
+  {
+    slug: "landing-page-development",
+    title: "Landing Page Development",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 199, features: ["5 area pages", "Responsive design", "Lead capture forms", "Basic A/B testing", "Speed optimization", "30 days support"] },
+      { name: "Scale", price: 299, features: ["8 area pages", "Custom design", "Advanced forms", "CRM integration", "Conversion tracking", "A/B testing", "60 days support"] },
+      { name: "Enterprise", price: 399, features: ["12 area pages", "Premium design & copy", "Multi-step forms", "Full CRM integration", "Advanced analytics", "Personalization", "Ongoing support"] }
+    ]
+  },
+  {
+    slug: "saas-integrations",
+    title: "SaaS Integrations",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 999, features: ["Up to 5 integrations", "Basic API connections", "Data sync setup", "Error monitoring", "Documentation", "30 days support"] },
+      { name: "Scale", price: 1999, features: ["Up to 15 integrations", "Advanced API workflows", "Real-time data sync", "Custom middleware", "Error handling & alerts", "60 days support"] },
+      { name: "Enterprise", price: 2999, features: ["Unlimited integrations", "Enterprise API architecture", "Custom connectors", "Data transformation", "24/7 monitoring", "Dedicated engineer", "Ongoing support"] }
+    ]
+  },
+  {
+    slug: "crm-setup",
+    title: "CRM Setup & Integration",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 999, features: ["CRM selection & setup", "Basic pipeline configuration", "Contact import", "Team training (2 hrs)", "Email integration", "30 days support"] },
+      { name: "Scale", price: 1499, features: ["Advanced CRM setup", "Multi-pipeline config", "Custom fields & automation", "Data migration", "Team training (5 hrs)", "Marketing integration", "60 days support"] },
+      { name: "Enterprise", price: 1999, features: ["Enterprise CRM deployment", "Complex automation rules", "Multi-team setup", "Full data migration", "Custom reporting", "Ongoing training", "Dedicated support"] }
+    ]
+  },
+  {
+    slug: "analytics-dashboard",
+    title: "Dashboard & Analytics Setup",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Google Analytics setup", "Basic KPI dashboard", "Monthly report template", "Conversion tracking", "3 data sources"] },
+      { name: "Scale", price: 399, features: ["Advanced analytics suite", "Custom KPI dashboards", "Real-time reporting", "Attribution modeling", "10 data sources", "Bi-weekly insights"] },
+      { name: "Enterprise", price: 499, features: ["Enterprise analytics", "AI-powered insights", "Custom data warehouse", "Unlimited data sources", "Predictive analytics", "Revenue attribution", "Weekly strategy calls"] }
+    ]
+  },
+  {
+    slug: "marketing-automation-setup",
+    title: "Marketing Automation Setup",
+    unit: "/mo",
+    tiers: [
+      { name: "Growth", price: 299, features: ["Platform setup", "3 automation workflows", "Email template design", "Lead scoring basics", "Integration (2 tools)", "30 days support"] },
+      { name: "Scale", price: 399, features: ["Advanced platform config", "10 automation workflows", "Custom templates", "Advanced lead scoring", "Integration (5 tools)", "A/B testing", "60 days support"] },
+      { name: "Enterprise", price: 499, features: ["Enterprise automation", "Unlimited workflows", "AI-optimized journeys", "Multi-channel orchestration", "Unlimited integrations", "Revenue tracking", "Ongoing support"] }
+    ]
+  }
+];
+function getServicePricing(slug) {
+  return SERVICE_PRICING.find((sp) => sp.slug === slug);
+}
+const TESTIMONIALS = [
+  {
+    name: "Michael Chen",
+    role: "CEO, Premier Dental Care",
+    text: "Infinite Rankers transformed our patient acquisition. The AI calling agent alone books 40+ appointments per week without any human involvement. Our revenue has more than tripled.",
+    rating: 5
+  },
+  {
+    name: "Sarah Williams",
+    role: "Founder, LuxeHome Essentials",
+    text: "The AI email automation and retargeting system they built recovered over $220K in abandoned carts in just 3 months. The ROI is incredible.",
+    rating: 5
+  },
+  {
+    name: "David Rodriguez",
+    role: "Managing Partner, Sterling & Associates",
+    text: "We never miss a potential client call now. The AI receptionist handles intake 24/7 and the follow-up automation has increased our case conversion by 190%.",
+    rating: 5
+  },
+  {
+    name: "Jennifer Park",
+    role: "Owner, FitCore Studios",
+    text: "From 200 to 520 active members in 6 months. The combination of social media marketing and AI booking automation changed everything for our studios.",
+    rating: 5
+  },
+  {
+    name: "Robert Thompson",
+    role: "VP Sales, CloudSync Pro",
+    text: "Our sales cycle went from 45 days to 18 days. The AI sales assistant and automated demo booking system have completely revolutionized our pipeline.",
+    rating: 5
+  }
+];
+const BLOG_POSTS = [
+  { id: "1", slug: "ai-automation-revenue-growth-2025", title: "How AI Automation Is Driving 10x Revenue Growth in 2025", excerpt: "Discover how forward-thinking businesses are leveraging AI automation systems to generate customers and revenue on autopilot.", category: "AI Automation", readTime: "8 min read", date: "Feb 14, 2026", image: "/images/blog/blog-ai-automation.jpg" },
+  { id: "2", slug: "google-ads-roi-local-business", title: "Google Ads for Local Businesses: A Data-Driven ROI Framework", excerpt: "Learn the exact framework we use to generate 4-6x ROAS for local businesses using AI-optimized Google Ads campaigns.", category: "Lead Generation", readTime: "12 min read", date: "Feb 3, 2026", image: "/images/blog/blog-google-ads.jpg" },
+  { id: "3", slug: "ai-chatbot-lead-conversion", title: "AI Chatbots: Converting 78% More Website Visitors Into Leads", excerpt: "How intelligent chatbots are revolutionizing lead capture and qualification for businesses across every industry.", category: "AI Automation", readTime: "6 min read", date: "Jan 22, 2026", image: "/images/blog/blog-chatbot.jpg" },
+  { id: "4", slug: "crm-automation-sales-pipeline", title: "The Ultimate CRM Automation Playbook for Sales Teams", excerpt: "Stop losing deals to manual processes. Here is how to automate your entire sales pipeline from lead to close.", category: "Sales Automation", readTime: "10 min read", date: "Jan 10, 2026", image: "/images/blog/blog-crm.jpg" },
+  { id: "5", slug: "seo-vs-paid-ads-strategy", title: "SEO vs Paid Ads: Building a Unified Revenue Strategy", excerpt: "Why the best growth strategies combine organic search dominance with paid advertising for maximum market capture.", category: "Strategy", readTime: "9 min read", date: "Dec 28, 2025", image: "/images/blog/blog-seo-strategy.jpg" },
+  { id: "6", slug: "ai-follow-up-sequences", title: "AI Follow-Up Sequences That Close 3x More Deals", excerpt: "The science behind AI-powered follow-up automation and how it is helping sales teams dramatically increase close rates.", category: "AI Automation", readTime: "7 min read", date: "Dec 15, 2025", image: "/images/blog/blog-follow-up.jpg" },
+  { id: "7", slug: "social-media-marketing-strategy-2025", title: "Social Media Marketing Strategy: The 2025 Playbook for Business Growth", excerpt: "Build a social media strategy that actually drives revenue. Platform-specific tactics for Instagram, Facebook, LinkedIn, and TikTok.", category: "Social Media", readTime: "11 min read", date: "Dec 1, 2025", image: "/images/blog/blog-social-media.jpg" },
+  { id: "8", slug: "local-business-digital-marketing", title: "Digital Marketing for Local Businesses: The Complete 2025 Guide", excerpt: "Everything a local business needs to dominate their market online — from Google Business Profile to local SEO to targeted advertising.", category: "Local Marketing", readTime: "14 min read", date: "Nov 18, 2025", image: "/images/blog/blog-local-business.jpg" },
+  { id: "9", slug: "lead-generation-strategies-2025", title: "15 Lead Generation Strategies That Actually Work in 2025", excerpt: "Proven lead generation tactics backed by data from campaigns generating over 100,000 leads for businesses across the USA.", category: "Lead Generation", readTime: "13 min read", date: "Nov 5, 2025", image: "/images/blog/blog-lead-gen.jpg" },
+  { id: "10", slug: "website-conversion-optimization", title: "Website Conversion Optimization: Turn More Visitors Into Paying Customers", excerpt: "Data-backed strategies to increase your website conversion rate by 200% or more without increasing traffic.", category: "Web Development", readTime: "10 min read", date: "Oct 22, 2025", image: "/images/blog/blog-web-design.jpg" },
+  { id: "11", slug: "content-marketing-seo-guide", title: "Content Marketing for SEO: How to Create Content That Ranks and Converts", excerpt: "The complete guide to creating SEO-optimized content that ranks on Google page one and turns organic traffic into revenue.", category: "Content Marketing", readTime: "11 min read", date: "Oct 8, 2025", image: "/images/blog/blog-analytics.jpg" },
+  { id: "12", slug: "ecommerce-growth-strategies", title: "E-Commerce Growth: 10 AI-Powered Strategies to Scale Your Online Store", excerpt: "How AI and automation are helping e-commerce brands achieve 200-500% growth through personalization and intelligent marketing.", category: "E-Commerce", readTime: "12 min read", date: "Sep 24, 2025", image: "/images/blog/blog-ecommerce.jpg" },
+  { id: "13", slug: "brand-identity-business-growth", title: "How Strong Brand Identity Drives Revenue Growth: A Strategic Guide", excerpt: "Why branding is not just about logos — how strategic brand identity directly impacts customer acquisition, retention, and revenue.", category: "Branding", readTime: "8 min read", date: "Sep 10, 2025", image: "/images/blog/blog-branding.jpg" },
+  { id: "14", slug: "healthcare-marketing-patient-acquisition", title: "Healthcare Marketing: How to Acquire More Patients with AI and Digital Strategy", excerpt: "HIPAA-compliant digital marketing strategies that help medical practices attract and retain patients.", category: "Healthcare", readTime: "10 min read", date: "Aug 28, 2025", image: "/images/blog/blog-healthcare.jpg" },
+  { id: "15", slug: "real-estate-lead-generation-ai", title: "Real Estate Lead Generation: How AI Is Transforming Agent Success", excerpt: "AI-powered strategies that help real estate agents and brokerages generate, qualify, and convert more leads.", category: "Real Estate", readTime: "9 min read", date: "Aug 14, 2025", image: "/images/blog/blog-real-estate.jpg" }
+];
+const HOW_IT_WORKS_STEPS = [
+  { step: 1, title: "Traffic Generation", description: "We drive qualified traffic through AI-optimized ads, SEO, and content strategies.", icon: "Globe" },
+  { step: 2, title: "AI Qualification", description: "Our AI systems instantly engage, qualify, and score every lead automatically.", icon: "Bot" },
+  { step: 3, title: "Smart Routing", description: "Qualified leads are routed to your CRM with full context and priority scoring.", icon: "ArrowRight" },
+  { step: 4, title: "Automated Booking", description: "AI books appointments directly into your calendar — no manual scheduling.", icon: "CalendarCheck" },
+  { step: 5, title: "Revenue Growth", description: "Close more deals with AI-assisted sales and automated follow-up sequences.", icon: "DollarSign" }
+];
+const ACHIEVEMENTS = [
+  { value: "9500+", label: "Businesses Transformed" },
+  { value: "$50M+", label: "Revenue Generated" },
+  { value: "10M+", label: "Leads Qualified by AI" },
+  { value: "98%", label: "Client Retention Rate" }
+];
+const SERVICE_CONTENT = {
+  "ai-calling-agent": {
+    longDesc: "Our AI Calling Agent handles inbound and outbound calls with human-like conversation, qualifying leads and booking appointments 24/7. It integrates directly with your CRM and calendar to ensure every opportunity is captured and acted upon instantly, eliminating missed calls and slow response times that cost you revenue.",
+    problems: [
+      "Missing 40%+ of inbound calls during off-hours and peak periods",
+      "Sales reps spending hours on cold calls with low connect rates",
+      "Slow lead response times causing prospects to choose competitors",
+      "Inconsistent call quality and qualification across your team"
+    ],
+    solutions: [
+      "24/7 automated call handling with natural, human-like AI voice",
+      "Intelligent outbound dialing that reaches prospects at optimal times",
+      "Instant lead qualification and appointment booking on every call",
+      "Consistent messaging and data capture across every interaction"
+    ],
+    features: [
+      "Natural language AI voice with customizable tone and personality",
+      "Real-time CRM integration and contact record updates",
+      "Automated appointment scheduling with calendar sync",
+      "Call recording, transcription, and sentiment analysis",
+      "Multi-language support for diverse markets",
+      "Smart call routing based on lead score and intent",
+      "Voicemail detection and automated follow-up triggers",
+      "Live call transfer to human agents when needed"
+    ],
+    workflowSteps: [
+      { step: "Discovery & Script Design", desc: "We analyze your sales process and build custom AI call scripts tailored to your offer and audience." },
+      { step: "AI Voice Configuration", desc: "Configure the AI voice agent with your brand tone, objection handling, and qualification criteria." },
+      { step: "Integration & Testing", desc: "Connect to your CRM, calendar, and phone systems with thorough testing across call scenarios." },
+      { step: "Launch & Optimization", desc: "Go live with real calls, monitor performance, and continuously optimize scripts for higher conversion." }
+    ],
+    industries: [
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Financial Services", icon: "Landmark" }
+    ],
+    faqs: [
+      { q: "Does the AI calling agent sound robotic?", a: "No. Our AI uses advanced natural language processing to deliver human-like conversations with natural pauses, tone variation, and contextual responses that callers rarely distinguish from a live person." },
+      { q: "Can the AI handle objections and complex questions?", a: "Yes. We program your AI agent with detailed objection handling scripts and FAQ responses specific to your business, and it can seamlessly transfer to a live agent for complex scenarios." },
+      { q: "How many calls can the AI agent handle simultaneously?", a: "There is no practical limit. The AI agent can handle hundreds of concurrent calls, ensuring you never miss an opportunity regardless of call volume." },
+      { q: "Does it integrate with my existing phone system?", a: "Yes. We integrate with all major VoIP providers, phone systems, and can provision dedicated numbers. Setup typically takes 3-5 business days." },
+      { q: "What languages does the AI calling agent support?", a: "Our AI agent supports English, Spanish, French, and several other languages with native-level fluency, allowing you to serve diverse markets." }
+    ],
+    relatedServices: ["ai-receptionist", "ai-appointment-booking", "ai-lead-qualification", "crm-automation"]
+  },
+  "ai-receptionist": {
+    longDesc: "Our AI Receptionist ensures every inbound call is answered instantly with a professional, friendly voice that qualifies callers, answers FAQs, and routes inquiries to the right team member. Never lose a potential client to voicemail again, even outside business hours or during peak call times.",
+    problems: [
+      "Potential clients hanging up when reaching voicemail or long hold times",
+      "Front desk staff overwhelmed during peak hours, missing important calls",
+      "After-hours calls going unanswered, losing urgent leads to competitors",
+      "Inconsistent caller experience depending on who answers the phone"
+    ],
+    solutions: [
+      "Instant call answering with zero hold time, 24 hours a day",
+      "Intelligent call screening and routing to the right department or person",
+      "Professional FAQ handling that resolves common inquiries without human involvement",
+      "Consistent, branded caller experience on every single interaction"
+    ],
+    features: [
+      "Instant call pickup with zero wait time",
+      "Customizable greeting and brand voice",
+      "Intelligent call routing and department transfer",
+      "Automated FAQ and common inquiry handling",
+      "Appointment scheduling and confirmation",
+      "Real-time message transcription and delivery",
+      "After-hours coverage with full functionality",
+      "Caller identification and CRM lookup"
+    ],
+    workflowSteps: [
+      { step: "Business Analysis", desc: "Map your call flow, common inquiries, team structure, and routing rules for optimal setup." },
+      { step: "Voice & Script Setup", desc: "Design your AI receptionist's greeting, FAQ responses, and routing logic to match your brand." },
+      { step: "System Integration", desc: "Connect with your phone system, CRM, calendar, and messaging tools for seamless operation." },
+      { step: "Go Live & Monitor", desc: "Activate the AI receptionist with real-time monitoring and weekly optimization of call handling." }
+    ],
+    industries: [
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" }
+    ],
+    faqs: [
+      { q: "How quickly does the AI receptionist answer calls?", a: "Instantly. The AI receptionist picks up within the first ring, ensuring zero hold time and no missed calls, even during the busiest periods." },
+      { q: "Can it transfer calls to specific team members?", a: "Yes. The AI receptionist can route calls based on department, inquiry type, caller history, or custom rules you define, including warm transfers with context." },
+      { q: "Will callers know they're speaking to an AI?", a: "Our AI receptionist uses natural conversational language that most callers find indistinguishable from a human receptionist. You can choose to disclose or not based on your preference." },
+      { q: "Can it handle appointment scheduling?", a: "Absolutely. The AI receptionist integrates with your calendar to book, reschedule, and confirm appointments in real-time during the call." },
+      { q: "What happens if the AI can't handle a request?", a: "The system gracefully transfers to an available team member with full call context, or takes a detailed message with callback priority flagging." }
+    ],
+    relatedServices: ["ai-calling-agent", "ai-appointment-booking", "ai-follow-up", "workflow-automation"]
+  },
+  "ai-lead-qualification": {
+    longDesc: "Our AI Lead Qualification Bot automatically scores, segments, and qualifies every lead the moment they enter your pipeline. Using behavioral data, demographic signals, and engagement patterns, it ensures your sales team only spends time on prospects most likely to convert, dramatically increasing close rates and revenue per rep.",
+    problems: [
+      "Sales reps wasting 60%+ of their time on unqualified prospects",
+      "No consistent lead scoring framework causing missed high-value opportunities",
+      "Manual lead review creating bottlenecks and delayed follow-up",
+      "Inability to prioritize leads effectively across multiple channels"
+    ],
+    solutions: [
+      "Automated lead scoring using AI-driven behavioral and demographic analysis",
+      "Instant lead segmentation and priority routing to the right sales rep",
+      "Real-time qualification across all channels including web, phone, email, and chat",
+      "Dynamic scoring models that continuously improve based on conversion data"
+    ],
+    features: [
+      "Multi-factor AI lead scoring algorithm",
+      "Real-time qualification via chat, forms, and calls",
+      "Behavioral tracking and engagement scoring",
+      "Custom qualification criteria per service or product",
+      "Automated lead routing based on score thresholds",
+      "CRM enrichment with qualification data",
+      "Lead nurture triggers for unqualified prospects",
+      "Conversion analytics and scoring model optimization"
+    ],
+    workflowSteps: [
+      { step: "Qualification Criteria Design", desc: "Define your ideal customer profile and scoring criteria based on your sales history and conversion data." },
+      { step: "AI Model Configuration", desc: "Build and train the qualification model with your specific scoring weights and segmentation rules." },
+      { step: "Channel Integration", desc: "Connect all lead sources — forms, chat, ads, referrals — to the unified qualification engine." },
+      { step: "Optimize & Scale", desc: "Monitor qualification accuracy, refine scoring models, and scale across new channels and markets." }
+    ],
+    industries: [
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Professional Services", icon: "Briefcase" }
+    ],
+    faqs: [
+      { q: "How does AI lead qualification differ from traditional lead scoring?", a: "AI qualification uses machine learning to analyze dozens of signals simultaneously — behavior, engagement, demographics, and timing — and continuously improves its accuracy based on actual conversion outcomes, unlike static rule-based scoring." },
+      { q: "How quickly are leads scored after they enter the system?", a: "Leads are scored in real-time, typically within seconds of entering your pipeline, ensuring your sales team can act immediately on high-priority prospects." },
+      { q: "Can I customize the qualification criteria?", a: "Yes. We build scoring models tailored to your specific business, products, and sales process. Criteria can be adjusted anytime as your business evolves." },
+      { q: "What happens to leads that don't qualify?", a: "Unqualified leads are automatically placed into nurture sequences designed to warm them up over time, so no potential revenue is lost." },
+      { q: "Does it work with leads from all sources?", a: "Yes. The system qualifies leads from web forms, paid ads, social media, referrals, phone calls, and any other source connected to your pipeline." }
+    ],
+    relatedServices: ["ai-calling-agent", "ai-follow-up", "crm-automation", "ai-chatbot"]
+  },
+  "ai-appointment-booking": {
+    longDesc: "Our AI Appointment Booking System eliminates scheduling friction by letting prospects book qualified meetings directly into your calendar through AI-driven conversations. Whether via phone, chat, or SMS, the system handles availability, confirmations, reminders, and rescheduling automatically, filling your calendar with ready-to-buy prospects.",
+    problems: [
+      "Manual scheduling creating delays that cause prospects to lose interest",
+      "High no-show rates from lack of automated reminders and confirmations",
+      "Calendar conflicts and double-bookings frustrating your sales team",
+      "Prospects dropping off during multi-step booking processes"
+    ],
+    solutions: [
+      "AI-driven conversational booking via phone, chat, SMS, and web",
+      "Automated confirmation sequences and smart reminder cadences that cut no-shows",
+      "Real-time calendar sync preventing conflicts across your entire team",
+      "One-step booking flow that captures and schedules in a single interaction"
+    ],
+    features: [
+      "Conversational AI booking via chat, phone, and SMS",
+      "Real-time calendar availability and sync",
+      "Automated confirmation emails and SMS reminders",
+      "Intelligent rescheduling and cancellation handling",
+      "Round-robin and priority-based rep assignment",
+      "Pre-meeting qualification questionnaires",
+      "Time zone detection and automatic adjustment",
+      "Integration with Google Calendar, Outlook, and Calendly"
+    ],
+    workflowSteps: [
+      { step: "Calendar & Team Setup", desc: "Configure team calendars, availability windows, meeting types, and assignment rules." },
+      { step: "Booking Flow Design", desc: "Design the conversational booking experience including qualification questions and confirmation messaging." },
+      { step: "Integration & Automation", desc: "Connect calendars, CRM, and communication channels with automated reminder sequences." },
+      { step: "Launch & Reduce No-Shows", desc: "Go live with AI booking and optimize reminder timing and frequency to maximize show rates." }
+    ],
+    industries: [
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Education", icon: "GraduationCap" }
+    ],
+    faqs: [
+      { q: "How does AI booking reduce no-show rates?", a: "The system sends strategically timed confirmation and reminder sequences via email and SMS, and allows easy rescheduling. Our clients typically see no-show rates drop by 40-60%." },
+      { q: "Can prospects book outside of business hours?", a: "Yes. The AI booking system operates 24/7, allowing prospects to schedule meetings anytime through chat, SMS, or your website, with appointments placed into your available slots." },
+      { q: "Does it work with my existing calendar?", a: "Yes. We integrate with Google Calendar, Outlook, Calendly, and most scheduling tools to ensure real-time availability sync and zero double-bookings." },
+      { q: "Can it assign appointments to specific team members?", a: "Absolutely. The system supports round-robin distribution, priority-based assignment, territory matching, and custom routing rules." },
+      { q: "What if a prospect needs to reschedule?", a: "The AI handles rescheduling and cancellations automatically via a simple link or conversational interaction, updating your calendar and notifying the assigned rep." }
+    ],
+    relatedServices: ["ai-calling-agent", "ai-receptionist", "ai-follow-up", "crm-automation"]
+  },
+  "ai-follow-up": {
+    longDesc: "Our AI Follow-Up Automation ensures no lead ever slips through the cracks by deploying intelligent, multi-channel follow-up sequences that adapt to prospect behavior. From email to SMS to phone, the system nurtures every lead with the right message at the right time, turning cold prospects into booked appointments and closed deals.",
+    problems: [
+      "80% of deals require 5+ follow-ups but reps stop after 1-2 attempts",
+      "Leads going cold due to inconsistent and delayed manual follow-up",
+      "No visibility into which prospects need attention and when",
+      "One-size-fits-all follow-up sequences that ignore prospect behavior"
+    ],
+    solutions: [
+      "Automated multi-touch sequences across email, SMS, and phone channels",
+      "Behavior-triggered follow-ups that adapt to prospect engagement signals",
+      "Intelligent timing optimization to reach prospects at peak response windows",
+      "Full pipeline visibility with automated alerts for hot leads and stalled deals"
+    ],
+    features: [
+      "Multi-channel follow-up across email, SMS, and phone",
+      "Behavior-triggered sequence branching",
+      "AI-optimized send timing for maximum response rates",
+      "Personalized messaging using lead data and engagement history",
+      "Automatic escalation for hot leads",
+      "Drip campaign management with A/B testing",
+      "Engagement tracking and response monitoring",
+      "CRM status updates and pipeline progression triggers"
+    ],
+    workflowSteps: [
+      { step: "Sequence Strategy", desc: "Map your follow-up sequences based on lead source, qualification level, and sales cycle stage." },
+      { step: "Content & Messaging", desc: "Create personalized follow-up templates for each sequence stage and channel." },
+      { step: "Automation Setup", desc: "Build triggers, timing rules, and branching logic based on prospect behavior." },
+      { step: "Monitor & Optimize", desc: "Track response rates, optimize messaging and timing, and scale winning sequences." }
+    ],
+    industries: [
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Home Services", icon: "Hammer" }
+    ],
+    faqs: [
+      { q: "How many follow-up touches does the system automate?", a: "We typically build sequences of 8-15 touches over 30-90 days across multiple channels. The exact cadence is customized based on your sales cycle and industry." },
+      { q: "Can the AI adapt follow-ups based on how a prospect responds?", a: "Yes. The system monitors opens, clicks, replies, and other engagement signals to dynamically adjust messaging, timing, and channel for each individual prospect." },
+      { q: "Will prospects feel spammed by automated follow-ups?", a: "No. Our sequences are designed with natural spacing and personalized content that feels like genuine outreach. We also implement smart frequency caps and opt-out handling." },
+      { q: "Does it work with leads from different sources?", a: "Absolutely. Whether leads come from ads, organic search, referrals, or events, the system tailors follow-up sequences based on source, intent level, and qualification data." },
+      { q: "How quickly do I see results from follow-up automation?", a: "Most clients see a measurable increase in response rates and booked meetings within the first 2-3 weeks of activation." }
+    ],
+    relatedServices: ["ai-email-automation", "ai-sms-automation", "ai-lead-qualification", "crm-automation"]
+  },
+  "ai-sales-assistant": {
+    longDesc: "Our AI Sales Assistant empowers your sales team with real-time intelligence, deal coaching, and automated task management. It analyzes conversations, suggests next steps, prepares meeting briefs, and handles administrative tasks so your reps spend more time selling and less time on busywork, closing more deals faster.",
+    problems: [
+      "Sales reps spending only 35% of their time actually selling",
+      "Inconsistent sales methodology and deal execution across the team",
+      "Lack of real-time coaching causing reps to miss key buying signals",
+      "Manual CRM updates and admin tasks draining productivity"
+    ],
+    solutions: [
+      "AI-powered task automation that eliminates repetitive sales admin work",
+      "Real-time deal coaching with suggested next steps and talk tracks",
+      "Automated meeting prep with prospect research and conversation summaries",
+      "Intelligent pipeline management with risk alerts and deal progression insights"
+    ],
+    features: [
+      "Real-time conversation intelligence and coaching",
+      "Automated CRM data entry and activity logging",
+      "AI-generated meeting briefs and prospect research",
+      "Deal risk scoring and pipeline health alerts",
+      "Suggested next steps and talk track recommendations",
+      "Email and proposal drafting assistance",
+      "Win/loss analysis and performance insights",
+      "Competitive intelligence and objection handling guides"
+    ],
+    workflowSteps: [
+      { step: "Sales Process Mapping", desc: "Document your sales stages, methodologies, and best practices to train the AI assistant." },
+      { step: "AI Assistant Configuration", desc: "Configure coaching triggers, automation rules, and integration with your sales tools." },
+      { step: "Team Onboarding", desc: "Train your sales team on leveraging the AI assistant for maximum productivity gains." },
+      { step: "Performance Optimization", desc: "Analyze adoption metrics and continuously improve AI recommendations based on win data." }
+    ],
+    industries: [
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Education", icon: "GraduationCap" }
+    ],
+    faqs: [
+      { q: "How does the AI Sales Assistant help reps close more deals?", a: "It provides real-time coaching during calls, automates administrative tasks, prepares meeting briefs, and surfaces deal risks early — allowing reps to focus purely on selling and relationship building." },
+      { q: "Does it replace my sales team?", a: "Not at all. The AI Sales Assistant augments your team's capabilities by handling busywork and providing intelligence, making each rep significantly more productive and effective." },
+      { q: "How does it integrate with our existing CRM?", a: "We integrate directly with Salesforce, HubSpot, Pipedrive, and other major CRMs to automatically log activities, update records, and surface insights within your existing workflow." },
+      { q: "Can it help with email and proposal writing?", a: "Yes. The AI assistant drafts personalized emails and proposals based on deal context, prospect data, and your winning templates, significantly reducing prep time." },
+      { q: "How long does it take for the AI to learn our sales process?", a: "The initial setup takes 1-2 weeks. The AI begins providing valuable insights immediately and becomes increasingly accurate as it learns from your team's interactions and outcomes." }
+    ],
+    relatedServices: ["crm-automation", "ai-lead-qualification", "ai-follow-up", "ai-calling-agent"]
+  },
+  "ai-chatbot": {
+    longDesc: "Our AI Chatbot engages every website visitor, WhatsApp contact, and Messenger user with intelligent, personalized conversations that capture leads, answer questions, and book meetings 24/7. It learns your business inside and out to provide accurate, helpful responses that build trust and drive conversions from every digital touchpoint.",
+    problems: [
+      "Website visitors leaving without engaging or providing contact information",
+      "Support team overwhelmed with repetitive questions that could be automated",
+      "No engagement channel for after-hours visitors who want instant answers",
+      "Slow response times on messaging platforms causing prospect drop-off"
+    ],
+    solutions: [
+      "24/7 intelligent chat engagement across website, WhatsApp, and Messenger",
+      "Automated FAQ handling that resolves 80%+ of common inquiries instantly",
+      "Conversational lead capture that feels natural and drives form completions",
+      "Instant response on all messaging platforms with sub-second reply times"
+    ],
+    features: [
+      "Multi-platform deployment (website, WhatsApp, Messenger)",
+      "Natural language understanding with contextual responses",
+      "Lead capture with conversational form replacement",
+      "Appointment booking directly within chat",
+      "Product and service recommendation engine",
+      "Live agent handoff with full conversation context",
+      "Custom knowledge base training",
+      "Analytics dashboard with conversation insights"
+    ],
+    workflowSteps: [
+      { step: "Knowledge Base Building", desc: "Train the chatbot on your products, services, FAQs, pricing, and brand voice." },
+      { step: "Conversation Flow Design", desc: "Design chat flows for lead capture, FAQ handling, booking, and support scenarios." },
+      { step: "Platform Deployment", desc: "Deploy across your website, WhatsApp, and Messenger with branded design and UX." },
+      { step: "Learn & Improve", desc: "Monitor conversations, identify gaps, and continuously improve response accuracy and conversion." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Professional Services", icon: "Briefcase" }
+    ],
+    faqs: [
+      { q: "How accurate is the AI chatbot at answering questions?", a: "After training on your business data, the chatbot typically achieves 90%+ accuracy on common inquiries. It continuously improves through conversation analysis and knowledge base updates." },
+      { q: "Can the chatbot book appointments?", a: "Yes. The chatbot integrates with your calendar to offer available slots, collect necessary information, and confirm bookings — all within the chat conversation." },
+      { q: "What platforms does the chatbot support?", a: "We deploy on your website, WhatsApp Business, Facebook Messenger, and Instagram DMs. All conversations sync to your CRM for unified tracking." },
+      { q: "Can it hand off to a live agent?", a: "Absolutely. When the chatbot detects a complex inquiry or high-value prospect, it seamlessly transfers to a live agent with the full conversation history and context." },
+      { q: "How long does it take to set up?", a: "A fully trained and deployed chatbot typically takes 5-7 business days. This includes knowledge base training, flow design, platform integration, and testing." }
+    ],
+    relatedServices: ["ai-lead-qualification", "ai-appointment-booking", "ai-follow-up", "website-development"]
+  },
+  "ai-email-automation": {
+    longDesc: "Our AI Email Automation creates intelligent, behavior-driven email sequences that adapt in real-time to how each prospect engages. From welcome sequences to re-engagement campaigns, every email is personalized, timed for maximum impact, and optimized to drive opens, clicks, and conversions at scale.",
+    problems: [
+      "Low email open rates from generic, one-size-fits-all messaging",
+      "Manual email campaigns that take hours to create and schedule",
+      "No personalization beyond basic name merge fields",
+      "Inability to scale email outreach while maintaining quality"
+    ],
+    solutions: [
+      "AI-driven personalization that tailors subject lines, content, and offers per recipient",
+      "Automated sequence building with behavior-triggered branching",
+      "Send-time optimization that delivers emails when each prospect is most likely to engage",
+      "Scalable email infrastructure handling thousands of personalized emails daily"
+    ],
+    features: [
+      "AI-generated subject lines and email copy",
+      "Behavior-triggered email sequences",
+      "Send-time optimization per recipient",
+      "Dynamic content personalization",
+      "A/B testing with automatic winner selection",
+      "Deliverability monitoring and optimization",
+      "Engagement scoring and list segmentation",
+      "Revenue attribution and conversion tracking"
+    ],
+    workflowSteps: [
+      { step: "Email Strategy & Audit", desc: "Audit existing email performance and design a comprehensive automation strategy aligned with your revenue goals." },
+      { step: "Sequence & Content Creation", desc: "Build email sequences with AI-optimized copy, personalization tokens, and branching logic." },
+      { step: "Technical Setup", desc: "Configure email infrastructure, deliverability settings, tracking, and CRM integration." },
+      { step: "Launch & Optimize", desc: "Deploy sequences, monitor performance metrics, and continuously A/B test for higher conversions." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "How does AI improve email performance over traditional automation?", a: "AI analyzes each recipient's behavior to personalize content, optimize send times, and select the best subject lines — resulting in 2-3x higher open and click rates compared to static email campaigns." },
+      { q: "Will my emails end up in spam?", a: "We implement comprehensive deliverability best practices including domain authentication, list hygiene, warm-up protocols, and content optimization to ensure inbox placement." },
+      { q: "Can it handle different email sequences for different audiences?", a: "Yes. The system supports unlimited segments and sequences, each with unique content, timing, and branching logic tailored to specific audience profiles." },
+      { q: "How many emails can the system send per day?", a: "Our infrastructure handles thousands of personalized emails daily with proper warm-up and deliverability management. Volume scales with your list size and sending reputation." },
+      { q: "Does it integrate with my email marketing platform?", a: "We integrate with all major platforms including Mailchimp, ActiveCampaign, Klaviyo, HubSpot, and can work with custom SMTP setups." }
+    ],
+    relatedServices: ["ai-follow-up", "ai-sms-automation", "crm-automation", "workflow-automation"]
+  },
+  "ai-sms-automation": {
+    longDesc: "Our AI SMS Automation delivers high-impact text message campaigns that achieve 98% open rates and drive instant engagement. From appointment reminders to promotional offers and lead nurture sequences, AI-powered SMS reaches your audience where they're most responsive, generating faster replies and higher conversion rates than any other channel.",
+    problems: [
+      "Email campaigns generating declining open rates below 20%",
+      "No direct mobile engagement channel for time-sensitive communications",
+      "Manual texting that doesn't scale beyond a handful of contacts",
+      "Missed revenue from lack of instant promotional and reminder channels"
+    ],
+    solutions: [
+      "Automated SMS campaigns with 98% open rates and rapid response times",
+      "AI-personalized text messages that feel like one-on-one conversations",
+      "Scalable SMS infrastructure handling thousands of messages while staying compliant",
+      "Behavior-triggered texts that reach prospects at the perfect moment"
+    ],
+    features: [
+      "AI-crafted personalized text messages",
+      "Two-way conversational SMS capabilities",
+      "Automated appointment reminders and confirmations",
+      "Promotional campaign scheduling and automation",
+      "Compliance management (TCPA, opt-in/opt-out)",
+      "SMS drip sequences with smart timing",
+      "MMS support for images and rich media",
+      "Response tracking and conversion attribution"
+    ],
+    workflowSteps: [
+      { step: "Compliance & Setup", desc: "Register your business for SMS, set up opt-in flows, and ensure full TCPA compliance." },
+      { step: "Campaign Strategy", desc: "Design SMS campaigns and sequences for reminders, promotions, nurture, and re-engagement." },
+      { step: "AI Messaging & Automation", desc: "Build automated triggers, personalized templates, and two-way conversation flows." },
+      { step: "Scale & Optimize", desc: "Monitor delivery rates, optimize message timing, and expand SMS usage across your customer journey." }
+    ],
+    industries: [
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Automotive", icon: "Car" }
+    ],
+    faqs: [
+      { q: "What kind of open rates does SMS automation achieve?", a: "SMS consistently achieves 95-98% open rates with most messages read within 3 minutes of delivery, making it the highest-engagement channel available." },
+      { q: "Is SMS automation compliant with regulations?", a: "Yes. We implement full TCPA compliance including proper opt-in collection, opt-out handling, message frequency disclosures, and consent documentation." },
+      { q: "Can customers reply to automated texts?", a: "Absolutely. Our two-way SMS system allows natural text conversations. AI can handle responses automatically or route complex replies to your team." },
+      { q: "What types of SMS campaigns work best?", a: "Appointment reminders, flash sales, abandoned cart recovery, review requests, and lead follow-up sequences consistently deliver the highest ROI across industries." },
+      { q: "How does pricing work for SMS campaigns?", a: "SMS pricing is based on message volume and included in your service package. We optimize message frequency and segmentation to maximize ROI per message sent." }
+    ],
+    relatedServices: ["ai-email-automation", "ai-follow-up", "ai-appointment-booking", "workflow-automation"]
+  },
+  "crm-automation": {
+    longDesc: "Our CRM Automation transforms your customer relationship management from a manual data entry tool into an intelligent revenue engine. We automate lead capture, deal progression, task assignment, follow-up triggers, and reporting so your team spends zero time on admin and 100% of their effort on closing deals and growing accounts.",
+    problems: [
+      "Sales reps entering data manually, leading to incomplete and inaccurate CRM records",
+      "Deals stalling in the pipeline with no automated alerts or next-step triggers",
+      "Management lacking real-time visibility into pipeline health and team performance",
+      "Disconnected tools creating data silos between marketing, sales, and support"
+    ],
+    solutions: [
+      "Automated data capture and CRM updates from all customer touchpoints",
+      "Intelligent deal progression triggers that keep pipeline moving forward",
+      "Real-time dashboards and automated reports for pipeline visibility",
+      "Unified data flow connecting marketing, sales, and support in one platform"
+    ],
+    features: [
+      "Automated lead capture and record creation",
+      "Deal stage progression automation",
+      "Task and follow-up assignment triggers",
+      "Pipeline health scoring and alerts",
+      "Automated activity logging from email, calls, and meetings",
+      "Custom workflow builders for unique sales processes",
+      "Revenue forecasting and pipeline reports",
+      "Multi-platform data sync and deduplication"
+    ],
+    workflowSteps: [
+      { step: "CRM Audit & Strategy", desc: "Evaluate your current CRM setup, data quality, and sales process to identify automation opportunities." },
+      { step: "Workflow Design", desc: "Map and build automated workflows for lead routing, deal progression, task assignment, and reporting." },
+      { step: "Data Migration & Integration", desc: "Clean existing data, configure integrations, and ensure seamless data flow across all connected tools." },
+      { step: "Training & Activation", desc: "Train your team on the automated workflows and monitor adoption to ensure maximum productivity impact." }
+    ],
+    industries: [
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "E-Commerce", icon: "ShoppingCart" }
+    ],
+    faqs: [
+      { q: "Which CRM platforms do you automate?", a: "We work with all major CRMs including HubSpot, Salesforce, Pipedrive, GoHighLevel, Zoho, and others. Our automation approach adapts to your specific platform." },
+      { q: "How much time does CRM automation save?", a: "Our clients typically save 10-15 hours per rep per week on manual data entry, task management, and reporting — time that goes directly back into selling." },
+      { q: "Will automation work with our custom sales process?", a: "Absolutely. We map automation to your specific stages, fields, and rules. No matter how unique your process, we build workflows that match exactly how your team sells." },
+      { q: "Can it automate lead assignment and routing?", a: "Yes. Leads are automatically assigned based on territory, round-robin, lead score, or custom criteria with instant notification to the assigned rep." },
+      { q: "Do you provide ongoing CRM optimization?", a: "Yes. We continuously monitor automation performance, refine workflows, and add new automations as your sales process evolves and new opportunities emerge." }
+    ],
+    relatedServices: ["workflow-automation", "ai-lead-qualification", "ai-follow-up", "crm-setup"]
+  },
+  "workflow-automation": {
+    longDesc: "Our Workflow Automation connects and automates every tool in your sales and marketing stack, eliminating manual handoffs and data entry across platforms. From lead capture to deal closure, we build intelligent workflows that trigger the right actions at the right time, ensuring nothing falls through the cracks while saving your team hours of repetitive work daily.",
+    problems: [
+      "Manual data transfer between tools causing errors and wasted time",
+      "Disconnected systems creating information silos across departments",
+      "Repetitive tasks consuming hours that should be spent on revenue activities",
+      "Complex multi-step processes prone to human error and missed steps"
+    ],
+    solutions: [
+      "Automated cross-platform data sync eliminating manual data transfers",
+      "End-to-end workflow orchestration connecting every tool in your stack",
+      "Trigger-based task automation that executes complex processes flawlessly",
+      "Centralized workflow management with monitoring and error handling"
+    ],
+    features: [
+      "Cross-platform automation (Zapier, Make, native APIs)",
+      "Trigger-based workflow orchestration",
+      "Multi-step process automation with conditional logic",
+      "Error handling and failure notification systems",
+      "Data transformation and mapping between platforms",
+      "Scheduled and event-driven automation triggers",
+      "Workflow monitoring dashboard",
+      "Custom API integrations for proprietary tools"
+    ],
+    workflowSteps: [
+      { step: "Process Audit", desc: "Document all manual processes, tool connections, and data flows to identify automation opportunities." },
+      { step: "Workflow Architecture", desc: "Design automated workflows with triggers, actions, conditions, and error handling for each process." },
+      { step: "Build & Connect", desc: "Build automations using the optimal platform (Zapier, Make, or native APIs) and connect all tools." },
+      { step: "Monitor & Expand", desc: "Deploy monitoring, track automation performance, and expand to new workflows as needs evolve." }
+    ],
+    industries: [
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Financial Services", icon: "Landmark" }
+    ],
+    faqs: [
+      { q: "What tools can you connect with workflow automation?", a: "We connect virtually any tool with an API or integration capability — CRMs, email platforms, ad networks, payment processors, spreadsheets, project management tools, and more." },
+      { q: "How complex can the automations get?", a: "There is no practical limit. We build multi-step workflows with conditional branching, data transformations, error handling, and cross-platform orchestration handling hundreds of steps." },
+      { q: "What platforms do you use to build automations?", a: "We use the best tool for each job — Zapier, Make (Integromat), n8n, or direct API integrations depending on complexity, volume, and cost requirements." },
+      { q: "How do you handle automation failures?", a: "Every workflow includes error detection, retry logic, and failure notifications. We monitor automations proactively and resolve issues before they impact your operations." },
+      { q: "Can automations be modified after launch?", a: "Yes. Workflows are designed to be modular and adaptable. We can add new steps, modify logic, or connect additional tools anytime as your business needs change." }
+    ],
+    relatedServices: ["crm-automation", "ai-email-automation", "ai-sms-automation", "marketing-automation-setup"]
+  },
+  "google-ads": {
+    longDesc: "Our Google Ads Revenue Engine builds and manages data-driven campaigns that put your business in front of high-intent buyers at the exact moment they're searching for your services. We combine AI-powered bidding, precision targeting, and continuous optimization to maximize every dollar of ad spend and deliver measurable ROI.",
+    problems: [
+      "Wasting ad budget on irrelevant clicks and unqualified traffic",
+      "No clear attribution between ad spend and actual revenue generated",
+      "Competitors outbidding you on your most valuable keywords",
+      "Campaigns plateauing with declining performance and rising costs"
+    ],
+    solutions: [
+      "AI-optimized bidding strategies that maximize conversions per dollar spent",
+      "Precision keyword targeting focused on high-intent, revenue-driving searches",
+      "Full-funnel conversion tracking linking every click to revenue outcomes",
+      "Continuous campaign optimization with weekly performance improvements"
+    ],
+    features: [
+      "AI-powered Smart Bidding and budget optimization",
+      "High-intent keyword research and negative keyword management",
+      "Ad copy A/B testing with AI-generated variations",
+      "Landing page alignment and quality score optimization",
+      "Conversion tracking and revenue attribution",
+      "Competitor analysis and market positioning",
+      "Remarketing and audience segmentation",
+      "Monthly ROI reporting with actionable insights"
+    ],
+    workflowSteps: [
+      { step: "Market & Keyword Research", desc: "Deep-dive into your market, competitors, and high-value keyword opportunities with search volume and cost analysis." },
+      { step: "Campaign Architecture", desc: "Build campaign structure with ad groups, targeting, bidding strategy, and conversion tracking." },
+      { step: "Creative & Landing Pages", desc: "Develop high-converting ad copy and ensure landing pages align for maximum quality scores and conversions." },
+      { step: "Optimize & Scale", desc: "Continuously optimize bids, keywords, and creative based on performance data to scale profitable campaigns." }
+    ],
+    industries: [
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Automotive", icon: "Car" },
+      { name: "E-Commerce", icon: "ShoppingCart" }
+    ],
+    faqs: [
+      { q: "What's a realistic ROAS to expect from Google Ads?", a: "Our clients typically achieve 3-6x ROAS depending on industry and offer. Some high-ticket service businesses see 10x+ returns. We establish benchmarks in the first 30 days and optimize from there." },
+      { q: "How much should I budget for Google Ads?", a: "We recommend a minimum of $2,000-3,000/month in ad spend for meaningful results. Your optimal budget depends on your market, competition, and revenue goals." },
+      { q: "How quickly will I see results?", a: "Initial results begin within the first 1-2 weeks of launch. Campaigns typically reach optimal performance within 60-90 days as the AI bidding algorithms learn and optimize." },
+      { q: "Do you manage both Search and Display campaigns?", a: "Yes. We manage Search, Display, Shopping, YouTube, and Performance Max campaigns based on what's most effective for your specific business and goals." },
+      { q: "How do you prevent wasted ad spend?", a: "Through aggressive negative keyword management, audience exclusions, bid adjustments, placement monitoring, and conversion-focused optimization that eliminates low-quality clicks." }
+    ],
+    relatedServices: ["meta-ads", "landing-page-optimization", "conversion-rate-optimization", "conversion-funnels"]
+  },
+  "meta-ads": {
+    longDesc: "Our Meta Ads Growth Engine leverages Facebook and Instagram's powerful targeting to reach your ideal customers with scroll-stopping creative and precision audience building. We deploy AI-driven campaigns across the entire funnel — from awareness to conversion — generating qualified leads at scale while maintaining profitable cost-per-acquisition.",
+    problems: [
+      "Ad fatigue causing declining performance on Facebook and Instagram",
+      "Inability to scale campaigns without costs spiraling out of control",
+      "Poor audience targeting resulting in low-quality leads that don't convert",
+      "No systematic creative testing process to identify winning ads"
+    ],
+    solutions: [
+      "AI-powered audience building and lookalike expansion for precise targeting",
+      "Systematic creative testing framework that identifies winners quickly",
+      "Full-funnel campaign architecture from awareness to retargeting to conversion",
+      "Cost-per-acquisition optimization that maintains profitability at scale"
+    ],
+    features: [
+      "Custom and lookalike audience building",
+      "Creative testing framework with rapid iteration",
+      "Full-funnel campaign architecture",
+      "Dynamic creative optimization",
+      "Retargeting and remarketing sequences",
+      "Conversion API and pixel optimization",
+      "Budget allocation across campaign objectives",
+      "Detailed performance reporting and insights"
+    ],
+    workflowSteps: [
+      { step: "Audience & Creative Strategy", desc: "Research your ideal audience segments and develop a creative strategy with multiple ad concepts for testing." },
+      { step: "Campaign Build", desc: "Build full-funnel campaign structure with audience targeting, placement optimization, and conversion tracking." },
+      { step: "Creative Production & Testing", desc: "Launch multiple ad variations, test systematically, and identify top-performing creative and audience combinations." },
+      { step: "Scale Profitably", desc: "Scale winning campaigns with budget increases, audience expansion, and new creative while maintaining target CPA." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Healthcare", icon: "Heart" }
+    ],
+    faqs: [
+      { q: "How does Meta Ads targeting work for my business?", a: "We build custom audiences from your customer data, website visitors, and engagement, then create lookalike audiences to find similar high-value prospects across Facebook and Instagram." },
+      { q: "What types of ad creative do you produce?", a: "We create and test static images, carousels, video ads, and story-format content. Our creative testing framework rapidly identifies the best-performing formats for your audience." },
+      { q: "How much should I spend on Meta Ads?", a: "We recommend starting with $1,500-3,000/month in ad spend. This provides enough data for AI optimization while generating meaningful lead volume." },
+      { q: "How do you handle iOS tracking changes?", a: "We implement Meta's Conversions API alongside the pixel, use UTM tracking, and build server-side event tracking to maintain accurate attribution despite iOS privacy changes." },
+      { q: "Can you run ads on both Facebook and Instagram?", a: "Yes. We manage campaigns across both platforms with placement optimization that automatically allocates budget to the best-performing placements." }
+    ],
+    relatedServices: ["google-ads", "conversion-funnels", "landing-page-optimization", "social-media-marketing"]
+  },
+  "seo-authority": {
+    longDesc: "Our SEO Authority Growth System builds your organic search dominance through technical optimization, authority-building content, and strategic link acquisition. We position your business to rank for high-value keywords that drive consistent, qualified traffic without ongoing ad spend, creating a compounding asset that generates leads and revenue month after month.",
+    problems: [
+      "Invisible on Google for your most valuable service and product keywords",
+      "Over-reliance on paid advertising with no organic traffic foundation",
+      "Competitors ranking above you and capturing your potential customers",
+      "Previous SEO efforts that produced no measurable business results"
+    ],
+    solutions: [
+      "Comprehensive technical SEO optimization for crawlability and performance",
+      "Strategic content creation targeting high-intent, revenue-driving keywords",
+      "Authority-building link acquisition from relevant, high-quality sources",
+      "Consistent ranking improvements that compound organic traffic over time"
+    ],
+    features: [
+      "Technical SEO audit and optimization",
+      "Keyword research and content strategy",
+      "On-page optimization for target keywords",
+      "Authority link building campaigns",
+      "Content creation and optimization",
+      "Schema markup and structured data",
+      "Core Web Vitals optimization",
+      "Monthly ranking and traffic reporting"
+    ],
+    workflowSteps: [
+      { step: "SEO Audit & Strategy", desc: "Comprehensive audit of your site's technical health, content gaps, backlink profile, and competitive landscape." },
+      { step: "Technical Optimization", desc: "Fix technical issues, improve site speed, implement structured data, and optimize crawlability." },
+      { step: "Content & On-Page SEO", desc: "Create and optimize content targeting high-value keywords with on-page SEO best practices." },
+      { step: "Authority Building", desc: "Execute link-building campaigns and ongoing optimization to grow domain authority and rankings." }
+    ],
+    industries: [
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Financial Services", icon: "Landmark" }
+    ],
+    faqs: [
+      { q: "How long does it take to see SEO results?", a: "Most clients see measurable ranking improvements within 3-4 months, with significant traffic and lead increases by month 6. SEO is a compounding investment that grows stronger over time." },
+      { q: "How is your SEO different from other agencies?", a: "We focus exclusively on revenue-driving keywords and measure success by leads and revenue generated, not vanity metrics like impressions or keyword counts." },
+      { q: "Do you guarantee first-page rankings?", a: "We don't guarantee specific positions (no legitimate agency can), but our track record shows consistent first-page rankings for our clients' most valuable keywords within 6-12 months." },
+      { q: "Do you create content as part of the SEO service?", a: "Yes. Content creation is a core component. We produce SEO-optimized blog posts, service pages, and landing pages designed to rank and convert." },
+      { q: "Can SEO replace our paid advertising?", a: "SEO complements paid advertising by building a sustainable organic traffic foundation. Over time, organic traffic reduces your dependency on ad spend while both channels work together." }
+    ],
+    relatedServices: ["local-seo", "content-writing", "website-development", "google-ads"]
+  },
+  "local-seo": {
+    longDesc: "Our Local SEO & Google Business service ensures your business dominates the local search results and Google Maps in your service areas. We optimize your Google Business Profile, build local citations, manage reviews, and implement geo-targeted strategies that put you at the top of local searches when nearby customers are ready to buy.",
+    problems: [
+      "Not appearing in Google Maps or local pack results for your services",
+      "Competitors with more reviews and higher ratings stealing your local customers",
+      "Inconsistent business information across directories hurting your visibility",
+      "No strategy to capture 'near me' searches that drive immediate foot traffic"
+    ],
+    solutions: [
+      "Complete Google Business Profile optimization for maximum local visibility",
+      "Review generation and reputation management to build trust and rankings",
+      "Citation building and NAP consistency across all major directories",
+      "Geo-targeted content and optimization for local search domination"
+    ],
+    features: [
+      "Google Business Profile optimization",
+      "Review generation and management system",
+      "Local citation building and NAP consistency",
+      "Geo-targeted keyword optimization",
+      "Local link building from community sources",
+      "Google Maps ranking optimization",
+      "Competitor local presence analysis",
+      "Monthly local ranking and visibility reports"
+    ],
+    workflowSteps: [
+      { step: "Local SEO Audit", desc: "Audit your Google Business Profile, citations, reviews, and local rankings against competitors." },
+      { step: "GBP & Citation Optimization", desc: "Fully optimize your Google Business Profile and build consistent citations across key directories." },
+      { step: "Review & Content Strategy", desc: "Implement review generation systems and create locally-focused content for your target areas." },
+      { step: "Ongoing Local Domination", desc: "Monitor local rankings, manage reviews, and continuously optimize for expanding local visibility." }
+    ],
+    industries: [
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" }
+    ],
+    faqs: [
+      { q: "How important is Google Business Profile for local businesses?", a: "Critically important. Google Business Profile drives the majority of local discovery. Businesses with optimized profiles receive 7x more clicks than those without and appear prominently in Maps and local search results." },
+      { q: "How do you help us get more reviews?", a: "We implement automated review request sequences via email and SMS after service completion, making it easy for satisfied customers to leave reviews on Google and other key platforms." },
+      { q: "Can you help with multiple business locations?", a: "Yes. We manage multi-location Local SEO with individual profile optimization, location-specific content, and area-targeted strategies for each location." },
+      { q: "How long does it take to rank in the local pack?", a: "Initial improvements are often visible within 4-8 weeks. Achieving consistent local pack placement typically takes 3-6 months depending on market competition." },
+      { q: "Do you handle negative reviews?", a: "Yes. We provide review monitoring and response strategies for both positive and negative reviews, helping you maintain a strong reputation and address concerns professionally." }
+    ],
+    relatedServices: ["seo-authority", "google-ads", "website-development", "content-writing"]
+  },
+  "conversion-funnels": {
+    longDesc: "Our Conversion Funnel Building service creates multi-step marketing funnels that systematically turn cold traffic into paying customers. From awareness to consideration to purchase, each funnel stage is optimized with compelling messaging, strategic offers, and automated nurture sequences that guide prospects through a predictable path to conversion.",
+    problems: [
+      "Sending paid traffic directly to your homepage with no conversion path",
+      "No systematic process to move prospects from interest to purchase",
+      "High cost-per-acquisition from single-step sales processes",
+      "Losing warm prospects who aren't ready to buy immediately"
+    ],
+    solutions: [
+      "Multi-step funnels that warm up cold traffic before asking for the sale",
+      "Strategic lead magnets and tripwire offers that build trust progressively",
+      "Automated email and retargeting sequences between funnel stages",
+      "Optimized conversion paths that reduce CPA and increase customer lifetime value"
+    ],
+    features: [
+      "Custom funnel strategy and architecture design",
+      "Lead magnet and tripwire offer creation",
+      "Landing page design for each funnel stage",
+      "Email nurture sequences between stages",
+      "Retargeting pixel and audience setup",
+      "Upsell and cross-sell page building",
+      "Funnel analytics and conversion tracking",
+      "A/B testing at every funnel stage"
+    ],
+    workflowSteps: [
+      { step: "Funnel Strategy", desc: "Design the funnel architecture with stages, offers, and conversion goals based on your product and audience." },
+      { step: "Page & Offer Creation", desc: "Build landing pages, lead magnets, tripwires, and core offers for each funnel stage." },
+      { step: "Automation & Sequences", desc: "Configure email sequences, retargeting audiences, and automated transitions between funnel stages." },
+      { step: "Test & Optimize", desc: "Launch, track conversion metrics at every stage, and optimize for higher throughput and lower CPA." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Healthcare", icon: "Heart" }
+    ],
+    faqs: [
+      { q: "What is a conversion funnel and why do I need one?", a: "A conversion funnel is a multi-step process that guides prospects from initial awareness to purchase. It's essential because most buyers need multiple touchpoints before they're ready to buy, and a funnel systematizes this journey." },
+      { q: "How does a funnel differ from a landing page?", a: "A landing page is a single step. A funnel is a connected series of pages, emails, and offers that nurture prospects through each buying stage, resulting in significantly higher overall conversion rates." },
+      { q: "What types of funnels do you build?", a: "We build lead generation funnels, webinar funnels, product launch funnels, e-commerce funnels, and high-ticket application funnels — each customized to your specific business model." },
+      { q: "How long does it take to build a funnel?", a: "A complete funnel including strategy, design, copy, automation, and testing typically takes 2-4 weeks to build and launch." },
+      { q: "What results should I expect from a funnel?", a: "Well-built funnels typically reduce cost-per-acquisition by 30-50% compared to direct-to-sale approaches while increasing average customer value through strategic upsells." }
+    ],
+    relatedServices: ["landing-page-optimization", "google-ads", "meta-ads", "ai-email-automation"]
+  },
+  "landing-page-optimization": {
+    longDesc: "Our Landing Page Optimization service transforms underperforming pages into high-converting assets through data-driven design, compelling copy, and systematic A/B testing. We analyze visitor behavior, identify conversion barriers, and implement targeted improvements that dramatically increase the percentage of visitors who take action.",
+    problems: [
+      "Low conversion rates despite spending thousands on driving traffic",
+      "High bounce rates indicating poor page-message match with ad campaigns",
+      "No systematic testing process to identify what's killing conversions",
+      "Generic landing pages that fail to differentiate you from competitors"
+    ],
+    solutions: [
+      "Data-driven page redesign based on heatmaps, recordings, and analytics",
+      "Compelling copy and offer positioning that addresses specific audience pain points",
+      "Systematic A/B testing framework that continuously improves conversion rates",
+      "Message-match optimization ensuring landing pages align perfectly with ad campaigns"
+    ],
+    features: [
+      "Heatmap and session recording analysis",
+      "Conversion-focused copy optimization",
+      "A/B and multivariate testing",
+      "Mobile responsiveness optimization",
+      "Page speed and Core Web Vitals improvement",
+      "Form optimization and friction reduction",
+      "Trust element and social proof placement",
+      "Ad-to-page message match alignment"
+    ],
+    workflowSteps: [
+      { step: "Conversion Audit", desc: "Analyze current page performance with heatmaps, recordings, analytics, and user behavior data." },
+      { step: "Hypothesis Development", desc: "Identify conversion barriers and develop data-backed hypotheses for improvement." },
+      { step: "Design & Testing", desc: "Create optimized page variations and run structured A/B tests to validate improvements." },
+      { step: "Implement & Iterate", desc: "Roll out winning variations and continue testing new elements for ongoing conversion gains." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Financial Services", icon: "Landmark" }
+    ],
+    faqs: [
+      { q: "What conversion rate improvement should I expect?", a: "Most of our landing page optimization projects achieve 30-100% conversion rate improvements. The exact lift depends on your starting point and traffic quality." },
+      { q: "How do you determine what to change on a page?", a: "We use a combination of analytics data, heatmaps, session recordings, user surveys, and competitive analysis to identify the highest-impact opportunities for improvement." },
+      { q: "How long does A/B testing take?", a: "Each test typically runs 2-4 weeks to reach statistical significance. We run tests continuously, implementing winners and testing new hypotheses." },
+      { q: "Do you write the copy for landing pages?", a: "Yes. Conversion-focused copywriting is a core part of our optimization process. We write headlines, body copy, CTAs, and supporting content based on proven persuasion frameworks." },
+      { q: "Can you optimize pages on any platform?", a: "Yes. We optimize landing pages built on any platform including WordPress, Webflow, Unbounce, ClickFunnels, custom-built sites, and more." }
+    ],
+    relatedServices: ["conversion-rate-optimization", "conversion-funnels", "landing-page-development", "google-ads"]
+  },
+  "conversion-rate-optimization": {
+    longDesc: "Our Conversion Rate Optimization service applies rigorous data analysis and testing methodology to maximize the value of every visitor across your entire website. From homepage to checkout, we identify and fix conversion bottlenecks using behavioral analytics, A/B testing, and UX improvements that compound into significant revenue growth.",
+    problems: [
+      "Spending on traffic that doesn't convert into leads or sales",
+      "No insight into why visitors leave without taking action",
+      "Making website changes based on opinions instead of data",
+      "Checkout or form abandonment rates eating into your revenue"
+    ],
+    solutions: [
+      "Full-site conversion audit identifying every friction point and drop-off",
+      "Behavioral analytics revealing exactly how visitors interact with your pages",
+      "Structured testing program that validates changes with statistical confidence",
+      "Iterative optimization that compounds conversion improvements over time"
+    ],
+    features: [
+      "Full-site conversion funnel analysis",
+      "User behavior analytics and heatmaps",
+      "Structured A/B and multivariate testing",
+      "Form and checkout flow optimization",
+      "UX/UI improvement recommendations",
+      "Personalization and dynamic content testing",
+      "Revenue impact modeling and reporting",
+      "Continuous testing roadmap and prioritization"
+    ],
+    workflowSteps: [
+      { step: "Data Collection & Analysis", desc: "Install tracking, collect behavioral data, and analyze the full conversion funnel to identify key drop-off points." },
+      { step: "Testing Roadmap", desc: "Prioritize testing opportunities by potential revenue impact and build a structured testing roadmap." },
+      { step: "Test Execution", desc: "Design, develop, and run A/B tests with proper statistical methodology and tracking." },
+      { step: "Scale Wins", desc: "Implement winning tests, document learnings, and continuously refine the testing pipeline for compounding gains." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Healthcare", icon: "Heart" },
+      { name: "Real Estate", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "What's the difference between CRO and landing page optimization?", a: "Landing page optimization focuses on individual pages. CRO analyzes and optimizes your entire website experience — from traffic entry points through final conversion — for holistic revenue improvement." },
+      { q: "How much traffic do I need for CRO?", a: "For statistically valid A/B testing, we recommend at least 5,000 monthly visitors. For lower-traffic sites, we use qualitative methods and best-practice implementations." },
+      { q: "What tools do you use for CRO?", a: "We use Google Analytics, Hotjar, VWO or Optimizely for A/B testing, session recording tools, and custom analytics setups based on your tech stack." },
+      { q: "How do you measure CRO success?", a: "We measure primary conversions (leads, sales, sign-ups), micro-conversions (clicks, form starts, page depth), and ultimately revenue impact per visitor." },
+      { q: "Can CRO help with mobile conversion rates?", a: "Absolutely. Mobile optimization is a major focus area. We analyze mobile-specific user behavior and run tests tailored to mobile experiences where conversion patterns differ significantly." }
+    ],
+    relatedServices: ["landing-page-optimization", "conversion-funnels", "analytics-dashboard", "website-development"]
+  },
+  "social-media-marketing": {
+    longDesc: "Our Social Media Marketing service builds a strategic presence across platforms that drives brand awareness, engagement, and lead generation. We create platform-specific content strategies, manage your accounts, and grow your audience with consistent, high-quality posting that positions your brand as the authority in your industry.",
+    problems: [
+      "Inconsistent posting leading to declining reach and engagement",
+      "No clear social media strategy tied to business revenue goals",
+      "Spending time on social without generating measurable leads or sales",
+      "Falling behind competitors who have strong, active social presence"
+    ],
+    solutions: [
+      "Comprehensive social media strategy aligned with your revenue objectives",
+      "Consistent, high-quality content creation and scheduling across platforms",
+      "Audience growth tactics that attract your ideal customers organically",
+      "Performance tracking linking social activity to leads and revenue"
+    ],
+    features: [
+      "Multi-platform content strategy and calendar",
+      "Professional content creation and design",
+      "Community management and engagement",
+      "Hashtag research and optimization",
+      "Audience growth and follower campaigns",
+      "Social listening and brand monitoring",
+      "Influencer identification and outreach",
+      "Monthly analytics and performance reporting"
+    ],
+    workflowSteps: [
+      { step: "Brand & Audience Audit", desc: "Analyze your current social presence, audience demographics, and competitive landscape." },
+      { step: "Strategy & Content Calendar", desc: "Develop a content strategy with posting frequency, content themes, and platform-specific approaches." },
+      { step: "Content Production & Scheduling", desc: "Create, design, and schedule content across all platforms with consistent brand voice." },
+      { step: "Engage & Grow", desc: "Manage community engagement, execute growth tactics, and report on performance metrics monthly." }
+    ],
+    industries: [
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Healthcare", icon: "Heart" },
+      { name: "Education", icon: "GraduationCap" }
+    ],
+    faqs: [
+      { q: "Which social media platforms should my business be on?", a: "It depends on your audience. We analyze where your ideal customers are most active and focus your resources on 2-3 platforms for maximum impact rather than spreading thin across all of them." },
+      { q: "How many posts per week do you create?", a: "Depending on your plan, we create 3-7 posts per week per platform, including a mix of educational, engaging, and promotional content optimized for each platform's algorithm." },
+      { q: "Can social media actually generate leads?", a: "Absolutely. With the right strategy, social media drives direct inquiries, website traffic, and lead form submissions. We track every lead source to measure social's revenue contribution." },
+      { q: "Do you handle customer comments and messages?", a: "Yes. Community management is included in our service. We respond to comments and messages promptly, escalating sales opportunities and support issues as needed." },
+      { q: "How do you measure social media ROI?", a: "We track engagement rates, audience growth, website traffic from social, lead generation, and revenue attribution. Monthly reports show exactly how social contributes to your bottom line." }
+    ],
+    relatedServices: ["instagram-growth", "facebook-growth", "content-writing", "video-marketing"]
+  },
+  "instagram-growth": {
+    longDesc: "Our Instagram Growth & Posting service builds your brand's Instagram presence with consistent, visually compelling content that attracts your ideal audience. We handle everything from content creation to hashtag strategy to engagement tactics, growing your follower base with potential customers who are genuinely interested in your products and services.",
+    problems: [
+      "Instagram profile stagnant with low followers and minimal engagement",
+      "Inconsistent posting causing algorithm penalties and declining reach",
+      "No cohesive visual brand identity on your Instagram grid",
+      "Spending time on Instagram without generating any business results"
+    ],
+    solutions: [
+      "Consistent, scheduled posting with algorithm-optimized timing and frequency",
+      "Professional visual content that creates a cohesive, branded grid aesthetic",
+      "Strategic hashtag and engagement tactics that attract your ideal followers",
+      "Content strategy that converts followers into website visitors and leads"
+    ],
+    features: [
+      "Custom content calendar with daily posting",
+      "Professional graphic design and visual branding",
+      "Strategic hashtag research and rotation",
+      "Instagram Stories and Reels creation",
+      "Engagement strategy and community building",
+      "Bio and profile optimization",
+      "Audience growth tactics and campaigns",
+      "Weekly performance analytics"
+    ],
+    workflowSteps: [
+      { step: "Profile & Brand Audit", desc: "Analyze your current Instagram presence, brand aesthetics, audience, and competitors." },
+      { step: "Content Strategy & Design", desc: "Develop visual brand guidelines, content themes, and a monthly content calendar." },
+      { step: "Content Creation & Scheduling", desc: "Create posts, stories, and reels with professional design and strategic scheduling." },
+      { step: "Growth & Engagement", desc: "Execute growth strategies, manage engagement, and optimize based on weekly analytics." }
+    ],
+    industries: [
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Healthcare", icon: "Heart" },
+      { name: "Automotive", icon: "Car" }
+    ],
+    faqs: [
+      { q: "How quickly can I expect to see follower growth?", a: "With consistent posting and strategic engagement, most accounts see noticeable growth within the first month, with significant audience building over 3-6 months." },
+      { q: "Do you create the content or do I need to provide it?", a: "We handle all content creation including design, copywriting, and scheduling. We may request product photos or behind-the-scenes content to supplement professional designs." },
+      { q: "How often do you post on Instagram?", a: "We post 4-7 times per week on your feed, plus daily stories and 2-3 reels per week. Frequency is optimized based on your audience's engagement patterns." },
+      { q: "Do you use bots or fake followers?", a: "Never. We grow your audience organically through quality content, strategic hashtags, genuine engagement, and platform-compliant growth tactics. Every follower is real." },
+      { q: "Can Instagram drive actual business leads?", a: "Yes. With strategic CTAs, link-in-bio optimization, and story-driven promotions, Instagram becomes a consistent source of website traffic, inquiries, and sales." }
+    ],
+    relatedServices: ["social-media-marketing", "facebook-growth", "video-marketing", "branding-design"]
+  },
+  "facebook-growth": {
+    longDesc: "Our Facebook Growth & Posting service builds an active, engaged community around your brand on the world's largest social platform. We create content strategies that leverage Facebook's unique features — groups, events, long-form posts, and video — to build audience trust and drive consistent lead generation for your business.",
+    problems: [
+      "Organic reach on Facebook has dropped dramatically with no strategy to recover",
+      "Facebook page sitting dormant with no consistent posting or engagement",
+      "No community-building strategy to leverage Facebook Groups for leads",
+      "Competitors building engaged audiences while your page collects dust"
+    ],
+    solutions: [
+      "Algorithm-optimized posting strategy that maximizes organic reach",
+      "Consistent content creation with engagement-driving formats and topics",
+      "Community building through Facebook Groups and interactive content",
+      "Lead generation tactics integrated into your organic content strategy"
+    ],
+    features: [
+      "Facebook page content strategy and calendar",
+      "Community management and engagement",
+      "Facebook Groups creation and management",
+      "Video and live streaming content",
+      "Event creation and promotion",
+      "Page optimization for discoverability",
+      "Content performance analytics",
+      "Lead generation post strategies"
+    ],
+    workflowSteps: [
+      { step: "Page & Audience Analysis", desc: "Audit your Facebook page, audience demographics, content performance, and competitive landscape." },
+      { step: "Content & Community Strategy", desc: "Build a content strategy including Groups, events, and formats that drive engagement on Facebook." },
+      { step: "Content Production", desc: "Create and schedule diverse content — posts, videos, stories, events — tailored for Facebook's algorithm." },
+      { step: "Community Growth", desc: "Build and engage your community, manage Groups, respond to interactions, and optimize for lead generation." }
+    ],
+    industries: [
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "Healthcare", icon: "Stethoscope" }
+    ],
+    faqs: [
+      { q: "Is Facebook still relevant for business marketing?", a: "Absolutely. Facebook remains the largest social platform with 3+ billion users. When leveraged properly with Groups, video, and community building, it's one of the most powerful organic lead generation tools available." },
+      { q: "How do you combat declining organic reach?", a: "We focus on engagement-driving content formats that the algorithm favors — video, interactive posts, Groups content, and community discussions — and optimize posting times and frequency." },
+      { q: "Should my business have a Facebook Group?", a: "For most service businesses, yes. A Facebook Group creates a community around your brand that drives organic engagement, builds trust, and generates referrals at a rate far exceeding page posts alone." },
+      { q: "How often do you post on Facebook?", a: "We typically post 3-5 times per week on your page and facilitate daily engagement within Groups. Quality and engagement rate matter more than raw volume on Facebook." },
+      { q: "Can you manage our Facebook alongside other platforms?", a: "Yes. We often manage Facebook as part of a comprehensive social strategy that includes Instagram and other platforms with coordinated messaging across all channels." }
+    ],
+    relatedServices: ["social-media-marketing", "instagram-growth", "meta-ads", "content-writing"]
+  },
+  "content-writing": {
+    longDesc: "Our Content Writing & Strategy service creates authority-building content that positions your brand as the go-to expert in your industry. From blog posts and articles to case studies and email copy, every piece is strategically crafted to rank in search engines, engage your audience, and move prospects closer to a purchasing decision.",
+    problems: [
+      "No consistent content production causing stagnant organic growth",
+      "Content that doesn't rank in search engines or drive any traffic",
+      "Inability to articulate your expertise in a way that builds trust",
+      "Relying entirely on paid channels with no content-driven inbound strategy"
+    ],
+    solutions: [
+      "Strategic content calendar aligned with SEO keywords and audience interests",
+      "SEO-optimized articles and blog posts that rank and drive organic traffic",
+      "Authority-building content that establishes your brand as the industry expert",
+      "Diverse content types from blogs to case studies to email copy for full-funnel coverage"
+    ],
+    features: [
+      "Content strategy and editorial calendar",
+      "SEO-optimized blog posts and articles",
+      "Case study and whitepaper creation",
+      "Email copy and newsletter writing",
+      "Website copy and service page content",
+      "Social media content writing",
+      "Content performance tracking",
+      "Topic research and keyword integration"
+    ],
+    workflowSteps: [
+      { step: "Content Audit & Strategy", desc: "Analyze existing content, identify gaps, research keywords, and build a strategic content calendar." },
+      { step: "Content Creation", desc: "Write and produce SEO-optimized content aligned with your brand voice and strategic goals." },
+      { step: "Publishing & Distribution", desc: "Publish content across your channels with proper SEO formatting and promotion strategy." },
+      { step: "Performance & Iteration", desc: "Track content performance, identify top performers, and refine the strategy for continued growth." }
+    ],
+    industries: [
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Real Estate", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "How many pieces of content do you produce per month?", a: "Depending on your plan, we produce 4-12 pieces per month including blog posts, articles, case studies, and supporting social content. Each piece is strategically planned and SEO-optimized." },
+      { q: "Do you write in our brand voice?", a: "Yes. We develop a comprehensive brand voice guide during onboarding and write all content to match your tone, style, and messaging standards." },
+      { q: "How does content drive revenue?", a: "Content builds organic search traffic, establishes authority, nurtures leads through the funnel, and improves conversion rates — all contributing directly to revenue growth over time." },
+      { q: "Can you handle technical or specialized topics?", a: "Yes. Our writers research thoroughly and work with your subject matter experts to produce accurate, authoritative content even in highly specialized industries." },
+      { q: "Do you handle content distribution?", a: "Yes. We publish content to your blog, optimize for SEO, create social media excerpts, and can repurpose into email content and other formats for maximum reach." }
+    ],
+    relatedServices: ["seo-authority", "social-media-marketing", "branding-design", "video-marketing"]
+  },
+  "branding-design": {
+    longDesc: "Our Branding & Creative Design service creates a premium visual identity that commands trust, recognition, and authority in your market. From logo design to full brand systems, we build cohesive visual identities that differentiate you from competitors and create the professional perception that drives higher-value clients and premium pricing.",
+    problems: [
+      "Inconsistent visual identity across your website, social media, and materials",
+      "Outdated branding that doesn't reflect the quality of your services",
+      "Blending in with competitors due to generic, templated design",
+      "Inability to charge premium prices due to unprofessional brand perception"
+    ],
+    solutions: [
+      "Cohesive brand identity system that creates consistency across every touchpoint",
+      "Modern, premium design that positions your business as the market leader",
+      "Distinctive visual identity that sets you apart from every competitor",
+      "Professional brand perception that justifies premium pricing and attracts ideal clients"
+    ],
+    features: [
+      "Logo design and brand mark creation",
+      "Brand color palette and typography system",
+      "Brand style guide and usage guidelines",
+      "Social media template designs",
+      "Business card and stationery design",
+      "Presentation and proposal templates",
+      "Marketing collateral design",
+      "Brand photography direction"
+    ],
+    workflowSteps: [
+      { step: "Brand Discovery", desc: "Deep-dive into your business values, audience, competitors, and brand positioning to define the creative direction." },
+      { step: "Concept Development", desc: "Create multiple brand concepts including logo options, color palettes, and typography for your review." },
+      { step: "Brand System Build", desc: "Develop the complete brand identity system with guidelines, templates, and asset library." },
+      { step: "Brand Rollout", desc: "Implement the new brand across your website, social media, and marketing materials for a cohesive launch." }
+    ],
+    industries: [
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Healthcare", icon: "Heart" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "Real Estate", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "What's included in a full branding package?", a: "Our full package includes logo design, color palette, typography, brand style guide, social media templates, business card design, and marketing collateral templates — everything you need for a cohesive brand." },
+      { q: "How long does the branding process take?", a: "A complete brand identity project typically takes 3-4 weeks from discovery to final delivery, including revision rounds and brand guide documentation." },
+      { q: "Can you rebrand our existing business?", a: "Absolutely. We specialize in rebranding projects that modernize and elevate your visual identity while maintaining brand equity you've already built." },
+      { q: "How many logo concepts do you present?", a: "We present 3-5 unique logo concepts in the initial round, each with a clear rationale. From there, we refine your preferred direction through 2-3 revision rounds." },
+      { q: "Do you provide all the source files?", a: "Yes. You receive all source files (AI, EPS, SVG, PNG) plus a comprehensive brand guide with usage examples, color codes, and typography specifications." }
+    ],
+    relatedServices: ["website-development", "social-media-marketing", "content-writing", "video-marketing"]
+  },
+  "video-marketing": {
+    longDesc: "Our Short Form Video Marketing service creates scroll-stopping video content optimized for TikTok, Instagram Reels, YouTube Shorts, and other platforms. We handle concept development, filming direction, editing, and publishing to build your brand's video presence and drive massive organic reach and engagement with content that resonates.",
+    problems: [
+      "Missing out on the massive organic reach that short-form video provides",
+      "No video content strategy or production capability in-house",
+      "Videos that get no views because they're not optimized for platform algorithms",
+      "Competitors gaining market share through viral video content"
+    ],
+    solutions: [
+      "Platform-optimized short-form videos designed for maximum algorithm reach",
+      "Professional editing and post-production that makes every video polished",
+      "Trend-aware content strategy that leverages what's working right now",
+      "Consistent publishing cadence that builds momentum and audience growth"
+    ],
+    features: [
+      "Short-form video concept and script development",
+      "Professional video editing and post-production",
+      "Platform-specific optimization (TikTok, Reels, Shorts)",
+      "Trending audio and format integration",
+      "Caption and hook writing for engagement",
+      "Multi-platform publishing and scheduling",
+      "Video performance analytics",
+      "Content repurposing across formats"
+    ],
+    workflowSteps: [
+      { step: "Video Strategy", desc: "Define your video content pillars, target platforms, posting frequency, and style based on audience research." },
+      { step: "Content Planning", desc: "Develop monthly video concepts, scripts, and shooting guides aligned with trends and your brand message." },
+      { step: "Production & Editing", desc: "Produce and edit videos with professional quality, platform-optimized formatting, and engaging hooks." },
+      { step: "Publish & Analyze", desc: "Schedule and publish across platforms, track performance metrics, and iterate on top-performing formats." }
+    ],
+    industries: [
+      { name: "Restaurants", icon: "Utensils" },
+      { name: "Fitness & Wellness", icon: "Dumbbell" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Education", icon: "GraduationCap" }
+    ],
+    faqs: [
+      { q: "How many videos do you produce per month?", a: "Depending on your plan, we produce 8-20 short-form videos per month. Each video is concept-driven, professionally edited, and optimized for maximum platform performance." },
+      { q: "Do I need to be on camera?", a: "Not necessarily. We can create effective videos using product shots, screen recordings, text overlays, stock footage, and other formats. However, personal brand videos tend to perform best." },
+      { q: "Which platforms do you publish to?", a: "We optimize and publish to TikTok, Instagram Reels, YouTube Shorts, and Facebook Reels. Each video is formatted specifically for the platform it's published on." },
+      { q: "How do you ensure videos get views?", a: "We optimize hooks (first 3 seconds), use trending audio and formats, write engaging captions, post at optimal times, and leverage platform-specific SEO techniques." },
+      { q: "Can video marketing drive business leads?", a: "Absolutely. Short-form video is the highest organic reach channel available. Combined with strategic CTAs and profile optimization, it consistently drives website traffic, inquiries, and sales." }
+    ],
+    relatedServices: ["social-media-marketing", "instagram-growth", "content-writing", "branding-design"]
+  },
+  "website-development": {
+    longDesc: "Our Website Development service builds high-performance, conversion-optimized websites that serve as the foundation of your digital revenue engine. Every site we build combines stunning design with strategic UX, fast load times, and SEO best practices to turn visitors into leads and customers from the moment they land on your page.",
+    problems: [
+      "Outdated website that doesn't reflect the quality of your business",
+      "Slow-loading site causing visitor drop-off and lower search rankings",
+      "Website that looks great but generates zero leads or conversions",
+      "No mobile optimization despite 60%+ of traffic coming from mobile devices"
+    ],
+    solutions: [
+      "Modern, responsive design that looks stunning on every device and screen size",
+      "Performance-optimized build with sub-2-second load times",
+      "Conversion-focused UX with strategic CTAs, forms, and user flow design",
+      "SEO-ready architecture with proper structure, metadata, and schema markup"
+    ],
+    features: [
+      "Custom responsive website design",
+      "Mobile-first development approach",
+      "SEO-optimized site architecture",
+      "Conversion-focused UX and CTA placement",
+      "Fast load times and Core Web Vitals optimization",
+      "CMS integration for easy content management",
+      "SSL security and performance hosting",
+      "Analytics and tracking integration"
+    ],
+    workflowSteps: [
+      { step: "Discovery & Planning", desc: "Define site goals, structure, content requirements, and design direction based on your business objectives." },
+      { step: "Design & Prototyping", desc: "Create visual designs and interactive prototypes for your review and approval before development." },
+      { step: "Development & Testing", desc: "Build the site with clean code, responsiveness, speed optimization, and thorough cross-browser testing." },
+      { step: "Launch & Optimization", desc: "Deploy the site, configure analytics, submit to search engines, and provide training on content management." }
+    ],
+    industries: [
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Restaurants", icon: "Utensils" }
+    ],
+    faqs: [
+      { q: "How long does a website project take?", a: "Most websites take 4-8 weeks from kickoff to launch depending on complexity. We provide a detailed timeline during the planning phase." },
+      { q: "What platform do you build websites on?", a: "We build on the platform that best fits your needs — WordPress, Webflow, custom React/Next.js, or Shopify for e-commerce. Each project is matched to the ideal technology." },
+      { q: "Do you provide hosting?", a: "Yes. We offer high-performance hosting with SSL, CDN, daily backups, and uptime monitoring as part of our web development packages." },
+      { q: "Can I update the website content myself?", a: "Absolutely. Every site includes a user-friendly CMS and training so you can update text, images, and blog posts without any technical knowledge." },
+      { q: "Is the website optimized for SEO?", a: "Yes. Every site includes SEO fundamentals — proper URL structure, meta tags, schema markup, image optimization, sitemap, and fast load times — as standard." }
+    ],
+    relatedServices: ["landing-page-development", "seo-authority", "branding-design", "analytics-dashboard"]
+  },
+  "landing-page-development": {
+    longDesc: "Our Landing Page Development service builds fast, responsive, high-converting landing pages purpose-built to capture leads from your ad campaigns and marketing efforts. Every page is designed with a single conversion goal in mind, using proven design patterns, persuasive copy, and technical optimization to maximize your return on ad spend.",
+    problems: [
+      "Sending ad traffic to your homepage instead of a dedicated conversion page",
+      "Landing pages that take too long to build, delaying campaign launches",
+      "Pages that look good but have poor conversion rates due to weak UX",
+      "No A/B testing capability to optimize page performance over time"
+    ],
+    solutions: [
+      "Purpose-built landing pages designed around a single conversion objective",
+      "Rapid development and deployment to support fast campaign launches",
+      "Conversion-optimized design with proven layouts, copy, and CTA placement",
+      "Built-in A/B testing infrastructure for continuous performance improvement"
+    ],
+    features: [
+      "Conversion-focused page design and layout",
+      "Mobile-responsive development",
+      "Fast page load optimization",
+      "A/B testing capability built-in",
+      "Form and CTA optimization",
+      "Ad platform tracking pixel integration",
+      "Social proof and trust element placement",
+      "Dynamic content for personalized experiences"
+    ],
+    workflowSteps: [
+      { step: "Goal & Offer Definition", desc: "Define the page's conversion goal, offer, audience, and message alignment with your campaign." },
+      { step: "Design & Copy", desc: "Create the page design with conversion-focused layout, persuasive copy, and strategic CTA placement." },
+      { step: "Development & Tracking", desc: "Build the page with mobile responsiveness, speed optimization, and full tracking integration." },
+      { step: "Launch & Test", desc: "Deploy the page, connect to your campaigns, and begin A/B testing to optimize conversion rates." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Home Services", icon: "Hammer" }
+    ],
+    faqs: [
+      { q: "How fast can you build a landing page?", a: "We can deliver a fully designed and developed landing page in 5-7 business days. Rush delivery in 3 days is available for time-sensitive campaigns." },
+      { q: "What makes a landing page different from a regular website page?", a: "Landing pages are designed with a single conversion goal and no distracting navigation. This focused approach typically converts 3-5x better than sending traffic to a general website page." },
+      { q: "Do you write the copy for landing pages?", a: "Yes. Every landing page includes conversion-focused copywriting — headlines, body copy, CTAs, and supporting text — all written to maximize conversions." },
+      { q: "Can you build landing pages for different campaigns?", a: "Absolutely. We build unique landing pages for each campaign, audience segment, or ad group to ensure perfect message match and maximum conversion rates." },
+      { q: "Do you include A/B testing?", a: "Yes. Every landing page is built with A/B testing capability. We set up initial tests and provide ongoing optimization recommendations based on performance data." }
+    ],
+    relatedServices: ["landing-page-optimization", "conversion-funnels", "google-ads", "website-development"]
+  },
+  "crm-setup": {
+    longDesc: "Our CRM Setup & Integration service implements and configures a professional CRM system customized to your exact sales process. We handle platform selection, data migration, pipeline design, and team training to give your sales organization a powerful, organized system that tracks every lead and deal from first touch to close.",
+    problems: [
+      "Leads tracked in spreadsheets, sticky notes, and scattered emails",
+      "No visibility into your sales pipeline or deal progression",
+      "Sales team using the CRM inconsistently or not at all",
+      "Current CRM poorly configured and not matching your actual sales process"
+    ],
+    solutions: [
+      "Professional CRM implementation customized to match your exact sales workflow",
+      "Clean data migration from spreadsheets and existing tools with zero data loss",
+      "Custom pipeline design that mirrors your real sales stages and reporting needs",
+      "Comprehensive team training ensuring full adoption and consistent usage"
+    ],
+    features: [
+      "CRM platform selection and setup",
+      "Custom pipeline and stage configuration",
+      "Data migration and deduplication",
+      "Custom fields and property setup",
+      "Email and calendar integration",
+      "Report and dashboard configuration",
+      "User permissions and team structure",
+      "Comprehensive training and documentation"
+    ],
+    workflowSteps: [
+      { step: "Sales Process Mapping", desc: "Document your sales stages, data requirements, team structure, and reporting needs." },
+      { step: "CRM Configuration", desc: "Set up the CRM with custom pipelines, fields, automations, and integrations specific to your process." },
+      { step: "Data Migration", desc: "Import and clean your existing data from spreadsheets, email, and other sources into the new CRM." },
+      { step: "Training & Adoption", desc: "Train your team on using the CRM effectively and provide documentation for ongoing reference." }
+    ],
+    industries: [
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Automotive", icon: "Car" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Home Services", icon: "Hammer" }
+    ],
+    faqs: [
+      { q: "Which CRM platform do you recommend?", a: "We recommend based on your needs — HubSpot for inbound-focused businesses, Salesforce for enterprise, GoHighLevel for agencies, and Pipedrive for simplicity. We help you choose the right fit." },
+      { q: "Can you migrate data from our existing system?", a: "Yes. We handle complete data migration from spreadsheets, other CRMs, or any existing system with data cleaning and deduplication included." },
+      { q: "How long does CRM setup take?", a: "A full CRM setup including configuration, migration, and training typically takes 2-3 weeks depending on data complexity and customization requirements." },
+      { q: "Do you provide CRM training for our team?", a: "Yes. We provide comprehensive live training sessions plus recorded tutorials and written documentation so your team can reference materials anytime." },
+      { q: "Can you integrate the CRM with our other tools?", a: "Absolutely. We integrate your CRM with email, calendar, marketing tools, accounting software, and any other platforms in your tech stack." }
+    ],
+    relatedServices: ["crm-automation", "workflow-automation", "saas-integrations", "marketing-automation-setup"]
+  },
+  "saas-integrations": {
+    longDesc: "Our SaaS Integrations service connects all the tools in your business ecosystem for seamless, automated data flow. From CRM to marketing platforms to payment processors, we build reliable integrations that eliminate manual data entry, prevent data silos, and ensure every system in your stack works together as a unified revenue engine.",
+    problems: [
+      "Data trapped in separate tools with no connection between them",
+      "Manual copy-pasting of information between platforms wasting hours daily",
+      "Inconsistent data across systems leading to errors and missed opportunities",
+      "New tools purchased but never properly connected to existing workflow"
+    ],
+    solutions: [
+      "Seamless API integrations connecting all your business tools bidirectionally",
+      "Automated data sync that keeps every system up-to-date in real-time",
+      "Unified data architecture that eliminates silos and inconsistencies",
+      "Proper onboarding of new tools with integration into your existing stack"
+    ],
+    features: [
+      "API integration development and configuration",
+      "Real-time data synchronization between platforms",
+      "Custom webhook and trigger setup",
+      "Data mapping and transformation between systems",
+      "Error handling and sync monitoring",
+      "Authentication and security configuration",
+      "Integration documentation and maintenance",
+      "Scalable architecture for future tool additions"
+    ],
+    workflowSteps: [
+      { step: "Integration Audit", desc: "Map your current tool ecosystem, identify disconnected systems, and prioritize integration opportunities." },
+      { step: "Architecture Design", desc: "Design the integration architecture with data flows, sync frequency, and transformation logic." },
+      { step: "Build & Connect", desc: "Build integrations using APIs, webhooks, or integration platforms, with proper error handling and monitoring." },
+      { step: "Test & Document", desc: "Thoroughly test all data flows, document the integration setup, and provide ongoing monitoring." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Real Estate", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "What tools and platforms can you integrate?", a: "We integrate virtually any platform with an API — CRMs, marketing tools, payment processors, accounting software, project management tools, and custom applications." },
+      { q: "How do you handle integrations when there's no native connection?", a: "We use middleware platforms like Zapier or Make for simpler connections, and build custom API integrations for complex or high-volume data flows." },
+      { q: "What happens if an integration breaks?", a: "We build error handling and monitoring into every integration. If a sync fails, the system retries automatically and alerts us for intervention if needed." },
+      { q: "Can you integrate legacy or custom-built systems?", a: "Yes. As long as the system has an API or can export data, we can build integrations. For systems without APIs, we explore alternative approaches like database connections or file-based syncs." },
+      { q: "How long do integrations take to set up?", a: "Simple integrations take 1-3 days. Complex multi-platform integrations with custom logic typically take 1-3 weeks depending on scope and API complexity." }
+    ],
+    relatedServices: ["workflow-automation", "crm-setup", "marketing-automation-setup", "analytics-dashboard"]
+  },
+  "marketing-automation-setup": {
+    longDesc: "Our Marketing Automation Setup service configures end-to-end marketing automation systems that nurture leads, trigger campaigns, and drive conversions without manual intervention. We build the infrastructure that powers your email sequences, lead scoring, campaign triggers, and reporting, turning your marketing from manual effort into an automated revenue machine.",
+    problems: [
+      "Marketing campaigns requiring manual execution for every send and trigger",
+      "No automated nurture sequences for leads who aren't ready to buy yet",
+      "Disconnected marketing tools preventing coordinated, automated campaigns",
+      "Inability to segment and personalize marketing at scale"
+    ],
+    solutions: [
+      "End-to-end marketing automation infrastructure across all channels",
+      "Automated lead nurture sequences that warm prospects over time",
+      "Connected marketing stack with automated triggers and data flow",
+      "Advanced segmentation enabling personalized marketing at scale"
+    ],
+    features: [
+      "Marketing automation platform setup and configuration",
+      "Automated email and SMS sequence building",
+      "Lead scoring and segmentation setup",
+      "Campaign trigger and workflow automation",
+      "Landing page and form integration",
+      "A/B testing infrastructure",
+      "Reporting and attribution setup",
+      "Multi-channel campaign orchestration"
+    ],
+    workflowSteps: [
+      { step: "Marketing Process Audit", desc: "Document your current marketing workflows, tools, and campaigns to identify automation opportunities." },
+      { step: "Platform Configuration", desc: "Set up and configure your marketing automation platform with segments, properties, and channel connections." },
+      { step: "Workflow Building", desc: "Build automated workflows, sequences, triggers, and scoring rules for your key marketing campaigns." },
+      { step: "Launch & Optimize", desc: "Activate automations, monitor performance, and optimize workflows for maximum marketing efficiency." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Healthcare", icon: "Heart" },
+      { name: "Real Estate", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "What marketing automation platforms do you work with?", a: "We set up and configure HubSpot, ActiveCampaign, Mailchimp, Klaviyo, GoHighLevel, Marketo, and others. We recommend the best platform based on your needs and budget." },
+      { q: "What types of automations do you build?", a: "We build welcome sequences, lead nurture campaigns, abandoned cart flows, re-engagement campaigns, event triggers, lead scoring rules, and any custom workflow your marketing strategy requires." },
+      { q: "How long does marketing automation setup take?", a: "Initial setup takes 2-4 weeks including platform configuration, workflow building, and testing. Complex multi-channel setups may take longer." },
+      { q: "Do you provide training on the automation platform?", a: "Yes. We provide comprehensive training for your marketing team on managing, monitoring, and extending the automations we build." },
+      { q: "Can you automate across email, SMS, and other channels?", a: "Yes. We build multi-channel automations that coordinate messaging across email, SMS, push notifications, and retargeting for a unified customer experience." }
+    ],
+    relatedServices: ["workflow-automation", "ai-email-automation", "crm-setup", "crm-automation"]
+  },
+  "analytics-dashboard": {
+    longDesc: "Our Dashboard & Analytics Setup service gives you real-time visibility into every metric that matters for your business growth. We build custom dashboards that consolidate data from all your marketing, sales, and revenue tools into clear, actionable visualizations so you can make data-driven decisions with confidence and speed.",
+    problems: [
+      "No centralized view of marketing, sales, and revenue performance",
+      "Spending hours compiling reports from multiple platforms manually",
+      "Making business decisions based on gut feeling instead of data",
+      "Inability to attribute revenue back to specific marketing channels"
+    ],
+    solutions: [
+      "Unified dashboard consolidating all critical business metrics in one view",
+      "Automated reporting that delivers insights without manual compilation",
+      "Revenue attribution tracking connecting marketing spend to actual revenue",
+      "Real-time data visualization enabling fast, confident decision-making"
+    ],
+    features: [
+      "Custom dashboard design and development",
+      "Multi-source data integration and consolidation",
+      "Real-time data syncing and visualization",
+      "Revenue attribution and ROI tracking",
+      "Automated report generation and delivery",
+      "KPI monitoring with alert thresholds",
+      "Historical trend analysis and forecasting",
+      "Team and individual performance tracking"
+    ],
+    workflowSteps: [
+      { step: "KPI & Data Source Mapping", desc: "Define your key metrics, data sources, and reporting requirements for the dashboard." },
+      { step: "Data Architecture", desc: "Design the data pipeline connecting all sources with proper tracking and attribution models." },
+      { step: "Dashboard Build", desc: "Build custom dashboards with real-time visualizations, filters, and drill-down capabilities." },
+      { step: "Deploy & Train", desc: "Deploy dashboards, configure automated reports, set up alerts, and train your team on usage." }
+    ],
+    industries: [
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Education", icon: "GraduationCap" }
+    ],
+    faqs: [
+      { q: "What data sources can you connect to the dashboard?", a: "We connect Google Analytics, Google Ads, Meta Ads, CRM data, email platforms, payment processors, social media analytics, and virtually any tool with an API or data export capability." },
+      { q: "What platform do you build dashboards on?", a: "We use Google Looker Studio, Databox, or custom-built solutions depending on your complexity needs, data volume, and budget. Each project is matched to the ideal platform." },
+      { q: "How often does the dashboard data update?", a: "Most dashboards update in real-time or near-real-time depending on the data source. Some platforms refresh hourly. We configure the optimal refresh rate for each data source." },
+      { q: "Can the dashboard show ROI per marketing channel?", a: "Yes. Revenue attribution is a core capability. We track leads and revenue from first touch through conversion, showing exactly which channels and campaigns drive results." },
+      { q: "Do you provide automated reports?", a: "Yes. We configure automated report delivery — daily, weekly, or monthly — directly to your inbox with the metrics and insights you need to make decisions." }
+    ],
+    relatedServices: ["conversion-rate-optimization", "google-ads", "crm-setup", "marketing-automation-setup"]
+  }
+};
+const SERVICE_VISUAL_THEMES = {
+  "ai-calling-agent": {
+    heroMockup: "phone-ui",
+    accentFrom: "from-blue-500",
+    accentTo: "to-cyan-400",
+    accentGlow: "blue-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "A",
+    workflowLayout: "A",
+    faqLayout: "A"
+  },
+  "ai-receptionist": {
+    heroMockup: "phone-ui",
+    accentFrom: "from-cyan-500",
+    accentTo: "to-blue-400",
+    accentGlow: "cyan-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "B",
+    workflowLayout: "B",
+    faqLayout: "B"
+  },
+  "ai-lead-qualification": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-indigo-500",
+    accentTo: "to-blue-400",
+    accentGlow: "indigo-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "A",
+    workflowLayout: "C",
+    faqLayout: "A"
+  },
+  "ai-appointment-booking": {
+    heroMockup: "calendar-ui",
+    accentFrom: "from-violet-500",
+    accentTo: "to-purple-400",
+    accentGlow: "violet-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "ai-follow-up": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-blue-600",
+    accentTo: "to-indigo-400",
+    accentGlow: "blue-600",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "C"
+  },
+  "ai-sales-assistant": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-emerald-500",
+    accentTo: "to-teal-400",
+    accentGlow: "emerald-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "A"
+  },
+  "ai-chatbot": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-cyan-500",
+    accentTo: "to-teal-400",
+    accentGlow: "cyan-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "ai-email-automation": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-purple-500",
+    accentTo: "to-pink-400",
+    accentGlow: "purple-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "ai-sms-automation": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-green-500",
+    accentTo: "to-emerald-400",
+    accentGlow: "green-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "C"
+  },
+  "crm-automation": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-purple-500",
+    accentTo: "to-violet-400",
+    accentGlow: "purple-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "workflow-automation": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-blue-500",
+    accentTo: "to-purple-500",
+    accentGlow: "blue-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "google-ads": {
+    heroMockup: "ad-performance",
+    accentFrom: "from-green-500",
+    accentTo: "to-emerald-400",
+    accentGlow: "green-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "C"
+  },
+  "meta-ads": {
+    heroMockup: "ad-performance",
+    accentFrom: "from-blue-600",
+    accentTo: "to-sky-400",
+    accentGlow: "blue-600",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "seo-authority": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-emerald-500",
+    accentTo: "to-green-400",
+    accentGlow: "emerald-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "local-seo": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-teal-500",
+    accentTo: "to-cyan-400",
+    accentGlow: "teal-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "C"
+  },
+  "conversion-funnels": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-amber-500",
+    accentTo: "to-orange-400",
+    accentGlow: "amber-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "landing-page-optimization": {
+    heroMockup: "code-editor",
+    accentFrom: "from-orange-500",
+    accentTo: "to-amber-400",
+    accentGlow: "orange-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "conversion-rate-optimization": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-lime-500",
+    accentTo: "to-green-400",
+    accentGlow: "lime-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "C"
+  },
+  "social-media-marketing": {
+    heroMockup: "social-feed",
+    accentFrom: "from-orange-500",
+    accentTo: "to-pink-500",
+    accentGlow: "orange-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "instagram-growth": {
+    heroMockup: "social-feed",
+    accentFrom: "from-pink-500",
+    accentTo: "to-rose-400",
+    accentGlow: "pink-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "facebook-growth": {
+    heroMockup: "social-feed",
+    accentFrom: "from-blue-600",
+    accentTo: "to-indigo-400",
+    accentGlow: "blue-600",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "C"
+  },
+  "content-writing": {
+    heroMockup: "code-editor",
+    accentFrom: "from-amber-500",
+    accentTo: "to-yellow-400",
+    accentGlow: "amber-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "branding-design": {
+    heroMockup: "social-feed",
+    accentFrom: "from-fuchsia-500",
+    accentTo: "to-purple-400",
+    accentGlow: "fuchsia-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "video-marketing": {
+    heroMockup: "social-feed",
+    accentFrom: "from-red-500",
+    accentTo: "to-rose-400",
+    accentGlow: "red-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "C"
+  },
+  "website-development": {
+    heroMockup: "code-editor",
+    accentFrom: "from-violet-500",
+    accentTo: "to-indigo-400",
+    accentGlow: "violet-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "landing-page-development": {
+    heroMockup: "code-editor",
+    accentFrom: "from-sky-500",
+    accentTo: "to-blue-400",
+    accentGlow: "sky-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "crm-setup": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-indigo-500",
+    accentTo: "to-violet-400",
+    accentGlow: "indigo-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "B",
+    workflowLayout: "C",
+    faqLayout: "C"
+  },
+  "saas-integrations": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-purple-500",
+    accentTo: "to-blue-400",
+    accentGlow: "purple-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A",
+    featuresLayout: "C",
+    workflowLayout: "A",
+    faqLayout: "B"
+  },
+  "marketing-automation-setup": {
+    heroMockup: "funnel-diagram",
+    accentFrom: "from-teal-500",
+    accentTo: "to-blue-400",
+    accentGlow: "teal-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "B",
+    featuresLayout: "A",
+    workflowLayout: "B",
+    faqLayout: "A"
+  },
+  "analytics-dashboard": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-blue-500",
+    accentTo: "to-purple-500",
+    accentGlow: "blue-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "C",
+    featuresLayout: "C",
+    workflowLayout: "C",
+    faqLayout: "C"
+  }
+};
+const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services", hasMegaMenu: true },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" }
+];
+function Navbar() {
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = React.useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = React.useState(false);
+  const [mobileExpandedCategory, setMobileExpandedCategory] = React.useState(null);
+  const [location] = wouter.useLocation();
+  const megaMenuTimeout = React.useRef(null);
+  React.useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  React.useEffect(() => {
+    setMobileOpen(false);
+    setMegaMenuOpen(false);
+    setMobileServicesOpen(false);
+    setMobileExpandedCategory(null);
+  }, [location]);
+  const handleMegaMenuEnter = () => {
+    if (megaMenuTimeout.current) {
+      clearTimeout(megaMenuTimeout.current);
+      megaMenuTimeout.current = null;
+    }
+    setMegaMenuOpen(true);
+  };
+  const handleMegaMenuLeave = () => {
+    megaMenuTimeout.current = setTimeout(() => {
+      setMegaMenuOpen(false);
+    }, 150);
+  };
+  const closeMegaMenu = () => {
+    setMegaMenuOpen(false);
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.nav,
+      {
+        initial: { y: -100 },
+        animate: { y: 0 },
+        transition: { duration: 0.5, ease: "easeOut" },
+        className: `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white/80 backdrop-blur-xl border-b border-gray-200/60 shadow-sm" : "bg-transparent"}`,
+        "data-testid": "navbar",
+        children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-4 h-16 lg:h-20", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/", "data-testid": "link-home-logo", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1.5 sm:gap-2 flex-shrink-0", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("img", { src: "/images/logo-icon.png", alt: "Infinite Rankers", className: "w-9 h-9 sm:w-10 sm:h-10 object-contain" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "font-bold text-sm sm:text-base lg:text-lg text-gray-900", children: COMPANY.name })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "hidden lg:flex items-center gap-1", children: NAV_LINKS.map(
+            (link) => link.hasMegaMenu ? /* @__PURE__ */ jsxRuntime.jsx(
+              "div",
+              {
+                className: "relative",
+                onMouseEnter: handleMegaMenuEnter,
+                onMouseLeave: handleMegaMenuLeave,
+                children: /* @__PURE__ */ jsxRuntime.jsxs(
+                  "button",
+                  {
+                    type: "button",
+                    className: `flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${location.startsWith("/services") ? "text-gray-900 bg-gray-100" : "text-gray-600 hover:text-gray-900"}`,
+                    onClick: () => setMegaMenuOpen((prev) => !prev),
+                    "data-testid": "link-nav-services",
+                    children: [
+                      link.label,
+                      /* @__PURE__ */ jsxRuntime.jsx(
+                        lucideReact.ChevronDown,
+                        {
+                          className: `w-3.5 h-3.5 transition-transform duration-200 ${megaMenuOpen ? "rotate-180" : ""}`
+                        }
+                      )
+                    ]
+                  }
+                )
+              },
+              link.href
+            ) : /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: link.href, children: /* @__PURE__ */ jsxRuntime.jsx(
+              "span",
+              {
+                className: `px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${location === link.href ? "text-gray-900 bg-gray-100" : "text-gray-600 hover:text-gray-900"}`,
+                "data-testid": `link-nav-${link.label.toLowerCase()}`,
+                children: link.label
+              }
+            ) }, link.href)
+          ) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsx(
+              Button,
+              {
+                className: "hidden sm:inline-flex bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0",
+                "data-testid": "button-book-demo-nav",
+                children: "Book Demo"
+              }
+            ) }),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              Button,
+              {
+                size: "icon",
+                variant: "ghost",
+                className: "lg:hidden",
+                onClick: () => setMobileOpen(!mobileOpen),
+                "data-testid": "button-mobile-menu",
+                children: mobileOpen ? /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "w-5 h-5" }) : /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Menu, { className: "w-5 h-5" })
+              }
+            )
+          ] })
+        ] }) })
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(framerMotion.AnimatePresence, { children: megaMenuOpen && /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: -8 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -8 },
+        transition: { duration: 0.2, ease: "easeOut" },
+        className: "fixed left-0 right-0 z-40 hidden lg:block",
+        style: { top: "5rem" },
+        onMouseEnter: handleMegaMenuEnter,
+        onMouseLeave: handleMegaMenuLeave,
+        "data-testid": "mega-menu",
+        children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-white/95 backdrop-blur-xl border border-gray-200/80 rounded-lg p-6 shadow-xl shadow-gray-200/40", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-4 gap-6", children: SERVICE_CATEGORIES.map((category) => /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3", children: category.title }),
+            /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5", children: category.services.map((service) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(
+              wouter.Link,
+              {
+                href: `/${service.slug}`,
+                onClick: closeMegaMenu,
+                children: /* @__PURE__ */ jsxRuntime.jsx(
+                  "span",
+                  {
+                    className: "text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer block py-0.5",
+                    "data-testid": `link-mega-${service.slug}`,
+                    children: service.title
+                  }
+                )
+              }
+            ) }, service.slug)) })
+          ] }, category.id)) }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-6 pt-4 border-t border-gray-200/60", children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", onClick: closeMegaMenu, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors cursor-pointer", "data-testid": "link-mega-view-all", children: "View All Services →" }) }) })
+        ] }) })
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntime.jsx(framerMotion.AnimatePresence, { children: mobileOpen && /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: -10 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -10 },
+        transition: { duration: 0.2 },
+        className: "fixed inset-x-0 top-16 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 lg:hidden max-h-[calc(100vh-4rem)] overflow-y-auto",
+        "data-testid": "mobile-menu",
+        children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "px-4 py-4 space-y-1", children: [
+          NAV_LINKS.map(
+            (link) => link.hasMegaMenu ? /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsxs(
+                "button",
+                {
+                  type: "button",
+                  className: `flex items-center justify-between w-full px-4 py-3 rounded-md text-sm font-medium transition-colors ${location.startsWith("/services") ? "text-gray-900 bg-gray-100" : "text-gray-600"}`,
+                  onClick: () => setMobileServicesOpen((prev) => !prev),
+                  "data-testid": "link-mobile-services",
+                  children: [
+                    /* @__PURE__ */ jsxRuntime.jsx("span", { children: link.label }),
+                    /* @__PURE__ */ jsxRuntime.jsx(
+                      lucideReact.ChevronDown,
+                      {
+                        className: `w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`
+                      }
+                    )
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(framerMotion.AnimatePresence, { children: mobileServicesOpen && /* @__PURE__ */ jsxRuntime.jsx(
+                framerMotion.motion.div,
+                {
+                  initial: { height: 0, opacity: 0 },
+                  animate: { height: "auto", opacity: 1 },
+                  exit: { height: 0, opacity: 0 },
+                  transition: { duration: 0.2 },
+                  className: "overflow-hidden",
+                  children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "pl-4 py-2 space-y-2", children: [
+                    SERVICE_CATEGORIES.map((category) => /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                      /* @__PURE__ */ jsxRuntime.jsxs(
+                        "button",
+                        {
+                          type: "button",
+                          className: "flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-blue-600 uppercase tracking-wider",
+                          onClick: () => setMobileExpandedCategory(
+                            (prev) => prev === category.id ? null : category.id
+                          ),
+                          "data-testid": `button-mobile-category-${category.id}`,
+                          children: [
+                            /* @__PURE__ */ jsxRuntime.jsx("span", { children: category.title }),
+                            /* @__PURE__ */ jsxRuntime.jsx(
+                              lucideReact.ChevronDown,
+                              {
+                                className: `w-3.5 h-3.5 transition-transform duration-200 ${mobileExpandedCategory === category.id ? "rotate-180" : ""}`
+                              }
+                            )
+                          ]
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntime.jsx(framerMotion.AnimatePresence, { children: mobileExpandedCategory === category.id && /* @__PURE__ */ jsxRuntime.jsx(
+                        framerMotion.motion.div,
+                        {
+                          initial: { height: 0, opacity: 0 },
+                          animate: { height: "auto", opacity: 1 },
+                          exit: { height: 0, opacity: 0 },
+                          transition: { duration: 0.15 },
+                          className: "overflow-hidden",
+                          children: /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "pl-3 py-1 space-y-0.5", children: category.services.map((service) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(
+                            wouter.Link,
+                            {
+                              href: `/${service.slug}`,
+                              children: /* @__PURE__ */ jsxRuntime.jsx(
+                                "span",
+                                {
+                                  className: "block px-3 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer",
+                                  "data-testid": `link-mobile-service-${service.slug}`,
+                                  children: service.title
+                                }
+                              )
+                            }
+                          ) }, service.slug)) })
+                        }
+                      ) })
+                    ] }, category.id)),
+                    /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "block px-3 py-2 text-sm font-medium text-blue-600", children: "View All Services →" }) })
+                  ] })
+                }
+              ) })
+            ] }, link.href) : /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: link.href, children: /* @__PURE__ */ jsxRuntime.jsx(
+              "span",
+              {
+                className: `block px-4 py-3 rounded-md text-sm font-medium transition-colors cursor-pointer ${location === link.href ? "text-gray-900 bg-gray-100" : "text-gray-600"}`,
+                "data-testid": `link-mobile-${link.label.toLowerCase()}`,
+                children: link.label
+              }
+            ) }, link.href)
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsx(
+            Button,
+            {
+              className: "w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0",
+              "data-testid": "button-book-demo-mobile",
+              children: "Book Demo"
+            }
+          ) })
+        ] })
+      }
+    ) })
+  ] });
+}
+function GoogleLogo({ size = 20 }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs("svg", { width: size, height: size, viewBox: "0 0 48 48", xmlns: "http://www.w3.org/2000/svg", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("path", { fill: "#EA4335", d: "M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" }),
+    /* @__PURE__ */ jsxRuntime.jsx("path", { fill: "#4285F4", d: "M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" }),
+    /* @__PURE__ */ jsxRuntime.jsx("path", { fill: "#FBBC05", d: "M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" }),
+    /* @__PURE__ */ jsxRuntime.jsx("path", { fill: "#34A853", d: "M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" })
+  ] });
+}
+function GooglePartnerBadge({ variant = "inline" }) {
+  if (variant === "footer") {
+    return /* @__PURE__ */ jsxRuntime.jsxs("div", { "data-testid": "badge-google-partner-footer", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-white rounded-md p-3 inline-flex flex-col items-center gap-1.5 w-[100px]", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(GoogleLogo, { size: 24 }),
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[#5F6368] font-medium text-[10px] leading-tight", children: "Google Partner" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-blue-400 font-semibold text-xs mt-2", children: "We're Google Partners!" })
+    ] });
+  }
+  if (variant === "compact") {
+    return /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1.5 bg-white rounded px-2 py-1", "data-testid": "badge-google-partner-compact", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(GoogleLogo, { size: 14 }),
+      /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[#5F6368] font-medium text-[10px]", children: "Google Partner" })
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded px-2.5 py-1.5 shadow-sm", "data-testid": "badge-google-partner", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(GoogleLogo, { size: 16 }),
+    /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[#5F6368] font-semibold text-xs", children: "Google Partner" })
+  ] });
+}
+const QUICK_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+  { href: "/sitemap", label: "Sitemap" }
+];
+const RESOURCES = [
+  { href: "/blog", label: "Blog" },
+  { href: "/book-demo", label: "Book Demo" },
+  { href: "/contact", label: "Contact" }
+];
+const KEY_SERVICES = [
+  { slug: "ai-calling-agent", title: "AI Calling Agent" },
+  { slug: "ai-receptionist", title: "AI Receptionist" },
+  { slug: "google-ads", title: "Google Ads Revenue Engine" },
+  { slug: "meta-ads", title: "Meta Ads Growth Engine" },
+  { slug: "social-media-marketing", title: "Social Media Marketing" },
+  { slug: "instagram-growth", title: "Instagram Growth & Posting" },
+  { slug: "website-development", title: "Website Development" },
+  { slug: "landing-page-development", title: "Landing Page Development" }
+];
+const PARTNER_LINKS = [
+  { href: "/infinite-rankers-agency", label: "About Us", external: false },
+  { href: "/infinite-rankers-seo-services", label: "SEO Services", external: false },
+  { href: "/infinite-rankers-paid-advertising", label: "Paid Ads", external: false },
+  { href: "/infinite-rankers-ai-automation", label: "AI Automation", external: false },
+  { href: "https://infiniterankers.com", label: "infiniterankers.com", external: true },
+  { href: "https://infiniterankers.com/blog", label: "Marketing Blog", external: true },
+  { href: "https://infiniterankers.com/resources", label: "Content Hub", external: true }
+];
+function Footer() {
+  return /* @__PURE__ */ jsxRuntime.jsx("footer", { className: "bg-[#0B1120] text-gray-300", "data-testid": "footer", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "col-span-2 sm:col-span-3 lg:col-span-1", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1.5 mb-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("img", { src: "/images/logo-icon-white.png", alt: "Infinite Rankers", className: "w-8 h-8 sm:w-9 sm:h-9 object-contain" }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "font-bold text-sm sm:text-base text-white", children: COMPANY.name })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-400 mb-4 leading-relaxed max-w-xs", children: "AI Revenue Growth Agency. Automated systems that generate customers and revenue for businesses worldwide." }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-2 mb-5", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("a", { href: `mailto:${COMPANY.email}`, className: "flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors", "data-testid": "link-footer-email", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Mail, { className: "w-3.5 h-3.5 flex-shrink-0" }),
+            " ",
+            COMPANY.email
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("a", { href: `tel:${COMPANY.phone}`, className: "flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors", "data-testid": "link-footer-phone", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Phone, { className: "w-3.5 h-3.5 flex-shrink-0" }),
+            " ",
+            COMPANY.phone
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-start gap-2 text-xs sm:text-sm text-gray-400", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.MapPin, { className: "w-3.5 h-3.5 flex-shrink-0 mt-0.5" }),
+            " ",
+            COMPANY.address
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "relative flex h-2 w-2 flex-shrink-0", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "relative inline-flex rounded-full h-2 w-2 bg-emerald-400" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[10px] sm:text-xs text-emerald-400 font-medium whitespace-nowrap", children: "24/7 Support — Weekends too" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "footer" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-semibold text-white mb-3 text-sm", children: "Quick Links" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5", children: QUICK_LINKS.map((link) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: link.href, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer", "data-testid": `link-footer-${link.label.toLowerCase()}`, children: link.label }) }) }, link.href)) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-semibold text-white mb-3 text-sm", children: "Resources" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5", children: RESOURCES.map((link) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: link.href, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer", "data-testid": `link-footer-res-${link.label.toLowerCase().replace(/\s/g, "-")}`, children: link.label }) }) }, link.href + link.label)) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-semibold text-white mb-3 text-sm", children: "Services" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5", children: KEY_SERVICES.map((service) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${service.slug}`, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer", "data-testid": `link-footer-service-${service.slug}`, children: service.title }) }) }, service.slug)) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-semibold text-white mb-3 text-sm", children: "Partner Platform" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5", children: PARTNER_LINKS.map((link) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: link.external ? /* @__PURE__ */ jsxRuntime.jsxs("a", { href: link.href, target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors", "data-testid": `link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`, children: [
+          link.label,
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+        ] }) : /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: link.href, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer", "data-testid": `link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`, children: link.label }) }) }, link.href)) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "border-t border-white/10 mt-8 sm:mt-10 pt-5 sm:pt-6 flex flex-col sm:flex-row items-center justify-between gap-3", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-xs text-gray-500", children: [
+        "© ",
+        (/* @__PURE__ */ new Date()).getFullYear(),
+        " ",
+        COMPANY.name,
+        ". All rights reserved."
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-4 flex-wrap justify-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/privacy", className: "text-xs text-gray-500 hover:text-white transition-colors", "data-testid": "link-footer-privacy", children: "Privacy Policy" }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/terms", className: "text-xs text-gray-500 hover:text-white transition-colors", "data-testid": "link-footer-terms", children: "Terms of Service" })
+      ] })
+    ] })
+  ] }) });
+}
+const BLOG_POSTS_FULL = [
+  {
+    id: "1",
+    slug: "ai-automation-revenue-growth-2025",
+    title: "How AI Automation Is Driving 10x Revenue Growth in 2025",
+    excerpt: "Discover how forward-thinking businesses are leveraging AI automation systems to generate customers and revenue on autopilot.",
+    category: "AI Automation",
+    readTime: "8 min read",
+    date: "Feb 14, 2026",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-ai-automation.jpg",
+    imageAlt: "AI automation technology powering business revenue growth",
+    seoTitle: "How AI Automation Is Driving 10x Revenue Growth in 2025 | Infinite Rankers",
+    seoDescription: "Learn how AI automation systems are helping businesses achieve 10x revenue growth in 2025. Discover strategies for automated lead generation, qualification, and conversion.",
+    seoKeywords: "AI automation, revenue growth 2025, AI business automation, automated lead generation, AI marketing, business automation systems",
+    content: [
+      { type: "paragraph", text: "The landscape of business growth has fundamentally shifted. In 2025, companies that embrace AI automation are not just growing incrementally — they are experiencing exponential revenue increases that leave their competitors wondering what happened. At Infinite Rankers, we have witnessed firsthand how AI-powered systems are transforming businesses across every industry, delivering results that were unimaginable just a few years ago." },
+      { type: "heading", text: "The AI Revenue Revolution: What Changed in 2025" },
+      { type: "paragraph", text: "Three critical developments converged to make 2025 the breakout year for AI automation in business. First, AI language models became sophisticated enough to handle complex customer interactions with human-like accuracy. Second, integration capabilities matured, allowing AI systems to seamlessly connect with existing CRMs, calendars, and communication platforms. Third, the cost of deploying these systems dropped by over 60%, making them accessible to small and mid-sized businesses." },
+      { type: "list", items: [
+        "AI calling agents now handle inbound and outbound calls with 94% customer satisfaction rates",
+        "Automated lead qualification systems process and score leads in under 3 seconds",
+        "AI chatbots convert 78% more website visitors into qualified leads compared to static forms",
+        "Predictive analytics identify the highest-value prospects before your sales team even engages",
+        "End-to-end automation reduces cost-per-acquisition by an average of 65%"
+      ] },
+      { type: "heading", text: "5 AI Automation Strategies Driving Massive Growth" },
+      { type: "paragraph", text: "Strategy one: deploy AI calling agents that work 24/7. Unlike human representatives, AI agents never sleep, never have bad days, and never miss a follow-up. They answer every call, qualify every lead, and book appointments directly into your calendar. Businesses using AI calling agents report an average 340% increase in lead capture." },
+      { type: "paragraph", text: "Strategy two: implement intelligent chatbots across your digital properties. Your website is your most valuable salesperson, but only if it can engage visitors in real-time. AI chatbots answer questions, overcome objections, and guide prospects toward conversion — all without human intervention." },
+      { type: "paragraph", text: "Strategy three: automate your follow-up sequences. The fortune is in the follow-up, but most businesses drop the ball after the first contact. AI-powered follow-up systems send personalized messages across email, SMS, and social channels at precisely the right moment to maximize conversion." },
+      { type: "paragraph", text: "Strategy four: use predictive lead scoring. Not all leads are created equal. AI analyzes behavioral patterns, engagement signals, and demographic data to identify which prospects are most likely to convert, allowing your sales team to focus their energy where it matters most." },
+      { type: "paragraph", text: "Strategy five: deploy revenue intelligence dashboards. AI aggregates data from every touchpoint — ads, website, email, calls, social — to give you a real-time view of your revenue pipeline and predict future performance with remarkable accuracy." },
+      { type: "quote", text: "Companies that implement comprehensive AI automation see an average 10x return on investment within the first 12 months.", author: "Infinite Rankers Case Study Data" },
+      { type: "heading", text: "Real Results: What Our Clients Are Achieving" },
+      { type: "paragraph", text: "A dental practice in Manhattan deployed our AI receptionist and saw new patient bookings increase by 312% in 90 days. A law firm in Chicago automated their intake process and added $1.8M in new case revenue within six months. An e-commerce brand used our AI-powered ad optimization to achieve a 847% return on ad spend." },
+      { type: "paragraph", text: "These are not hypothetical scenarios. They are documented results from businesses that made the decision to embrace AI automation while their competitors continued to rely on outdated manual processes." },
+      { type: "heading", text: "Getting Started with AI Automation" },
+      { type: "paragraph", text: "The most important step is the first one. Start by identifying the bottlenecks in your current revenue pipeline. Where are leads falling through the cracks? Where are your team members spending time on repetitive tasks instead of high-value activities? Those friction points are exactly where AI automation delivers the fastest, most dramatic results." },
+      { type: "cta", text: "Ready to 10x your revenue with AI automation? Book a free strategy session with our team and get a custom AI growth plan for your business." }
+    ],
+    relatedPosts: ["ai-chatbot-lead-conversion", "crm-automation-sales-pipeline", "ai-follow-up-sequences"]
+  },
+  {
+    id: "2",
+    slug: "google-ads-roi-local-business",
+    title: "Google Ads for Local Businesses: A Data-Driven ROI Framework",
+    excerpt: "Learn the exact framework we use to generate 4-6x ROAS for local businesses using AI-optimized Google Ads campaigns.",
+    category: "Lead Generation",
+    readTime: "12 min read",
+    date: "Feb 3, 2026",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-google-ads.jpg",
+    imageAlt: "Google Ads campaign management dashboard for local business",
+    seoTitle: "Google Ads for Local Businesses: Data-Driven ROI Framework | Infinite Rankers",
+    seoDescription: "Master Google Ads for your local business with our proven ROI framework. Learn AI-optimized PPC strategies that generate 4-6x return on ad spend.",
+    seoKeywords: "Google Ads local business, PPC ROI framework, local business advertising, Google Ads strategy, PPC management, local PPC",
+    content: [
+      { type: "paragraph", text: "Google Ads remains the single most powerful channel for local businesses to generate immediate, high-intent leads. But here is the reality that most business owners do not hear: the majority of Google Ads campaigns are hemorrhaging money because they lack the strategic framework and AI optimization needed to deliver profitable results." },
+      { type: "paragraph", text: "At Infinite Rankers, we have managed millions of dollars in Google Ads spend for local businesses across the United States. Through that experience, we have developed a data-driven ROI framework that consistently delivers 4-6x return on ad spend. In this guide, we are sharing the complete framework." },
+      { type: "heading", text: "Why Most Local Google Ads Campaigns Fail" },
+      { type: "list", items: [
+        "Targeting too broad of a geographic area, wasting budget on clicks from people too far away to convert",
+        "Using generic keywords instead of high-intent, service-specific search terms",
+        "Sending traffic to the homepage instead of dedicated landing pages optimized for conversion",
+        "No call tracking or conversion attribution, making it impossible to measure true ROI",
+        "Set-it-and-forget-it management instead of continuous AI-powered optimization"
+      ] },
+      { type: "heading", text: "The Infinite Rankers ROAS Framework" },
+      { type: "paragraph", text: "Phase one is research and targeting. We begin by analyzing your local market, identifying the exact search terms your ideal customers use, and mapping their journey from search to conversion. We segment keywords by intent level — informational, commercial, and transactional — and allocate budget proportionally to maximize conversions." },
+      { type: "paragraph", text: "Phase two is landing page optimization. Every ad group gets a dedicated landing page with a clear value proposition, trust signals, and a frictionless conversion path. We A/B test headlines, calls-to-action, and form layouts using AI to find the highest-converting combinations." },
+      { type: "paragraph", text: "Phase three is AI-powered bid management. Our AI systems monitor campaign performance in real-time, adjusting bids based on time of day, device type, geographic location, and dozens of other signals. This ensures every dollar goes toward the clicks most likely to convert." },
+      { type: "paragraph", text: "Phase four is conversion tracking and attribution. We implement comprehensive tracking that follows a lead from the first ad click through phone call, form submission, or chat conversation all the way to the sale. This gives us — and you — complete visibility into exactly which campaigns, keywords, and ads are driving revenue." },
+      { type: "quote", text: "After implementing the Infinite Rankers framework, our cost per lead dropped by 58% while our lead volume tripled. The ROI is undeniable.", author: "Dr. Sarah Kim, Dental Practice Owner" },
+      { type: "heading", text: "Budget Allocation for Maximum Impact" },
+      { type: "paragraph", text: "For local businesses, we recommend starting with a minimum monthly budget of $2,000 to $3,000 for Google Ads. This provides enough data for AI optimization while generating meaningful lead volume. As campaigns mature and data accumulates, the AI becomes increasingly precise at identifying profitable opportunities, and scaling becomes a matter of simply increasing budget on winning campaigns." },
+      { type: "heading", text: "Measuring What Matters" },
+      { type: "paragraph", text: "The only metrics that truly matter for local businesses are cost per lead, cost per acquisition, and return on ad spend. Vanity metrics like impressions and clicks are meaningless if they do not translate into paying customers. Our framework is built entirely around revenue outcomes, not activity metrics." },
+      { type: "cta", text: "Want to see what a 4-6x ROAS looks like for your business? Book a free Google Ads audit and get a custom campaign strategy." }
+    ],
+    relatedPosts: ["seo-vs-paid-ads-strategy", "lead-generation-strategies-2025", "local-business-digital-marketing"]
+  },
+  {
+    id: "3",
+    slug: "ai-chatbot-lead-conversion",
+    title: "AI Chatbots: Converting 78% More Website Visitors Into Leads",
+    excerpt: "How intelligent chatbots are revolutionizing lead capture and qualification for businesses across every industry.",
+    category: "AI Automation",
+    readTime: "6 min read",
+    date: "Jan 22, 2026",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-chatbot.jpg",
+    imageAlt: "AI chatbot engaging with website visitors for lead conversion",
+    seoTitle: "AI Chatbots: Converting 78% More Website Visitors Into Leads | Infinite Rankers",
+    seoDescription: "Discover how AI chatbots are converting 78% more website visitors into qualified leads. Learn implementation strategies and best practices.",
+    seoKeywords: "AI chatbot, lead conversion, website chatbot, AI lead generation, chatbot marketing, conversational AI",
+    content: [
+      { type: "paragraph", text: "Your website gets traffic. People visit your pages, browse your services, maybe even hover over the contact form. But then they leave. No inquiry, no phone call, no conversion. This is the reality for most businesses — 97% of website visitors leave without taking any action. AI chatbots are changing that equation dramatically." },
+      { type: "heading", text: "Why Static Forms Are Killing Your Conversions" },
+      { type: "paragraph", text: "Traditional contact forms create friction. They ask visitors to fill out multiple fields, craft a message, and then wait for a response that may come hours or days later. In a world of instant gratification, this delay is a conversion killer. By the time you respond, your prospect has already contacted three competitors." },
+      { type: "paragraph", text: "AI chatbots eliminate this friction entirely. They engage visitors the moment they arrive, answer questions instantly, and guide them through a conversational qualification process that feels natural and effortless. The result? A 78% increase in lead capture compared to traditional forms." },
+      { type: "heading", text: "What Makes AI Chatbots Different in 2025" },
+      { type: "list", items: [
+        "Natural language understanding that handles complex, multi-turn conversations",
+        "Knowledge of your entire service catalog, pricing, and competitive advantages",
+        "Ability to qualify leads by asking the right questions at the right time",
+        "Seamless handoff to human representatives when high-value opportunities are identified",
+        "Integration with CRM and scheduling tools for instant appointment booking",
+        "Multilingual support to serve diverse customer bases"
+      ] },
+      { type: "heading", text: "Implementation Best Practices" },
+      { type: "paragraph", text: "The most effective chatbots are trained on your specific business data — your services, your pricing, your case studies, your frequently asked questions. Generic chatbots provide generic responses. At Infinite Rankers, we train every chatbot on comprehensive business intelligence so it can engage prospects with the same depth of knowledge as your best salesperson." },
+      { type: "paragraph", text: "Timing matters too. The chatbot should appear at the right moment — not immediately upon page load (which feels intrusive) but after a visitor has shown engagement signals like scrolling, spending time on key pages, or hovering over pricing information." },
+      { type: "quote", text: "Our AI chatbot generated 142 qualified leads in its first month — leads we would have completely missed with just a contact form.", author: "Marcus Johnson, Business Owner" },
+      { type: "heading", text: "The ROI of AI Chatbots" },
+      { type: "paragraph", text: "Consider the math. If your website gets 5,000 monthly visitors and your current form conversion rate is 2%, you are capturing 100 leads per month. An AI chatbot that improves conversion to 3.5% captures 175 leads — 75 additional opportunities every month. At an average customer value of $2,000, that is $150,000 in potential revenue from a single optimization." },
+      { type: "cta", text: "See how an AI chatbot can transform your website into a lead-generating machine. Book a free demo today." }
+    ],
+    relatedPosts: ["ai-automation-revenue-growth-2025", "lead-generation-strategies-2025", "website-conversion-optimization"]
+  },
+  {
+    id: "4",
+    slug: "crm-automation-sales-pipeline",
+    title: "The Ultimate CRM Automation Playbook for Sales Teams",
+    excerpt: "Stop losing deals to manual processes. Here is how to automate your entire sales pipeline from lead to close.",
+    category: "Sales Automation",
+    readTime: "10 min read",
+    date: "Jan 10, 2026",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-crm.jpg",
+    imageAlt: "CRM automation dashboard showing sales pipeline management",
+    seoTitle: "Ultimate CRM Automation Playbook for Sales Teams 2025 | Infinite Rankers",
+    seoDescription: "Complete guide to CRM automation for sales teams. Learn how to automate lead management, follow-ups, and pipeline tracking to close more deals.",
+    seoKeywords: "CRM automation, sales pipeline automation, sales automation, CRM strategy, automated sales, pipeline management",
+    content: [
+      { type: "paragraph", text: "Sales teams lose an estimated 35% of potential revenue to manual processes and missed follow-ups. Think about that number. For a business generating $1 million in annual revenue, that is $350,000 left on the table because leads were not followed up with fast enough, tasks fell through the cracks, or data was not properly tracked in the CRM." },
+      { type: "heading", text: "The Hidden Cost of Manual Sales Processes" },
+      { type: "paragraph", text: "Your sales representatives spend an average of 5.5 hours per week on data entry alone. That is nearly 290 hours per year per rep — time that could be spent on high-value activities like building relationships and closing deals. CRM automation eliminates this waste by automatically logging activities, updating deal stages, and triggering the right actions at the right time." },
+      { type: "list", items: [
+        "Automatic lead capture from every channel — website, phone, email, social, ads",
+        "Instant lead assignment and routing based on territory, expertise, or availability",
+        "Automated follow-up sequences triggered by lead behavior and engagement",
+        "Deal stage progression tracking with automated task creation for each stage",
+        "Revenue forecasting powered by AI analysis of pipeline data and historical patterns",
+        "Automated reporting that eliminates manual spreadsheet work"
+      ] },
+      { type: "heading", text: "Building Your Automation Workflow" },
+      { type: "paragraph", text: "Start with the lead capture stage. Every lead should enter your CRM automatically, regardless of its source. Whether someone fills out a form, calls your office, sends an email, or engages with your chatbot, the CRM should capture their information, create a contact record, and assign the lead to the right representative — all without any manual work." },
+      { type: "paragraph", text: "Next, automate your qualification process. AI can analyze lead data and assign a score based on dozens of factors — company size, industry, budget indicators, engagement level, and behavioral signals. High-scoring leads get immediate attention. Lower-scoring leads enter automated nurture sequences that warm them up over time." },
+      { type: "paragraph", text: "Then, automate your follow-up cadence. The data is clear: leads contacted within 5 minutes are 21 times more likely to convert. But most sales teams take hours or even days to respond. Automation ensures instant engagement through the channel each lead prefers — whether that is a phone call, text message, email, or chat." },
+      { type: "quote", text: "Since implementing CRM automation, our sales team closes 40% more deals with 30% less effort. The pipeline practically manages itself.", author: "VP of Sales, SaaS Company" },
+      { type: "heading", text: "Choosing the Right CRM Platform" },
+      { type: "paragraph", text: "The best CRM is the one your team will actually use. We work with platforms like HubSpot, Salesforce, GoHighLevel, and Pipedrive, customizing the automation to fit your specific sales process. The platform matters less than the strategy and execution behind it." },
+      { type: "cta", text: "Ready to automate your sales pipeline and close more deals? Get a free CRM automation assessment from our team." }
+    ],
+    relatedPosts: ["ai-follow-up-sequences", "ai-automation-revenue-growth-2025", "lead-generation-strategies-2025"]
+  },
+  {
+    id: "5",
+    slug: "seo-vs-paid-ads-strategy",
+    title: "SEO vs Paid Ads: Building a Unified Revenue Strategy",
+    excerpt: "Why the best growth strategies combine organic search dominance with paid advertising for maximum market capture.",
+    category: "Strategy",
+    readTime: "9 min read",
+    date: "Dec 28, 2025",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-seo-strategy.jpg",
+    imageAlt: "SEO and paid advertising strategy comparison for business growth",
+    seoTitle: "SEO vs Paid Ads: Building a Unified Revenue Strategy | Infinite Rankers",
+    seoDescription: "Learn how to build a unified revenue strategy combining SEO and paid advertising. Discover the optimal balance for maximum ROI and market dominance.",
+    seoKeywords: "SEO vs paid ads, SEO strategy, paid advertising strategy, digital marketing strategy, SEO ROI, PPC vs organic",
+    content: [
+      { type: "paragraph", text: "The debate between SEO and paid advertising is one of the most persistent in digital marketing. Business owners constantly ask: should I invest in organic search or paid ads? The answer, proven by years of data across hundreds of campaigns, is unequivocally both. But the how and when of each channel is where strategy becomes critical." },
+      { type: "heading", text: "Understanding the Strengths of Each Channel" },
+      { type: "paragraph", text: "Paid advertising delivers immediate visibility and measurable results. The moment your campaign goes live, you appear at the top of search results, in social feeds, and across the display network. You control the message, the audience, and the budget. The downside? The moment you stop paying, the leads stop coming." },
+      { type: "paragraph", text: "SEO is the opposite equation. It requires patience and consistent investment upfront, but the returns compound over time. A page that ranks number one for a valuable keyword can generate leads for years with minimal ongoing cost. The organic traffic you build becomes a permanent asset that appreciates in value." },
+      { type: "heading", text: "The Unified Strategy Framework" },
+      { type: "list", items: [
+        "Use paid ads for immediate lead generation while SEO builds momentum",
+        "Let PPC data inform your SEO keyword strategy — the keywords that convert in ads will convert in organic",
+        "Dominate both paid and organic positions for your highest-value keywords",
+        "Retarget organic visitors with paid ads to maximize conversion rates",
+        "Gradually shift budget from paid to organic as SEO rankings mature",
+        "Use paid ads to test messaging and offers before committing to long-term SEO content"
+      ] },
+      { type: "heading", text: "Budget Allocation: The 60/40 Rule" },
+      { type: "paragraph", text: "For businesses just starting their digital marketing journey, we recommend a 60/40 split — 60% on paid advertising for immediate results, 40% on SEO for long-term growth. As organic rankings improve and organic traffic increases, gradually shift the ratio. Mature businesses often settle at a 30/70 split, with SEO driving the majority of leads and paid ads filling strategic gaps." },
+      { type: "quote", text: "The businesses that dominate their markets are the ones that show up everywhere — paid results, organic results, maps, and social. That takes a unified strategy.", author: "Edward Walker, Infinite Rankers" },
+      { type: "heading", text: "Measuring Unified Performance" },
+      { type: "paragraph", text: "The key metric is total cost per acquisition across all channels. Many businesses make the mistake of measuring SEO and paid ads in isolation. A visitor might discover you through an organic search, return later through a retargeting ad, and finally convert through a direct visit. Proper attribution tracking reveals the true customer journey and the combined ROI of your strategy." },
+      { type: "cta", text: "Get a free unified digital marketing strategy for your business. Our team will analyze your market and create a custom SEO + PPC plan." }
+    ],
+    relatedPosts: ["google-ads-roi-local-business", "local-business-digital-marketing", "content-marketing-seo-guide"]
+  },
+  {
+    id: "6",
+    slug: "ai-follow-up-sequences",
+    title: "AI Follow-Up Sequences That Close 3x More Deals",
+    excerpt: "The science behind AI-powered follow-up automation and how it is helping sales teams dramatically increase close rates.",
+    category: "AI Automation",
+    readTime: "7 min read",
+    date: "Dec 15, 2025",
+    author: "Nancy Baker",
+    authorRole: "Account Manager, Infinite Rankers",
+    image: "/images/blog/blog-follow-up.jpg",
+    imageAlt: "AI-powered email and SMS follow-up automation system",
+    seoTitle: "AI Follow-Up Sequences That Close 3x More Deals | Infinite Rankers",
+    seoDescription: "Learn how AI-powered follow-up sequences help sales teams close 3x more deals. Discover automated follow-up strategies for email, SMS, and multi-channel outreach.",
+    seoKeywords: "AI follow-up, sales follow-up automation, automated follow-up sequences, AI sales, lead nurturing, sales automation",
+    content: [
+      { type: "paragraph", text: "Here is a statistic that should keep every business owner awake at night: 80% of sales require at least five follow-up contacts, yet 44% of salespeople give up after just one attempt. That gap between what is required and what actually happens represents millions of dollars in lost revenue across the economy every year." },
+      { type: "heading", text: "Why Human Follow-Up Falls Short" },
+      { type: "paragraph", text: "It is not that salespeople are lazy. They are overwhelmed. Between meetings, proposal writing, client management, and administrative tasks, consistent follow-up becomes the first thing to slip. And once a lead goes cold, the probability of re-engagement drops dramatically with each passing day." },
+      { type: "paragraph", text: "AI follow-up sequences solve this problem at its root. They execute with perfect consistency, never forgetting a lead, never delaying a message, and never losing track of where each prospect is in their journey." },
+      { type: "heading", text: "Anatomy of a High-Converting AI Follow-Up Sequence" },
+      { type: "list", items: [
+        "Immediate response within 60 seconds of lead capture — AI sends a personalized acknowledgment",
+        "Day 1: Value-first message sharing a relevant case study or resource",
+        "Day 3: Check-in with a specific question to re-engage the conversation",
+        "Day 7: Social proof message featuring a testimonial from a similar business",
+        "Day 14: Urgency-based offer with a time-limited consultation or discount",
+        "Day 21: Final soft-touch message keeping the door open for future engagement",
+        "Ongoing: Monthly value emails that keep your brand top-of-mind"
+      ] },
+      { type: "heading", text: "Multi-Channel Orchestration" },
+      { type: "paragraph", text: "The most effective AI follow-up sequences operate across multiple channels simultaneously. A prospect might receive an email, followed by an SMS two days later, then a voicemail drop the following week. The AI determines which channel each prospect is most responsive to and adjusts the sequence accordingly." },
+      { type: "paragraph", text: "This is not spam. Each message is personalized based on the prospect's specific interests, questions, and interactions. The AI references previous conversations, acknowledges where the prospect is in their decision-making process, and provides relevant value at every touchpoint." },
+      { type: "quote", text: "We went from a 12% close rate to 38% simply by implementing AI follow-up sequences. The leads were always there — we just were not following up consistently enough.", author: "Real Estate Agency Owner" },
+      { type: "heading", text: "Measuring Follow-Up Effectiveness" },
+      { type: "paragraph", text: "Track these metrics to optimize your AI follow-up sequences: response rate by channel, average time to conversion, optimal number of touchpoints before conversion, and revenue generated per sequence. AI systems continuously learn from this data, refining timing, messaging, and channel selection to improve results over time." },
+      { type: "cta", text: "Stop losing deals to inconsistent follow-up. Book a free consultation to see how AI follow-up sequences can transform your close rate." }
+    ],
+    relatedPosts: ["crm-automation-sales-pipeline", "ai-automation-revenue-growth-2025", "ai-chatbot-lead-conversion"]
+  },
+  {
+    id: "7",
+    slug: "social-media-marketing-strategy-2025",
+    title: "Social Media Marketing Strategy: The 2025 Playbook for Business Growth",
+    excerpt: "Build a social media strategy that actually drives revenue. Platform-specific tactics for Instagram, Facebook, LinkedIn, and TikTok.",
+    category: "Social Media",
+    readTime: "11 min read",
+    date: "Dec 1, 2025",
+    author: "Nancy Baker",
+    authorRole: "Account Manager, Infinite Rankers",
+    image: "/images/blog/blog-social-media.jpg",
+    imageAlt: "Social media marketing strategy for business growth across platforms",
+    seoTitle: "Social Media Marketing Strategy 2025: Complete Business Playbook | Infinite Rankers",
+    seoDescription: "Master social media marketing in 2025 with platform-specific strategies for Instagram, Facebook, LinkedIn, and TikTok. Drive real revenue from social media.",
+    seoKeywords: "social media marketing strategy, social media 2025, Instagram marketing, LinkedIn marketing, TikTok business, social media ROI",
+    content: [
+      { type: "paragraph", text: "Social media is no longer optional for businesses — it is a critical revenue channel. But there is a massive difference between having a social media presence and having a social media strategy that drives measurable business growth. Most businesses post content randomly, hoping something sticks. That approach wastes time and produces nothing." },
+      { type: "heading", text: "Platform Selection: Where Your Audience Actually Lives" },
+      { type: "paragraph", text: "The biggest mistake businesses make is trying to be everywhere at once. Each platform serves a different purpose and attracts a different audience. A B2B consulting firm should dominate LinkedIn, not waste resources on TikTok. A local restaurant should focus on Instagram and Facebook, not LinkedIn. Choose two to three platforms maximum and execute flawlessly on those." },
+      { type: "list", items: [
+        "Instagram: Visual businesses, lifestyle brands, local services, e-commerce (25-45 demographic)",
+        "Facebook: Local businesses, community-focused brands, service providers (30-65 demographic)",
+        "LinkedIn: B2B companies, professional services, thought leadership (25-55 professionals)",
+        "TikTok: Consumer brands, entertainment, trend-driven businesses (18-35 demographic)",
+        "YouTube: Educational content, product demonstrations, long-form authority building (all demographics)"
+      ] },
+      { type: "heading", text: "Content That Converts: The 4-1-1 Framework" },
+      { type: "paragraph", text: "For every six pieces of content you post, four should provide genuine value — tips, insights, education, or entertainment. One should be a soft sell — a case study, testimonial, or behind-the-scenes look at your business. One should be a direct call-to-action — a promotion, offer, or clear invitation to take the next step." },
+      { type: "paragraph", text: "This ratio builds trust and authority while maintaining a consistent sales presence. Your audience never feels bombarded with promotions, but they always know what you offer and how to engage." },
+      { type: "heading", text: "Paid Social: Amplifying What Works" },
+      { type: "paragraph", text: "Organic reach on social media continues to decline across all platforms. The businesses winning at social media combine organic content with strategic paid amplification. Identify your top-performing organic posts and boost them to reach a wider, targeted audience. Use retargeting to re-engage people who have visited your website or engaged with previous content." },
+      { type: "quote", text: "Social media is not about being on every platform. It is about being dominant on the right platforms with the right message for the right audience.", author: "Edward Walker, Infinite Rankers" },
+      { type: "heading", text: "Measuring Social Media ROI" },
+      { type: "paragraph", text: "Likes and followers are vanity metrics. The metrics that matter are website traffic from social, lead generation from social campaigns, cost per lead from paid social, and ultimately revenue attributed to social media activities. Set up proper tracking and attribution so you know exactly what your social media investment is producing." },
+      { type: "cta", text: "Get a free social media audit and custom strategy for your business. Our team will identify the platforms and tactics that will drive the most revenue." }
+    ],
+    relatedPosts: ["content-marketing-seo-guide", "seo-vs-paid-ads-strategy", "local-business-digital-marketing"]
+  },
+  {
+    id: "8",
+    slug: "local-business-digital-marketing",
+    title: "Digital Marketing for Local Businesses: The Complete 2025 Guide",
+    excerpt: "Everything a local business needs to dominate their market online — from Google Business Profile to local SEO to targeted advertising.",
+    category: "Local Marketing",
+    readTime: "14 min read",
+    date: "Nov 18, 2025",
+    author: "Nancy Baker",
+    authorRole: "Account Manager, Infinite Rankers",
+    image: "/images/blog/blog-local-business.jpg",
+    imageAlt: "Local business digital marketing strategy guide",
+    seoTitle: "Digital Marketing for Local Businesses: Complete 2025 Guide | Infinite Rankers",
+    seoDescription: "The complete digital marketing guide for local businesses in 2025. Master local SEO, Google Business Profile, targeted ads, and reputation management.",
+    seoKeywords: "local business marketing, local digital marketing, local SEO, Google Business Profile, local advertising, small business marketing",
+    content: [
+      { type: "paragraph", text: "Local businesses face a unique challenge in digital marketing. You are not competing for a global audience — you need to dominate a specific geographic area and become the go-to choice for customers in your community. The strategies that work for national brands do not directly translate to local markets. This guide covers everything you need to know." },
+      { type: "heading", text: "Google Business Profile: Your Digital Storefront" },
+      { type: "paragraph", text: "Your Google Business Profile is the single most important digital asset for your local business. When someone searches for your type of service in your area, your GBP listing is what appears in the local map pack — the three business listings that show up at the top of search results with a map. Optimizing this profile should be your first priority." },
+      { type: "list", items: [
+        "Complete every section of your profile — business description, services, products, attributes",
+        "Add new photos weekly — interior, exterior, team, products, happy customers",
+        "Respond to every review within 24 hours — positive and negative",
+        "Post weekly updates with offers, events, or helpful tips",
+        "Ensure NAP consistency — your name, address, and phone number must match everywhere online",
+        "Enable messaging and booking features for direct customer engagement"
+      ] },
+      { type: "heading", text: "Local SEO: Ranking in the Map Pack" },
+      { type: "paragraph", text: "Ranking in the local map pack requires a combination of on-page SEO, link building, citation management, and review generation. Your website needs location-specific pages optimized for the services you offer in each area you serve. Building citations — listings on directories like Yelp, Yellow Pages, and industry-specific platforms — signals to Google that your business is legitimate and established." },
+      { type: "heading", text: "Reputation Management: Reviews Drive Revenue" },
+      { type: "paragraph", text: "For local businesses, reviews are not just social proof — they are a primary ranking factor. Businesses with more positive reviews rank higher in local search results and convert more visitors into customers. Implement a systematic review generation process: ask every satisfied customer for a review, make it easy with a direct link, and respond to every review professionally." },
+      { type: "quote", text: "A local business with 50 or more positive Google reviews generates 44% more revenue than competitors with fewer than 10 reviews.", author: "Local Marketing Research Data" },
+      { type: "heading", text: "Targeted Local Advertising" },
+      { type: "paragraph", text: "Combine Google Ads targeting your service area with Facebook and Instagram ads targeting local demographics. Geo-fencing allows you to show ads to people physically near your business location. For service-area businesses, radius targeting ensures your budget is spent only on potential customers within your coverage area." },
+      { type: "heading", text: "Building Your Local Marketing Engine" },
+      { type: "paragraph", text: "The most successful local businesses treat digital marketing as a system, not a series of one-off tactics. When your Google Business Profile, local SEO, review management, paid advertising, and social media all work together as an integrated system, the results compound. Each channel reinforces the others, creating a moat that competitors cannot easily replicate." },
+      { type: "cta", text: "Ready to dominate your local market? Book a free local marketing assessment and get a custom strategy for your area." }
+    ],
+    relatedPosts: ["google-ads-roi-local-business", "seo-vs-paid-ads-strategy", "content-marketing-seo-guide"]
+  },
+  {
+    id: "9",
+    slug: "lead-generation-strategies-2025",
+    title: "15 Lead Generation Strategies That Actually Work in 2025",
+    excerpt: "Proven lead generation tactics backed by data from campaigns generating over 100,000 leads for businesses across the USA.",
+    category: "Lead Generation",
+    readTime: "13 min read",
+    date: "Nov 5, 2025",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-lead-gen.jpg",
+    imageAlt: "Lead generation strategies and marketing funnel visualization",
+    seoTitle: "15 Lead Generation Strategies That Actually Work in 2025 | Infinite Rankers",
+    seoDescription: "Discover 15 proven lead generation strategies for 2025. Data-backed tactics from campaigns generating 100,000+ leads for businesses across the USA.",
+    seoKeywords: "lead generation strategies, lead generation 2025, B2B lead generation, lead gen tactics, how to generate leads, lead generation ideas",
+    content: [
+      { type: "paragraph", text: "Lead generation is the lifeblood of every business. Without a consistent flow of qualified prospects entering your pipeline, growth stalls and revenue plateaus. But the tactics that worked even two years ago are becoming less effective as markets evolve and buyer behavior changes. Here are fifteen strategies that are delivering results right now." },
+      { type: "heading", text: "AI-Powered Lead Generation" },
+      { type: "list", items: [
+        "Deploy AI chatbots on your website to engage and qualify visitors 24/7",
+        "Use AI calling agents for outbound prospecting at scale",
+        "Implement predictive lead scoring to focus on the highest-potential prospects",
+        "Automate follow-up sequences across email, SMS, and voice channels",
+        "Leverage AI to personalize landing pages based on visitor behavior and source"
+      ] },
+      { type: "heading", text: "Search-Based Lead Generation" },
+      { type: "list", items: [
+        "Build SEO-optimized service pages targeting high-intent commercial keywords",
+        "Run Google Ads campaigns with dedicated landing pages for each service",
+        "Optimize your Google Business Profile for local search visibility",
+        "Create comprehensive content that ranks for informational queries in your niche",
+        "Implement schema markup to enhance search result appearance and click-through rates"
+      ] },
+      { type: "heading", text: "Social and Referral Lead Generation" },
+      { type: "list", items: [
+        "Run targeted Facebook and Instagram lead generation ads with instant forms",
+        "Build a LinkedIn thought leadership presence that attracts inbound inquiries",
+        "Create a structured referral program that incentivizes existing clients to refer",
+        "Partner with complementary businesses for cross-promotion and lead sharing",
+        "Host webinars and virtual events that provide value and capture registrations"
+      ] },
+      { type: "heading", text: "The Conversion Architecture" },
+      { type: "paragraph", text: "Generating leads is only half the equation. Converting those leads into customers requires a systematic approach we call Conversion Architecture. Every lead should enter a structured pipeline where they are nurtured through automated sequences, engaged by AI at critical decision points, and handed off to your sales team only when they are ready to buy." },
+      { type: "quote", text: "The businesses generating the most leads are not just doing more marketing — they are building systems that capture, nurture, and convert leads automatically.", author: "Edward Walker, Infinite Rankers" },
+      { type: "heading", text: "Measuring Lead Generation Performance" },
+      { type: "paragraph", text: "Track cost per lead by channel, lead quality score, lead-to-customer conversion rate, and customer acquisition cost. These metrics tell you not just how many leads you are generating, but how much each customer is costing you to acquire and which channels deliver the highest quality prospects." },
+      { type: "cta", text: "Want to build a lead generation engine for your business? Book a free strategy session and get a custom lead generation plan." }
+    ],
+    relatedPosts: ["ai-chatbot-lead-conversion", "google-ads-roi-local-business", "ai-automation-revenue-growth-2025"]
+  },
+  {
+    id: "10",
+    slug: "website-conversion-optimization",
+    title: "Website Conversion Optimization: Turn More Visitors Into Paying Customers",
+    excerpt: "Data-backed strategies to increase your website conversion rate by 200% or more without increasing traffic.",
+    category: "Web Development",
+    readTime: "10 min read",
+    date: "Oct 22, 2025",
+    author: "Nancy Baker",
+    authorRole: "Account Manager, Infinite Rankers",
+    image: "/images/blog/blog-web-design.jpg",
+    imageAlt: "Website conversion optimization and UX design best practices",
+    seoTitle: "Website Conversion Optimization: Turn Visitors Into Customers | Infinite Rankers",
+    seoDescription: "Learn proven website conversion optimization strategies that increase conversion rates by 200%+. UX design, page speed, forms, and CTA best practices.",
+    seoKeywords: "website conversion optimization, CRO, conversion rate optimization, website design, UX optimization, landing page optimization",
+    content: [
+      { type: "paragraph", text: "Most businesses obsess over getting more traffic to their website. They spend thousands on ads, SEO, and social media to drive visitors through the door. But here is the uncomfortable truth: driving more traffic to a poorly converting website is like pouring water into a leaky bucket. Fix the bucket first." },
+      { type: "heading", text: "The Conversion Rate Benchmarks You Should Know" },
+      { type: "paragraph", text: "The average website converts at roughly 2.5%. Top-performing websites convert at 5-10% or higher. That difference might seem small, but consider the math: a website with 10,000 monthly visitors converting at 2.5% generates 250 leads. The same traffic at 7.5% generates 750 leads — three times more without spending a single additional dollar on traffic." },
+      { type: "heading", text: "7 Conversion Killers on Your Website" },
+      { type: "list", items: [
+        "Slow page load speed — every second of delay reduces conversions by 7%",
+        "No clear value proposition above the fold — visitors do not know why they should choose you",
+        "Too many navigation options creating decision paralysis instead of guiding action",
+        "Forms with too many required fields creating unnecessary friction",
+        "No social proof — missing testimonials, reviews, case studies, or trust indicators",
+        "Weak or generic calls-to-action that do not compel visitors to take the next step",
+        "Non-mobile-optimized design that frustrates the 60%+ of visitors on mobile devices"
+      ] },
+      { type: "heading", text: "High-Impact Optimizations" },
+      { type: "paragraph", text: "Start with page speed. Compress images, minimize code, leverage browser caching, and use a content delivery network. Your website should load in under 2 seconds on both desktop and mobile. This single optimization can increase conversions by 15-30%." },
+      { type: "paragraph", text: "Next, refine your value proposition. Within 3 seconds of landing on your homepage, visitors should understand exactly what you do, who you serve, and why you are the best choice. Use clear headlines, supporting subtext, and visual elements that communicate your unique value." },
+      { type: "paragraph", text: "Then, optimize your calls-to-action. Replace generic phrases like Contact Us with benefit-driven actions like Get Your Free Growth Plan or Book Your Strategy Session. Make CTAs visually prominent and place them strategically throughout each page." },
+      { type: "quote", text: "After optimizing our website for conversions, we tripled our lead volume without changing our marketing spend. The ROI was immediate and dramatic.", author: "E-Commerce Business Owner" },
+      { type: "heading", text: "Testing and Iteration" },
+      { type: "paragraph", text: "Conversion optimization is not a one-time project — it is an ongoing process. Implement A/B testing on headlines, CTAs, form layouts, and page structures. Let data drive your decisions, not assumptions. Small, consistent improvements compound into significant results over time." },
+      { type: "cta", text: "Get a free website conversion audit. Our team will identify the quick wins that can dramatically increase your leads and revenue." }
+    ],
+    relatedPosts: ["ai-chatbot-lead-conversion", "local-business-digital-marketing", "lead-generation-strategies-2025"]
+  },
+  {
+    id: "11",
+    slug: "content-marketing-seo-guide",
+    title: "Content Marketing for SEO: How to Create Content That Ranks and Converts",
+    excerpt: "The complete guide to creating SEO-optimized content that ranks on Google page one and turns organic traffic into revenue.",
+    category: "Content Marketing",
+    readTime: "11 min read",
+    date: "Oct 8, 2025",
+    author: "Nancy Baker",
+    authorRole: "Account Manager, Infinite Rankers",
+    image: "/images/blog/blog-analytics.jpg",
+    imageAlt: "Content marketing analytics and SEO performance dashboard",
+    seoTitle: "Content Marketing for SEO: Create Content That Ranks & Converts | Infinite Rankers",
+    seoDescription: "Learn how to create SEO-optimized content that ranks on Google and converts visitors into customers. Complete content marketing strategy guide.",
+    seoKeywords: "content marketing SEO, SEO content strategy, content that ranks, content marketing guide, SEO content writing, blog SEO",
+    content: [
+      { type: "paragraph", text: "Content marketing remains one of the most powerful long-term growth strategies available. A single well-optimized article can generate hundreds or thousands of organic visitors every month for years. But the key word is well-optimized. Most content fails to rank because it lacks the strategic foundation needed to compete in search results." },
+      { type: "heading", text: "Keyword Research: The Foundation of Content Success" },
+      { type: "paragraph", text: "Before writing a single word, you need to understand what your target audience is searching for. Use tools like Ahrefs, SEMrush, or Google Keyword Planner to identify keywords with meaningful search volume, manageable competition, and clear commercial intent. Focus on long-tail keywords where you can realistically compete and where search intent aligns with your services." },
+      { type: "heading", text: "Content Structure for SEO and Readability" },
+      { type: "list", items: [
+        "Create comprehensive, in-depth content that thoroughly answers the searcher's question",
+        "Use descriptive H2 and H3 headings that include relevant keywords naturally",
+        "Write clear, scannable paragraphs — no more than 3-4 sentences each",
+        "Include numbered lists and bullet points to break up dense information",
+        "Add internal links to relevant service pages and other blog posts",
+        "Optimize meta title and description with primary keyword and compelling copy",
+        "Include relevant images with descriptive alt text for accessibility and image search"
+      ] },
+      { type: "heading", text: "The Content Conversion Framework" },
+      { type: "paragraph", text: "Ranking is only valuable if it drives business outcomes. Every piece of content should have a clear conversion goal — whether that is a newsletter signup, consultation booking, or service inquiry. Include contextual calls-to-action throughout the content, not just at the end. When discussing a problem that your service solves, naturally invite the reader to learn more." },
+      { type: "paragraph", text: "Create content upgrades — downloadable resources like checklists, templates, or guides that provide additional value in exchange for an email address. These convert at 5-15 times the rate of generic newsletter signup forms." },
+      { type: "quote", text: "Content marketing costs 62% less than traditional marketing and generates approximately three times as many leads per dollar spent.", author: "Content Marketing Institute" },
+      { type: "heading", text: "Content Distribution and Promotion" },
+      { type: "paragraph", text: "Publishing great content is not enough. You need a distribution strategy that gets your content in front of the right audience. Share across social media channels, include in email newsletters, repurpose into video and social content, and build backlinks through outreach and partnerships. The best content in the world is worthless if nobody sees it." },
+      { type: "heading", text: "Measuring Content Marketing ROI" },
+      { type: "paragraph", text: "Track organic traffic growth, keyword rankings, time on page, conversion rate from content pages, and revenue attributed to organic search. Content marketing is a long-term investment, but by month six you should see clear upward trends in traffic and leads from your content efforts." },
+      { type: "cta", text: "Need a content strategy that drives rankings and revenue? Book a free consultation with our content marketing team." }
+    ],
+    relatedPosts: ["seo-vs-paid-ads-strategy", "local-business-digital-marketing", "website-conversion-optimization"]
+  },
+  {
+    id: "12",
+    slug: "ecommerce-growth-strategies",
+    title: "E-Commerce Growth: 10 AI-Powered Strategies to Scale Your Online Store",
+    excerpt: "How AI and automation are helping e-commerce brands achieve 200-500% growth through personalization, optimization, and intelligent marketing.",
+    category: "E-Commerce",
+    readTime: "12 min read",
+    date: "Sep 24, 2025",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-ecommerce.jpg",
+    imageAlt: "E-commerce growth strategies and online store optimization",
+    seoTitle: "E-Commerce Growth: 10 AI-Powered Strategies to Scale | Infinite Rankers",
+    seoDescription: "Discover 10 AI-powered e-commerce growth strategies that drive 200-500% revenue increases. Personalization, automation, and intelligent marketing for online stores.",
+    seoKeywords: "ecommerce growth, AI ecommerce, online store growth, ecommerce marketing, ecommerce automation, Shopify growth",
+    content: [
+      { type: "paragraph", text: "The e-commerce landscape has never been more competitive. With millions of online stores vying for consumer attention, the brands that win are those leveraging AI and automation to deliver superior customer experiences, optimize operations, and scale marketing with precision. Here are ten strategies that are driving explosive growth for e-commerce businesses." },
+      { type: "heading", text: "AI-Driven Personalization" },
+      { type: "paragraph", text: "Generic shopping experiences are dead. Modern consumers expect personalized recommendations, dynamic pricing, and customized content based on their browsing behavior, purchase history, and preferences. AI personalization engines analyze individual visitor behavior in real-time, serving product recommendations that are statistically most likely to convert." },
+      { type: "heading", text: "10 Growth Strategies for E-Commerce" },
+      { type: "list", items: [
+        "Implement AI product recommendations that increase average order value by 15-30%",
+        "Deploy abandoned cart recovery sequences across email, SMS, and retargeting ads",
+        "Optimize product pages with AI-generated descriptions, reviews, and social proof",
+        "Use dynamic pricing that adjusts based on demand, competition, and inventory levels",
+        "Build automated email flows — welcome series, post-purchase, win-back, and VIP sequences",
+        "Leverage AI chatbots for instant customer support and product guidance",
+        "Implement predictive inventory management to avoid stockouts and overstock",
+        "Create shoppable social media content with seamless checkout experiences",
+        "Use AI-powered ad optimization across Google Shopping, Meta, and TikTok",
+        "Build a loyalty program with personalized rewards based on customer behavior"
+      ] },
+      { type: "heading", text: "The Revenue Impact" },
+      { type: "paragraph", text: "E-commerce brands implementing these AI-powered strategies typically see a 25-40% increase in conversion rate, 20-35% increase in average order value, and 50-80% improvement in customer retention. Combined, these improvements can drive 200-500% overall revenue growth within 12-18 months." },
+      { type: "quote", text: "After implementing AI-powered personalization and automated marketing flows, our monthly revenue grew from $45K to $220K in eight months.", author: "DTC Brand Founder" },
+      { type: "heading", text: "Getting Started" },
+      { type: "paragraph", text: "You do not need to implement all ten strategies simultaneously. Start with the highest-impact items for your specific situation. For most e-commerce businesses, abandoned cart recovery and email automation deliver the fastest ROI. Then layer on personalization, ad optimization, and advanced AI capabilities as your foundation matures." },
+      { type: "cta", text: "Ready to scale your e-commerce brand with AI? Book a free growth strategy session tailored to your online store." }
+    ],
+    relatedPosts: ["ai-automation-revenue-growth-2025", "social-media-marketing-strategy-2025", "website-conversion-optimization"]
+  },
+  {
+    id: "13",
+    slug: "brand-identity-business-growth",
+    title: "How Strong Brand Identity Drives Revenue Growth: A Strategic Guide",
+    excerpt: "Why branding is not just about logos — how strategic brand identity directly impacts customer acquisition, retention, and revenue.",
+    category: "Branding",
+    readTime: "8 min read",
+    date: "Sep 10, 2025",
+    author: "Nancy Baker",
+    authorRole: "Account Manager, Infinite Rankers",
+    image: "/images/blog/blog-branding.jpg",
+    imageAlt: "Brand identity strategy and design for business growth",
+    seoTitle: "How Brand Identity Drives Revenue Growth: Strategic Guide | Infinite Rankers",
+    seoDescription: "Discover how strategic brand identity drives customer acquisition and revenue growth. Learn the elements of powerful branding that converts.",
+    seoKeywords: "brand identity, branding strategy, brand design, business branding, brand development, brand marketing",
+    content: [
+      { type: "paragraph", text: "Most business owners think of branding as choosing a logo and color palette. That is like saying architecture is choosing paint colors. True brand identity is a strategic asset that shapes how customers perceive your business, influences their purchasing decisions, and determines whether they become loyal advocates or one-time buyers." },
+      { type: "heading", text: "The Revenue Impact of Strong Branding" },
+      { type: "paragraph", text: "Businesses with consistent brand presentation across all platforms experience an average revenue increase of 23%. Strong brands command premium pricing — customers willingly pay 20-40% more for brands they know and trust compared to generic alternatives. Brand recognition reduces customer acquisition costs because familiar brands convert at higher rates across every marketing channel." },
+      { type: "heading", text: "The 5 Pillars of Strategic Brand Identity" },
+      { type: "list", items: [
+        "Brand positioning: Your unique place in the market and in the mind of your ideal customer",
+        "Visual identity: Logo, color system, typography, imagery style that creates instant recognition",
+        "Brand voice: The consistent tone, language, and personality that appears in all communications",
+        "Value proposition: The clear, compelling reason why customers should choose you over alternatives",
+        "Brand experience: Every touchpoint from website to customer service that reinforces your brand promise"
+      ] },
+      { type: "heading", text: "Building Brand Trust in the Digital Age" },
+      { type: "paragraph", text: "Trust is the currency of modern business. In a world where customers have unlimited choices, they gravitate toward brands that feel authentic, consistent, and professional. Your website, social media, advertising, and customer communications all need to tell the same story and deliver the same experience. Any inconsistency erodes trust." },
+      { type: "paragraph", text: "Social proof is a critical trust builder. Case studies, testimonials, reviews, partner badges, and client logos all signal credibility. Display them prominently across your digital presence — not buried on a testimonials page, but integrated throughout your website and marketing materials." },
+      { type: "quote", text: "Your brand is what people say about you when you are not in the room. Make sure they are saying the right things.", author: "Jeff Bezos" },
+      { type: "heading", text: "Brand Consistency Across Channels" },
+      { type: "paragraph", text: "Every touchpoint is a brand impression. Your Google Business Profile, social media profiles, email signatures, invoices, proposals, and even how your team answers the phone — all of these either reinforce or undermine your brand identity. Create brand guidelines that ensure consistency and train your team to embody the brand at every interaction." },
+      { type: "cta", text: "Ready for a brand identity that drives real business growth? Book a free brand strategy consultation with our team." }
+    ],
+    relatedPosts: ["social-media-marketing-strategy-2025", "website-conversion-optimization", "local-business-digital-marketing"]
+  },
+  {
+    id: "14",
+    slug: "healthcare-marketing-patient-acquisition",
+    title: "Healthcare Marketing: How to Acquire More Patients with AI and Digital Strategy",
+    excerpt: "HIPAA-compliant digital marketing strategies that help medical practices attract and retain patients in a competitive healthcare market.",
+    category: "Healthcare",
+    readTime: "10 min read",
+    date: "Aug 28, 2025",
+    author: "Nancy Baker",
+    authorRole: "Account Manager, Infinite Rankers",
+    image: "/images/blog/blog-healthcare.jpg",
+    imageAlt: "Healthcare marketing and patient acquisition digital strategy",
+    seoTitle: "Healthcare Marketing: AI Patient Acquisition Strategies | Infinite Rankers",
+    seoDescription: "HIPAA-compliant healthcare marketing strategies for medical practices. Learn how AI and digital marketing can help you acquire and retain more patients.",
+    seoKeywords: "healthcare marketing, patient acquisition, medical practice marketing, healthcare SEO, doctor marketing, dental marketing",
+    content: [
+      { type: "paragraph", text: "The healthcare industry is experiencing a digital transformation that is reshaping how patients find and choose their providers. Patients are no longer relying solely on referrals — they are searching online, reading reviews, comparing options, and booking appointments digitally. Medical practices that adapt to this reality are thriving. Those that do not are losing patients to competitors who have embraced digital marketing." },
+      { type: "heading", text: "The Patient Journey Has Changed" },
+      { type: "paragraph", text: "77% of patients use search engines before booking a medical appointment. They search for symptoms, treatments, providers, and reviews. They compare multiple practices before making a decision. Your digital presence is often the first impression a potential patient has of your practice — and it needs to be exceptional." },
+      { type: "heading", text: "Essential Healthcare Marketing Strategies" },
+      { type: "list", items: [
+        "Optimize Google Business Profile with accurate information, photos, and regular updates",
+        "Build a mobile-responsive, HIPAA-compliant website with online scheduling",
+        "Implement local SEO targeting service-specific and location-based keywords",
+        "Generate and manage patient reviews systematically across Google and Healthgrades",
+        "Deploy AI chatbots for instant patient inquiries and appointment scheduling",
+        "Run targeted Google Ads campaigns for high-value procedures and services",
+        "Create educational content that establishes your providers as trusted authorities",
+        "Use email marketing for patient retention, appointment reminders, and health education"
+      ] },
+      { type: "heading", text: "AI in Healthcare Marketing" },
+      { type: "paragraph", text: "AI is particularly powerful in healthcare marketing because it handles patient communication with consistency and availability that human staff cannot match. An AI receptionist answers calls 24/7, schedules appointments, and answers common questions about insurance, office hours, and procedures. This ensures no patient inquiry goes unanswered — even at midnight on a weekend." },
+      { type: "paragraph", text: "AI-powered follow-up systems also dramatically improve patient retention. Automated appointment reminders reduce no-show rates by 30-50%. Post-visit follow-ups increase patient satisfaction and encourage positive reviews. Re-engagement campaigns bring dormant patients back for regular checkups and preventive care." },
+      { type: "quote", text: "After implementing AI-powered patient acquisition systems, our new patient volume increased by 245% while our marketing cost per patient decreased by 40%.", author: "Dr. Michelle Tran, Medical Director" },
+      { type: "heading", text: "HIPAA Compliance in Digital Marketing" },
+      { type: "paragraph", text: "All healthcare marketing must be HIPAA compliant. This means no patient information in marketing materials without explicit written consent, secure forms for appointment requests, encrypted communication channels, and compliant email marketing practices. Partner with marketing agencies that understand healthcare regulations and build compliance into every campaign." },
+      { type: "cta", text: "Grow your medical practice with HIPAA-compliant AI marketing. Book a free healthcare marketing assessment today." }
+    ],
+    relatedPosts: ["local-business-digital-marketing", "ai-automation-revenue-growth-2025", "ai-chatbot-lead-conversion"]
+  },
+  {
+    id: "15",
+    slug: "real-estate-lead-generation-ai",
+    title: "Real Estate Lead Generation: How AI Is Transforming Agent Success",
+    excerpt: "AI-powered strategies that help real estate agents and brokerages generate, qualify, and convert more leads in any market condition.",
+    category: "Real Estate",
+    readTime: "9 min read",
+    date: "Aug 14, 2025",
+    author: "Edward Walker",
+    authorRole: "CEO, Infinite Rankers",
+    image: "/images/blog/blog-real-estate.jpg",
+    imageAlt: "Real estate lead generation with AI technology",
+    seoTitle: "Real Estate Lead Generation: How AI Transforms Agent Success | Infinite Rankers",
+    seoDescription: "Discover AI-powered real estate lead generation strategies for agents and brokerages. Qualify and convert more leads with automation and intelligent marketing.",
+    seoKeywords: "real estate lead generation, AI real estate, real estate marketing, realtor leads, real estate automation, real estate AI",
+    content: [
+      { type: "paragraph", text: "Real estate is one of the most competitive industries for lead generation. Every agent is fighting for the same pool of buyers and sellers, using the same portals, the same social media tactics, and the same farming strategies. AI automation is the differentiator that allows forward-thinking agents and brokerages to capture and convert leads at a pace their competitors cannot match." },
+      { type: "heading", text: "The Lead Response Time Crisis in Real Estate" },
+      { type: "paragraph", text: "The average real estate agent takes over 15 hours to respond to a new lead. By that time, the prospect has already spoken with three other agents. AI eliminates this problem entirely. When a lead comes in — whether from Zillow, Realtor.com, your website, or a social ad — an AI agent responds within 60 seconds, qualifies the lead, and books a showing or consultation." },
+      { type: "heading", text: "AI-Powered Real Estate Marketing Strategies" },
+      { type: "list", items: [
+        "Deploy AI calling agents that follow up with every portal lead within 60 seconds",
+        "Use AI chatbots on your website to engage home buyers and sellers 24/7",
+        "Implement automated drip campaigns that nurture leads over months until they are ready to transact",
+        "Run hyper-targeted Facebook and Instagram ads to generate buyer and seller leads",
+        "Optimize your website for local SEO keywords like 'homes for sale in [city]' and 'best realtor in [area]'",
+        "Use AI to analyze market data and identify likely sellers before they list",
+        "Automate open house follow-up with personalized sequences for every attendee"
+      ] },
+      { type: "heading", text: "Qualifying Leads with AI" },
+      { type: "paragraph", text: "Not every lead is ready to buy or sell immediately. AI qualification systems ask the right questions — timeline, budget, pre-approval status, motivation level — and categorize leads into hot, warm, and cold segments. Hot leads get immediate attention from your agents. Warm leads enter automated nurture sequences. Cold leads receive long-term drip campaigns that keep you top-of-mind." },
+      { type: "paragraph", text: "This qualification process ensures your agents spend their valuable time with prospects who are ready to transact, dramatically improving productivity and close rates." },
+      { type: "quote", text: "Our AI systems qualified and nurtured leads around the clock. We closed $2.1M in new deals within six months — deals we would have completely missed without AI.", author: "Angela Chen, Managing Broker" },
+      { type: "heading", text: "The Technology Stack for Modern Real Estate" },
+      { type: "paragraph", text: "The winning real estate technology stack combines a CRM (like Follow Up Boss or KVCore), AI calling and texting agents, automated email marketing, social media advertising, and a high-converting IDX website. When these systems work together, they create a lead generation and conversion machine that runs continuously — even when you are sleeping, showing properties, or on vacation." },
+      { type: "cta", text: "Ready to transform your real estate business with AI? Book a free strategy session tailored for agents and brokerages." }
+    ],
+    relatedPosts: ["ai-automation-revenue-growth-2025", "ai-follow-up-sequences", "local-business-digital-marketing"]
+  }
+];
+function getBlogPostBySlug(slug) {
+  return BLOG_POSTS_FULL.find((p) => p.slug === slug);
+}
+function getRelatedPosts(slugs) {
+  return BLOG_POSTS_FULL.filter((p) => slugs.includes(p.slug));
+}
+function getBreadcrumbs(path) {
+  const crumbs = [{ label: "Home", href: "/" }];
+  if (path === "/") return crumbs;
+  const slug = path.replace("/", "");
+  const service = ALL_SERVICES$1.find((s) => s.slug === slug);
+  if (service) {
+    crumbs.push({ label: "Services", href: "/services" });
+    crumbs.push({ label: service.title });
+    return crumbs;
+  }
+  const blogPost = getBlogPostBySlug(slug);
+  if (blogPost) {
+    crumbs.push({ label: "Blog", href: "/blog" });
+    const title = blogPost.title.length > 50 ? blogPost.title.substring(0, 50) + "..." : blogPost.title;
+    crumbs.push({ label: title });
+    return crumbs;
+  }
+  const caseStudy = CASE_STUDIES.find((cs) => cs.id === slug);
+  if (caseStudy) {
+    crumbs.push({ label: "Portfolio", href: "/portfolio" });
+    const title = caseStudy.title.length > 50 ? caseStudy.title.substring(0, 50) + "..." : caseStudy.title;
+    crumbs.push({ label: title });
+    return crumbs;
+  }
+  const segments = path.split("/").filter(Boolean);
+  if (segments[0] === "services") {
+    crumbs.push({ label: "Services", href: "/services" });
+    if (segments[1]) {
+      const name = segments[1].split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      crumbs.push({ label: name });
+    }
+  } else if (segments[0] === "blog") {
+    crumbs.push({ label: "Blog", href: "/blog" });
+    if (segments[1]) {
+      const name = segments[1].split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      crumbs.push({ label: name.length > 50 ? name.substring(0, 50) + "..." : name });
+    }
+  } else if (segments[0] === "portfolio") {
+    crumbs.push({ label: "Portfolio", href: "/portfolio" });
+    if (segments[1]) {
+      crumbs.push({ label: `Case Study #${segments[1]}` });
+    }
+  } else {
+    const name = segments[0].split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    crumbs.push({ label: name });
+  }
+  return crumbs;
+}
+function getBreadcrumbSchema(path) {
+  const crumbs = getBreadcrumbs(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": crumbs.map((crumb, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": crumb.label,
+      "item": crumb.href ? `https://infiniterankers.io${crumb.href === "/" ? "" : crumb.href}` : `https://infiniterankers.io${path}`
+    }))
+  };
+}
+function Breadcrumbs() {
+  const [location] = wouter.useLocation();
+  if (location === "/") return null;
+  const crumbs = getBreadcrumbs(location);
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "script",
+      {
+        type: "application/ld+json",
+        dangerouslySetInnerHTML: { __html: JSON.stringify(getBreadcrumbSchema(location)) }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("nav", { "aria-label": "Breadcrumb", className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-2", "data-testid": "breadcrumbs", children: /* @__PURE__ */ jsxRuntime.jsx("ol", { className: "flex items-center gap-1 flex-wrap text-xs sm:text-sm", children: crumbs.map((crumb, i) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex items-center gap-1", children: [
+      i > 0 && /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronRight, { className: "w-3 h-3 text-muted-foreground/50" }),
+      crumb.href ? /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: crumb.href, children: /* @__PURE__ */ jsxRuntime.jsxs(
+        "span",
+        {
+          className: "text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1",
+          "data-testid": `breadcrumb-${crumb.label.toLowerCase().replace(/\s+/g, "-")}`,
+          children: [
+            i === 0 && /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Home, { className: "w-3 h-3" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { children: crumb.label })
+          ]
+        }
+      ) }) : /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-foreground font-medium", "data-testid": `breadcrumb-current`, children: crumb.label })
+    ] }, i)) }) })
+  ] });
+}
+function SEOHead({
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  keywords,
+  canonical
+}) {
+  React.useEffect(() => {
+    document.title = title;
+    const setMeta = (name, content, property) => {
+      const attr = property ? "property" : "name";
+      let el = document.querySelector(`meta[${attr}="${name}"]`);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, name);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", content);
+    };
+    const setLink = (rel, href) => {
+      let el = document.querySelector(`link[rel="${rel}"]`);
+      if (!el) {
+        el = document.createElement("link");
+        el.setAttribute("rel", rel);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("href", href);
+    };
+    setMeta("description", description);
+    if (keywords) {
+      setMeta("keywords", keywords);
+    }
+    setMeta("og:title", ogTitle || title, true);
+    setMeta("og:description", ogDescription || description, true);
+    setMeta("og:type", "website", true);
+    setMeta("og:site_name", "Infinite Rankers", true);
+    setMeta("og:url", canonical || window.location.href, true);
+    if (ogImage) {
+      setMeta("og:image", ogImage, true);
+      setMeta("twitter:image", ogImage);
+    }
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", ogTitle || title);
+    setMeta("twitter:description", ogDescription || description);
+    if (canonical) {
+      setLink("canonical", canonical);
+    }
+  }, [title, description, ogTitle, ogDescription, ogImage, keywords, canonical]);
+  return null;
+}
+const badgeVariants = classVarianceAuthority.cva(
+  // Whitespace-nowrap: Badges should never wrap.
+  "whitespace-nowrap inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover-elevate ",
+  {
+    variants: {
+      variant: {
+        default: "border-transparent bg-primary text-primary-foreground shadow-xs",
+        secondary: "border-transparent bg-secondary text-secondary-foreground",
+        destructive: "border-transparent bg-destructive text-destructive-foreground shadow-xs",
+        outline: " border [border-color:var(--badge-outline)] shadow-xs"
+      }
+    },
+    defaultVariants: {
+      variant: "default"
+    }
+  }
+);
+function Badge({ className, variant, ...props }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: cn(badgeVariants({ variant }), className), ...props });
+}
+const Card = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  "div",
+  {
+    ref,
+    className: cn(
+      "shadcn-card rounded-xl border bg-card border-card-border text-card-foreground shadow-sm",
+      className
+    ),
+    ...props
+  }
+));
+Card.displayName = "Card";
+const CardHeader = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  "div",
+  {
+    ref,
+    className: cn("flex flex-col space-y-1.5 p-6", className),
+    ...props
+  }
+));
+CardHeader.displayName = "CardHeader";
+const CardTitle = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  "div",
+  {
+    ref,
+    className: cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className
+    ),
+    ...props
+  }
+));
+CardTitle.displayName = "CardTitle";
+const CardDescription = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  "div",
+  {
+    ref,
+    className: cn("text-sm text-muted-foreground", className),
+    ...props
+  }
+));
+CardDescription.displayName = "CardDescription";
+const CardContent = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx("div", { ref, className: cn("p-6 pt-0", className), ...props }));
+CardContent.displayName = "CardContent";
+const CardFooter = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  "div",
+  {
+    ref,
+    className: cn("flex items-center p-6 pt-0", className),
+    ...props
+  }
+));
+CardFooter.displayName = "CardFooter";
+function AnimatedCounter({ value, suffix = "" }) {
+  const [count2, setCount] = React.useState(0);
+  const ref = React.useRef(null);
+  const inView = framerMotion.useInView(ref, { once: true });
+  const numericValue = parseInt(value.replace(/[^0-9]/g, ""));
+  React.useEffect(() => {
+    if (inView && numericValue) {
+      let start = 0;
+      const duration = 2e3;
+      const increment = numericValue / (duration / 16);
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= numericValue) {
+          setCount(numericValue);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(start));
+        }
+      }, 16);
+      return () => clearInterval(timer);
+    }
+  }, [inView, numericValue]);
+  const prefix = value.match(/^[^0-9]*/)?.[0] || "";
+  const suffixStr = value.match(/[^0-9]*$/)?.[0] || "";
+  return /* @__PURE__ */ jsxRuntime.jsxs("span", { ref, children: [
+    prefix,
+    inView ? count2.toLocaleString() : "0",
+    suffixStr
+  ] });
+}
+function GradientMeshBackground() {
+  const canvasRef = React.useRef(null);
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let animationId;
+    let time = 0;
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    const orbs = [
+      { x: 0.2, y: 0.3, r: 300, color: "rgba(99, 102, 241, 0.12)", speed: 3e-4, phase: 0 },
+      { x: 0.7, y: 0.2, r: 350, color: "rgba(139, 92, 246, 0.10)", speed: 4e-4, phase: 1 },
+      { x: 0.5, y: 0.7, r: 280, color: "rgba(6, 182, 212, 0.08)", speed: 5e-4, phase: 2 },
+      { x: 0.8, y: 0.6, r: 320, color: "rgba(59, 130, 246, 0.09)", speed: 3e-4, phase: 3 },
+      { x: 0.3, y: 0.8, r: 260, color: "rgba(168, 85, 247, 0.07)", speed: 4e-4, phase: 4 }
+    ];
+    const animate = () => {
+      time += 1;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      orbs.forEach((orb) => {
+        const x = canvas.width * (orb.x + Math.sin(time * orb.speed + orb.phase) * 0.08);
+        const y = canvas.height * (orb.y + Math.cos(time * orb.speed * 0.7 + orb.phase) * 0.06);
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, orb.r * (canvas.width / 1400));
+        gradient.addColorStop(0, orb.color);
+        gradient.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      });
+      animationId = requestAnimationFrame(animate);
+    };
+    animate();
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+  return /* @__PURE__ */ jsxRuntime.jsx("canvas", { ref: canvasRef, className: "absolute inset-0 w-full h-full", style: { willChange: "transform" } });
+}
+function FloatingGridLines() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "absolute inset-0 overflow-hidden pointer-events-none", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "div",
+      {
+        className: "absolute inset-0 opacity-[0.03]",
+        style: {
+          backgroundImage: "linear-gradient(rgba(99,102,241,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.5) 1px, transparent 1px)",
+          backgroundSize: "80px 80px"
+        }
+      }
+    ),
+    [...Array(5)].map((_, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        className: "absolute h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent",
+        style: { top: `${20 + i * 15}%`, width: "100%" },
+        animate: { opacity: [0.1, 0.3, 0.1], x: ["-5%", "5%", "-5%"] },
+        transition: { duration: 8 + i * 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }
+      },
+      i
+    ))
+  ] });
+}
+function LiveDashboard() {
+  const [revenue, setRevenue] = React.useState(47832);
+  const [leads, setLeads] = React.useState(1247);
+  const [conversion, setConversion] = React.useState(12.4);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setRevenue((prev) => prev + Math.floor(Math.random() * 50 + 10));
+      setLeads((prev) => prev + Math.floor(Math.random() * 3));
+      setConversion((prev) => Math.min(15, prev + (Math.random() * 0.1 - 0.03)));
+    }, 2e3);
+    return () => clearInterval(interval);
+  }, []);
+  const sparklinePoints = React.useRef(
+    Array.from({ length: 20 }, (_, i) => 30 + Math.sin(i * 0.5) * 15 + Math.random() * 10)
+  ).current;
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 30, rotateY: -5 },
+      animate: { opacity: 1, y: 0, rotateY: 0 },
+      transition: { duration: 1, delay: 0.4, ease: "easeOut" },
+      className: "relative",
+      style: { perspective: "1200px" },
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -inset-3 sm:-inset-4 bg-gradient-to-br from-blue-200/30 via-indigo-200/20 to-purple-200/30 rounded-2xl blur-2xl" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative bg-white/70 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-2xl shadow-indigo-200/20 p-4 sm:p-6 overflow-hidden", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-bl from-blue-100/50 to-transparent rounded-bl-full" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-3 sm:mb-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Activity, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs sm:text-sm font-semibold text-gray-800", children: "AI Revenue Pipeline" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "ml-auto flex items-center gap-1.5", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse" }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[10px] sm:text-xs font-medium text-emerald-600", children: "Live" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-5", children: [
+            { label: "Revenue", value: `$${revenue.toLocaleString()}`, change: "+23%", color: "text-blue-600" },
+            { label: "Leads", value: leads.toLocaleString(), change: "+18%", color: "text-indigo-600" },
+            { label: "Conversion", value: `${conversion.toFixed(1)}%`, change: "+5.2%", color: "text-purple-600" }
+          ].map((metric, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, scale: 0.9 },
+              animate: { opacity: 1, scale: 1 },
+              transition: { delay: 0.8 + i * 0.1 },
+              className: "bg-gray-50/80 rounded-lg p-2 sm:p-3 border border-gray-100",
+              "data-testid": `metric-${metric.label.toLowerCase()}`,
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1", children: metric.label }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: `text-sm sm:text-lg font-bold ${metric.color} tabular-nums`, children: metric.value }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-emerald-600 font-medium mt-0.5", children: metric.change })
+              ]
+            },
+            metric.label
+          )) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-gray-50/80 rounded-lg p-3 sm:p-4 border border-gray-100 mb-3 sm:mb-4", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between mb-1.5 sm:mb-2", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[10px] sm:text-xs font-medium text-gray-500", children: "Revenue Growth" }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[10px] sm:text-xs text-emerald-600 font-medium", children: "+34% MoM" })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 200 60", className: "w-full h-10 sm:h-12", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("defs", { children: /* @__PURE__ */ jsxRuntime.jsxs("linearGradient", { id: "sparkGrad", x1: "0", y1: "0", x2: "0", y2: "1", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "0%", stopColor: "rgb(99, 102, 241)", stopOpacity: "0.3" }),
+                /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "100%", stopColor: "rgb(99, 102, 241)", stopOpacity: "0.02" })
+              ] }) }),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                "path",
+                {
+                  d: `M0,${60 - sparklinePoints[0]} ${sparklinePoints.map((p, i) => `L${i / 19 * 200},${60 - p}`).join(" ")} L200,60 L0,60 Z`,
+                  fill: "url(#sparkGrad)"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                "path",
+                {
+                  d: `M0,${60 - sparklinePoints[0]} ${sparklinePoints.map((p, i) => `L${i / 19 * 200},${60 - p}`).join(" ")}`,
+                  fill: "none",
+                  stroke: "rgb(99, 102, 241)",
+                  strokeWidth: "2",
+                  strokeLinecap: "round"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-1.5 sm:space-y-2", children: HOW_IT_WORKS_STEPS.slice(0, 4).map((step, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, x: 20 },
+              animate: { opacity: 1, x: 0 },
+              transition: { delay: 1 + i * 0.12 },
+              className: "flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2.5 rounded-lg bg-white/60 border border-gray-100",
+              "data-testid": `pipeline-step-${step.step}`,
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-5 h-5 sm:w-7 sm:h-7 rounded-md sm:rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-sm", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-white text-[9px] sm:text-xs font-bold", children: step.step }) }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[10px] sm:text-sm font-medium text-gray-700 flex-1 leading-tight", children: step.title }),
+                i < 3 ? /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronRight, { className: "w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400" }) : /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-500" })
+              ]
+            },
+            step.step
+          )) }),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+              transition: { delay: 1.6 },
+              className: "mt-3 sm:mt-4 p-2.5 sm:p-3 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100",
+              children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-2 flex-wrap", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[10px] sm:text-xs text-gray-500", children: "Projected Monthly Revenue" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs sm:text-sm font-bold text-blue-700", children: "+$48,000" })
+              ] })
+            }
+          )
+        ] })
+      ]
+    }
+  );
+}
+function HeroSection$1() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative min-h-[90vh] lg:min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24", "data-testid": "hero-section", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-b from-white via-blue-50/30 to-indigo-50/40" }),
+    /* @__PURE__ */ jsxRuntime.jsx(GradientMeshBackground, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(FloatingGridLines, {}),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-28 w-full", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid lg:grid-cols-2 gap-8 lg:gap-16 items-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, ease: "easeOut" },
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsxs(Badge, { variant: "secondary", className: "mb-4 sm:mb-6", "data-testid": "badge-hero-agency", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Sparkles, { className: "w-3 h-3 mr-1" }),
+              " AI Revenue Growth Agency"
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.12] mb-4 sm:mb-6", style: { fontSize: "clamp(1.75rem, 5vw, 3.75rem)" }, children: [
+              "Turn Your Business Into an",
+              " ",
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent", children: "AI-Powered Revenue Machine" })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-xl", style: { fontSize: "clamp(0.938rem, 2vw, 1.25rem)" }, children: "We build automated systems that generate customers and revenue. Stop chasing leads manually — let AI do the heavy lifting." }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { className: "w-full sm:w-auto", "data-testid": "button-hero-book-demo", children: [
+                "Book Free Strategy Session ",
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+              ] }) }),
+              /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outline", className: "w-full sm:w-auto", "data-testid": "button-hero-services", children: "Explore Services" }) })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap items-center gap-4 sm:gap-6 mt-6 sm:mt-10", children: [
+              { icon: lucideReact.Shield, text: "Flexible Plans Available" },
+              { icon: lucideReact.Clock, text: "Results in 30 Days" },
+              { icon: lucideReact.Users, text: "9,500+ Clients" }
+            ].map((item) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1.5 text-xs sm:text-sm text-gray-500", "data-testid": `trust-${item.text.toLowerCase().replace(/\s/g, "-")}`, children: [
+              /* @__PURE__ */ jsxRuntime.jsx(item.icon, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { children: item.text })
+            ] }, item.text)) })
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 lg:mt-0", children: /* @__PURE__ */ jsxRuntime.jsx(LiveDashboard, {}) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-0 left-0 right-0 h-16 sm:h-24 bg-gradient-to-t from-white to-transparent" })
+  ] });
+}
+function AchievementsSection() {
+  const icons = [lucideReact.Building2, lucideReact.DollarSign, lucideReact.Users, lucideReact.Shield];
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-8 sm:py-10 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 relative overflow-hidden", "data-testid": "achievements-section", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "div",
+      {
+        className: "absolute inset-0 opacity-10",
+        style: {
+          backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
+          backgroundSize: "24px 24px"
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6", children: ACHIEVEMENTS.map((a, i) => {
+      const Icon = icons[i];
+      return /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: "-30px" },
+          transition: { delay: i * 0.1, duration: 0.4 },
+          whileHover: { scale: 1.03, y: -2 },
+          className: "text-center p-3 sm:p-4 rounded-xl bg-white/[0.08] backdrop-blur-sm border border-white/[0.1] cursor-default group",
+          "data-testid": `achievement-${i}`,
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-white/[0.12] flex items-center justify-center mx-auto mb-2", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-4 h-4 text-white/90" }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-0.5 tracking-tight", children: /* @__PURE__ */ jsxRuntime.jsx(AnimatedCounter, { value: a.value }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-white/70 font-medium", children: a.label })
+          ]
+        },
+        a.label
+      );
+    }) }) })
+  ] });
+}
+function PipelineSection() {
+  const nodes = [
+    { icon: lucideReact.Brain, label: "AI Control Center", desc: "Centralized intelligence hub", color: "from-blue-500 to-blue-600" },
+    { icon: lucideReact.Database, label: "Data Pipeline", desc: "Real-time data processing", color: "from-indigo-500 to-indigo-600" },
+    { icon: lucideReact.Cpu, label: "Automation Engine", desc: "Multi-channel automation", color: "from-violet-500 to-violet-600" },
+    { icon: lucideReact.Network, label: "Marketing Platforms", desc: "Google, Meta, LinkedIn", color: "from-purple-500 to-purple-600" },
+    { icon: lucideReact.TrendingUp, label: "Revenue System", desc: "Predictable growth", color: "from-fuchsia-500 to-pink-500" }
+  ];
+  const integrations = [
+    { icon: lucideReact.MessageSquare, label: "AI Chatbots" },
+    { icon: lucideReact.Phone, label: "AI Calling" },
+    { icon: lucideReact.Mail, label: "Email Automation" },
+    { icon: lucideReact.BarChart3, label: "Analytics" },
+    { icon: lucideReact.Target, label: "Ad Platforms" },
+    { icon: lucideReact.Workflow, label: "CRM Systems" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden", "data-testid": "pipeline-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-10 sm:mb-16",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "AI Growth Infrastructure" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "Your Complete Revenue Automation System" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "Every component of your growth engine, connected and optimized by AI." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative max-w-4xl mx-auto mb-10 sm:mb-16", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute left-5 sm:left-6 lg:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-blue-300 via-indigo-300 to-purple-300 lg:-translate-x-1/2" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute left-5 sm:left-6 lg:left-1/2 top-0 bottom-0 w-px lg:-translate-x-1/2 overflow-hidden", children: /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          className: "w-full h-8 bg-gradient-to-b from-transparent via-blue-500 to-transparent",
+          animate: { y: ["-100%", "500%"] },
+          transition: { duration: 3, repeat: Infinity, ease: "linear" }
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-4 lg:space-y-0 lg:grid lg:grid-cols-1 lg:gap-4", children: nodes.map((node, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, x: 20 },
+          whileInView: { opacity: 1, x: 0 },
+          viewport: { once: true },
+          transition: { delay: i * 0.1, duration: 0.5 },
+          className: `flex items-start gap-3 sm:gap-4 pl-10 sm:pl-14 lg:pl-0 relative ${i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"}`,
+          "data-testid": `pipeline-node-${i}`,
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: `absolute left-3 sm:left-4 lg:hidden w-4 h-4 rounded-full bg-gradient-to-br ${node.color} ring-3 ring-white shadow-md top-4` }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: `flex-1 ${i % 2 === 0 ? "lg:text-right" : "lg:text-left"}`, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "bg-white rounded-xl p-4 sm:p-5 border border-gray-200/80 shadow-sm", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br ${node.color} flex items-center justify-center shadow-sm flex-shrink-0`, children: /* @__PURE__ */ jsxRuntime.jsx(node.icon, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 text-sm sm:text-base", children: node.label }),
+                /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-500", children: node.desc })
+              ] })
+            ] }) }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "hidden lg:flex w-8 items-center justify-center relative z-10", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-4 h-4 rounded-full bg-gradient-to-br ${node.color} ring-4 ring-white shadow-md` }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex-1 hidden lg:block" })
+          ]
+        },
+        node.label
+      )) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4", children: integrations.map((item, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 15 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.06 },
+        className: "flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-xl bg-white border border-gray-200/60 shadow-sm",
+        "data-testid": `integration-${item.label.toLowerCase().replace(/\s/g, "-")}`,
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center border border-blue-100/50", children: /* @__PURE__ */ jsxRuntime.jsx(item.icon, { className: "w-4 h-4 sm:w-5 sm:h-5 text-blue-600" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-[10px] sm:text-xs font-medium text-gray-600 text-center", children: item.label })
+        ]
+      },
+      item.label
+    )) })
+  ] }) });
+}
+function ServicesSection() {
+  const featuredServices = SERVICE_CATEGORIES.flatMap(
+    (cat) => cat.services.slice(0, 2).map((s) => ({
+      ...s,
+      category: cat.title
+    }))
+  );
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/80 to-white", "data-testid": "services-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-8 sm:mb-16",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Our Services" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "Revenue-Generating Systems Built for Growth" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "From AI automation to lead generation, end-to-end solutions that drive measurable results." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5", children: featuredServices.map((service, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.04 },
+        children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${service.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs(
+          "div",
+          {
+            className: "group bg-white rounded-xl p-3.5 sm:p-5 border border-gray-200/60 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer h-full",
+            "data-testid": `service-card-${service.slug}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-3 sm:mb-4 border border-blue-100/40", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Zap, { className: "w-4 h-4 sm:w-5 sm:h-5 text-blue-600" }) }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs font-medium text-blue-600 mb-1", children: service.category }),
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xs sm:text-sm font-semibold text-gray-900 mb-1.5 sm:mb-2 leading-snug", children: service.title }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-[10px] sm:text-xs text-gray-500 leading-relaxed mb-2 sm:mb-3 line-clamp-2 hidden sm:block", children: service.shortDesc }),
+              /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center text-[10px] sm:text-xs font-medium text-blue-600 group-hover:gap-2 gap-1 transition-all", children: [
+                "Explore Service ",
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowUpRight, { className: "w-3 h-3" })
+              ] })
+            ]
+          }
+        ) })
+      },
+      service.slug
+    )) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center mt-8 sm:mt-10", children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", className: "border-gray-300 text-gray-700 w-full sm:w-auto", "data-testid": "button-view-all-services", children: [
+      "View All 30+ Services ",
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+    ] }) }) })
+  ] }) });
+}
+function PortfolioSection() {
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-white", "data-testid": "portfolio-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-8 sm:mb-16",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Results" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "Real Results for Real Businesses" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "See how our AI systems have transformed businesses across industries." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6", children: CASE_STUDIES.slice(0, 3).map((cs, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.1 },
+        className: "bg-white rounded-xl border border-gray-200/80 shadow-sm overflow-hidden group",
+        "data-testid": `case-study-card-${cs.id}`,
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-1.5 sm:h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-4 sm:p-6", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-2 sm:mb-3 text-xs", "data-testid": `case-study-label-${cs.id}`, children: cs.label }),
+            /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-base sm:text-lg font-semibold text-gray-900 mb-1.5 sm:mb-2", "data-testid": `case-study-title-${cs.id}`, children: cs.title }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-500 mb-4 sm:mb-5", children: cs.business }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "bg-gray-50 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4", children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 200 50", className: "w-full h-8 sm:h-10 mb-1 sm:mb-2", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("defs", { children: /* @__PURE__ */ jsxRuntime.jsxs("linearGradient", { id: `csGrad-${cs.id}`, x1: "0", y1: "0", x2: "0", y2: "1", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "0%", stopColor: "rgb(99, 102, 241)", stopOpacity: "0.2" }),
+                /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "100%", stopColor: "rgb(99, 102, 241)", stopOpacity: "0" })
+              ] }) }),
+              /* @__PURE__ */ jsxRuntime.jsx("path", { d: `M0,45 C30,40 50,35 80,25 S130,10 160,8 S190,12 200,15 L200,50 L0,50 Z`, fill: `url(#csGrad-${cs.id})` }),
+              /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M0,45 C30,40 50,35 80,25 S130,10 160,8 S190,12 200,15", fill: "none", stroke: "rgb(99, 102, 241)", strokeWidth: "2", strokeLinecap: "round" })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-2 gap-2 sm:gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center p-2 sm:p-3 rounded-lg bg-blue-50/80 border border-blue-100/50", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-base sm:text-lg font-bold text-blue-700", "data-testid": `case-study-metric1-${cs.id}`, children: cs.results.metric1 }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500", children: cs.results.label1 })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center p-2 sm:p-3 rounded-lg bg-indigo-50/80 border border-indigo-100/50", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-base sm:text-lg font-bold text-indigo-700", "data-testid": `case-study-metric2-${cs.id}`, children: cs.results.metric2 }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500", children: cs.results.label2 })
+              ] })
+            ] })
+          ] })
+        ]
+      },
+      cs.id
+    )) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center mt-8 sm:mt-10", children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/portfolio", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", className: "border-gray-300 text-gray-700 w-full sm:w-auto", "data-testid": "button-view-portfolio", children: [
+      "View All Case Studies ",
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+    ] }) }) })
+  ] }) });
+}
+function TrustSection() {
+  const logos = [
+    "TechFlow",
+    "DataSync",
+    "CloudVault",
+    "ScaleUp",
+    "GrowthAI",
+    "NexGen",
+    "AutoPilot",
+    "RevStream",
+    "PipelineX",
+    "SmartScale"
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-gray-50/60 to-white overflow-hidden", "data-testid": "trust-section", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12", children: /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center",
+        children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs sm:text-sm text-gray-500", children: "Trusted by innovative companies worldwide" })
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative mb-8 sm:mb-16", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute left-0 top-0 bottom-0 w-16 sm:w-40 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute right-0 top-0 bottom-0 w-16 sm:w-40 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex gap-8 sm:gap-12 animate-slide-left", style: { width: "max-content" }, children: [...logos, ...logos, ...logos].map((name, i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 text-gray-400 select-none", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Building2, { className: "w-4 h-4 sm:w-5 sm:h-5" }),
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm sm:text-lg font-semibold whitespace-nowrap", children: name })
+      ] }, `${name}-${i}`)) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6", children: [
+        { value: "9500+", label: "Clients Worldwide", icon: lucideReact.Users },
+        { value: "$50M+", label: "Revenue Generated", icon: lucideReact.DollarSign },
+        { value: "98%", label: "Client Retention", icon: lucideReact.Award },
+        { value: "24/7", label: "AI Systems Active", icon: lucideReact.Cpu }
+      ].map((stat, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { delay: i * 0.1 },
+          whileHover: { scale: 1.03, y: -2 },
+          className: "text-center p-4 sm:p-6 rounded-xl bg-white border border-gray-200/60 shadow-sm",
+          "data-testid": `trust-stat-${i}`,
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mx-auto mb-2 sm:mb-3 border border-blue-100/40", children: /* @__PURE__ */ jsxRuntime.jsx(stat.icon, { className: "w-4 h-4 sm:w-5 sm:h-5 text-blue-600" }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-lg sm:text-2xl font-bold text-gray-900 mb-0.5 sm:mb-1", children: /* @__PURE__ */ jsxRuntime.jsx(AnimatedCounter, { value: stat.value }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-sm text-gray-500", children: stat.label })
+          ]
+        },
+        stat.label
+      )) }),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 10 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { delay: 0.4 },
+          className: "flex justify-center mt-6 sm:mt-8",
+          children: /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "inline" })
+        }
+      )
+    ] })
+  ] });
+}
+function TestimonialsCarousel() {
+  const extendedTestimonials = [
+    ...TESTIMONIALS,
+    { name: "David Park", role: "CEO, TechVentures", text: "The ROI we've seen from their AI automation is incredible. Our lead response time went from hours to seconds.", rating: 5 },
+    { name: "Lisa Chen", role: "VP Marketing, GrowthCo", text: "They transformed our entire marketing funnel. Revenue is up 3x in just 6 months.", rating: 5 }
+  ];
+  const duplicated = [...extendedTestimonials, ...extendedTestimonials];
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-14 sm:py-20 lg:py-24 bg-white overflow-hidden", "data-testid": "testimonials-section", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12", children: /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Testimonials" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "Trusted by Revenue-Focused Businesses" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "Hear from business owners who transformed their growth with our AI systems." })
+        ]
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute left-0 top-0 bottom-0 w-12 sm:w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute right-0 top-0 bottom-0 w-12 sm:w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex gap-4 sm:gap-6 animate-slide-left", style: { width: "max-content", animationDuration: "40s" }, children: duplicated.map((t, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+        "div",
+        {
+          className: "w-[280px] sm:w-[350px] flex-shrink-0 bg-white rounded-xl border border-gray-200/80 p-4 sm:p-6 shadow-sm",
+          "data-testid": `testimonial-card-${i}`,
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex gap-0.5 mb-2 sm:mb-3", children: Array.from({ length: t.rating }).map((_, j) => /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Star, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 fill-amber-400" }, j)) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-xs sm:text-sm text-gray-600 leading-relaxed mb-3 sm:mb-4 italic", children: [
+              "“",
+              t.text,
+              "”"
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2.5 sm:gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] sm:text-xs font-bold flex-shrink-0", children: t.name.split(" ").map((n) => n[0]).join("") }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs sm:text-sm font-semibold text-gray-900", children: t.name }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500", children: t.role })
+              ] })
+            ] })
+          ]
+        },
+        `${t.name}-${i}`
+      )) })
+    ] })
+  ] });
+}
+function TeamSection() {
+  const experts = [
+    { name: "AI Automation", desc: "Custom AI agents and chatbots that convert leads 24/7", icon: lucideReact.Brain, stat: "200+ Automations Built" },
+    { name: "Revenue Strategy", desc: "Data-driven growth strategies tailored to your business", icon: lucideReact.LineChart, stat: "$50M+ Generated" },
+    { name: "Ad Management", desc: "Google & Meta campaigns optimized by AI for maximum ROAS", icon: lucideReact.Target, stat: "15x Average ROAS" },
+    { name: "Development", desc: "High-converting websites and landing pages that sell", icon: lucideReact.Layers, stat: "9,500+ Projects Delivered" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-white via-blue-50/20 to-white", "data-testid": "team-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-8 sm:mb-16",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Expertise" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "World-Class AI & Marketing Expertise" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "Our team combines deep AI technology expertise with proven digital marketing strategies." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6", children: experts.map((expert, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.1 },
+        whileHover: { y: -4 },
+        className: "bg-white rounded-xl p-4 sm:p-6 border border-gray-200/60 shadow-sm text-center group",
+        "data-testid": `expert-card-${i}`,
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg shadow-blue-200/40 group-hover:scale-105 transition-transform", children: /* @__PURE__ */ jsxRuntime.jsx(expert.icon, { className: "w-5 h-5 sm:w-7 sm:h-7 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base", children: expert.name }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4 leading-relaxed hidden sm:block", children: expert.desc }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs font-semibold text-blue-600 bg-blue-50 rounded-full py-1 sm:py-1.5 px-2 sm:px-3 inline-block", children: expert.stat })
+        ]
+      },
+      expert.name
+    )) })
+  ] }) });
+}
+function ResultsGallery() {
+  const results = [
+    { title: "E-Commerce Revenue", before: "$12K/mo", after: "$89K/mo", increase: "+642%", metric: "Monthly Revenue" },
+    { title: "SaaS Lead Generation", before: "50 leads/mo", after: "340 leads/mo", increase: "+580%", metric: "Qualified Leads" },
+    { title: "Local Service Business", before: "15 calls/week", after: "87 calls/week", increase: "+480%", metric: "Inbound Calls" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "results-gallery-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-8 sm:mb-16",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Proven Results" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "Before & After: The AI Difference" })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6", children: results.map((r, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.1 },
+        className: "bg-white rounded-xl border border-gray-200/80 overflow-hidden shadow-sm",
+        "data-testid": `result-card-${i}`,
+        children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-4 sm:p-6", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base", children: r.title }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 sm:gap-3 mb-3", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-1 text-center p-2 sm:p-3 rounded-lg bg-red-50/80 border border-red-100/50", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1", children: "Before" }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs sm:text-sm font-bold text-red-600", children: r.before })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-1 text-center p-2 sm:p-3 rounded-lg bg-emerald-50/80 border border-emerald-100/50", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1", children: "After" }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs sm:text-sm font-bold text-emerald-600", children: r.after })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-base sm:text-lg font-bold text-blue-700 bg-blue-50 rounded-full py-1 px-3 sm:px-4", children: r.increase }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500 mt-1", children: r.metric })
+          ] })
+        ] })
+      },
+      r.title
+    )) })
+  ] }) });
+}
+function HowItWorksSection() {
+  const iconMap2 = {
+    Bot: lucideReact.Bot,
+    Globe: lucideReact.Globe,
+    ArrowRight: lucideReact.ArrowRight,
+    CalendarCheck: lucideReact.CalendarCheck,
+    DollarSign: lucideReact.DollarSign,
+    Target: lucideReact.Target,
+    Zap: lucideReact.Zap
+  };
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-white", "data-testid": "how-it-works-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-8 sm:mb-16",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "How It Works" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "From Traffic to Revenue in 5 Steps" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "Our AI systems create a seamless pipeline that turns strangers into paying customers automatically." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "hidden lg:block absolute top-7 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-blue-200/0 via-blue-300 to-purple-200/0" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-8 lg:gap-6", children: HOW_IT_WORKS_STEPS.map((step, i) => {
+        iconMap2[step.icon] || lucideReact.Zap;
+        return /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 20 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { delay: i * 0.08, duration: 0.4 },
+            className: `text-center relative ${i === 4 ? "col-span-2 lg:col-span-1 max-w-[200px] mx-auto" : ""}`,
+            "data-testid": `how-it-works-step-${step.step}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative inline-flex", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -inset-1.5 sm:-inset-2 bg-gradient-to-br from-blue-200/30 to-indigo-200/30 rounded-full blur-xl" }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg shadow-blue-200/40", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-white font-bold text-sm sm:text-lg", children: step.step }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xs sm:text-sm font-semibold text-gray-900 mb-1 sm:mb-2", children: step.title }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-[10px] sm:text-xs text-gray-500 leading-relaxed", children: step.description })
+            ]
+          },
+          step.step
+        );
+      }) })
+    ] })
+  ] }) });
+}
+function MidCTASection() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-10 sm:py-14 lg:py-16 relative overflow-hidden", "data-testid": "mid-cta-section", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600" }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "div",
+      {
+        className: "absolute inset-0 opacity-10",
+        style: {
+          backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
+          backgroundSize: "20px 20px"
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        className: "absolute -top-20 -right-20 w-60 sm:w-80 h-60 sm:h-80 bg-white/5 rounded-full blur-3xl",
+        animate: { scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] },
+        transition: { duration: 5, repeat: Infinity }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-white mb-3 sm:mb-4", style: { fontSize: "clamp(1.25rem, 4vw, 1.875rem)" }, children: "Ready to See What AI Can Do for Your Revenue?" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-white/80 mb-5 sm:mb-6 max-w-xl mx-auto text-sm sm:text-base", children: "Get a free strategy session and custom growth roadmap for your business. Our support team is available 24/7 — including weekends." }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", className: "w-full sm:w-auto", "data-testid": "button-mid-cta", children: [
+            "Book Free Strategy Session ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+          ] }) })
+        ]
+      }
+    ) })
+  ] });
+}
+function PricingSection() {
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/80 to-white", "data-testid": "pricing-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-10 sm:mb-14",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsxs(Badge, { variant: "secondary", className: "mb-4", "data-testid": "badge-pricing", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.DollarSign, { className: "w-3 h-3 mr-1" }),
+            " Transparent Pricing"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }, children: "Transparent, Results-Driven Pricing" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "Choose the AI revenue system that matches your growth stage. No hidden fees, no long-term contracts." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid md:grid-cols-3 gap-4 sm:gap-6 mb-14 sm:mb-20", children: PRICING_TIERS.map((tier, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.1 },
+        children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: `p-5 sm:p-6 h-full relative ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`, "data-testid": `pricing-card-${tier.name.toLowerCase()}`, children: [
+          tier.discount && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -top-3 right-4", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { "data-testid": `badge-discount-${tier.name.toLowerCase()}`, children: tier.discount }) }),
+          tier.popular && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -top-3 left-4", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", "data-testid": "badge-popular", children: "Most Popular" }) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-6", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-1", children: tier.name }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-4", children: tier.description }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-baseline justify-center gap-1", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-3xl sm:text-4xl font-bold text-foreground", children: tier.price }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-muted-foreground", children: tier.period })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground mt-1", children: "Month-to-month, cancel anytime" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2.5 mb-6", children: tier.features.map((feature) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex items-start gap-2 text-sm text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-primary mt-0.5 shrink-0" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { children: feature })
+          ] }, feature)) }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { className: "w-full", variant: tier.popular ? "default" : "outline", "data-testid": `button-pricing-${tier.name.toLowerCase()}`, children: [
+            tier.cta,
+            " ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+          ] }) })
+        ] })
+      },
+      tier.name
+    )) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mt-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col items-center mb-6", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Shield, { className: "w-4 h-4 text-primary" }),
+            " No Hidden Fees"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-4 h-4 text-primary" }),
+            " Month-to-Month"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-primary" }),
+            " Cancel Anytime"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-3", children: /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "inline" }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/pricing", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-view-full-pricing", children: [
+        "View Full Pricing Details ",
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+      ] }) })
+    ] })
+  ] }) });
+}
+function BlogSection() {
+  const posts = BLOG_POSTS.slice(0, 6);
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/80 to-white", "data-testid": "blog-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        className: "text-center mb-8 sm:mb-16",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Latest Insights" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "font-bold text-gray-900 mb-3 sm:mb-4", style: { fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }, children: "Expert Resources for Business Growth" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "Actionable strategies and insights to help you grow your revenue with AI and automation." })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: posts.map((post, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.06 },
+        children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${post.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "overflow-hidden cursor-pointer h-full", "data-testid": `blog-card-${post.slug}`, children: [
+          /* @__PURE__ */ jsxRuntime.jsx(
+            "img",
+            {
+              src: post.image,
+              alt: post.title,
+              className: "w-full h-40 sm:h-44 object-cover",
+              loading: "lazy",
+              "data-testid": `img-blog-${post.slug}`
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-4 sm:p-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-2 text-xs", "data-testid": `badge-blog-category-${post.id}`, children: post.category }),
+            /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm sm:text-base font-semibold text-gray-900 mb-2 leading-snug line-clamp-2", "data-testid": `text-blog-title-${post.id}`, children: post.title }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-500 mb-3 line-clamp-2", "data-testid": `text-blog-excerpt-${post.id}`, children: post.excerpt }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 text-xs text-gray-400", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { "data-testid": `text-blog-date-${post.id}`, children: post.date }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { "data-testid": `text-blog-readtime-${post.id}`, children: post.readTime })
+            ] })
+          ] })
+        ] }) })
+      },
+      post.id
+    )) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center mt-8 sm:mt-10", children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/blog", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", className: "border-gray-300 text-gray-700 w-full sm:w-auto", "data-testid": "button-view-all-blog", children: [
+      "Read All Articles ",
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+    ] }) }) })
+  ] }) });
+}
+function FinalCTASection() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-16 sm:py-24 lg:py-28 relative overflow-hidden", "data-testid": "cta-section", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0F172A] to-[#1E1B4B]" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "absolute inset-0", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-0 left-1/4 w-48 sm:w-96 h-48 sm:h-96 bg-blue-600/10 rounded-full blur-[80px] sm:blur-[120px]" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-0 right-1/4 w-48 sm:w-96 h-48 sm:h-96 bg-indigo-600/10 rounded-full blur-[80px] sm:blur-[120px]" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-purple-600/5 rounded-full blur-[100px] sm:blur-[200px]" })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "div",
+      {
+        className: "absolute inset-0 opacity-[0.03]",
+        style: {
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "30px 30px"
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.6 },
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 mb-6 sm:mb-8 border border-white/10", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Rocket, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs sm:text-sm text-blue-200", children: "Limited spots available this month" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("h2", { className: "font-bold text-white mb-4 sm:mb-6 leading-tight", style: { fontSize: "clamp(1.5rem, 5vw, 3rem)" }, children: [
+            "Ready to Build Your",
+            " ",
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent", children: "AI Revenue Machine?" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto", style: { fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }, children: "Join 9,500+ businesses already using AI automation to generate more customers and revenue." }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row justify-center gap-3 sm:gap-4", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { className: "w-full sm:w-auto", "data-testid": "button-cta-book-demo", children: [
+              "Book Free Strategy Session ",
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/contact", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outline", className: "w-full sm:w-auto backdrop-blur bg-white/90 text-gray-900 border-white", "data-testid": "button-cta-contact", children: "Contact Us" }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap justify-center items-center gap-4 sm:gap-6 mt-8 sm:mt-10", children: [
+            { icon: lucideReact.Shield, text: "Flexible Plans Available" },
+            { icon: lucideReact.Clock, text: "24/7 Support — Weekends Too" },
+            { icon: lucideReact.CheckCircle2, text: "Money-Back Guarantee" }
+          ].map((item) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-400", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(item.icon, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { children: item.text })
+          ] }, item.text)) })
+        ]
+      }
+    ) })
+  ] });
+}
+function Home() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Infinite Rankers - AI Revenue Growth Agency",
+        description: "Turn your business into an AI-powered revenue machine. We build automated systems that generate customers and revenue.",
+        canonical: "https://infiniterankers.io/"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "script",
+      {
+        type: "application/ld+json",
+        dangerouslySetInnerHTML: {
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Organization",
+                "@id": "https://infiniterankers.io/#organization",
+                "name": "Infinite Rankers",
+                "url": "https://infiniterankers.io",
+                "logo": "https://infiniterankers.io/images/logo-icon-white.png",
+                "description": "AI Revenue Growth Agency - We build automated systems that generate customers and revenue for businesses across the USA.",
+                "email": "contact@infiniterankers.io",
+                "telephone": "(703) 415-9373",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "203 N Caroline Pl",
+                  "addressLocality": "Dover",
+                  "addressRegion": "DE",
+                  "postalCode": "19904",
+                  "addressCountry": "US"
+                },
+                "sameAs": [
+                  "https://infiniterankers.com"
+                ],
+                "serviceArea": {
+                  "@type": "Country",
+                  "name": "United States"
+                }
+              },
+              {
+                "@type": "LocalBusiness",
+                "@id": "https://infiniterankers.io/#localbusiness",
+                "name": "Infinite Rankers",
+                "image": "https://infiniterankers.io/images/logo-icon-white.png",
+                "url": "https://infiniterankers.io",
+                "telephone": "(703) 415-9373",
+                "email": "contact@infiniterankers.io",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "203 N Caroline Pl",
+                  "addressLocality": "Dover",
+                  "addressRegion": "DE",
+                  "postalCode": "19904",
+                  "addressCountry": "US"
+                },
+                "priceRange": "$$$",
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.9",
+                  "reviewCount": "150",
+                  "bestRating": "5"
+                }
+              },
+              {
+                "@type": "WebSite",
+                "@id": "https://infiniterankers.io/#website",
+                "url": "https://infiniterankers.io",
+                "name": "Infinite Rankers",
+                "publisher": { "@id": "https://infiniterankers.io/#organization" }
+              }
+            ]
+          })
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(HeroSection$1, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(AchievementsSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(PipelineSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(ServicesSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(HowItWorksSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(MidCTASection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(PortfolioSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(TrustSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(TestimonialsCarousel, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(TeamSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(ResultsGallery, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(BlogSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(PricingSection, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(FinalCTASection, {})
+  ] });
+}
+function SectionHeader({ label, title, description, align = "center" }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.5 },
+      className: `mb-12 ${align === "center" ? "text-center max-w-3xl mx-auto" : ""}`,
+      children: [
+        label && /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3", children: label }),
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-3xl sm:text-4xl font-bold text-foreground mb-4 leading-tight", children: title }),
+        description && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground text-lg leading-relaxed", children: description })
+      ]
+    }
+  );
+}
+function GlassCard({ children, className, hover = true, delay = 0, glow = false }) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.5, delay },
+      className: cn(
+        "relative rounded-md p-6 bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm",
+        hover && "transition-all duration-300 hover:border-blue-300/50 hover:shadow-md hover:shadow-blue-100/30",
+        glow && "hover:shadow-[0_0_30px_rgba(99,102,241,0.1)]",
+        className
+      ),
+      children
+    }
+  );
+}
+const ALL_SERVICES = SERVICE_CATEGORIES.flatMap((cat) => cat.services);
+function RelatedLinks({ currentPath, type }) {
+  const relatedServices = ALL_SERVICES.filter((s) => `/${s.slug}` !== currentPath).slice(0, 6);
+  const relatedBlogs = BLOG_POSTS.filter((b) => `/${b.slug}` !== currentPath).slice(0, 4);
+  const relatedCases = CASE_STUDIES.filter((c) => `/${c.id}` !== currentPath).slice(0, 4);
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-border/50", "data-testid": "related-links", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8", children: [
+      type !== "service" && /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Explore Our Services" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedServices.slice(0, 6).map((s) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${s.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1", "data-testid": `related-service-${s.slug}`, children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-blue-500" }),
+          " ",
+          s.title
+        ] }) }) }, s.slug)) }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-blue-600 hover:text-blue-700 mt-2 inline-block cursor-pointer", children: "View All 30+ Services" }) })
+      ] }),
+      type === "service" && /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Related Services" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedServices.slice(0, 8).map((s) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${s.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1", "data-testid": `related-service-${s.slug}`, children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-blue-500" }),
+          " ",
+          s.title
+        ] }) }) }, s.slug)) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Latest Blog Posts" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedBlogs.map((b) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${b.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1 line-clamp-1", "data-testid": `related-blog-${b.slug}`, children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-purple-500" }),
+          " ",
+          b.title
+        ] }) }) }, b.slug)) }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/blog", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-blue-600 hover:text-blue-700 mt-2 inline-block cursor-pointer", children: "Read All Articles" }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Success Stories" }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedCases.map((c) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${c.id}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1 line-clamp-1", "data-testid": `related-case-${c.id}`, children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-cyan-500" }),
+          " ",
+          c.title
+        ] }) }) }, c.id)) }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/portfolio", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-blue-600 hover:text-blue-700 mt-2 inline-block cursor-pointer", children: "View All Case Studies" }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-8 flex flex-wrap gap-3 items-center justify-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Home" }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/pricing", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Pricing" }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/about", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "About Us" }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/contact", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Contact" }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Book a Demo" }) })
+    ] })
+  ] });
+}
+function About() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "About Us - Infinite Rankers | AI Revenue Growth Agency",
+        description: "We're not a marketing agency. We're a revenue growth engine powered by AI automation. Learn about our mission, vision, and approach."
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-20 right-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          className: "max-w-3xl",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3", children: "About Us" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight", children: [
+              "We're Not a Marketing Agency. We're a",
+              " ",
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: "Revenue Growth Engine." })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-lg text-muted-foreground leading-relaxed", children: [
+              COMPANY.name,
+              " was founded on a simple belief: businesses shouldn't have to choose between growing revenue and managing complex technology. We combine AI automation with proven marketing systems to create predictable, scalable growth for businesses worldwide."
+            ] })
+          ]
+        }
+      ) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 bg-gradient-to-r from-blue-600 to-purple-600", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-8", children: ACHIEVEMENTS.map((a, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.1 },
+        className: "text-center",
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-3xl sm:text-4xl font-bold text-white mb-1", children: a.value }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm text-white/80", children: a.label })
+        ]
+      },
+      a.label
+    )) }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-12", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Target, { className: "w-6 h-6 text-white" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-3", children: "Our Mission" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "To empower every business with AI-driven automation systems that eliminate manual inefficiency and create predictable revenue growth. We believe that no business should lose customers because of slow response times, missed follow-ups, or outdated marketing approaches." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: 0.1, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Eye, { className: "w-6 h-6 text-white" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-3", children: "Our Vision" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "To become the world's leading AI revenue growth agency, where every business — from local shops to global enterprises — has access to enterprise-grade AI automation that levels the playing field and drives exponential growth." })
+      ] })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Why Us",
+          title: "Why Infinite Rankers Is Different",
+          description: "We don't just run ads or build websites. We engineer complete revenue systems powered by artificial intelligence."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: [
+        { icon: lucideReact.Cpu, title: "AI-First Approach", desc: "Every solution we build is powered by artificial intelligence — from lead capture to appointment booking to follow-up." },
+        { icon: lucideReact.Globe, title: "Global Reach, Local Focus", desc: "We serve businesses worldwide with a primary focus on USA and UK markets, understanding local consumer behavior and compliance." },
+        { icon: lucideReact.Rocket, title: "Revenue-Focused Results", desc: "We measure success by one metric: your revenue growth. Everything we build is designed to directly impact your bottom line." },
+        { icon: lucideReact.Shield, title: "Flexible Plans Available", desc: "We offer monthly, quarterly, and annual partnerships designed to fit your business needs. Choose the plan that works best for your growth goals." },
+        { icon: lucideReact.Lightbulb, title: "Full-Stack Automation", desc: "From the first ad impression to closed deal, every touchpoint is automated and optimized for maximum conversion." },
+        { icon: lucideReact.Zap, title: "Speed to Results", desc: "Most clients see measurable improvements within 30 days. Our proven frameworks are battle-tested across 9,500+ businesses." }
+      ].map((item, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.08, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(item.icon, { className: "w-5 h-5 text-blue-600" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", children: item.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: item.desc })
+      ] }, item.title)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Our Philosophy",
+          title: "AI Automation Philosophy",
+          description: "We believe in building systems, not dependencies. Our approach creates lasting growth infrastructure for your business."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-3xl mx-auto space-y-6", children: [
+        "We don't replace your team — we multiply their output with AI-powered tools and automation.",
+        "Every system is built to be measurable. If we can't track the ROI, we don't build it.",
+        "We prioritize speed-to-lead. In today's market, the first responder wins the customer.",
+        "We build on proven, enterprise-grade technology that scales with your business.",
+        "Our systems run 24/7 — nights, weekends, holidays — so you never miss an opportunity."
+      ].map((item, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, x: -20 },
+          whileInView: { opacity: 1, x: 0 },
+          viewport: { once: true },
+          transition: { delay: i * 0.1 },
+          className: "flex items-start gap-3",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: item })
+          ]
+        },
+        i
+      )) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-20 lg:py-28 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-3xl sm:text-4xl font-bold text-white mb-6", children: "Ready to Transform Your Revenue?" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-white/80 mb-8 max-w-2xl mx-auto", children: "See how our AI systems can be customized for your business. Book a free strategy session with our team." }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-about-cta", children: [
+          "Book Free Strategy Session ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/about", type: "page" })
+  ] });
+}
+const iconMap$2 = {
+  Bot: lucideReact.Bot,
+  Target: lucideReact.Target,
+  Globe: lucideReact.Globe,
+  Zap: lucideReact.Zap,
+  Phone: lucideReact.Phone,
+  Headphones: lucideReact.Headphones,
+  UserCheck: lucideReact.UserCheck,
+  CalendarCheck: lucideReact.CalendarCheck,
+  MailCheck: lucideReact.MailCheck,
+  TrendingUp: lucideReact.TrendingUp,
+  MessageSquare: lucideReact.MessageSquare,
+  Mail: lucideReact.Mail,
+  Smartphone: lucideReact.Smartphone,
+  Database: lucideReact.Database,
+  Workflow: lucideReact.Workflow,
+  Search: lucideReact.Search,
+  Megaphone: lucideReact.Megaphone,
+  BarChart3: lucideReact.BarChart3,
+  MapPin: lucideReact.MapPin,
+  Filter: lucideReact.Filter,
+  MousePointer: lucideReact.MousePointer,
+  Percent: lucideReact.Percent,
+  Camera: lucideReact.Camera,
+  ThumbsUp: lucideReact.ThumbsUp,
+  FileText: lucideReact.FileText,
+  Palette: lucideReact.Palette,
+  Video: lucideReact.Video,
+  Monitor: lucideReact.Monitor,
+  Layout: lucideReact.Layout,
+  Settings: lucideReact.Settings,
+  Plug: lucideReact.Plug,
+  PieChart: lucideReact.PieChart,
+  Code: lucideReact.Code,
+  Share2: lucideReact.Share2
+};
+const catIcons = {
+  "ai-automation": lucideReact.Bot,
+  "lead-generation": lucideReact.Target,
+  "social-content": lucideReact.Share2,
+  "development": lucideReact.Code
+};
+function Services() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Services - Infinite Rankers | AI Automation & Revenue Growth",
+        description: "Explore our complete suite of AI automation, lead generation, social media, and development services designed to grow your revenue."
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-20 left-10 w-72 h-72 bg-indigo-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, className: "max-w-3xl mx-auto text-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3", children: "Our Services" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight", children: [
+          "Complete AI Revenue",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: "Growth Systems" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-muted-foreground leading-relaxed", children: "From AI automation to lead generation, social media to custom development — every system is designed to generate customers and grow your revenue." })
+      ] }) })
+    ] }),
+    SERVICE_CATEGORIES.map((cat, catIndex) => {
+      const CatIcon = catIcons[cat.id] || lucideReact.Zap;
+      return /* @__PURE__ */ jsxRuntime.jsx(
+        "section",
+        {
+          className: `py-20 lg:py-28 ${catIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`,
+          "data-testid": `section-${cat.id}`,
+          children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs(
+              framerMotion.motion.div,
+              {
+                initial: { opacity: 0, y: 20 },
+                whileInView: { opacity: 1, y: 0 },
+                viewport: { once: true },
+                className: "flex items-center gap-4 mb-10",
+                children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx(CatIcon, { className: "w-6 h-6 text-white" }) }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-foreground", children: cat.title }),
+                    /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground", children: cat.description })
+                  ] })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: cat.services.map((service, i) => {
+              const Icon = iconMap$2[service.icon] || lucideReact.Zap;
+              return /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${service.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.05, className: "cursor-pointer h-full", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-5 h-5 text-blue-600" }) }),
+                /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", children: service.title }),
+                /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-4", children: service.shortDesc }),
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1 text-sm font-medium text-blue-600", children: [
+                  "Explore Service ",
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3" })
+                ] })
+              ] }) }, service.slug);
+            }) })
+          ] })
+        },
+        cat.id
+      );
+    }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-20 lg:py-28 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-3xl sm:text-4xl font-bold text-white mb-6", children: "Not Sure Which System You Need?" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-white/80 mb-8 max-w-2xl mx-auto", children: "Book a free strategy session and we'll build a custom AI revenue plan for your business." }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-services-cta", children: [
+          "Book Free Strategy Session ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] }) })
+    ] })
+  ] });
+}
+const glass = "bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm rounded-md";
+const glassInner = "bg-gray-50/80 border border-gray-200/60 rounded-md";
+function AnalyticsDashboard({ accentFrom, accentTo }) {
+  const barHeights = [45, 65, 35, 80, 55, 70, 90, 60];
+  const kpis = [
+    { label: "Visitors", value: "12.4K", change: "+18%" },
+    { label: "Conversion", value: "+34%", change: "+8.2%" },
+    { label: "Revenue", value: "$48K", change: "+22%" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} p-4 w-full max-w-[480px]`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-900 text-sm font-medium", children: "Marketing Analytics" }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-xs", children: "Live Dashboard" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-3 gap-2 mb-4", children: kpis.map((kpi, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, scale: 0.9 },
+            whileInView: { opacity: 1, scale: 1 },
+            viewport: { once: true },
+            transition: { delay: 0.2 + i * 0.1, duration: 0.4 },
+            className: `${glassInner} p-2.5`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[10px] mb-1", children: kpi.label }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-white text-base font-semibold", children: kpi.value }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: `text-[10px] bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent`, children: kpi.change })
+            ]
+          },
+          kpi.label
+        )) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} p-3 mb-3`, children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[10px] mb-2", children: "Traffic Overview" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-end gap-1.5 h-20", children: barHeights.map((h, i) => /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { height: 0 },
+              whileInView: { height: `${h}%` },
+              viewport: { once: true },
+              transition: { delay: 0.4 + i * 0.08, duration: 0.6, ease: "easeOut" },
+              className: `flex-1 rounded-sm bg-gradient-to-t ${accentFrom} ${accentTo} opacity-80`
+            },
+            i
+          )) })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} p-3 flex-1`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[10px] mb-2", children: "Trend" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 120 40", className: "w-full h-8", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(
+                framerMotion.motion.path,
+                {
+                  d: "M0,35 Q15,30 25,25 T50,20 T75,12 T100,18 T120,5",
+                  fill: "none",
+                  stroke: "url(#lineGrad)",
+                  strokeWidth: "2",
+                  initial: { pathLength: 0 },
+                  whileInView: { pathLength: 1 },
+                  viewport: { once: true },
+                  transition: { delay: 0.6, duration: 1.2, ease: "easeInOut" }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx("defs", { children: /* @__PURE__ */ jsxRuntime.jsxs("linearGradient", { id: "lineGrad", x1: "0%", y1: "0%", x2: "100%", y2: "0%", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "0%", stopColor: "#3b82f6" }),
+                /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "100%", stopColor: "#8b5cf6" })
+              ] }) })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: `${glassInner} p-3 w-20 flex items-center justify-center`, children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 36 36", className: "w-10 h-10", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(
+              framerMotion.motion.circle,
+              {
+                cx: "18",
+                cy: "18",
+                r: "14",
+                fill: "none",
+                stroke: "rgba(255,255,255,0.1)",
+                strokeWidth: "4"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              framerMotion.motion.circle,
+              {
+                cx: "18",
+                cy: "18",
+                r: "14",
+                fill: "none",
+                stroke: "url(#donutGrad)",
+                strokeWidth: "4",
+                strokeDasharray: "88",
+                strokeLinecap: "round",
+                transform: "rotate(-90 18 18)",
+                initial: { strokeDashoffset: 88 },
+                whileInView: { strokeDashoffset: 25 },
+                viewport: { once: true },
+                transition: { delay: 0.8, duration: 1, ease: "easeOut" }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx("defs", { children: /* @__PURE__ */ jsxRuntime.jsxs("linearGradient", { id: "donutGrad", x1: "0%", y1: "0%", x2: "100%", y2: "0%", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "0%", stopColor: "#3b82f6" }),
+              /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "100%", stopColor: "#8b5cf6" })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntime.jsx("text", { x: "18", y: "20", textAnchor: "middle", fill: "white", fontSize: "8", fontWeight: "600", children: "72%" })
+          ] }) })
+        ] })
+      ]
+    }
+  );
+}
+function ChatInterface({ accentFrom, accentTo }) {
+  const messages2 = [
+    { role: "user", text: "How can I improve my website conversion rate?" },
+    { role: "ai", text: "Based on your analytics, I recommend optimizing your CTA placement and adding social proof. Your current rate is 2.3% — targeting 4.5% is achievable." },
+    { role: "user", text: "Can you create an A/B test for the landing page?" },
+    { role: "ai", text: "Absolutely! I've drafted two variants: one with a video hero and one with a testimonial carousel. Shall I deploy them?" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} p-4 w-full max-w-[480px]`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-2 h-2 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo}`, children: /* @__PURE__ */ jsxRuntime.jsx(
+              framerMotion.motion.div,
+              {
+                className: "w-full h-full rounded-full bg-emerald-400",
+                animate: { scale: [1, 1.4, 1] },
+                transition: { duration: 2, repeat: Infinity }
+              }
+            ) }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-900 text-sm font-medium", children: "AI Assistant" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-emerald-400/80 text-[10px]", children: "AI is online" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-3 max-h-[280px] overflow-hidden", children: [
+          messages2.map((msg, i) => /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, y: 10, scale: 0.95 },
+              whileInView: { opacity: 1, y: 0, scale: 1 },
+              viewport: { once: true },
+              transition: { delay: 0.3 + i * 0.25, duration: 0.4 },
+              className: `flex ${msg.role === "user" ? "justify-end" : "justify-start"}`,
+              children: /* @__PURE__ */ jsxRuntime.jsx(
+                "div",
+                {
+                  className: `max-w-[80%] p-2.5 rounded-md text-xs leading-relaxed ${msg.role === "user" ? `bg-gradient-to-r ${accentFrom} ${accentTo} text-white` : `${glassInner} text-gray-600`}`,
+                  children: msg.text
+                }
+              )
+            },
+            i
+          )),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0 },
+              whileInView: { opacity: 1 },
+              viewport: { once: true },
+              transition: { delay: 1.5 },
+              className: "flex justify-start",
+              children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: `${glassInner} px-4 py-2.5 rounded-md`, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex gap-1", children: [0, 1, 2].map((dot) => /* @__PURE__ */ jsxRuntime.jsx(
+                framerMotion.motion.div,
+                {
+                  className: "w-1.5 h-1.5 rounded-full bg-white/40",
+                  animate: { opacity: [0.3, 1, 0.3] },
+                  transition: { duration: 1.2, repeat: Infinity, delay: dot * 0.2 }
+                },
+                dot
+              )) }) })
+            }
+          )
+        ] })
+      ]
+    }
+  );
+}
+function PhoneUI({ accentFrom, accentTo }) {
+  const waveBarCount = 20;
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} p-4 w-full max-w-[320px] mx-auto`,
+      children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} rounded-[16px] p-5 relative overflow-hidden`, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-16 h-1 bg-white/20 rounded-full mx-auto mb-6" }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, scale: 0.8 },
+            whileInView: { opacity: 1, scale: 1 },
+            viewport: { once: true },
+            transition: { delay: 0.3, duration: 0.5 },
+            className: "text-center mb-5",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-14 h-14 rounded-full bg-gradient-to-br ${accentFrom} ${accentTo} mx-auto mb-3 flex items-center justify-center`, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-white text-lg font-bold", children: "JD" }) }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-900 text-sm font-medium", children: "John Davidson" }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-xs mt-0.5", children: "+1 (555) 234-8901" })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 },
+            viewport: { once: true },
+            transition: { delay: 0.5 },
+            className: "text-center mb-5",
+            children: /* @__PURE__ */ jsxRuntime.jsx(
+              framerMotion.motion.span,
+              {
+                className: "text-gray-500 text-xs font-mono",
+                animate: { opacity: [1, 0.5, 1] },
+                transition: { duration: 1.5, repeat: Infinity },
+                children: "03:42"
+              }
+            )
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center justify-center gap-[3px] h-10 mb-5", children: Array.from({ length: waveBarCount }).map((_, i) => /* @__PURE__ */ jsxRuntime.jsx(
+          framerMotion.motion.div,
+          {
+            className: `w-[3px] rounded-full bg-gradient-to-t ${accentFrom} ${accentTo}`,
+            animate: {
+              height: [
+                `${8 + Math.random() * 6}px`,
+                `${14 + Math.random() * 22}px`,
+                `${6 + Math.random() * 10}px`
+              ]
+            },
+            transition: {
+              duration: 0.6 + Math.random() * 0.4,
+              repeat: Infinity,
+              repeatType: "reverse",
+              delay: i * 0.05
+            }
+          },
+          i
+        )) }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 10 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { delay: 0.7 },
+            className: `${glassInner} p-2 flex items-center justify-center gap-2 mb-5`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx(
+                framerMotion.motion.div,
+                {
+                  className: "w-2 h-2 rounded-full bg-emerald-400",
+                  animate: { scale: [1, 1.3, 1], opacity: [1, 0.6, 1] },
+                  transition: { duration: 1.5, repeat: Infinity }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-emerald-400/90 text-[10px] font-medium", children: "AI Handling Call" })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-center gap-6", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "rgba(100,116,139,0.7)", strokeWidth: "2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" }),
+            /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M19 10v2a7 7 0 0 1-14 0v-2" }),
+            /* @__PURE__ */ jsxRuntime.jsx("line", { x1: "12", y1: "19", x2: "12", y2: "23" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-full bg-red-500/80 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "white", strokeWidth: "2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72" }),
+            /* @__PURE__ */ jsxRuntime.jsx("line", { x1: "1", y1: "1", x2: "23", y2: "23" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "rgba(100,116,139,0.7)", strokeWidth: "2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("polygon", { points: "11 5 6 9 2 9 2 15 6 15 11 19 11 5" }),
+            /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M19.07 4.93a10 10 0 0 1 0 14.14" })
+          ] }) })
+        ] })
+      ] })
+    }
+  );
+}
+function AdPerformance({ accentFrom, accentTo }) {
+  const campaigns = [
+    { name: "Brand Awareness", spend: "$2,340", clicks: "8.2K", cpa: "$4.21", budget: 78, trend: [3, 5, 4, 7, 6, 8, 9] },
+    { name: "Lead Gen - Search", spend: "$5,120", clicks: "12.1K", cpa: "$3.87", budget: 92, trend: [2, 4, 6, 5, 8, 7, 10] },
+    { name: "Retargeting", spend: "$1,890", clicks: "6.4K", cpa: "$2.95", budget: 64, trend: [4, 3, 5, 7, 6, 9, 8] }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} p-4 w-full max-w-[480px]`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-900 text-sm font-medium", children: "Campaign Performance" }),
+          /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0 },
+              whileInView: { opacity: 1 },
+              viewport: { once: true },
+              transition: { delay: 0.5 },
+              className: `${glassInner} px-2 py-1 flex items-center gap-1.5`,
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsx("svg", { width: "10", height: "10", viewBox: "0 0 24 24", fill: "none", stroke: "#22c55e", strokeWidth: "2.5", children: /* @__PURE__ */ jsxRuntime.jsx("polyline", { points: "23 6 13.5 15.5 8.5 10.5 1 18" }) }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-emerald-400 text-[10px] font-semibold", children: "ROAS 4.2x" })
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} overflow-hidden`, children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-[1fr_60px_52px_52px_40px] gap-2 px-3 py-2 border-b border-gray-200/60", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[9px] uppercase tracking-wider", children: "Campaign" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[9px] uppercase tracking-wider", children: "Spend" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[9px] uppercase tracking-wider", children: "Clicks" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[9px] uppercase tracking-wider", children: "CPA" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[9px] uppercase tracking-wider", children: "Trend" })
+          ] }),
+          campaigns.map((c, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, x: -10 },
+              whileInView: { opacity: 1, x: 0 },
+              viewport: { once: true },
+              transition: { delay: 0.3 + i * 0.15, duration: 0.4 },
+              className: "grid grid-cols-[1fr_60px_52px_52px_40px] gap-2 px-3 py-2.5 border-b border-gray-200/40 items-center",
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-700 text-[11px] font-medium", children: c.name }),
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-1 h-1 rounded-full bg-gray-200/60 overflow-hidden", children: /* @__PURE__ */ jsxRuntime.jsx(
+                    framerMotion.motion.div,
+                    {
+                      className: `h-full rounded-full bg-gradient-to-r ${accentFrom} ${accentTo}`,
+                      initial: { width: 0 },
+                      whileInView: { width: `${c.budget}%` },
+                      viewport: { once: true },
+                      transition: { delay: 0.6 + i * 0.15, duration: 0.8, ease: "easeOut" }
+                    }
+                  ) })
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-600 text-[11px]", children: c.spend }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-600 text-[11px]", children: c.clicks }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-600 text-[11px]", children: c.cpa }),
+                /* @__PURE__ */ jsxRuntime.jsx("svg", { viewBox: "0 0 28 12", className: "w-7 h-3", children: /* @__PURE__ */ jsxRuntime.jsx(
+                  framerMotion.motion.polyline,
+                  {
+                    points: c.trend.map((v, j) => `${j * 4.5},${12 - v}`).join(" "),
+                    fill: "none",
+                    stroke: "#22c55e",
+                    strokeWidth: "1.5",
+                    strokeLinecap: "round",
+                    initial: { pathLength: 0 },
+                    whileInView: { pathLength: 1 },
+                    viewport: { once: true },
+                    transition: { delay: 0.8 + i * 0.1, duration: 0.8 }
+                  }
+                ) })
+              ]
+            },
+            c.name
+          ))
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex gap-2 mt-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} p-2.5 flex-1 text-center`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[9px]", children: "Total Spend" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-900 text-sm font-semibold mt-0.5", children: "$9,350" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} p-2.5 flex-1 text-center`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[9px]", children: "Total Clicks" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-900 text-sm font-semibold mt-0.5", children: "26.7K" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} p-2.5 flex-1 text-center`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[9px]", children: "Avg CPA" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-emerald-400 text-sm font-semibold mt-0.5", children: "$3.68" })
+          ] })
+        ] })
+      ]
+    }
+  );
+}
+function FunnelDiagram({ accentFrom, accentTo }) {
+  const stages = [
+    { label: "Website Visitors", count: "24,500", width: "100%", pct: null },
+    { label: "Leads Captured", count: "4,200", width: "72%", pct: "17.1%" },
+    { label: "Qualified Leads", count: "1,680", width: "48%", pct: "40.0%" },
+    { label: "Proposals Sent", count: "840", width: "32%", pct: "50.0%" },
+    { label: "Customers Won", count: "378", width: "20%", pct: "45.0%" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} p-4 w-full max-w-[420px]`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between mb-5", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-900 text-sm font-medium", children: "Conversion Funnel" }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-xs", children: "Last 30 days" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-1.5", children: stages.map((stage, i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { width: 0, opacity: 0 },
+              whileInView: { width: stage.width, opacity: 1 },
+              viewport: { once: true },
+              transition: { delay: 0.2 + i * 0.15, duration: 0.7, ease: "easeOut" },
+              className: `h-10 bg-gradient-to-r ${accentFrom} ${accentTo} rounded-md flex items-center px-3 justify-between`,
+              style: { opacity: 1 - i * 0.15 },
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-700 text-[10px] font-medium truncate", children: stage.label }),
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  framerMotion.motion.span,
+                  {
+                    className: "text-gray-500 text-xs font-bold ml-2",
+                    initial: { opacity: 0 },
+                    whileInView: { opacity: 1 },
+                    viewport: { once: true },
+                    transition: { delay: 0.5 + i * 0.15 },
+                    children: stage.count
+                  }
+                )
+              ]
+            }
+          ),
+          stage.pct && /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, x: -5 },
+              whileInView: { opacity: 1, x: 0 },
+              viewport: { once: true },
+              transition: { delay: 0.7 + i * 0.15 },
+              className: "flex items-center gap-1 min-w-[50px]",
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsx("svg", { width: "8", height: "8", viewBox: "0 0 24 24", fill: "none", stroke: "rgba(255,255,255,0.3)", strokeWidth: "2", children: /* @__PURE__ */ jsxRuntime.jsx("polyline", { points: "6 9 12 15 18 9" }) }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[10px]", children: stage.pct })
+              ]
+            }
+          )
+        ] }, stage.label)) }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative mt-4 flex justify-center", children: [0, 1, 2].map((dot) => /* @__PURE__ */ jsxRuntime.jsx(
+          framerMotion.motion.div,
+          {
+            className: `absolute w-1.5 h-1.5 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo}`,
+            style: { left: `${40 + dot * 10}%` },
+            animate: {
+              y: [0, 80, 0],
+              opacity: [0, 1, 0]
+            },
+            transition: {
+              duration: 2.5,
+              repeat: Infinity,
+              delay: dot * 0.6,
+              ease: "easeInOut"
+            }
+          },
+          dot
+        )) })
+      ]
+    }
+  );
+}
+function CodeEditor({ accentFrom, accentTo }) {
+  const codeLines = [
+    { num: 1, content: [{ text: "import", color: "text-purple-600" }, { text: " { motion }", color: "text-amber-600" }, { text: " from", color: "text-purple-600" }, { text: " 'framer-motion'", color: "text-emerald-600" }] },
+    { num: 2, content: [] },
+    { num: 3, content: [{ text: "export default function", color: "text-purple-600" }, { text: " Hero", color: "text-amber-600" }, { text: "() {", color: "text-gray-500" }] },
+    { num: 4, content: [{ text: "  return (", color: "text-gray-500" }] },
+    { num: 5, content: [{ text: "    <", color: "text-gray-500" }, { text: "motion.div", color: "text-red-500" }] },
+    { num: 6, content: [{ text: "      className", color: "text-amber-600" }, { text: "=", color: "text-gray-500" }, { text: '"hero-section"', color: "text-emerald-600" }] },
+    { num: 7, content: [{ text: "      initial", color: "text-amber-600" }, { text: "={{ ", color: "text-gray-500" }, { text: "opacity: 0", color: "text-orange-500" }, { text: " }}", color: "text-gray-500" }] },
+    { num: 8, content: [{ text: "      animate", color: "text-amber-600" }, { text: "={{ ", color: "text-gray-500" }, { text: "opacity: 1", color: "text-orange-500" }, { text: " }}", color: "text-gray-500" }] },
+    { num: 9, content: [{ text: "    >", color: "text-gray-500" }] },
+    { num: 10, content: [{ text: "      <", color: "text-gray-500" }, { text: "h1", color: "text-red-500" }, { text: ">", color: "text-gray-500" }, { text: "Welcome", color: "text-gray-700" }, { text: "</", color: "text-gray-500" }, { text: "h1", color: "text-red-500" }, { text: ">", color: "text-gray-500" }] },
+    { num: 11, content: [{ text: "    </", color: "text-gray-500" }, { text: "motion.div", color: "text-red-500" }, { text: ">", color: "text-gray-500" }] },
+    { num: 12, content: [{ text: "  )", color: "text-gray-500" }] },
+    { num: 13, content: [{ text: "}", color: "text-gray-500" }] }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} w-full max-w-[480px] overflow-hidden`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 px-4 py-2.5 border-b border-gray-200/60", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-2.5 h-2.5 rounded-full bg-red-500/70" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-2.5 h-2.5 rounded-full bg-yellow-500/70" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-2.5 h-2.5 rounded-full bg-emerald-500/70" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[10px] ml-2", children: "Hero.tsx" }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-200 text-[10px] ml-auto", children: "TypeScript React" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "p-3 font-mono text-[11px] leading-5 bg-gray-50/80", children: codeLines.map((line, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, x: -8 },
+            whileInView: { opacity: 1, x: 0 },
+            viewport: { once: true },
+            transition: { delay: 0.15 + i * 0.05, duration: 0.3 },
+            className: "flex",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "w-7 text-right text-gray-200 mr-4 select-none flex-shrink-0", children: line.num }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-1 relative", children: [
+                line.content.length === 0 ? /* @__PURE__ */ jsxRuntime.jsx("span", { children: " " }) : line.content.map((token, j) => /* @__PURE__ */ jsxRuntime.jsx("span", { className: token.color, children: token.text }, j)),
+                line.num === 8 && /* @__PURE__ */ jsxRuntime.jsx(
+                  framerMotion.motion.span,
+                  {
+                    className: `inline-block w-[2px] h-3.5 bg-gradient-to-b ${accentFrom} ${accentTo} ml-0.5 align-middle`,
+                    animate: { opacity: [1, 0, 1] },
+                    transition: { duration: 1, repeat: Infinity }
+                  }
+                )
+              ] })
+            ]
+          },
+          line.num
+        )) }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 },
+            viewport: { once: true },
+            transition: { delay: 1 },
+            className: "border-t border-gray-200/60 p-3 bg-gray-50 font-mono text-[10px]",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-300 mb-1", children: "TERMINAL" }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400", children: "$ npm run build" }),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                framerMotion.motion.div,
+                {
+                  initial: { opacity: 0 },
+                  whileInView: { opacity: 1 },
+                  viewport: { once: true },
+                  transition: { delay: 1.4 },
+                  className: "text-emerald-400/80 mt-1",
+                  children: "Build successful in 2.3s — 0 errors, 0 warnings"
+                }
+              )
+            ]
+          }
+        )
+      ]
+    }
+  );
+}
+function SocialFeed({ accentFrom, accentTo }) {
+  const posts = [
+    {
+      avatar: "MK",
+      name: "MarketingKing",
+      handle: "@marketking",
+      text: "Just launched our new AI campaign — results are incredible! 340% increase in qualified leads.",
+      likes: 1247,
+      comments: 89,
+      shares: 234
+    },
+    {
+      avatar: "DS",
+      name: "Digital Success",
+      handle: "@digsuccess",
+      text: "Our client's ROAS hit 5.8x this month with the new funnel strategy. Data-driven marketing works.",
+      likes: 892,
+      comments: 56,
+      shares: 178
+    },
+    {
+      avatar: "GH",
+      name: "Growth Hacker",
+      handle: "@growthhack",
+      text: "From 200 to 520 active members in 6 months. Social + AI booking = unstoppable combo.",
+      likes: 2103,
+      comments: 142,
+      shares: 367
+    }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} p-4 w-full max-w-[440px]`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-900 text-sm font-medium", children: "Social Feed" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: `${glassInner} px-2 py-1`, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-500 text-[10px]", children: "+2.4K followers this week" }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-2.5", children: posts.map((post, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 12, rotateX: -5 },
+            whileInView: { opacity: 1, y: 0, rotateX: 0 },
+            viewport: { once: true },
+            transition: { delay: 0.2 + i * 0.2, duration: 0.5 },
+            className: `${glassInner} p-3`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-7 h-7 rounded-full bg-gradient-to-br ${accentFrom} ${accentTo} flex items-center justify-center flex-shrink-0`, children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-700 text-[8px] font-bold", children: post.avatar }) }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-700 text-[11px] font-medium", children: post.name }),
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-300 text-[9px]", children: post.handle })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-500 text-[10px] leading-relaxed mb-2", children: post.text }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-4", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("svg", { width: "10", height: "10", viewBox: "0 0 24 24", fill: "#ef4444", stroke: "none", children: /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" }) }),
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    framerMotion.motion.span,
+                    {
+                      className: "text-gray-400 text-[9px]",
+                      initial: { opacity: 0 },
+                      whileInView: { opacity: 1 },
+                      viewport: { once: true },
+                      transition: { delay: 0.8 + i * 0.2 },
+                      children: (post.likes + (i === 0 ? 3 : 0)).toLocaleString()
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("svg", { width: "10", height: "10", viewBox: "0 0 24 24", fill: "none", stroke: "rgba(255,255,255,0.4)", strokeWidth: "2", children: /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }) }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[9px]", children: post.comments })
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-1", children: [
+                  /* @__PURE__ */ jsxRuntime.jsxs("svg", { width: "10", height: "10", viewBox: "0 0 24 24", fill: "none", stroke: "rgba(255,255,255,0.4)", strokeWidth: "2", children: [
+                    /* @__PURE__ */ jsxRuntime.jsx("polyline", { points: "15 3 21 3 21 9" }),
+                    /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M21 3l-7 7" }),
+                    /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-[9px]", children: post.shares })
+                ] })
+              ] })
+            ]
+          },
+          i
+        )) }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 },
+            viewport: { once: true },
+            transition: { delay: 1 },
+            className: `${glassInner} p-2.5 mt-3`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[9px] mb-1.5", children: "Follower Growth" }),
+              /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 140 24", className: "w-full h-5", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  framerMotion.motion.polyline,
+                  {
+                    points: "0,20 15,18 30,16 45,17 60,13 75,14 90,10 105,8 120,6 140,3",
+                    fill: "none",
+                    stroke: "url(#socialGrad)",
+                    strokeWidth: "1.5",
+                    strokeLinecap: "round",
+                    initial: { pathLength: 0 },
+                    whileInView: { pathLength: 1 },
+                    viewport: { once: true },
+                    transition: { delay: 1.2, duration: 1 }
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntime.jsx("defs", { children: /* @__PURE__ */ jsxRuntime.jsxs("linearGradient", { id: "socialGrad", x1: "0%", y1: "0%", x2: "100%", y2: "0%", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "0%", stopColor: "#3b82f6" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("stop", { offset: "100%", stopColor: "#8b5cf6" })
+                ] }) })
+              ] })
+            ]
+          }
+        )
+      ]
+    }
+  );
+}
+function CalendarUI({ accentFrom, accentTo }) {
+  const days = Array.from({ length: 35 }, (_, i) => {
+    const day = i - 2;
+    if (day < 1 || day > 31) return null;
+    return day;
+  });
+  const highlightedDays = [5, 8, 12, 15, 19, 22, 26];
+  const bookedDay = 15;
+  const timeSlots2 = [
+    { time: "9:00 AM", status: "booked" },
+    { time: "10:30 AM", status: "available" },
+    { time: "1:00 PM", status: "booking" },
+    { time: "2:30 PM", status: "available" },
+    { time: "4:00 PM", status: "available" }
+  ];
+  const appointments = [
+    { name: "Strategy Call — John D.", time: "Today, 2:00 PM" },
+    { name: "SEO Review — Sarah W.", time: "Tomorrow, 10:00 AM" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.6 },
+      className: `${glass} p-4 w-full max-w-[480px]`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-900 text-sm font-medium", children: "Appointment Booking" }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-400 text-xs", children: "February 2026" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex gap-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `${glassInner} p-2.5 flex-1`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-7 gap-0.5 mb-1.5", children: ["S", "M", "T", "W", "T", "F", "S"].map((d, i) => /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-300 text-[8px] text-center font-medium", children: d }, i)) }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-7 gap-0.5", children: days.map((day, i) => {
+              if (day === null) return /* @__PURE__ */ jsxRuntime.jsx("div", {}, i);
+              const isHighlighted = highlightedDays.includes(day);
+              const isBooked = day === bookedDay;
+              return /* @__PURE__ */ jsxRuntime.jsx(
+                framerMotion.motion.div,
+                {
+                  initial: isBooked ? { scale: 1 } : {},
+                  whileInView: isBooked ? { scale: [1, 1.2, 1] } : {},
+                  viewport: { once: true },
+                  transition: isBooked ? { delay: 1, duration: 0.5 } : {},
+                  className: `w-full aspect-square flex items-center justify-center rounded-sm text-[9px] ${isBooked ? `bg-gradient-to-br ${accentFrom} ${accentTo} text-white font-bold` : isHighlighted ? "bg-gray-100 text-gray-600" : "text-gray-300"}`,
+                  children: day
+                },
+                i
+              );
+            }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-[130px] space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[9px] mb-1.5", children: "Available Slots" }),
+            timeSlots2.map((slot, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+              framerMotion.motion.div,
+              {
+                initial: { opacity: 0, x: 8 },
+                whileInView: { opacity: 1, x: 0 },
+                viewport: { once: true },
+                transition: { delay: 0.3 + i * 0.1, duration: 0.3 },
+                className: "relative",
+                children: [
+                  /* @__PURE__ */ jsxRuntime.jsxs(
+                    "div",
+                    {
+                      className: `${glassInner} px-2 py-1.5 text-[10px] flex items-center justify-between ${slot.status === "booked" ? "opacity-50" : ""}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-500", children: slot.time }),
+                        slot.status === "booked" && /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-gray-300 text-[8px]", children: "Booked" })
+                      ]
+                    }
+                  ),
+                  slot.status === "booking" && /* @__PURE__ */ jsxRuntime.jsx(
+                    framerMotion.motion.div,
+                    {
+                      className: `absolute inset-0 rounded-md bg-gradient-to-r ${accentFrom} ${accentTo}`,
+                      initial: { scaleX: 0 },
+                      whileInView: { scaleX: 1 },
+                      viewport: { once: true },
+                      transition: { delay: 1.2, duration: 0.6, ease: "easeOut" },
+                      style: { transformOrigin: "left", opacity: 0.3 }
+                    }
+                  )
+                ]
+              },
+              slot.time
+            ))
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 },
+            viewport: { once: true },
+            transition: { delay: 0.9 },
+            className: `${glassInner} p-2.5 mt-3`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[9px] mb-2", children: "Upcoming Appointments" }),
+              appointments.map((apt, i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 py-1", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-1 h-6 rounded-full bg-gradient-to-b ${accentFrom} ${accentTo}` }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-700 text-[10px] font-medium", children: apt.name }),
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-gray-400 text-[9px]", children: apt.time })
+                ] })
+              ] }, i))
+            ]
+          }
+        )
+      ]
+    }
+  );
+}
+function ServiceHeroMockup({ type, accentFrom, accentTo }) {
+  switch (type) {
+    case "analytics-dashboard":
+      return /* @__PURE__ */ jsxRuntime.jsx(AnalyticsDashboard, { accentFrom, accentTo });
+    case "chat-interface":
+      return /* @__PURE__ */ jsxRuntime.jsx(ChatInterface, { accentFrom, accentTo });
+    case "phone-ui":
+      return /* @__PURE__ */ jsxRuntime.jsx(PhoneUI, { accentFrom, accentTo });
+    case "ad-performance":
+      return /* @__PURE__ */ jsxRuntime.jsx(AdPerformance, { accentFrom, accentTo });
+    case "funnel-diagram":
+      return /* @__PURE__ */ jsxRuntime.jsx(FunnelDiagram, { accentFrom, accentTo });
+    case "code-editor":
+      return /* @__PURE__ */ jsxRuntime.jsx(CodeEditor, { accentFrom, accentTo });
+    case "social-feed":
+      return /* @__PURE__ */ jsxRuntime.jsx(SocialFeed, { accentFrom, accentTo });
+    case "calendar-ui":
+      return /* @__PURE__ */ jsxRuntime.jsx(CalendarUI, { accentFrom, accentTo });
+    default:
+      return /* @__PURE__ */ jsxRuntime.jsx(AnalyticsDashboard, { accentFrom, accentTo });
+  }
+}
+function ProblemSolutionSection({ problems, solutions, serviceTitle, accentFrom, accentTo, variant }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SectionHeader,
+      {
+        label: serviceTitle,
+        title: "Problems We Solve"
+      }
+    ),
+    variant === "A" && /* @__PURE__ */ jsxRuntime.jsx(ProblemSolutionA, { problems, solutions, accentFrom, accentTo }),
+    variant === "B" && /* @__PURE__ */ jsxRuntime.jsx(ProblemSolutionB, { problems, solutions, accentFrom, accentTo }),
+    variant === "C" && /* @__PURE__ */ jsxRuntime.jsx(ProblemSolutionC, { problems, solutions, accentFrom, accentTo })
+  ] }) });
+}
+function ProblemSolutionA({ problems, solutions, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-4", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-semibold text-red-500 mb-6", children: "Without Us" }),
+      problems.map((problem, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, x: -30 },
+          whileInView: { opacity: 1, x: 0 },
+          viewport: { once: true },
+          transition: { duration: 0.5, delay: i * 0.1 },
+          className: "flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "w-5 h-5 text-red-500 mt-0.5 shrink-0" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground", children: problem })
+          ]
+        },
+        i
+      ))
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-4", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: `text-xl font-semibold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent mb-6`, children: "With Us" }),
+      solutions.map((solution, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, x: 30 },
+          whileInView: { opacity: 1, x: 0 },
+          viewport: { once: true },
+          transition: { duration: 0.5, delay: i * 0.1 },
+          className: "flex items-start gap-3 p-4 rounded-md bg-white/80 border border-gray-200/60 shadow-sm",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-5 h-5 mt-0.5 shrink-0 text-emerald-600" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground", children: solution })
+          ]
+        },
+        i
+      ))
+    ] })
+  ] });
+}
+function ProblemSolutionB({ problems, solutions, accentFrom, accentTo }) {
+  const pairs = problems.map((p, i) => ({ problem: p, solution: solutions[i] || "" }));
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative max-w-4xl mx-auto", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: `hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b ${accentFrom} ${accentTo} opacity-30` }),
+    pairs.map((pair, i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-3 md:gap-4 mb-6 md:mb-12 last:mb-0 items-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 15 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { duration: 0.5, delay: i * 0.15 },
+          className: "flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "w-5 h-5 text-red-500 mt-0.5 shrink-0" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground text-sm", children: pair.problem })
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "hidden md:flex relative items-center justify-center w-10", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-3 h-3 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo}` }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute left-0 right-0 h-px bg-gray-200/60" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 15 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { duration: 0.5, delay: i * 0.15 + 0.1 },
+          className: "flex items-start gap-3 p-4 rounded-md bg-white/80 border border-gray-200/60 shadow-sm",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-5 h-5 text-emerald-600 mt-0.5 shrink-0" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground text-sm", children: pair.solution })
+          ]
+        }
+      )
+    ] }, i))
+  ] });
+}
+function ProblemSolutionC({ problems, solutions, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-0", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, rotateX: 10 },
+        whileInView: { opacity: 1, rotateX: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.7 },
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-red-500 mb-4 text-center", children: "Before" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 gap-3", children: problems.map((problem, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, y: 20 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { duration: 0.4, delay: i * 0.08 },
+              className: "flex items-start gap-3 p-4 rounded-md bg-red-50/80 border border-red-200/60",
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.X, { className: "w-4 h-4 text-red-500 mt-0.5 shrink-0" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground text-sm", children: problem })
+              ]
+            },
+            i
+          )) })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-center py-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: `h-px flex-1 bg-gradient-to-r from-transparent ${accentFrom} ${accentTo} to-transparent opacity-40` }),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { scale: 0 },
+          whileInView: { scale: 1 },
+          viewport: { once: true },
+          transition: { duration: 0.5, delay: 0.3 },
+          className: "mx-4",
+          children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowDown, { className: "w-8 h-8 text-gray-400" })
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: `h-px flex-1 bg-gradient-to-r from-transparent ${accentFrom} ${accentTo} to-transparent opacity-40` })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, rotateX: -10 },
+        whileInView: { opacity: 1, rotateX: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.7, delay: 0.2 },
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: `text-lg font-semibold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent mb-4 text-center`, children: "After" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 gap-3", children: solutions.map((solution, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, y: 20 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { duration: 0.4, delay: i * 0.08 + 0.3 },
+              className: "flex items-start gap-3 p-4 rounded-md bg-white/80 border border-gray-200/60 shadow-sm",
+              children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-emerald-600 mt-0.5 shrink-0" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground text-sm", children: solution })
+              ]
+            },
+            i
+          )) })
+        ]
+      }
+    )
+  ] });
+}
+function FeaturesSection({ features, accentFrom, accentTo, variant }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Features", title: "What's Included" }),
+    variant === "A" && /* @__PURE__ */ jsxRuntime.jsx(FeaturesA, { features, accentFrom, accentTo }),
+    variant === "B" && /* @__PURE__ */ jsxRuntime.jsx(FeaturesB, { features, accentFrom, accentTo }),
+    variant === "C" && /* @__PURE__ */ jsxRuntime.jsx(FeaturesC, { features, accentFrom, accentTo })
+  ] }) });
+}
+function FeaturesA({ features, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-4", children: features.map((feature, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.4, delay: i * 0.06 },
+      className: "flex items-start gap-3 p-4 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm",
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: `w-5 h-5 mt-0.5 shrink-0 text-emerald-600` }),
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground text-sm", children: feature })
+      ]
+    },
+    i
+  )) });
+}
+function FeaturesB({ features, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-4", children: features.map((feature, i) => {
+    const isLarge = i < 2;
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, scale: 0.95 },
+        whileInView: { opacity: 1, scale: 1 },
+        viewport: { once: true },
+        transition: { duration: 0.5, delay: i * 0.07 },
+        className: `p-5 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm ${isLarge ? "sm:col-span-2 flex flex-col items-center text-center py-8" : ""}`,
+        children: isLarge ? /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-12 h-12 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo} flex items-center justify-center mb-4`, children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-foreground font-medium text-base", children: feature })
+        ] }) : /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-start gap-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-5 h-5 mt-0.5 shrink-0 text-emerald-600" }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground text-sm", children: feature })
+        ] })
+      },
+      i
+    );
+  }) });
+}
+function FeaturesC({ features, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0", style: { scrollbarWidth: "thin", WebkitOverflowScrolling: "touch" }, children: features.map((feature, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, x: 30 },
+      whileInView: { opacity: 1, x: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.4, delay: i * 0.06 },
+      className: "flex-none w-56 sm:w-64 snap-start rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm p-4 sm:p-5 flex flex-col",
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: `inline-flex items-center justify-center w-8 h-8 rounded-md bg-gradient-to-r ${accentFrom} ${accentTo} text-white text-sm font-bold mb-4`, children: String(i + 1).padStart(2, "0") }),
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-foreground text-sm font-medium flex-1", children: feature }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: `h-1 w-full mt-4 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo} opacity-30` })
+      ]
+    },
+    i
+  )) });
+}
+function WorkflowSection({ steps, accentFrom, accentTo, variant }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "How It Works", title: "Implementation Workflow" }),
+    variant === "A" && /* @__PURE__ */ jsxRuntime.jsx(WorkflowA, { steps, accentFrom, accentTo }),
+    variant === "B" && /* @__PURE__ */ jsxRuntime.jsx(WorkflowB, { steps, accentFrom, accentTo }),
+    variant === "C" && /* @__PURE__ */ jsxRuntime.jsx(WorkflowC, { steps, accentFrom, accentTo })
+  ] }) });
+}
+function WorkflowA({ steps, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: `hidden lg:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r ${accentFrom} ${accentTo} opacity-30` }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-6", children: steps.map((s, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5, delay: i * 0.15 },
+        children: /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { className: "text-center relative", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-10 h-10 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo} flex items-center justify-center text-white font-bold text-sm mx-auto mb-4`, children: String(i + 1).padStart(2, "0") }),
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "text-foreground font-semibold mb-2", children: s.step }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground text-sm", children: s.desc })
+        ] })
+      },
+      i
+    )) })
+  ] });
+}
+function WorkflowB({ steps, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative max-w-3xl mx-auto", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: `absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b ${accentFrom} ${accentTo} opacity-30 md:-translate-x-1/2` }),
+    steps.map((s, i) => {
+      const isLeft = i % 2 === 0;
+      return /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 15 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { duration: 0.5, delay: i * 0.12 },
+          className: `relative flex items-center mb-8 md:mb-12 last:mb-0 pl-10 md:pl-0 ${isLeft ? "md:justify-start" : "md:justify-end"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: `absolute left-4 md:left-1/2 md:-translate-x-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r ${accentFrom} ${accentTo} z-10` }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `w-full md:w-5/12 p-5 rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm text-left ${isLeft ? "md:mr-auto" : "md:ml-auto"}`, children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("span", { className: `inline-block text-xs font-bold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent mb-2`, children: [
+                "Step ",
+                String(i + 1).padStart(2, "0")
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "text-foreground font-semibold mb-1", children: s.step }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground text-sm", children: s.desc })
+            ] })
+          ]
+        },
+        i
+      );
+    })
+  ] });
+}
+function WorkflowC({ steps, accentFrom, accentTo }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-4 max-w-4xl mx-auto", children: steps.map((s, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 15 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.5, delay: i * 0.12 },
+      style: { marginLeft: `min(${i * 1.5}rem, ${i * 2}vw)` },
+      className: "flex items-stretch rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm overflow-hidden",
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-1 bg-gradient-to-b ${accentFrom} ${accentTo} shrink-0` }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-4 sm:gap-6 p-4 sm:p-5 flex-1 min-w-0", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: `text-2xl sm:text-3xl font-bold bg-gradient-to-r ${accentFrom} ${accentTo} bg-clip-text text-transparent shrink-0`, children: String(i + 1).padStart(2, "0") }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "min-w-0", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "text-foreground font-semibold mb-1", children: s.step }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground text-sm", children: s.desc })
+          ] })
+        ] })
+      ]
+    },
+    i
+  )) });
+}
+function FAQSection({ faqs, accentFrom, accentTo, variant }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "FAQ", title: "Frequently Asked Questions" }),
+    variant === "A" && /* @__PURE__ */ jsxRuntime.jsx(FAQA, { faqs }),
+    variant === "B" && /* @__PURE__ */ jsxRuntime.jsx(FAQB, { faqs, accentFrom, accentTo }),
+    variant === "C" && /* @__PURE__ */ jsxRuntime.jsx(FAQC, { faqs, accentFrom, accentTo })
+  ] }) });
+}
+function FAQA({ faqs }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-3xl mx-auto space-y-4", children: faqs.map((faq, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.1, children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "text-foreground font-semibold mb-2", children: faq.q }),
+    /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground text-sm leading-relaxed", children: faq.a })
+  ] }, i)) });
+}
+function FAQB({ faqs, accentFrom, accentTo }) {
+  const [openIndex, setOpenIndex] = React.useState(null);
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-3xl mx-auto space-y-3", children: faqs.map((faq, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 10 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.4, delay: i * 0.08 },
+      className: "rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm overflow-hidden",
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          "button",
+          {
+            onClick: () => setOpenIndex(openIndex === i ? null : i),
+            className: "w-full flex items-center justify-between p-5 text-left",
+            "data-testid": `faq-toggle-${i}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-foreground font-semibold pr-4", children: faq.q }),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                framerMotion.motion.span,
+                {
+                  animate: { rotate: openIndex === i ? 180 : 0 },
+                  transition: { duration: 0.3 },
+                  className: "shrink-0",
+                  children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronDown, { className: "w-5 h-5 text-muted-foreground" })
+                }
+              )
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(framerMotion.AnimatePresence, { children: openIndex === i && /* @__PURE__ */ jsxRuntime.jsx(
+          framerMotion.motion.div,
+          {
+            initial: { height: 0, opacity: 0 },
+            animate: { height: "auto", opacity: 1 },
+            exit: { height: 0, opacity: 0 },
+            transition: { duration: 0.3 },
+            className: "overflow-hidden",
+            children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "px-5 pb-5", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: `h-px w-full bg-gradient-to-r ${accentFrom} ${accentTo} opacity-20 mb-4` }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground text-sm leading-relaxed", children: faq.a })
+            ] })
+          }
+        ) })
+      ]
+    },
+    i
+  )) });
+}
+function FAQC({ faqs, accentFrom, accentTo }) {
+  const leftFaqs = faqs.filter((_, i) => i % 2 === 0);
+  const rightFaqs = faqs.filter((_, i) => i % 2 === 1);
+  const renderFaq = (faq, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { duration: 0.5, delay: i * 0.1 },
+      className: "flex rounded-md bg-white/80 backdrop-blur-xl border border-gray-200/60 shadow-sm overflow-hidden",
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-[2px] bg-gradient-to-b ${accentFrom} ${accentTo} shrink-0` }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-5", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "text-foreground font-semibold mb-2 text-sm", children: faq.q }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground text-sm leading-relaxed", children: faq.a })
+        ] })
+      ]
+    },
+    i
+  );
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-4 items-start", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-4", children: leftFaqs.map((faq, i) => renderFaq(faq, i)) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-4", children: rightFaqs.map((faq, i) => renderFaq(faq, i)) })
+  ] });
+}
+const iconMap$1 = {
+  Bot: lucideReact.Bot,
+  Target: lucideReact.Target,
+  Globe: lucideReact.Globe,
+  Zap: lucideReact.Zap,
+  Phone: lucideReact.Phone,
+  Headphones: lucideReact.Headphones,
+  UserCheck: lucideReact.UserCheck,
+  CalendarCheck: lucideReact.CalendarCheck,
+  MailCheck: lucideReact.MailCheck,
+  TrendingUp: lucideReact.TrendingUp,
+  MessageSquare: lucideReact.MessageSquare,
+  Mail: lucideReact.Mail,
+  Smartphone: lucideReact.Smartphone,
+  Database: lucideReact.Database,
+  Workflow: lucideReact.Workflow,
+  Search: lucideReact.Search,
+  Megaphone: lucideReact.Megaphone,
+  BarChart3: lucideReact.BarChart3,
+  MapPin: lucideReact.MapPin,
+  Filter: lucideReact.Filter,
+  MousePointer: lucideReact.MousePointer,
+  Percent: lucideReact.Percent,
+  Camera: lucideReact.Camera,
+  ThumbsUp: lucideReact.ThumbsUp,
+  FileText: lucideReact.FileText,
+  Palette: lucideReact.Palette,
+  Video: lucideReact.Video,
+  Monitor: lucideReact.Monitor,
+  Layout: lucideReact.Layout,
+  Settings: lucideReact.Settings,
+  Plug: lucideReact.Plug,
+  PieChart: lucideReact.PieChart,
+  Code: lucideReact.Code,
+  Share2: lucideReact.Share2,
+  Building2: lucideReact.Building2,
+  ShoppingCart: lucideReact.ShoppingCart,
+  Briefcase: lucideReact.Briefcase,
+  Stethoscope: lucideReact.Stethoscope,
+  GraduationCap: lucideReact.GraduationCap,
+  Utensils: lucideReact.Utensils,
+  Car: lucideReact.Car,
+  Hammer: lucideReact.Hammer,
+  Scale: lucideReact.Scale,
+  Heart: lucideReact.Heart,
+  Landmark: lucideReact.Landmark,
+  Dumbbell: lucideReact.Dumbbell
+};
+const defaultContent = {
+  longDesc: "Our AI-powered system is designed to automate and optimize your business processes, delivering measurable results from day one.",
+  problems: [
+    "Leads slip through the cracks due to slow or no response",
+    "Manual processes waste time and limit scalability",
+    "Inconsistent follow-up leads to lost revenue opportunities",
+    "No visibility into what's working and what's not"
+  ],
+  solutions: [
+    "Instant AI-powered response to every lead, 24/7/365",
+    "Fully automated workflows that scale without added headcount",
+    "Intelligent follow-up sequences that nurture every prospect",
+    "Real-time analytics and reporting for complete visibility"
+  ],
+  features: [
+    "24/7 automated operation",
+    "Real-time analytics dashboard",
+    "CRM integration ready",
+    "Custom AI model training",
+    "Multi-channel deployment",
+    "A/B testing built-in",
+    "Automated reporting",
+    "Dedicated support team"
+  ],
+  workflowSteps: [
+    { step: "Setup & Configuration", desc: "We configure the system to match your business processes and goals." },
+    { step: "Integration & Testing", desc: "Connect with your existing tools and run comprehensive tests." },
+    { step: "Launch & Optimization", desc: "Go live with ongoing monitoring and continuous improvement." },
+    { step: "Scale & Grow", desc: "Expand capabilities and channels as your results compound." }
+  ],
+  industries: [
+    { name: "Real Estate", icon: "Building2" },
+    { name: "Healthcare", icon: "Stethoscope" },
+    { name: "Professional Services", icon: "Briefcase" },
+    { name: "E-Commerce", icon: "ShoppingCart" },
+    { name: "Education", icon: "GraduationCap" },
+    { name: "Restaurants", icon: "Utensils" }
+  ],
+  faqs: [
+    { q: "How quickly can this be implemented?", a: "Most implementations are completed within 2-4 weeks, including custom configuration, testing, and optimization for your specific business needs." },
+    { q: "Do I need technical knowledge to use this?", a: "No. We handle all the technical setup and provide a user-friendly dashboard. Our team manages ongoing optimization and you receive clear performance reports." },
+    { q: "Can this integrate with my existing tools?", a: "Yes. Our systems integrate with all major CRMs, email platforms, scheduling tools, and business software." },
+    { q: "What kind of results can I expect?", a: "Most clients see measurable improvements within the first 30 days, with significant ROI within 90 days." },
+    { q: "Is there a minimum contract period?", a: "No long-term contracts required. We operate on a month-to-month basis because we're confident our results speak for themselves." }
+  ],
+  relatedServices: []
+};
+const defaultTheme = {
+  heroMockup: "analytics-dashboard",
+  accentFrom: "from-blue-500",
+  accentTo: "to-purple-500",
+  heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+  problemSolutionLayout: "A",
+  featuresLayout: "A",
+  workflowLayout: "A",
+  faqLayout: "A"
+};
+function ServiceDetail() {
+  const params = wouter.useParams();
+  const service = ALL_SERVICES$1.find((s) => s.slug === params.slug);
+  if (!service) {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "min-h-screen flex items-center justify-center pt-20", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-2xl font-bold text-foreground mb-4", children: "Service Not Found" }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", "data-testid": "button-back-services", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowLeft, { className: "w-4 h-4 mr-1" }),
+        " Back to Services"
+      ] }) })
+    ] }) });
+  }
+  iconMap$1[service.icon] || lucideReact.Zap;
+  const content = SERVICE_CONTENT[params.slug] || defaultContent;
+  const theme = SERVICE_VISUAL_THEMES[params.slug] || defaultTheme;
+  const categoryId = service.categoryId;
+  const pricing = getServicePricing(params.slug);
+  const heroGradient = theme.heroGradient.includes("#") ? "from-gray-50/80 via-blue-50/30 to-white" : theme.heroGradient;
+  const relatedServiceData = content.relatedServices.map((slug) => ALL_SERVICES$1.find((s) => s.slug === slug)).filter(Boolean).slice(0, 4);
+  const relatedCaseStudies = CASE_STUDIES.filter(
+    (cs) => cs.tags.some((tag) => {
+      const categoryLower = service.category.toLowerCase();
+      const tagLower = tag.toLowerCase();
+      return categoryLower.includes(tagLower.split(" ")[0]) || tagLower.includes(categoryLower.split(" ")[0]) || tagLower.toLowerCase().includes("ai") && categoryLower.includes("ai") || tagLower.toLowerCase().includes("seo") && categoryLower.includes("lead") || tagLower.toLowerCase().includes("ads") && categoryLower.includes("lead") || tagLower.toLowerCase().includes("social") && categoryLower.includes("social") || tagLower.toLowerCase().includes("web") && categoryLower.includes("development");
+    })
+  ).slice(0, 3);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: `${service.title} - Infinite Rankers | AI Revenue Growth`,
+        description: service.shortDesc,
+        canonical: `https://infiniterankers.io/${service.slug}`
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "script",
+      {
+        type: "application/ld+json",
+        dangerouslySetInnerHTML: {
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": service.title,
+            "description": service.shortDesc,
+            "provider": {
+              "@type": "Organization",
+              "name": "Infinite Rankers",
+              "url": "https://infiniterankers.io"
+            },
+            "areaServed": { "@type": "Country", "name": "United States" },
+            "url": `https://infiniterankers.io/${service.slug}`
+          })
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: `absolute inset-0 bg-gradient-to-br ${heroGradient}` }),
+      categoryId === "ai-automation" && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-16 right-16 w-64 h-64 opacity-[0.08]", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative w-full h-full", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 border-2 border-cyan-500 rounded-full animate-pulse-ring" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-6 border border-cyan-500/50 rounded-full animate-pulse-ring", style: { animationDelay: "0.5s" } }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-12 border border-cyan-500/30 rounded-full animate-pulse-ring", style: { animationDelay: "1s" } }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-1/2 left-1/2 w-2 h-2 bg-cyan-500 rounded-full -translate-x-1/2 -translate-y-1/2" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-2 h-2 bg-cyan-500 rounded-full animate-orbit" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-1.5 h-1.5 bg-blue-500 rounded-full animate-orbit", style: { animationDelay: "2s", animationDuration: "6s" } })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-20 left-8 w-48 h-48 opacity-[0.06]", children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 100 100", className: "w-full h-full", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M10 50 L30 30 L50 50 L70 20 L90 40", stroke: "currentColor", strokeWidth: "1", fill: "none", className: "text-blue-500" }),
+          /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M10 60 L30 70 L50 55 L70 65 L90 50", stroke: "currentColor", strokeWidth: "0.5", fill: "none", className: "text-cyan-500" })
+        ] }) })
+      ] }),
+      categoryId === "lead-generation" && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-20 right-10 w-72 h-72 opacity-[0.07]", children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 200 200", className: "w-full h-full", children: [
+          [0, 1, 2, 3, 4].map((i) => /* @__PURE__ */ jsxRuntime.jsx("rect", { x: 20 + i * 35, y: 200 - (40 + i * 30), width: "25", height: 40 + i * 30, rx: "3", fill: "currentColor", className: "text-emerald-500", opacity: 0.3 + i * 0.15 }, i)),
+          /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M10 180 Q60 140 100 120 T200 60", stroke: "currentColor", strokeWidth: "2", fill: "none", className: "text-green-500", opacity: "0.4" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-16 left-12 opacity-[0.06]", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-32 h-32 border-2 border-dashed border-green-500 rounded-full flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Target, { className: "w-8 h-8 text-green-500" }) }) })
+      ] }),
+      categoryId === "social-content" && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-24 right-12 opacity-[0.08]", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex gap-3", children: [0, 1, 2].map((i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-16 h-20 rounded-md border border-pink-400/30 bg-pink-50/50", style: { transform: `rotate(${-5 + i * 5}deg)`, animationDelay: `${i * 0.3}s` }, children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-4 h-4 bg-pink-200/40 rounded-full mx-auto mt-2" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-1 bg-pink-200/30 rounded-full mx-auto mt-2" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-1 bg-pink-200/20 rounded-full mx-auto mt-1" })
+        ] }, i)) }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-24 left-8 opacity-[0.06]", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-end gap-1", children: [3, 5, 4, 7, 6, 8, 5, 7, 9, 6, 8, 7].map((h, i) => /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-1.5 bg-orange-400 rounded-full animate-wave", style: { height: `${h * 4}px`, animationDelay: `${i * 0.1}s` } }, i)) }) })
+      ] }),
+      categoryId === "development" && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "absolute top-20 right-8 opacity-[0.07] font-mono text-xs text-violet-500 leading-relaxed", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { children: "const deploy = async () => {" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "ml-4", children: "await build();" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "ml-4", children: "await optimize();" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "ml-4", children: "return success;" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { children: "}" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-20 left-10 w-48 h-48 opacity-[0.06]", children: /* @__PURE__ */ jsxRuntime.jsxs("svg", { viewBox: "0 0 100 100", className: "w-full h-full", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("rect", { x: "10", y: "10", width: "35", height: "35", rx: "3", stroke: "currentColor", strokeWidth: "1", fill: "none", className: "text-purple-500" }),
+          /* @__PURE__ */ jsxRuntime.jsx("rect", { x: "55", y: "10", width: "35", height: "35", rx: "3", stroke: "currentColor", strokeWidth: "1", fill: "none", className: "text-violet-500" }),
+          /* @__PURE__ */ jsxRuntime.jsx("rect", { x: "30", y: "55", width: "40", height: "35", rx: "3", stroke: "currentColor", strokeWidth: "1", fill: "none", className: "text-indigo-500" }),
+          /* @__PURE__ */ jsxRuntime.jsx("line", { x1: "27", y1: "45", x2: "27", y2: "55", stroke: "currentColor", strokeWidth: "0.5", className: "text-purple-500" }),
+          /* @__PURE__ */ jsxRuntime.jsx("line", { x1: "72", y1: "45", x2: "72", y2: "55", stroke: "currentColor", strokeWidth: "0.5", className: "text-violet-500" })
+        ] }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1 text-sm text-muted-foreground mb-6 cursor-pointer hover:text-foreground transition-colors", "data-testid": "link-back-services", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowLeft, { className: "w-4 h-4" }),
+          " Back to Services"
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid lg:grid-cols-2 gap-12 items-center", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, children: [
+            /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-4", "data-testid": "badge-service-category", children: service.category }),
+            /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight", "data-testid": "text-service-title", children: service.title }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-muted-foreground leading-relaxed mb-4", children: service.shortDesc }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base text-muted-foreground leading-relaxed mb-8", children: content.longDesc }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/book-demo?service=${encodeURIComponent(service.title)}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-service-book-demo", children: [
+                "Book Demo ",
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+              ] }) }),
+              /* @__PURE__ */ jsxRuntime.jsx("a", { href: "#service-pricing", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outline", "data-testid": "button-service-pricing", children: "View Pricing" }) })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, x: 30 },
+              animate: { opacity: 1, x: 0 },
+              transition: { delay: 0.2 },
+              className: "hidden lg:flex justify-center",
+              children: /* @__PURE__ */ jsxRuntime.jsx(
+                ServiceHeroMockup,
+                {
+                  type: theme.heroMockup,
+                  accentFrom: theme.accentFrom,
+                  accentTo: theme.accentTo
+                }
+              )
+            }
+          )
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      ProblemSolutionSection,
+      {
+        problems: content.problems,
+        solutions: content.solutions,
+        serviceTitle: service.title,
+        accentFrom: theme.accentFrom,
+        accentTo: theme.accentTo,
+        variant: theme.problemSolutionLayout
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      WorkflowSection,
+      {
+        steps: content.workflowSteps,
+        accentFrom: theme.accentFrom,
+        accentTo: theme.accentTo,
+        variant: theme.workflowLayout
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      FeaturesSection,
+      {
+        features: content.features,
+        accentFrom: theme.accentFrom,
+        accentTo: theme.accentTo,
+        variant: theme.featuresLayout
+      }
+    ),
+    pricing && /* @__PURE__ */ jsxRuntime.jsx("section", { id: "service-pricing", className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "section-service-pricing", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Pricing",
+          title: `${service.title} Pricing`,
+          description: `Choose the plan that fits your needs. All plans are month-to-month with no long-term contracts.${pricing.combinedNote ? ` ${pricing.combinedNote}` : ""}`
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid md:grid-cols-3 gap-4 sm:gap-6", children: pricing.tiers.map((tier, i) => /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { delay: i * 0.1 },
+          children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: `p-5 sm:p-6 h-full relative ${i === 1 ? "border-primary ring-1 ring-primary/20" : ""}`, "data-testid": `pricing-tier-${tier.name.toLowerCase()}`, children: [
+            i === 1 && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -top-3 left-1/2 -translate-x-1/2", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", children: "Most Popular" }) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-5", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-base font-semibold text-foreground mb-3", children: tier.name }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-baseline justify-center gap-1", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-3xl sm:text-4xl font-bold text-foreground", children: [
+                  "$",
+                  tier.price.toLocaleString()
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-muted-foreground", children: pricing.unit })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground mt-1", children: "Month-to-month" })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2 mb-6", children: tier.features.map((feature) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex items-start gap-2 text-sm text-muted-foreground", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-primary mt-0.5 shrink-0" }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { children: feature })
+            ] }, feature)) }),
+            /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/book-demo?service=${encodeURIComponent(service.title)}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { className: "w-full", variant: i === 1 ? "default" : "outline", "data-testid": `button-get-started-${tier.name.toLowerCase()}`, children: [
+              "Get Started ",
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+            ] }) })
+          ] })
+        },
+        tier.name
+      )) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Industries", title: "Industry Use Cases", description: "Our systems are trusted across industries with tailored configurations for each." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4", children: content.industries.map((ind, i) => {
+        const IndIcon = iconMap$1[ind.icon] || lucideReact.Building2;
+        return /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.05, className: "text-center", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-10 h-10 mx-auto rounded-md bg-gradient-to-br ${theme.accentFrom} ${theme.accentTo} flex items-center justify-center mb-3 opacity-80`, children: /* @__PURE__ */ jsxRuntime.jsx(IndIcon, { className: "w-5 h-5 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm font-medium text-foreground", children: ind.name })
+        ] }, ind.name);
+      }) })
+    ] }) }),
+    relatedCaseStudies.length > 0 && /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Results", title: "Related Case Studies", description: "See how businesses like yours have achieved real results with our systems." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: relatedCaseStudies.map((cs, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.1, glow: true, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-3", children: cs.label }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", "data-testid": `text-case-study-title-${cs.id}`, children: cs.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-4", children: cs.business }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-2 rounded-md bg-blue-50/80 text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: `text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`, children: cs.results.metric1 }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: cs.results.label1 })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-2 rounded-md bg-blue-50/80 text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: `text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`, children: cs.results.metric2 }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: cs.results.label2 })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-2 rounded-md bg-blue-50/80 text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: `text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`, children: cs.results.metric3 }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: cs.results.label3 })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-2 rounded-md bg-blue-50/80 text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: `text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`, children: cs.results.metric4 }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: cs.results.label4 })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap gap-1.5 mt-4", children: cs.tags.map((tag) => /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "outline", className: "text-xs", children: tag }, tag)) })
+      ] }, cs.id)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      FAQSection,
+      {
+        faqs: content.faqs,
+        accentFrom: theme.accentFrom,
+        accentTo: theme.accentTo,
+        variant: theme.faqLayout
+      }
+    ),
+    relatedServiceData.length > 0 && /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Explore More", title: "Related Services", description: "Complement your growth strategy with these related systems." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-6", children: relatedServiceData.map((rs, i) => {
+        if (!rs) return null;
+        const RsIcon = iconMap$1[rs.icon] || lucideReact.Zap;
+        return /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${rs.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.1, glow: true, className: "cursor-pointer h-full", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: `w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4`, children: /* @__PURE__ */ jsxRuntime.jsx(RsIcon, { className: "w-5 h-5 text-blue-600" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm font-semibold text-foreground mb-2", "data-testid": `text-related-service-${rs.slug}`, children: rs.title }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground leading-relaxed", children: rs.shortDesc })
+        ] }) }, rs.slug);
+      }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-20 lg:py-28 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: `absolute inset-0 bg-gradient-to-br ${theme.accentFrom} ${theme.accentTo}` }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("h2", { className: "text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6", children: [
+          "Ready to Implement ",
+          service.title,
+          "?"
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base sm:text-lg text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto", children: "Book a free strategy session and see how this system can be customized for your business." }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/book-demo?service=${encodeURIComponent(service.title)}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-cta-book-demo", children: [
+          "Book Free Strategy Session ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-6", children: /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "compact" }) })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: `/${params.slug}`, type: "service" })
+  ] });
+}
+const PORTFOLIO_IMAGES$1 = {
+  "1": "/images/portfolio/project-1-dental.jpg",
+  "2": "/images/portfolio/project-2-ecommerce.jpg",
+  "3": "/images/portfolio/project-3-realestate.jpg",
+  "4": "/images/portfolio/project-4-saas.jpg",
+  "5": "/images/portfolio/project-5-lawfirm.jpg",
+  "6": "/images/portfolio/project-6-fitness.jpg",
+  "7": "/images/portfolio/project-7-restaurant.jpg",
+  "8": "/images/portfolio/project-8-clinic.jpg",
+  "9": "/images/portfolio/project-9-finance.jpg",
+  "10": "/images/portfolio/project-10-homeservices.jpg",
+  "11": "/images/portfolio/project-11-dealership.jpg",
+  "12": "/images/portfolio/project-12-coaching.jpg",
+  "13": "/images/portfolio/project-13-hotel.jpg",
+  "14": "/images/portfolio/project-14-insurance.jpg",
+  "15": "/images/portfolio/project-15-construction.jpg",
+  "16": "/images/portfolio/project-16-accounting.jpg",
+  "17": "/images/portfolio/project-17-salon.jpg",
+  "18": "/images/portfolio/project-18-immigration.jpg",
+  "19": "/images/portfolio/project-19-logistics.jpg",
+  "20": "/images/portfolio/project-20-manufacturing.jpg",
+  "21": "/images/portfolio/project-21-veterinary.jpg"
+};
+const ALL_TAGS = Array.from(new Set(CASE_STUDIES.flatMap((cs) => cs.tags)));
+const STATS = [
+  { icon: lucideReact.BarChart3, target: 2500, suffix: "+", label: "Projects" },
+  { icon: lucideReact.Users, target: 9500, suffix: "+", label: "Clients" },
+  { icon: lucideReact.TrendingUp, target: 12, prefix: "$", suffix: "M+", label: "Revenue Generated" },
+  { icon: lucideReact.Award, target: 98, suffix: "%", label: "Client Satisfaction" }
+];
+const METRIC_COLORS = [
+  "bg-blue-50 dark:bg-blue-950/30",
+  "bg-indigo-50 dark:bg-indigo-950/30",
+  "bg-purple-50 dark:bg-purple-950/30",
+  "bg-violet-50 dark:bg-violet-950/30"
+];
+const METRIC_TEXT_COLORS = [
+  "text-blue-600 dark:text-blue-400",
+  "text-indigo-600 dark:text-indigo-400",
+  "text-purple-600 dark:text-purple-400",
+  "text-violet-600 dark:text-violet-400"
+];
+function useCountUp(target, duration = 2e3) {
+  const [count2, setCount] = React.useState(0);
+  React.useEffect(() => {
+    let start = 0;
+    const increment = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [target, duration]);
+  return count2;
+}
+function StatCounter({ icon: Icon, target, suffix, prefix, label }) {
+  const count2 = useCountUp(target);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col items-center gap-2", "data-testid": `stat-${label.toLowerCase().replace(/\s+/g, "-")}`, children: [
+    /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-6 h-6 text-blue-400" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-2xl sm:text-3xl font-bold text-white", children: [
+      prefix,
+      count2.toLocaleString(),
+      suffix
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-white/70", children: label })
+  ] });
+}
+function Portfolio() {
+  const [selectedTag, setSelectedTag] = React.useState("All");
+  const filteredStudies = selectedTag === "All" ? CASE_STUDIES : CASE_STUDIES.filter((cs) => cs.tags.includes(selectedTag));
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Portfolio & Case Studies - Infinite Rankers | Proven AI Growth Results",
+        description: "Explore real case studies showing how our AI automation and marketing systems have generated measurable growth for businesses across industries."
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", "data-testid": "hero-section", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-900" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-float" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-10 right-10 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-float", style: { animationDelay: "2s" } }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-3xl animate-float", style: { animationDelay: "4s" } }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 20 },
+            animate: { opacity: 1, y: 0 },
+            className: "max-w-3xl mx-auto text-center",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3", children: "Portfolio" }),
+              /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight", "data-testid": "hero-title", children: [
+                "Our",
+                " ",
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent", children: "Success Stories" })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-white/70 leading-relaxed max-w-2xl mx-auto mb-16", "data-testid": "hero-subtitle", children: "Explore how our AI automation and marketing systems have generated measurable growth for businesses across industries." })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 30 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.3 },
+            className: "grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto",
+            "data-testid": "stats-row",
+            children: STATS.map((stat) => /* @__PURE__ */ jsxRuntime.jsx(StatCounter, { ...stat }, stat.label))
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", "data-testid": "portfolio-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Case Studies",
+          title: "Proven Results Across Industries",
+          description: "Filter by category to see how we've helped businesses like yours achieve extraordinary growth."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex overflow-x-auto pb-4 mb-12 gap-2 scrollbar-hide", "data-testid": "filter-tabs-container", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "button",
+          {
+            onClick: () => setSelectedTag("All"),
+            "data-testid": "filter-tab-all",
+            className: `flex-shrink-0 px-5 py-2 rounded-md text-sm font-medium transition-all toggle-elevate ${selectedTag === "All" ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white toggle-elevated" : "bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700 text-muted-foreground"}`,
+            children: "All"
+          }
+        ),
+        ALL_TAGS.map((tag) => /* @__PURE__ */ jsxRuntime.jsx(
+          "button",
+          {
+            onClick: () => setSelectedTag(tag),
+            "data-testid": `filter-tab-${tag.toLowerCase().replace(/\s+/g, "-")}`,
+            className: `flex-shrink-0 px-5 py-2 rounded-md text-sm font-medium transition-all toggle-elevate ${selectedTag === tag ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white toggle-elevated" : "bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700 text-muted-foreground"}`,
+            children: tag
+          },
+          tag
+        ))
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx(framerMotion.AnimatePresence, { mode: "popLayout", children: /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0 },
+          animate: { opacity: 1 },
+          exit: { opacity: 0 },
+          transition: { duration: 0.3 },
+          className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6",
+          "data-testid": "portfolio-grid",
+          children: filteredStudies.map((cs, i) => /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, y: 30 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { delay: i * 0.08, duration: 0.4 },
+              "data-testid": `case-study-card-${cs.id}`,
+              children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "overflow-visible hover-elevate h-full flex flex-col", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative h-48 overflow-hidden rounded-t-md", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    "img",
+                    {
+                      src: PORTFOLIO_IMAGES$1[cs.id] || "/images/portfolio/project-1-dental.jpg",
+                      alt: cs.title,
+                      className: "w-full h-full object-cover",
+                      loading: "lazy",
+                      "data-testid": `card-image-${cs.id}`
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "absolute bottom-3 left-3 flex flex-wrap items-center gap-1.5", children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "text-xs", "data-testid": `badge-industry-${cs.id}`, children: cs.industry }),
+                    cs.services.slice(0, 2).map((svc) => /* @__PURE__ */ jsxRuntime.jsx(
+                      Badge,
+                      {
+                        variant: "outline",
+                        className: "text-xs bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm",
+                        "data-testid": `badge-service-${svc.toLowerCase().replace(/\s+/g, "-")}-${cs.id}`,
+                        children: svc
+                      },
+                      svc
+                    ))
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-5 flex flex-col flex-1", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-bold text-foreground mb-1", "data-testid": `card-title-${cs.id}`, children: cs.title }),
+                  /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-3", "data-testid": `card-business-${cs.id}`, children: cs.business }),
+                  /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-4 line-clamp-2", "data-testid": `card-challenge-${cs.id}`, children: cs.challenge }),
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 gap-2 mb-4", children: [
+                    { metric: cs.results.metric1, label: cs.results.label1 },
+                    { metric: cs.results.metric2, label: cs.results.label2 },
+                    { metric: cs.results.metric3, label: cs.results.label3 },
+                    { metric: cs.results.metric4, label: cs.results.label4 }
+                  ].map((r, idx) => /* @__PURE__ */ jsxRuntime.jsxs(
+                    "div",
+                    {
+                      className: `p-2.5 rounded-md text-center ${METRIC_COLORS[idx]}`,
+                      "data-testid": `metric-${idx}-${cs.id}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntime.jsx("div", { className: `text-base font-bold ${METRIC_TEXT_COLORS[idx]}`, children: r.metric }),
+                        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[11px] text-muted-foreground leading-tight", children: r.label })
+                      ]
+                    },
+                    idx
+                  )) }),
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-auto", children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${cs.id}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", className: "w-full", "data-testid": `button-view-case-${cs.id}`, children: [
+                    "View Case Study ",
+                    /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+                  ] }) }) })
+                ] })
+              ] })
+            },
+            cs.id
+          ))
+        },
+        selectedTag
+      ) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-20 lg:py-28 relative overflow-hidden", "data-testid": "dashboard-showcase", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-900" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float", style: { animationDelay: "3s" } }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 20 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            className: "text-center mb-16",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3", children: "Analytics" }),
+              /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-3xl sm:text-4xl font-bold text-white mb-4", "data-testid": "dashboard-title", children: "AI-Powered Results Dashboard" }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-white/60 text-lg max-w-2xl mx-auto", children: "Real-time insights powering data-driven decisions for every client." })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-3 gap-6", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, y: 40 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { delay: 0.1 },
+              className: "animate-float",
+              "data-testid": "panel-revenue",
+              children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-6", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.TrendingUp, { className: "w-5 h-5 text-blue-400" }),
+                  "Revenue Growth"
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-end gap-2 h-40", children: [35, 50, 45, 70, 60, 85, 95].map((h, idx) => /* @__PURE__ */ jsxRuntime.jsx(
+                  framerMotion.motion.div,
+                  {
+                    initial: { height: 0 },
+                    whileInView: { height: `${h}%` },
+                    viewport: { once: true },
+                    transition: { delay: 0.3 + idx * 0.1, duration: 0.6 },
+                    className: "flex-1 rounded-sm bg-gradient-to-t from-blue-600 to-blue-400"
+                  },
+                  idx
+                )) }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-between mt-3 text-[10px] text-white/40", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Mon" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Tue" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Wed" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Thu" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Fri" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Sat" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Sun" })
+                ] })
+              ] })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, y: 40 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { delay: 0.2 },
+              className: "animate-float",
+              style: { animationDelay: "1s" },
+              "data-testid": "panel-pipeline",
+              children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-6", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Users, { className: "w-5 h-5 text-purple-400" }),
+                  "Lead Pipeline"
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-5 py-2", children: [
+                  { label: "Qualified", pct: 85, color: "from-purple-600 to-purple-400" },
+                  { label: "Contacted", pct: 65, color: "from-blue-600 to-blue-400" },
+                  { label: "Converted", pct: 42, color: "from-indigo-600 to-indigo-400" }
+                ].map((item) => /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-between text-sm mb-1.5", children: [
+                    /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-white/80", children: item.label }),
+                    /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-white/60", children: [
+                      item.pct,
+                      "%"
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-2.5 rounded-full bg-white/10 overflow-hidden", children: /* @__PURE__ */ jsxRuntime.jsx(
+                    framerMotion.motion.div,
+                    {
+                      initial: { width: 0 },
+                      whileInView: { width: `${item.pct}%` },
+                      viewport: { once: true },
+                      transition: { delay: 0.5, duration: 0.8 },
+                      className: `h-full rounded-full bg-gradient-to-r ${item.color}`
+                    }
+                  ) })
+                ] }, item.label)) })
+              ] })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            framerMotion.motion.div,
+            {
+              initial: { opacity: 0, y: 40 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true },
+              transition: { delay: 0.3 },
+              className: "animate-float",
+              style: { animationDelay: "2s" },
+              "data-testid": "panel-funnel",
+              children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-6", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.BarChart3, { className: "w-5 h-5 text-green-400" }),
+                  "Conversion Funnel"
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-3 py-2", children: [
+                  { label: "Visitors", value: "12,480", width: "100%" },
+                  { label: "Leads", value: "3,120", width: "75%" },
+                  { label: "Qualified", value: "1,560", width: "50%" },
+                  { label: "Customers", value: "624", width: "30%" }
+                ].map((step, idx) => /* @__PURE__ */ jsxRuntime.jsxs(
+                  framerMotion.motion.div,
+                  {
+                    initial: { opacity: 0, scaleX: 0 },
+                    whileInView: { opacity: 1, scaleX: 1 },
+                    viewport: { once: true },
+                    transition: { delay: 0.4 + idx * 0.15, duration: 0.5 },
+                    style: { width: step.width, originX: 0 },
+                    className: "bg-gradient-to-r from-green-600/80 to-emerald-500/60 rounded-sm px-3 py-2 flex justify-between items-center",
+                    children: [
+                      /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-white/90", children: step.label }),
+                      /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs font-semibold text-white", children: step.value })
+                    ]
+                  },
+                  step.label
+                )) })
+              ] })
+            }
+          )
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-20 lg:py-28 relative overflow-hidden", "data-testid": "cta-section", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-3xl sm:text-4xl font-bold text-white mb-6", children: "Want Results Like These?" }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-white/80 mb-8 max-w-2xl mx-auto", children: "Book a free strategy session and we'll show you exactly how our AI systems can transform your business growth." }),
+            /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(
+              Button,
+              {
+                className: "bg-white text-blue-700 border-0",
+                "data-testid": "button-portfolio-cta",
+                children: [
+                  "Book Free Strategy Session",
+                  " ",
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+                ]
+              }
+            ) })
+          ]
+        }
+      ) })
+    ] })
+  ] });
+}
+const PORTFOLIO_IMAGES = {
+  "1": "/images/portfolio/project-1-dental.jpg",
+  "2": "/images/portfolio/project-2-ecommerce.jpg",
+  "3": "/images/portfolio/project-3-realestate.jpg",
+  "4": "/images/portfolio/project-4-saas.jpg",
+  "5": "/images/portfolio/project-5-lawfirm.jpg",
+  "6": "/images/portfolio/project-6-fitness.jpg",
+  "7": "/images/portfolio/project-7-restaurant.jpg",
+  "8": "/images/portfolio/project-8-clinic.jpg",
+  "9": "/images/portfolio/project-9-finance.jpg",
+  "10": "/images/portfolio/project-10-homeservices.jpg",
+  "11": "/images/portfolio/project-11-dealership.jpg",
+  "12": "/images/portfolio/project-12-coaching.jpg",
+  "13": "/images/portfolio/project-13-hotel.jpg",
+  "14": "/images/portfolio/project-14-insurance.jpg",
+  "15": "/images/portfolio/project-15-construction.jpg",
+  "16": "/images/portfolio/project-16-accounting.jpg",
+  "17": "/images/portfolio/project-17-salon.jpg",
+  "18": "/images/portfolio/project-18-immigration.jpg",
+  "19": "/images/portfolio/project-19-logistics.jpg",
+  "20": "/images/portfolio/project-20-manufacturing.jpg",
+  "21": "/images/portfolio/project-21-veterinary.jpg"
+};
+const METRIC_GRADIENTS = [
+  "from-blue-500 to-blue-600",
+  "from-purple-500 to-purple-600",
+  "from-indigo-500 to-indigo-600",
+  "from-cyan-500 to-cyan-600"
+];
+function CaseStudyDetail() {
+  const { id } = wouter.useParams();
+  const csIndex = CASE_STUDIES.findIndex((cs2) => cs2.id === id);
+  const cs = CASE_STUDIES[csIndex];
+  if (!cs) {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "min-h-screen flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-2xl font-bold mb-4", children: "Case Study Not Found" }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/portfolio", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-back-portfolio", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowLeft, { className: "w-4 h-4 mr-1" }),
+        " Back to Portfolio"
+      ] }) })
+    ] }) });
+  }
+  const relatedStudies = CASE_STUDIES.filter(
+    (s) => s.id !== cs.id && s.tags.some((t) => cs.tags.includes(t))
+  ).slice(0, 3);
+  const metrics = [
+    { value: cs.results.metric1, label: cs.results.label1 },
+    { value: cs.results.metric2, label: cs.results.label2 },
+    { value: cs.results.metric3, label: cs.results.label3 },
+    { value: cs.results.metric4, label: cs.results.label4 }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: `${cs.title} - Case Study | Infinite Rankers`,
+        description: `${cs.business}: ${cs.challenge.slice(0, 150)}`,
+        keywords: cs.tags.join(", "),
+        canonical: `https://infiniterankers.io/${cs.id}`
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "script",
+      {
+        type: "application/ld+json",
+        dangerouslySetInnerHTML: {
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": cs.title,
+            "description": `${cs.business}: ${cs.challenge.slice(0, 150)}`,
+            "image": `https://infiniterankers.io${PORTFOLIO_IMAGES[cs.id] || ""}`,
+            "author": { "@type": "Organization", "name": "Infinite Rankers", "url": "https://infiniterankers.io" },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Infinite Rankers",
+              "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
+            },
+            "mainEntityOfPage": `https://infiniterankers.io/${cs.id}`
+          })
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-28 pb-16 overflow-hidden", "data-testid": "case-hero", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "absolute inset-0", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "img",
+          {
+            src: PORTFOLIO_IMAGES[cs.id] || "/images/portfolio/project-1-dental.jpg",
+            alt: cs.title,
+            className: "w-full h-full object-cover",
+            loading: "eager"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/portfolio", children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white mb-6 cursor-pointer transition-colors", "data-testid": "link-back-portfolio", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowLeft, { className: "w-4 h-4" }),
+          " Back to Portfolio"
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap items-center gap-2 mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", "data-testid": "badge-industry", children: cs.industry }),
+          cs.tags.map((tag) => /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "outline", className: "bg-white/10 text-white border-white/20", "data-testid": `badge-tag-${tag.toLowerCase().replace(/\s+/g, "-")}`, children: tag }, tag))
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight max-w-4xl", "data-testid": "text-case-title", children: cs.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-white/80 max-w-3xl", "data-testid": "text-case-business", children: cs.business }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap items-center gap-4 sm:gap-6 mt-6 text-white/60 text-sm", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-4 h-4" }),
+            " ",
+            cs.duration
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Users, { className: "w-4 h-4" }),
+            " ",
+            cs.teamSize
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Zap, { className: "w-4 h-4" }),
+            " ",
+            cs.services.length,
+            " Services"
+          ] })
+        ] })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16", "data-testid": "metrics-section", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 lg:grid-cols-4 gap-4", children: metrics.map((m, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.1 },
+        children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-5 text-center", "data-testid": `metric-card-${i}`, children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: `text-2xl sm:text-3xl font-bold bg-gradient-to-r ${METRIC_GRADIENTS[i]} bg-clip-text text-transparent mb-1`, children: m.value }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs sm:text-sm text-muted-foreground", children: m.label })
+        ] })
+      },
+      i
+    )) }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16", "data-testid": "problem-solution", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid lg:grid-cols-2 gap-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { initial: { opacity: 0, x: -20 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: true }, children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-6 sm:p-8 h-full", "data-testid": "card-challenge", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-md bg-red-50 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.TrendingUp, { className: "w-4 h-4 text-red-500 rotate-180" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-bold text-foreground", children: "The Challenge" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: cs.challenge })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { initial: { opacity: 0, x: 20 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: true }, children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-6 sm:p-8 h-full", "data-testid": "card-solution", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-md bg-green-50 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-green-500" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-bold text-foreground", children: "Our Solution" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: cs.solution })
+      ] }) })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16", "data-testid": "services-used", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-6", children: "Services Deployed" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap gap-2", children: cs.services.map((svc) => /* @__PURE__ */ jsxRuntime.jsxs(Badge, { variant: "secondary", className: "text-sm px-3 py-1.5", "data-testid": `badge-svc-${svc.toLowerCase().replace(/\s+/g, "-")}`, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-3.5 h-3.5 mr-1.5 text-green-500" }),
+        svc
+      ] }, svc)) })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16 bg-gray-50/60", "data-testid": "workflow-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-8", children: "Implementation Workflow" }) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-6", children: cs.workflow.map((step, i) => /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 30 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { delay: i * 0.1 },
+          children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-5 h-full", "data-testid": `workflow-step-${i}`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-sm font-bold mb-3", children: i + 1 }),
+            /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-semibold text-foreground mb-2", children: step.step }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: step.description })
+          ] })
+        },
+        i
+      )) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16", "data-testid": "before-after", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-8", children: "Before vs After" }) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-3 gap-6", children: cs.beforeAfter.map((item, i) => /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { delay: i * 0.1 },
+          children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-5", "data-testid": `before-after-${i}`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "text-sm font-semibold text-foreground mb-4", children: item.metric }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-1", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground mb-1", children: "Before" }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-lg font-bold text-red-500", children: item.before })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-5 h-5 text-muted-foreground flex-shrink-0" }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-1 text-right", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground mb-1", children: "After" }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-lg font-bold text-green-500", children: item.after })
+              ] })
+            ] })
+          ] })
+        },
+        i
+      )) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-16 sm:py-20 relative overflow-hidden", "data-testid": "testimonial-section", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-10", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3", children: "Client Testimonial" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-2xl sm:text-3xl font-bold text-white", children: "What Our Client Says" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 lg:p-12", "data-testid": "card-testimonial", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col lg:flex-row gap-8 lg:gap-12 items-center", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-shrink-0 text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold mx-auto mb-4", children: cs.testimonial.author.split(" ").map((n) => n[0]).join("") }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "font-semibold text-white text-lg", children: cs.testimonial.author }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-white/60 mt-0.5", children: cs.testimonial.role }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center justify-center gap-0.5 mt-3", children: [1, 2, 3, 4, 5].map((star) => /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Star, { className: "w-4 h-4 fill-yellow-400 text-yellow-400" }, star)) })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("svg", { className: "w-10 h-10 text-blue-400/30 mb-4 hidden sm:block", viewBox: "0 0 24 24", fill: "currentColor", children: /* @__PURE__ */ jsxRuntime.jsx("path", { d: "M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" }) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-lg sm:text-xl text-white/90 leading-relaxed font-light italic", children: [
+              '"',
+              cs.testimonial.quote,
+              '"'
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-6 flex flex-wrap items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntime.jsxs(Badge, { variant: "outline", className: "bg-green-500/10 text-green-400 border-green-500/20 text-xs", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-3 h-3 mr-1" }),
+                " Verified Client"
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "outline", className: "bg-blue-500/10 text-blue-400 border-blue-500/20 text-xs", children: cs.industry })
+            ] })
+          ] })
+        ] }) })
+      ] }) })
+    ] }),
+    relatedStudies.length > 0 && /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16", "data-testid": "related-section", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-8", children: "Related Case Studies" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: relatedStudies.map((related, i) => {
+        return /* @__PURE__ */ jsxRuntime.jsx(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 20 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { delay: i * 0.1 },
+            children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "overflow-visible hover-elevate", "data-testid": `related-${related.id}`, children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative h-40 overflow-hidden rounded-t-md", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  "img",
+                  {
+                    src: PORTFOLIO_IMAGES[related.id] || "/images/portfolio/project-1-dental.jpg",
+                    alt: related.title,
+                    className: "w-full h-full object-cover",
+                    loading: "lazy"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" }),
+                /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "absolute bottom-2 left-2 text-xs", children: related.industry })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-4", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-semibold text-foreground mb-1 line-clamp-1", children: related.title }),
+                /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-3 line-clamp-2", children: related.business }),
+                /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${related.id}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", size: "sm", className: "w-full", "data-testid": `button-related-${related.id}`, children: [
+                  "View Case Study ",
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 ml-1" })
+                ] }) })
+              ] })
+            ] })
+          },
+          related.id
+        );
+      }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-16 sm:py-20 relative overflow-hidden", "data-testid": "case-cta", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-white mb-4", children: "Ready to Get Similar Results?" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-white/80 mb-6 max-w-2xl mx-auto", children: [
+          "Book a free strategy session and discover how our AI systems can transform your ",
+          cs.industry.toLowerCase(),
+          " business."
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row justify-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { className: "w-full sm:w-auto bg-white text-blue-700 border-0", "data-testid": "button-case-cta-demo", children: [
+            "Book Free Strategy Session ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/portfolio", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outline", className: "w-full sm:w-auto backdrop-blur bg-white/90 text-gray-900 border-white", "data-testid": "button-case-cta-portfolio", children: "View More Case Studies" }) })
+        ] })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: `/${id}`, type: "portfolio" })
+  ] });
+}
+const labelVariants = classVarianceAuthority.cva(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+);
+const Label = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  LabelPrimitive__namespace.Root,
+  {
+    ref,
+    className: cn(labelVariants(), className),
+    ...props
+  }
+));
+Label.displayName = LabelPrimitive__namespace.Root.displayName;
+const Slider = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsxs(
+  SliderPrimitive__namespace.Root,
+  {
+    ref,
+    className: cn(
+      "relative flex w-full touch-none select-none items-center",
+      className
+    ),
+    ...props,
+    children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SliderPrimitive__namespace.Track, { className: "relative h-2 w-full grow overflow-hidden rounded-full bg-secondary", children: /* @__PURE__ */ jsxRuntime.jsx(SliderPrimitive__namespace.Range, { className: "absolute h-full bg-primary" }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SliderPrimitive__namespace.Thumb, { className: "block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" })
+    ]
+  }
+));
+Slider.displayName = SliderPrimitive__namespace.Root.displayName;
+function ROICalculator() {
+  const [monthlyLeads, setMonthlyLeads] = React.useState([100]);
+  const [avgDealValue, setAvgDealValue] = React.useState([500]);
+  const [closeRate, setCloseRate] = React.useState([10]);
+  const currentRevenue = monthlyLeads[0] * avgDealValue[0] * (closeRate[0] / 100);
+  const projectedLeads = monthlyLeads[0] * 2.5;
+  const projectedCloseRate = Math.min(closeRate[0] * 1.8, 60);
+  const projectedRevenue = projectedLeads * avgDealValue[0] * (projectedCloseRate / 100);
+  const revenueIncrease = projectedRevenue - currentRevenue;
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "roi-calculator", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SectionHeader,
+      {
+        label: "ROI Calculator",
+        title: "Calculate Your Revenue Growth Potential",
+        description: "See how AI automation can impact your bottom line based on your current numbers."
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-4xl mx-auto", children: /* @__PURE__ */ jsxRuntime.jsx(GlassCard, { children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-10", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-8", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-2 mb-3", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(Label, { className: "text-sm font-medium", children: "Monthly Leads" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm font-semibold text-blue-600", children: monthlyLeads[0] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx(Slider, { value: monthlyLeads, onValueChange: setMonthlyLeads, min: 10, max: 1e3, step: 10, "data-testid": "slider-leads" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-2 mb-3", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(Label, { className: "text-sm font-medium", children: "Average Deal Value ($)" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-sm font-semibold text-blue-600", children: [
+              "$",
+              avgDealValue[0]
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx(Slider, { value: avgDealValue, onValueChange: setAvgDealValue, min: 100, max: 1e4, step: 100, "data-testid": "slider-deal-value" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-2 mb-3", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(Label, { className: "text-sm font-medium", children: "Current Close Rate (%)" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-sm font-semibold text-blue-600", children: [
+              closeRate[0],
+              "%"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx(Slider, { value: closeRate, onValueChange: setCloseRate, min: 1, max: 50, step: 1, "data-testid": "slider-close-rate" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-4 rounded-md bg-muted/50", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground mb-1", children: "Current Monthly Revenue" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-2xl font-bold text-foreground", children: [
+            "$",
+            currentRevenue.toLocaleString()
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-4 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground mb-1", children: "Projected Monthly Revenue with AI" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: [
+            "$",
+            Math.round(projectedRevenue).toLocaleString()
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-4 rounded-md bg-emerald-50 border border-emerald-200/60", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground mb-1", children: "Potential Revenue Increase" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-2xl font-bold text-emerald-600", children: [
+            "+$",
+            Math.round(revenueIncrease).toLocaleString(),
+            "/mo"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { className: "w-full mt-2", "data-testid": "button-roi-cta", children: [
+          "Get Your Custom Growth Plan ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] })
+    ] }) }) })
+  ] }) });
+}
+const SERVICE_CATEGORIES_PRICING = [
+  {
+    title: "AI & Automation Systems",
+    slugs: ["ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "ai-appointment-booking", "ai-follow-up", "ai-sales-assistant", "ai-chatbot", "ai-email-automation", "ai-sms-automation", "crm-automation", "workflow-automation"]
+  },
+  {
+    title: "Lead Generation Systems",
+    slugs: ["google-ads", "meta-ads", "seo-authority", "local-seo", "conversion-funnels", "landing-page-optimization", "conversion-rate-optimization"]
+  },
+  {
+    title: "Social Media & Content",
+    slugs: ["social-media-marketing", "content-writing"]
+  },
+  {
+    title: "Development & Technology",
+    slugs: ["website-development", "landing-page-development", "saas-integrations", "crm-setup", "analytics-dashboard", "marketing-automation-setup"]
+  }
+];
+function ServicePricingBreakdown() {
+  const [expandedCategory, setExpandedCategory] = React.useState("AI & Automation Systems");
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", "data-testid": "service-pricing-breakdown", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SectionHeader,
+      {
+        label: "Service Pricing",
+        title: "Individual Service Pricing",
+        description: "All services available month-to-month. Mix and match to build your perfect growth stack."
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-4", children: SERVICE_CATEGORIES_PRICING.map((cat) => {
+      const services = cat.slugs.map((slug) => SERVICE_PRICING.find((sp) => sp.slug === slug)).filter(Boolean);
+      const isExpanded = expandedCategory === cat.title;
+      return /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 10 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "overflow-hidden", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs(
+              "button",
+              {
+                onClick: () => setExpandedCategory(isExpanded ? null : cat.title),
+                className: "w-full flex items-center justify-between gap-4 p-4 sm:p-5 text-left",
+                "data-testid": `toggle-category-${cat.title.toLowerCase().replace(/\s+/g, "-")}`,
+                children: [
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3", children: [
+                    /* @__PURE__ */ jsxRuntime.jsx("span", { className: "w-1.5 h-6 bg-primary rounded-full shrink-0" }),
+                    /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground text-sm sm:text-base", children: cat.title }),
+                    /* @__PURE__ */ jsxRuntime.jsxs(Badge, { variant: "secondary", className: "text-xs", children: [
+                      services.length,
+                      " services"
+                    ] })
+                  ] }),
+                  isExpanded ? /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronUp, { className: "w-4 h-4 text-muted-foreground shrink-0" }) : /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronDown, { className: "w-4 h-4 text-muted-foreground shrink-0" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              "div",
+              {
+                className: "transition-all duration-300",
+                style: {
+                  maxHeight: isExpanded ? `${services.length * 200 + 100}px` : "0px",
+                  opacity: isExpanded ? 1 : 0,
+                  overflow: "hidden"
+                },
+                children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxRuntime.jsxs("table", { className: "w-full text-sm", "data-testid": `table-${cat.title.toLowerCase().replace(/\s+/g, "-")}`, children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { className: "border-t border-b bg-muted/30", children: [
+                    /* @__PURE__ */ jsxRuntime.jsx("th", { className: "text-left p-3 sm:p-4 font-medium text-muted-foreground min-w-[200px]", children: "Service" }),
+                    /* @__PURE__ */ jsxRuntime.jsxs("th", { className: "text-center p-3 sm:p-4 font-medium text-muted-foreground min-w-[120px]", children: [
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { children: "Growth" }),
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs font-normal", children: "Starter" })
+                    ] }),
+                    /* @__PURE__ */ jsxRuntime.jsxs("th", { className: "text-center p-3 sm:p-4 font-medium text-muted-foreground min-w-[120px]", children: [
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { children: "Scale" }),
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs font-normal", children: "Most Popular" })
+                    ] }),
+                    /* @__PURE__ */ jsxRuntime.jsxs("th", { className: "text-center p-3 sm:p-4 font-medium text-muted-foreground min-w-[120px]", children: [
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { children: "Enterprise" }),
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs font-normal", children: "Full Power" })
+                    ] }),
+                    /* @__PURE__ */ jsxRuntime.jsx("th", { className: "p-3 sm:p-4 min-w-[100px]" })
+                  ] }) }),
+                  /* @__PURE__ */ jsxRuntime.jsx("tbody", { children: services.map((service, si) => service && /* @__PURE__ */ jsxRuntime.jsxs("tr", { className: si < services.length - 1 ? "border-b border-border/50" : "", children: [
+                    /* @__PURE__ */ jsxRuntime.jsxs("td", { className: "p-3 sm:p-4", children: [
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "font-medium text-foreground text-xs sm:text-sm", children: service.title }),
+                      service.combinedNote && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground mt-0.5 italic", children: service.combinedNote })
+                    ] }),
+                    service.tiers.map((tier) => /* @__PURE__ */ jsxRuntime.jsxs("td", { className: "text-center p-3 sm:p-4", children: [
+                      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "font-semibold text-foreground text-sm sm:text-base", children: [
+                        "$",
+                        tier.price.toLocaleString()
+                      ] }),
+                      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground", children: service.unit })
+                    ] }, tier.name)),
+                    /* @__PURE__ */ jsxRuntime.jsx("td", { className: "p-3 sm:p-4 text-right", children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${service.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "ghost", size: "sm", "data-testid": `button-view-${service.slug}`, children: [
+                      "Details ",
+                      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 ml-1" })
+                    ] }) }) })
+                  ] }, service.slug)) })
+                ] }) })
+              }
+            )
+          ] })
+        },
+        cat.title
+      );
+    }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4 sm:gap-8 mt-10 text-xs sm:text-sm text-muted-foreground", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Shield, { className: "w-4 h-4 text-primary" }),
+        " No Hidden Fees"
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-4 h-4 text-primary" }),
+        " Month-to-Month"
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-primary" }),
+        " Cancel Anytime"
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.DollarSign, { className: "w-4 h-4 text-primary" }),
+        " No Setup Fees"
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "inline" })
+    ] })
+  ] }) });
+}
+function Pricing() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Pricing - Infinite Rankers | AI Revenue Growth Plans",
+        description: "Transparent, results-driven pricing for AI automation and revenue growth systems. Choose the plan that matches your growth stage."
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-28 sm:pt-32 pb-16 sm:pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-10 left-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, className: "max-w-3xl mx-auto text-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(Badge, { variant: "secondary", className: "mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.DollarSign, { className: "w-3 h-3 mr-1" }),
+          " Transparent Pricing"
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-tight", children: [
+          "Transparent, Results-Driven",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: "Pricing" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base sm:text-lg text-muted-foreground leading-relaxed", children: "Choose the AI revenue system that matches your growth stage. No hidden fees, no long-term contracts." })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid md:grid-cols-3 gap-4 sm:gap-6", children: PRICING_TIERS.map((tier, i) => /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { delay: i * 0.1 },
+        children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: `p-5 sm:p-6 h-full relative ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`, "data-testid": `pricing-card-${tier.name.toLowerCase()}`, children: [
+          tier.discount && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -top-3 right-4", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { "data-testid": `badge-discount-${tier.name.toLowerCase()}`, children: tier.discount }) }),
+          tier.popular && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -top-3 left-4", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", children: "Most Popular" }) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-6 sm:mb-8", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg sm:text-xl font-semibold text-foreground mb-1", children: tier.name }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-4", children: tier.description }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-baseline justify-center gap-1 mb-1", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-3xl sm:text-4xl font-bold text-foreground", children: tier.price }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-muted-foreground", children: tier.period })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: "Month-to-month, cancel anytime" })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2.5 mb-6 sm:mb-8", children: tier.features.map((f) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex items-start gap-2 text-sm", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-primary flex-shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground", children: f })
+          ] }, f)) }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(
+            Button,
+            {
+              className: "w-full",
+              variant: tier.popular ? "default" : "outline",
+              "data-testid": `button-pricing-${tier.name.toLowerCase()}`,
+              children: [
+                tier.cta,
+                " ",
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+              ]
+            }
+          ) })
+        ] })
+      },
+      tier.name
+    )) }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(ServicePricingBreakdown, {}),
+    /* @__PURE__ */ jsxRuntime.jsx(ROICalculator, {}),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-16 sm:py-20 lg:py-24 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6", children: "Need a Custom Solution?" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base sm:text-lg text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto", children: "Every business is unique. Book a strategy session and we'll build a custom AI revenue system tailored to your specific needs and budget." }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-pricing-cta", children: [
+          "Book Free Strategy Session ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/pricing", type: "page" })
+  ] });
+}
+const Input = React__namespace.forwardRef(
+  ({ className, type, ...props }, ref) => {
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      "input",
+      {
+        type,
+        className: cn(
+          "flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          className
+        ),
+        ref,
+        ...props
+      }
+    );
+  }
+);
+Input.displayName = "Input";
+const Textarea = React__namespace.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    "textarea",
+    {
+      className: cn(
+        "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        className
+      ),
+      ref,
+      ...props
+    }
+  );
+});
+Textarea.displayName = "Textarea";
+async function throwIfResNotOk(res) {
+  if (!res.ok) {
+    const text = await res.text() || res.statusText;
+    throw new Error(`${res.status}: ${text}`);
+  }
+}
+async function apiRequest(method, url, data) {
+  const res = await fetch(url, {
+    method,
+    headers: data ? { "Content-Type": "application/json" } : {},
+    body: data ? JSON.stringify(data) : void 0,
+    credentials: "include"
+  });
+  await throwIfResNotOk(res);
+  return res;
+}
+const getQueryFn = ({ on401: unauthorizedBehavior }) => async ({ queryKey }) => {
+  const res = await fetch(queryKey.join("/"), {
+    credentials: "include"
+  });
+  await throwIfResNotOk(res);
+  return await res.json();
+};
+new reactQuery.QueryClient({
+  defaultOptions: {
+    queries: {
+      queryFn: getQueryFn({ on401: "throw" }),
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+      retry: false
+    },
+    mutations: {
+      retry: false
+    }
+  }
+});
+const conversations = pgCore.pgTable("conversations", {
+  id: pgCore.serial("id").primaryKey(),
+  title: pgCore.text("title").notNull(),
+  createdAt: pgCore.timestamp("created_at").default(drizzleOrm.sql`CURRENT_TIMESTAMP`).notNull()
+});
+const messages = pgCore.pgTable("messages", {
+  id: pgCore.serial("id").primaryKey(),
+  conversationId: pgCore.integer("conversation_id").notNull().references(() => conversations.id, { onDelete: "cascade" }),
+  role: pgCore.text("role").notNull(),
+  content: pgCore.text("content").notNull(),
+  createdAt: pgCore.timestamp("created_at").default(drizzleOrm.sql`CURRENT_TIMESTAMP`).notNull()
+});
+drizzleZod.createInsertSchema(conversations).omit({
+  id: true,
+  createdAt: true
+});
+drizzleZod.createInsertSchema(messages).omit({
+  id: true,
+  createdAt: true
+});
+const contacts = pgCore.pgTable("contacts", {
+  id: pgCore.varchar("id").primaryKey().default(drizzleOrm.sql`gen_random_uuid()`),
+  name: pgCore.text("name").notNull(),
+  email: pgCore.text("email").notNull(),
+  phone: pgCore.text("phone"),
+  company: pgCore.text("company"),
+  message: pgCore.text("message").notNull(),
+  createdAt: pgCore.timestamp("created_at").defaultNow()
+});
+const demoBookings = pgCore.pgTable("demo_bookings", {
+  id: pgCore.varchar("id").primaryKey().default(drizzleOrm.sql`gen_random_uuid()`),
+  name: pgCore.text("name").notNull(),
+  email: pgCore.text("email").notNull(),
+  phone: pgCore.text("phone"),
+  company: pgCore.text("company"),
+  website: pgCore.text("website"),
+  revenue: pgCore.text("revenue"),
+  service: pgCore.text("service"),
+  date: pgCore.text("date").notNull(),
+  time: pgCore.text("time").notNull(),
+  message: pgCore.text("message"),
+  createdAt: pgCore.timestamp("created_at").defaultNow()
+});
+const insertContactSchema = drizzleZod.createInsertSchema(contacts).omit({ id: true, createdAt: true });
+const insertDemoBookingSchema = drizzleZod.createInsertSchema(demoBookings).omit({ id: true, createdAt: true });
+function Contact() {
+  const seo = /* @__PURE__ */ jsxRuntime.jsx(
+    SEOHead,
+    {
+      title: "Contact Us - Infinite Rankers | Get in Touch",
+      description: "Have a question or ready to get started? Contact Infinite Rankers and our team will respond within 24 hours."
+    }
+  );
+  const { toast: toast2 } = useToast();
+  const form = reactHookForm.useForm({
+    resolver: zod.zodResolver(insertContactSchema),
+    defaultValues: { name: "", email: "", phone: "", company: "", message: "" }
+  });
+  const mutation = reactQuery.useMutation({
+    mutationFn: async (data) => {
+      return apiRequest("POST", "/api/contacts", data);
+    },
+    onSuccess: () => {
+      toast2({ title: "Message Sent!", description: "We'll get back to you within 24 hours." });
+      form.reset();
+    },
+    onError: () => {
+      toast2({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
+    }
+  });
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    seo,
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-10 left-10 w-72 h-72 bg-indigo-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, className: "max-w-3xl mx-auto text-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3", children: "Contact Us" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight", children: [
+          "Let's Build Your",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: "Revenue Engine" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-muted-foreground leading-relaxed", children: "Have a question or ready to get started? Reach out and our team will respond within 24 hours." })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid lg:grid-cols-5 gap-12", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "lg:col-span-3", children: /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-bold text-foreground mb-6", children: "Send Us a Message" }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          "form",
+          {
+            onSubmit: form.handleSubmit((data) => mutation.mutate(data)),
+            className: "space-y-5",
+            "data-testid": "form-contact",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid sm:grid-cols-2 gap-5", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "name", className: "text-sm mb-1.5 block", children: "Full Name *" }),
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    Input,
+                    {
+                      id: "name",
+                      placeholder: "John Smith",
+                      ...form.register("name"),
+                      "data-testid": "input-contact-name"
+                    }
+                  ),
+                  form.formState.errors.name && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-red-500 mt-1", children: form.formState.errors.name.message })
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "email", className: "text-sm mb-1.5 block", children: "Email Address *" }),
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    Input,
+                    {
+                      id: "email",
+                      type: "email",
+                      placeholder: "john@company.com",
+                      ...form.register("email"),
+                      "data-testid": "input-contact-email"
+                    }
+                  ),
+                  form.formState.errors.email && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-red-500 mt-1", children: form.formState.errors.email.message })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid sm:grid-cols-2 gap-5", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "phone", className: "text-sm mb-1.5 block", children: "Phone Number" }),
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    Input,
+                    {
+                      id: "phone",
+                      placeholder: "(555) 123-4567",
+                      ...form.register("phone"),
+                      "data-testid": "input-contact-phone"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "company", className: "text-sm mb-1.5 block", children: "Company Name" }),
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    Input,
+                    {
+                      id: "company",
+                      placeholder: "Your Company",
+                      ...form.register("company"),
+                      "data-testid": "input-contact-company"
+                    }
+                  )
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "message", className: "text-sm mb-1.5 block", children: "Message *" }),
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  Textarea,
+                  {
+                    id: "message",
+                    placeholder: "Tell us about your business and goals...",
+                    className: "resize-none min-h-[120px]",
+                    ...form.register("message"),
+                    "data-testid": "input-contact-message"
+                  }
+                ),
+                form.formState.errors.message && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-red-500 mt-1", children: form.formState.errors.message.message })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs(
+                Button,
+                {
+                  type: "submit",
+                  className: "w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0",
+                  disabled: mutation.isPending,
+                  "data-testid": "button-contact-submit",
+                  children: [
+                    mutation.isPending ? "Sending..." : "Send Message",
+                    " ",
+                    /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Send, { className: "w-4 h-4 ml-1" })
+                  ]
+                }
+              )
+            ]
+          }
+        )
+      ] }) }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "lg:col-span-2 space-y-6", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-4", children: "Contact Information" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-4", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("a", { href: `mailto:${COMPANY.email}`, className: "flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors", "data-testid": "link-contact-email", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Mail, { className: "w-5 h-5 text-blue-600" }) }),
+              COMPANY.email
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("a", { href: `tel:${COMPANY.phone}`, className: "flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors", "data-testid": "link-contact-phone", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Phone, { className: "w-5 h-5 text-blue-600" }) }),
+              COMPANY.phone
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-start gap-3 text-sm text-muted-foreground", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.MapPin, { className: "w-5 h-5 text-blue-600" }) }),
+              COMPANY.address
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 text-sm text-muted-foreground", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-emerald-50 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-5 h-5 text-emerald-600" }) }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "font-medium text-foreground", children: "24/7 Support Available" }),
+                /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground mt-0.5", children: "Our team responds on weekends and holidays too" })
+              ] })
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { className: "bg-gradient-to-br from-blue-600 to-purple-700 border-0", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-white mb-2", children: "Book a Free Strategy Session" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-white/80 mb-4", children: "Get a personalized AI revenue growth plan for your business. No obligation." }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", className: "w-full", "data-testid": "button-contact-book-demo", children: [
+            "Book Demo ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+          ] }) })
+        ] })
+      ] })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "pb-20", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "rounded-md overflow-hidden border border-border h-[400px]", children: /* @__PURE__ */ jsxRuntime.jsx(
+      "iframe",
+      {
+        src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3090.4567!2d-75.5243!3d39.1582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c764a5ae02a53d%3A0x0!2s203+N+Caroline+Pl%2C+Dover%2C+DE+19904!5e0!3m2!1sen!2sus!4v1234567890",
+        width: "100%",
+        height: "100%",
+        style: { border: 0 },
+        allowFullScreen: true,
+        loading: "lazy",
+        referrerPolicy: "no-referrer-when-downgrade",
+        title: "Infinite Rankers Location",
+        "data-testid": "map-embed"
+      }
+    ) }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/contact", type: "page" })
+  ] });
+}
+function Blog() {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Blog - Infinite Rankers | AI Automation & Revenue Growth Insights",
+        description: "Expert insights on AI automation, lead generation, SEO, and digital marketing strategies. Actionable frameworks to help your business grow revenue faster.",
+        keywords: "AI automation blog, digital marketing insights, lead generation strategies, SEO tips, business growth blog, marketing automation"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-20 right-20 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, className: "max-w-3xl mx-auto text-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3", children: "Blog" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight", children: [
+          "Insights for",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: "Revenue Growth" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-muted-foreground leading-relaxed", children: "Expert strategies, AI automation insights, and proven growth frameworks to help your business scale faster and smarter." })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      BLOG_POSTS_FULL.length > 0 && /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${BLOG_POSTS_FULL[0].slug}`, children: /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          className: "mb-12 cursor-pointer",
+          children: /* @__PURE__ */ jsxRuntime.jsx(Card, { className: "overflow-hidden hover-elevate", "data-testid": "card-featured-post", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid lg:grid-cols-2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(
+              "img",
+              {
+                src: BLOG_POSTS_FULL[0].image,
+                alt: BLOG_POSTS_FULL[0].imageAlt,
+                className: "w-full h-[250px] lg:h-full object-cover"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-6 sm:p-8 lg:p-10 flex flex-col justify-center", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "self-start mb-3", children: BLOG_POSTS_FULL[0].category }),
+              /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-4 leading-tight", children: BLOG_POSTS_FULL[0].title }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground mb-5 leading-relaxed", children: BLOG_POSTS_FULL[0].excerpt }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-4 text-sm text-muted-foreground mb-5", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Calendar, { className: "w-4 h-4" }),
+                  " ",
+                  BLOG_POSTS_FULL[0].date
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-4 h-4" }),
+                  " ",
+                  BLOG_POSTS_FULL[0].readTime
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600", children: [
+                "Read Article ",
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4" })
+              ] })
+            ] })
+          ] }) })
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: BLOG_POSTS_FULL.slice(1).map((post, i) => /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${post.slug}`, children: /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { delay: i * 0.05 },
+          className: "h-full",
+          children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "overflow-hidden h-full flex flex-col hover-elevate cursor-pointer", "data-testid": `card-blog-${post.id}`, children: [
+            /* @__PURE__ */ jsxRuntime.jsx(
+              "img",
+              {
+                src: post.image,
+                alt: post.imageAlt,
+                className: "w-full h-48 object-cover"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-5 flex flex-col flex-1", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "self-start mb-3 text-xs", children: post.category }),
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-base font-semibold text-foreground mb-2 leading-snug line-clamp-2 flex-1", children: post.title }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2", children: post.excerpt }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-2 mt-auto pt-4 border-t border-border/50", children: [
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 text-xs text-muted-foreground", children: [
+                  /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1", children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Calendar, { className: "w-3 h-3" }),
+                    " ",
+                    post.date
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1", children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-3 h-3" }),
+                    " ",
+                    post.readTime
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-sm font-medium text-blue-600 flex items-center gap-1", children: [
+                  "Read ",
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3" })
+                ] })
+              ] })
+            ] })
+          ] })
+        }
+      ) }, post.id)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-20 lg:py-28 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-3xl sm:text-4xl font-bold text-white mb-6", children: "Ready to Apply These Strategies?" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-white/80 mb-8 max-w-2xl mx-auto", children: "Book a free strategy session and let our team build a custom AI revenue growth plan for your business." }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-blog-cta", children: [
+          "Book Free Strategy Session ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] }) })
+    ] })
+  ] });
+}
+function BlogPost() {
+  const { slug } = wouter.useParams();
+  const post = getBlogPostBySlug(slug || "");
+  if (!post) {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "min-h-screen flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-4xl font-bold text-foreground mb-4", children: "Post Not Found" }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground mb-6", children: "The blog post you are looking for does not exist." }),
+      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/blog", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-back-blog", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowLeft, { className: "w-4 h-4 mr-2" }),
+        " Back to Blog"
+      ] }) })
+    ] }) });
+  }
+  const related = getRelatedPosts(post.relatedPosts);
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({ title: post.title, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: post.seoTitle,
+        description: post.seoDescription,
+        keywords: post.seoKeywords,
+        ogImage: post.image,
+        canonical: `https://infiniterankers.io/${post.slug}`
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      "script",
+      {
+        type: "application/ld+json",
+        dangerouslySetInnerHTML: {
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": post.title,
+            "description": post.seoDescription,
+            "image": `https://infiniterankers.io${post.image}`,
+            "datePublished": post.date,
+            "author": { "@type": "Organization", "name": "Infinite Rankers", "url": "https://infiniterankers.io" },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Infinite Rankers",
+              "logo": { "@type": "ImageObject", "url": "https://infiniterankers.io/images/logo-icon-white.png" }
+            },
+            "mainEntityOfPage": `https://infiniterankers.io/${post.slug}`
+          })
+        }
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-12 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-20 right-20 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/blog", children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6 cursor-pointer", "data-testid": "link-back-blog", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowLeft, { className: "w-4 h-4" }),
+          " Back to Blog"
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-4", "data-testid": "badge-category", children: post.category }),
+        /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight", "data-testid": "text-blog-title", children: post.title }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-4 flex-wrap text-sm text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.User, { className: "w-4 h-4" }),
+            " ",
+            post.author
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Calendar, { className: "w-4 h-4" }),
+            " ",
+            post.date
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-4 h-4" }),
+            " ",
+            post.readTime
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "ghost", size: "sm", onClick: handleShare, "data-testid": "button-share", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Share2, { className: "w-4 h-4 mr-1" }),
+            " Share"
+          ] })
+        ] })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "pb-8", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsx(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        transition: { delay: 0.1 },
+        className: "rounded-md overflow-hidden",
+        children: /* @__PURE__ */ jsxRuntime.jsx(
+          "img",
+          {
+            src: post.image,
+            alt: post.imageAlt,
+            className: "w-full h-[250px] sm:h-[350px] lg:h-[420px] object-cover rounded-md",
+            "data-testid": "img-blog-hero"
+          }
+        )
+      }
+    ) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("article", { className: "pb-16 lg:pb-24", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-3xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0 },
+          animate: { opacity: 1 },
+          transition: { delay: 0.2 },
+          className: "prose prose-lg max-w-none",
+          "data-testid": "blog-content",
+          children: post.content.map((section, i) => {
+            switch (section.type) {
+              case "heading":
+                return /* @__PURE__ */ jsxRuntime.jsx(
+                  "h2",
+                  {
+                    className: "text-2xl sm:text-3xl font-bold text-foreground mt-10 mb-4",
+                    children: section.text
+                  },
+                  i
+                );
+              case "paragraph":
+                return /* @__PURE__ */ jsxRuntime.jsx(
+                  "p",
+                  {
+                    className: "text-base sm:text-lg text-muted-foreground leading-relaxed mb-5",
+                    children: section.text
+                  },
+                  i
+                );
+              case "list":
+                return /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2.5 mb-6 pl-1", children: section.items?.map((item, j) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex gap-3 text-base text-muted-foreground leading-relaxed", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 mt-2.5" }),
+                  /* @__PURE__ */ jsxRuntime.jsx("span", { children: item })
+                ] }, j)) }, i);
+              case "quote":
+                return /* @__PURE__ */ jsxRuntime.jsxs(
+                  "blockquote",
+                  {
+                    className: "border-l-4 border-blue-500 pl-6 py-4 my-8 bg-blue-50/50 rounded-r-md",
+                    children: [
+                      /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-base sm:text-lg text-foreground italic mb-2 leading-relaxed", children: [
+                        '"',
+                        section.text,
+                        '"'
+                      ] }),
+                      section.author && /* @__PURE__ */ jsxRuntime.jsxs("cite", { className: "text-sm text-muted-foreground not-italic font-medium", children: [
+                        "— ",
+                        section.author
+                      ] })
+                    ]
+                  },
+                  i
+                );
+              case "cta":
+                return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "my-10 p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-md text-center", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-white text-base sm:text-lg font-medium mb-5 leading-relaxed", children: section.text }),
+                  /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-blog-cta", children: [
+                    "Book Free Strategy Session ",
+                    /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+                  ] }) })
+                ] }, i);
+              default:
+                return null;
+            }
+          })
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-12 pt-8 border-t border-border", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-white font-bold text-lg", children: post.author.charAt(0) }) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "font-semibold text-foreground", "data-testid": "text-author", children: post.author }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm text-muted-foreground", children: post.authorRole })
+        ] })
+      ] }) })
+    ] }) }),
+    related.length > 0 && /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 lg:py-20 bg-gray-50/60", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center", children: "Related Articles" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: related.map((rp) => /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${rp.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "overflow-hidden cursor-pointer hover-elevate", "data-testid": `card-related-${rp.id}`, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "img",
+          {
+            src: rp.image,
+            alt: rp.imageAlt,
+            className: "w-full h-44 object-cover"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "p-5", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-2 text-xs", children: rp.category }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-base font-semibold text-foreground mb-2 leading-snug line-clamp-2", children: rp.title }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 text-xs text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Calendar, { className: "w-3 h-3" }),
+              " ",
+              rp.date
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-3 h-3" }),
+              " ",
+              rp.readTime
+            ] })
+          ] })
+        ] })
+      ] }) }, rp.id)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-16 lg:py-20 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-white mb-5", children: "Ready to Grow Your Business?" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base sm:text-lg text-white/80 mb-8 max-w-2xl mx-auto", children: "Book a free strategy session and get a custom AI revenue growth plan tailored to your business." }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-blog-bottom-cta", children: [
+          "Book Free Strategy Session ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: `/${slug}`, type: "blog" })
+  ] });
+}
+const Select = SelectPrimitive__namespace.Root;
+const SelectValue = SelectPrimitive__namespace.Value;
+const SelectTrigger = React__namespace.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsxs(
+  SelectPrimitive__namespace.Trigger,
+  {
+    ref,
+    className: cn(
+      "flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      className
+    ),
+    ...props,
+    children: [
+      children,
+      /* @__PURE__ */ jsxRuntime.jsx(SelectPrimitive__namespace.Icon, { asChild: true, children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronDown, { className: "h-4 w-4 opacity-50" }) })
+    ]
+  }
+));
+SelectTrigger.displayName = SelectPrimitive__namespace.Trigger.displayName;
+const SelectScrollUpButton = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  SelectPrimitive__namespace.ScrollUpButton,
+  {
+    ref,
+    className: cn(
+      "flex cursor-default items-center justify-center py-1",
+      className
+    ),
+    ...props,
+    children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronUp, { className: "h-4 w-4" })
+  }
+));
+SelectScrollUpButton.displayName = SelectPrimitive__namespace.ScrollUpButton.displayName;
+const SelectScrollDownButton = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  SelectPrimitive__namespace.ScrollDownButton,
+  {
+    ref,
+    className: cn(
+      "flex cursor-default items-center justify-center py-1",
+      className
+    ),
+    ...props,
+    children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronDown, { className: "h-4 w-4" })
+  }
+));
+SelectScrollDownButton.displayName = SelectPrimitive__namespace.ScrollDownButton.displayName;
+const SelectContent = React__namespace.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(SelectPrimitive__namespace.Portal, { children: /* @__PURE__ */ jsxRuntime.jsxs(
+  SelectPrimitive__namespace.Content,
+  {
+    ref,
+    className: cn(
+      "relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]",
+      position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+      className
+    ),
+    position,
+    ...props,
+    children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SelectScrollUpButton, {}),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SelectPrimitive__namespace.Viewport,
+        {
+          className: cn(
+            "p-1",
+            position === "popper" && "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+          ),
+          children
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(SelectScrollDownButton, {})
+    ]
+  }
+) }));
+SelectContent.displayName = SelectPrimitive__namespace.Content.displayName;
+const SelectLabel = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  SelectPrimitive__namespace.Label,
+  {
+    ref,
+    className: cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className),
+    ...props
+  }
+));
+SelectLabel.displayName = SelectPrimitive__namespace.Label.displayName;
+const SelectItem = React__namespace.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsxs(
+  SelectPrimitive__namespace.Item,
+  {
+    ref,
+    className: cn(
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      className
+    ),
+    ...props,
+    children: [
+      /* @__PURE__ */ jsxRuntime.jsx("span", { className: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(SelectPrimitive__namespace.ItemIndicator, { children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Check, { className: "h-4 w-4" }) }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SelectPrimitive__namespace.ItemText, { children })
+    ]
+  }
+));
+SelectItem.displayName = SelectPrimitive__namespace.Item.displayName;
+const SelectSeparator = React__namespace.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ jsxRuntime.jsx(
+  SelectPrimitive__namespace.Separator,
+  {
+    ref,
+    className: cn("-mx-1 my-1 h-px bg-muted", className),
+    ...props
+  }
+));
+SelectSeparator.displayName = SelectPrimitive__namespace.Separator.displayName;
+const timeSlots = [
+  "9:00 AM",
+  "9:30 AM",
+  "10:00 AM",
+  "10:30 AM",
+  "11:00 AM",
+  "11:30 AM",
+  "1:00 PM",
+  "1:30 PM",
+  "2:00 PM",
+  "2:30 PM",
+  "3:00 PM",
+  "3:30 PM",
+  "4:00 PM",
+  "4:30 PM",
+  "5:00 PM"
+];
+function generateDates() {
+  const dates = [];
+  const today = /* @__PURE__ */ new Date();
+  for (let i = 1; i <= 14; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    if (d.getDay() === 0 || d.getDay() === 6) continue;
+    dates.push({
+      label: d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
+      value: d.toISOString().split("T")[0]
+    });
+  }
+  return dates;
+}
+function BookDemo() {
+  const searchString = wouter.useSearch();
+  const urlParams = new URLSearchParams(searchString);
+  const serviceFromUrl = urlParams.get("service") || "";
+  const seo = /* @__PURE__ */ jsxRuntime.jsx(
+    SEOHead,
+    {
+      title: "Book a Demo - Infinite Rankers | Free Strategy Session",
+      description: "Book a free 30-minute strategy session with an AI growth expert. Get a custom revenue growth plan for your business."
+    }
+  );
+  const { toast: toast2 } = useToast();
+  const dates = generateDates();
+  const [selectedDate, setSelectedDate] = React.useState("");
+  const [selectedTime, setSelectedTime] = React.useState("");
+  const form = reactHookForm.useForm({
+    resolver: zod.zodResolver(insertDemoBookingSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      company: "",
+      website: "",
+      revenue: "",
+      service: serviceFromUrl,
+      date: "",
+      time: "",
+      message: ""
+    }
+  });
+  React.useEffect(() => {
+    if (serviceFromUrl) {
+      form.setValue("service", serviceFromUrl);
+    }
+  }, [serviceFromUrl, form]);
+  const mutation = reactQuery.useMutation({
+    mutationFn: async (data) => {
+      return apiRequest("POST", "/api/demo-bookings", data);
+    },
+    onSuccess: () => {
+      toast2({ title: "Demo Booked!", description: "We'll send you a confirmation email shortly." });
+      form.reset();
+      setSelectedDate("");
+      setSelectedTime("");
+    },
+    onError: () => {
+      toast2({ title: "Error", description: "Failed to book demo. Please try again.", variant: "destructive" });
+    }
+  });
+  const onSubmit = (data) => {
+    if (!selectedDate || !selectedTime) {
+      toast2({ title: "Please select a date and time", variant: "destructive" });
+      return;
+    }
+    mutation.mutate({ ...data, date: selectedDate, time: selectedTime });
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    seo,
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-10 right-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, className: "max-w-3xl mx-auto text-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3", children: "Book a Demo" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight", children: [
+          "Get Your Free",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: "Strategy Session" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-muted-foreground leading-relaxed", children: "See how our AI revenue systems can be customized for your business. 30-minute strategy call — no obligation." })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid lg:grid-cols-5 gap-12", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "lg:col-span-3", children: /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("h2", { className: "text-xl font-bold text-foreground mb-6 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CalendarCheck, { className: "w-5 h-5 text-blue-600" }),
+          "Schedule Your Session"
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          "form",
+          {
+            onSubmit: form.handleSubmit(onSubmit),
+            className: "space-y-6",
+            "data-testid": "form-demo",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntime.jsx(Label, { className: "text-sm font-medium mb-3 block", children: "Select a Date *" }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2", children: dates.map((d) => /* @__PURE__ */ jsxRuntime.jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "outline",
+                    size: "sm",
+                    onClick: () => {
+                      setSelectedDate(d.value);
+                      form.setValue("date", d.value);
+                    },
+                    className: `toggle-elevate ${selectedDate === d.value ? "toggle-elevated" : ""}`,
+                    "data-testid": `button-date-${d.value}`,
+                    children: d.label
+                  },
+                  d.value
+                )) })
+              ] }),
+              selectedDate && /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, children: [
+                /* @__PURE__ */ jsxRuntime.jsx(Label, { className: "text-sm font-medium mb-3 block", children: "Select a Time *" }),
+                /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-3 sm:grid-cols-5 gap-2", children: timeSlots.map((t) => /* @__PURE__ */ jsxRuntime.jsx(
+                  Button,
+                  {
+                    type: "button",
+                    variant: "outline",
+                    size: "sm",
+                    onClick: () => {
+                      setSelectedTime(t);
+                      form.setValue("time", t);
+                    },
+                    className: `text-xs toggle-elevate ${selectedTime === t ? "toggle-elevated" : ""}`,
+                    "data-testid": `button-time-${t.replace(/\s/g, "-")}`,
+                    children: t
+                  },
+                  t
+                )) })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "border-t border-border/50 pt-6", children: [
+                /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm font-semibold text-foreground mb-4", children: "Your Information" }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid sm:grid-cols-2 gap-4", children: [
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-name", className: "text-sm mb-1.5 block", children: "Full Name *" }),
+                    /* @__PURE__ */ jsxRuntime.jsx(Input, { id: "demo-name", placeholder: "John Smith", ...form.register("name"), "data-testid": "input-demo-name" }),
+                    form.formState.errors.name && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-red-500 mt-1", children: form.formState.errors.name.message })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-email", className: "text-sm mb-1.5 block", children: "Email *" }),
+                    /* @__PURE__ */ jsxRuntime.jsx(Input, { id: "demo-email", type: "email", placeholder: "john@company.com", ...form.register("email"), "data-testid": "input-demo-email" }),
+                    form.formState.errors.email && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-red-500 mt-1", children: form.formState.errors.email.message })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-phone", className: "text-sm mb-1.5 block", children: "Phone" }),
+                    /* @__PURE__ */ jsxRuntime.jsx(Input, { id: "demo-phone", placeholder: "(555) 123-4567", ...form.register("phone"), "data-testid": "input-demo-phone" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-company", className: "text-sm mb-1.5 block", children: "Company" }),
+                    /* @__PURE__ */ jsxRuntime.jsx(Input, { id: "demo-company", placeholder: "Your Company", ...form.register("company"), "data-testid": "input-demo-company" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-website", className: "text-sm mb-1.5 block", children: "Website" }),
+                    /* @__PURE__ */ jsxRuntime.jsx(Input, { id: "demo-website", placeholder: "www.yourcompany.com", ...form.register("website"), "data-testid": "input-demo-website" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+                    /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-revenue", className: "text-sm mb-1.5 block", children: "Monthly Revenue" }),
+                    /* @__PURE__ */ jsxRuntime.jsx(
+                      reactHookForm.Controller,
+                      {
+                        control: form.control,
+                        name: "revenue",
+                        render: ({ field }) => /* @__PURE__ */ jsxRuntime.jsxs(Select, { onValueChange: field.onChange, value: field.value || "", children: [
+                          /* @__PURE__ */ jsxRuntime.jsx(SelectTrigger, { "data-testid": "select-demo-revenue", children: /* @__PURE__ */ jsxRuntime.jsx(SelectValue, { placeholder: "Select range" }) }),
+                          /* @__PURE__ */ jsxRuntime.jsxs(SelectContent, { children: [
+                            /* @__PURE__ */ jsxRuntime.jsx(SelectItem, { value: "under-10k", children: "Under $10K" }),
+                            /* @__PURE__ */ jsxRuntime.jsx(SelectItem, { value: "10k-50k", children: "$10K - $50K" }),
+                            /* @__PURE__ */ jsxRuntime.jsx(SelectItem, { value: "50k-100k", children: "$50K - $100K" }),
+                            /* @__PURE__ */ jsxRuntime.jsx(SelectItem, { value: "100k-500k", children: "$100K - $500K" }),
+                            /* @__PURE__ */ jsxRuntime.jsx(SelectItem, { value: "500k-plus", children: "$500K+" })
+                          ] })
+                        ] })
+                      }
+                    )
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-4", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-service", className: "text-sm mb-1.5 block", children: "What Service Are You Looking For?" }),
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    Input,
+                    {
+                      id: "demo-service",
+                      placeholder: "e.g. AI Calling Agent, Lead Generation, SEO...",
+                      ...form.register("service"),
+                      "data-testid": "input-demo-service"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-4", children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "demo-message", className: "text-sm mb-1.5 block", children: "Additional Notes" }),
+                  /* @__PURE__ */ jsxRuntime.jsx(
+                    Textarea,
+                    {
+                      id: "demo-message",
+                      placeholder: "Tell us about your biggest growth challenge...",
+                      className: "resize-none min-h-[80px]",
+                      ...form.register("message"),
+                      "data-testid": "input-demo-message"
+                    }
+                  )
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs(
+                Button,
+                {
+                  type: "submit",
+                  className: "w-full",
+                  disabled: mutation.isPending || !selectedDate || !selectedTime,
+                  "data-testid": "button-demo-submit",
+                  children: [
+                    mutation.isPending ? "Booking..." : "Book Strategy Session",
+                    " ",
+                    /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+                  ]
+                }
+              )
+            ]
+          }
+        )
+      ] }) }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "lg:col-span-2 space-y-6", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-4", children: "What to Expect" }),
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-3", children: [
+            "30-minute strategy call with an AI growth expert",
+            "Custom revenue growth analysis for your business",
+            "AI automation opportunities identification",
+            "Actionable growth roadmap — even if you don't sign up",
+            "No hard sell, no obligation, no pressure",
+            "24/7 support team — we respond on weekends too"
+          ].map((item, i) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex items-start gap-2 text-sm", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground", children: item })
+          ] }, i)) })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center gap-1 mb-3", children: Array.from({ length: 5 }).map((_, i) => /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Star, { className: "w-4 h-4 text-yellow-500 fill-yellow-500" }, i)) }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground italic mb-3", children: '"The strategy session alone was worth more than what we paid our previous agency for a full month. Incredible insights."' }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm font-semibold text-foreground", children: "Michael Chen" }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground", children: "CEO, Premier Dental Care" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx(GlassCard, { children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Clock, { className: "w-8 h-8 text-blue-600 mx-auto mb-3" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm font-semibold text-foreground mb-1", children: "Limited Availability" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: "We take on a limited number of new clients each month to ensure quality results." })
+        ] }) })
+      ] })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/book-demo", type: "page" })
+  ] });
+}
+const LANDING_PAGES$1 = [
+  {
+    slug: "ai-automation-new-york",
+    type: "location",
+    seoTitle: "AI Automation Services in New York | Infinite Rankers",
+    seoDescription: "Transform your New York business with AI automation systems that generate leads, book appointments, and grow revenue 24/7. Trusted by 500+ NYC businesses.",
+    seoKeywords: "AI automation New York, AI business solutions NYC, automated lead generation New York, AI marketing New York, business automation NYC",
+    canonical: "https://infiniterankers.io/ai-automation-new-york",
+    hero: {
+      badge: "Trusted by 500+ NYC Businesses",
+      title: "AI Automation Services in",
+      titleHighlight: "New York",
+      subtitle: "NYC moves fast and your business should too. Our AI automation systems capture, qualify, and convert leads around the clock so you never miss an opportunity in the city that never sleeps.",
+      stats: [
+        { value: "500+", label: "NYC Clients Served" },
+        { value: "340%", label: "Avg. Lead Increase" },
+        { value: "$12M+", label: "Revenue Generated for NYC" },
+        { value: "24/7", label: "AI Availability" }
+      ]
+    },
+    painPoints: {
+      title: "Challenges Facing New York Businesses",
+      subtitle: "The NYC market demands speed, precision, and relentless execution",
+      points: [
+        { title: "Brutal Competition", description: "With over 230,000 small businesses in NYC, standing out requires aggressive, data-driven marketing that outpaces every competitor on your block.", icon: "Target" },
+        { title: "Sky-High Operating Costs", description: "Manhattan office rents, staffing costs, and advertising premiums eat into margins. You need automation that replaces headcount without sacrificing quality.", icon: "DollarSign" },
+        { title: "Fast-Moving Consumers", description: "New Yorkers expect instant responses. If you take more than 5 minutes to reply to an inquiry, 78% of prospects move on to the next option.", icon: "Clock" },
+        { title: "Multi-Borough Reach", description: "Serving customers across Manhattan, Brooklyn, Queens, the Bronx, and Staten Island requires hyper-local targeting that most agencies cannot deliver.", icon: "MapPin" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Systems Built for the NYC Market",
+      subtitle: "Enterprise-grade automation tailored to New York's unique business landscape",
+      description: "Our AI platform is purpose-built for the pace and complexity of New York City commerce. From automated calling agents that speak with a natural tone to intelligent lead routing across multiple locations, every system is optimized for the NYC market.",
+      capabilities: [
+        { title: "Multi-Location AI Routing", description: "Automatically route leads to the right branch, borough, or team member based on geography, service type, and availability.", icon: "Network" },
+        { title: "NYC Market Intelligence", description: "AI-driven competitive analysis and market insights specific to New York boroughs, neighborhoods, and industry verticals.", icon: "Brain" },
+        { title: "Speed-to-Lead Engine", description: "Respond to every inquiry within 30 seconds via AI calling, SMS, and chat, meeting the expectations of fast-moving NYC consumers.", icon: "Zap" },
+        { title: "Omnichannel Engagement", description: "Engage prospects across phone, email, SMS, web chat, and social media with unified AI-powered conversations.", icon: "Layers" }
+      ]
+    },
+    pipeline: {
+      title: "How We Deploy AI for NYC Businesses",
+      subtitle: "A proven 4-step process from strategy to revenue growth",
+      steps: [
+        { step: "1", title: "NYC Market Audit", description: "We analyze your competitive landscape across New York boroughs, identify gaps in your lead funnel, and map your ideal customer journey.", icon: "Search" },
+        { step: "2", title: "AI System Design", description: "Custom AI agents are configured with NYC-specific scripts, local market knowledge, and integration with your existing tools and CRM.", icon: "Cpu" },
+        { step: "3", title: "Launch & Activate", description: "Your AI systems go live with real-time monitoring across all channels, handling calls, chats, and follow-ups simultaneously.", icon: "Rocket" },
+        { step: "4", title: "Optimize & Scale", description: "Weekly performance reviews and AI model tuning ensure continual improvement in conversion rates and revenue per lead.", icon: "TrendingUp" }
+      ]
+    },
+    results: {
+      title: "Real Results from NYC Businesses",
+      subtitle: "See how New York companies are growing with our AI automation",
+      cases: [
+        {
+          business: "Manhattan Smile Studio",
+          industry: "Dental Practice",
+          metrics: [
+            { value: "312%", label: "New Patient Increase" },
+            { value: "$67K", label: "Monthly Revenue Growth" },
+            { value: "94%", label: "Appointment Show Rate" }
+          ],
+          quote: "We went from struggling to fill chairs to having a 3-week waitlist. The AI calling agent books 50+ appointments per week without our front desk lifting a finger."
+        },
+        {
+          business: "Brooklyn Heights Realty",
+          industry: "Real Estate",
+          metrics: [
+            { value: "4.8x", label: "Lead Volume Growth" },
+            { value: "$2.1M", label: "Closed Deals in 6 Months" },
+            { value: "18min", label: "Avg Response Time" }
+          ],
+          quote: "In Brooklyn's competitive market, speed wins deals. The AI qualification bot filters our leads so agents only spend time on serious buyers."
+        },
+        {
+          business: "Midtown Legal Partners",
+          industry: "Law Firm",
+          metrics: [
+            { value: "210%", label: "Case Intake Increase" },
+            { value: "24/7", label: "Call Coverage" },
+            { value: "$420K", label: "Quarterly Revenue" }
+          ],
+          quote: "Our AI receptionist never misses a call. We now capture leads at 2am that we used to lose to competitors who picked up first."
+        }
+      ]
+    },
+    features: {
+      title: "Complete AI Toolkit for NYC Growth",
+      subtitle: "Every tool you need to dominate the New York market",
+      items: [
+        { title: "AI Calling Agent", description: "Automated outbound and inbound calls with natural NYC-friendly conversation that books appointments 24/7.", icon: "Phone" },
+        { title: "Smart Lead Scoring", description: "AI analyzes 40+ data points to rank leads by purchase intent, ensuring your sales team focuses on closeable opportunities.", icon: "BarChart3" },
+        { title: "Automated Follow-Up", description: "Multi-channel follow-up sequences via email, SMS, and voicemail drops that nurture leads until they convert.", icon: "Mail" },
+        { title: "Local SEO Domination", description: "Rank #1 in Google Maps and local search across all five NYC boroughs with AI-optimized local SEO.", icon: "MapPin" },
+        { title: "CRM Automation", description: "Every lead, call, and interaction is logged automatically in your CRM with full context and next-step recommendations.", icon: "Database" },
+        { title: "Real-Time Analytics", description: "Live dashboards tracking lead flow, conversion rates, revenue attribution, and ROI across every channel.", icon: "LineChart" }
+      ]
+    },
+    ecosystem: {
+      title: "The Infinite Rankers Ecosystem",
+      subtitle: "Two platforms working together to maximize your NYC growth",
+      description: "InfiniteRankers.io delivers the AI automation engine while InfiniteRankers.com provides the marketing authority platform. Together they create a complete revenue growth system for New York businesses.",
+      ioFeatures: [
+        { title: "AI Revenue Engine", description: "Automated lead capture, qualification, and conversion systems powered by advanced AI." },
+        { title: "24/7 AI Agents", description: "Calling, chat, and SMS agents that engage prospects around the clock." },
+        { title: "Pipeline Automation", description: "End-to-end CRM and workflow automation for seamless lead management." }
+      ],
+      comFeatures: [
+        { title: "SEO Authority Building", description: "Dominate organic search rankings with proven SEO strategies and content." },
+        { title: "Paid Advertising", description: "Google Ads and Meta Ads campaigns optimized for maximum ROI." },
+        { title: "Web Design & Development", description: "High-converting websites and landing pages built for lead generation." }
+      ],
+      comLinks: [
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "James Moretti",
+        role: "Owner",
+        company: "Manhattan Smile Studio",
+        quote: "Infinite Rankers turned our dental practice around in 90 days. The AI systems handle everything from the first call to appointment reminders. Revenue is up 312% and we finally have breathing room.",
+        rating: 5
+      },
+      {
+        name: "Angela Chen",
+        role: "Managing Broker",
+        company: "Brooklyn Heights Realty",
+        quote: "As a real estate firm in Brooklyn, speed is everything. Their AI lead qualification system ensures my agents only talk to serious buyers. We closed $2.1M in new deals within six months.",
+        rating: 5
+      },
+      {
+        name: "David Greenfield",
+        role: "Senior Partner",
+        company: "Midtown Legal Partners",
+        quote: "We were losing potential clients after hours. Now our AI receptionist handles intake 24/7 and the automated follow-up has doubled our case conversion rate. Worth every penny.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "Do you work with businesses in all five NYC boroughs?", a: "Yes. We serve businesses across Manhattan, Brooklyn, Queens, the Bronx, and Staten Island with hyper-local targeting and AI systems optimized for each borough's unique market dynamics." },
+      { q: "How quickly can AI automation be deployed for my NYC business?", a: "Most NYC businesses are fully operational within 7-14 business days. We handle all setup, integration, and testing to ensure your AI systems are performing before we go live." },
+      { q: "What industries do you serve in New York?", a: "We work with dental practices, law firms, real estate agencies, home services, restaurants, e-commerce brands, medical practices, and professional services across NYC." },
+      { q: "How does AI automation help with NYC's high operating costs?", a: "Our AI systems replace the need for additional staff by automating lead qualification, appointment booking, follow-ups, and customer service. Clients typically save $4,000-$8,000 per month in staffing costs." },
+      { q: "Can your AI handle multilingual conversations for NYC's diverse market?", a: "Absolutely. Our AI agents support English, Spanish, Mandarin, and several other languages, allowing you to serve NYC's diverse population without language barriers." }
+    ],
+    cta: {
+      title: "Ready to Dominate the NYC Market?",
+      subtitle: "Join 500+ New York businesses already using AI to grow revenue on autopilot. Book your free strategy session today.",
+      buttonText: "Get Your Free NYC Strategy Session"
+    },
+    relatedLandingPages: ["ai-automation-los-angeles", "ai-automation-chicago", "ai-lead-generation-usa"],
+    relatedServices: ["ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "local-seo"],
+    comLinks: [
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
+      { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" }
+    ]
+  },
+  {
+    slug: "ai-automation-los-angeles",
+    type: "location",
+    seoTitle: "AI Automation Services in Los Angeles | Infinite Rankers",
+    seoDescription: "Grow your Los Angeles business with AI automation that generates leads, books appointments, and increases revenue 24/7. Serving 400+ LA businesses.",
+    seoKeywords: "AI automation Los Angeles, AI business solutions LA, automated lead generation Los Angeles, AI marketing LA, business automation Los Angeles",
+    canonical: "https://infiniterankers.io/ai-automation-los-angeles",
+    hero: {
+      badge: "Serving 400+ LA Businesses",
+      title: "AI Automation Services in",
+      titleHighlight: "Los Angeles",
+      subtitle: "Los Angeles is a city of ambition and opportunity. Our AI automation systems help LA businesses capture more leads, close more deals, and scale faster across the sprawling Southern California market.",
+      stats: [
+        { value: "400+", label: "LA Clients Served" },
+        { value: "290%", label: "Avg. Revenue Growth" },
+        { value: "$9.5M+", label: "Revenue Generated for LA" },
+        { value: "< 30s", label: "Lead Response Time" }
+      ]
+    },
+    painPoints: {
+      title: "Challenges Facing Los Angeles Businesses",
+      subtitle: "LA's massive market requires smarter, faster systems to win",
+      points: [
+        { title: "Vast Geographic Spread", description: "From Santa Monica to Pasadena, LA spans 503 square miles. Reaching customers across this sprawl requires geo-targeted AI campaigns and localized messaging.", icon: "Globe" },
+        { title: "Entertainment-Level Expectations", description: "LA consumers expect premium experiences. Generic outreach falls flat in a market where polish and personalization are table stakes.", icon: "Star" },
+        { title: "Saturated Digital Landscape", description: "LA businesses face some of the highest CPCs in the nation. Without AI-optimized ad spend, you burn through budget with minimal returns.", icon: "DollarSign" },
+        { title: "Diverse, Multilingual Market", description: "With 40% of LA residents speaking a language other than English at home, your outreach must be multilingual to capture the full market.", icon: "Users" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Automation Built for LA's Scale",
+      subtitle: "Intelligent systems designed for the scope and diversity of Los Angeles",
+      description: "Our AI platform handles the complexity of the Los Angeles market with geo-targeted campaigns, multilingual engagement, and automated systems that operate across every neighborhood from Hollywood to Long Beach.",
+      capabilities: [
+        { title: "Geo-Targeted AI Campaigns", description: "Pinpoint targeting by neighborhood, zip code, and radius ensures your AI outreach reaches the right LA audience at the right time.", icon: "MapPin" },
+        { title: "Multilingual AI Agents", description: "AI calling and chat agents fluent in English, Spanish, Korean, and Mandarin to serve LA's diverse population.", icon: "Globe" },
+        { title: "Visual Content Intelligence", description: "AI-driven creative optimization for ad visuals and landing pages that resonate with image-conscious LA consumers.", icon: "Activity" },
+        { title: "Predictive Lead Scoring", description: "Machine learning models trained on LA market data to predict which leads are most likely to convert.", icon: "Brain" }
+      ]
+    },
+    pipeline: {
+      title: "Our LA Deployment Process",
+      subtitle: "From audit to revenue growth in four strategic phases",
+      steps: [
+        { step: "1", title: "LA Market Analysis", description: "Deep dive into your competitive positioning across LA neighborhoods, with demographic and behavioral analysis of your target audience.", icon: "Search" },
+        { step: "2", title: "Custom AI Build", description: "Design and configure AI agents with LA-specific scripts, multilingual capabilities, and integration with your existing tech stack.", icon: "Settings" },
+        { step: "3", title: "Multi-Channel Launch", description: "Activate AI systems across phone, SMS, email, web chat, and social media with coordinated messaging for maximum impact.", icon: "Rocket" },
+        { step: "4", title: "Performance Scaling", description: "Continuous A/B testing, AI model refinement, and budget optimization to increase ROI week over week.", icon: "TrendingUp" }
+      ]
+    },
+    results: {
+      title: "LA Success Stories",
+      subtitle: "How Los Angeles businesses are winning with AI automation",
+      cases: [
+        {
+          business: "SoCal Solar Solutions",
+          industry: "Solar Installation",
+          metrics: [
+            { value: "380%", label: "Lead Generation Increase" },
+            { value: "$890K", label: "Pipeline Value in 90 Days" },
+            { value: "62%", label: "Close Rate Improvement" }
+          ],
+          quote: "We went from chasing leads to having AI qualify and schedule consultations for us. Our pipeline grew to $890K in just three months."
+        },
+        {
+          business: "Beverly Hills Aesthetics",
+          industry: "Med Spa",
+          metrics: [
+            { value: "245%", label: "New Patient Growth" },
+            { value: "$52K", label: "Monthly Revenue Increase" },
+            { value: "4.6x", label: "Return on Ad Spend" }
+          ],
+          quote: "The AI chatbot on our website converts visitors at 3x our old rate. Combined with automated follow-ups, our practice has never been busier."
+        }
+      ]
+    },
+    features: {
+      title: "AI Tools for LA Market Domination",
+      subtitle: "Everything you need to outperform competitors across Los Angeles",
+      items: [
+        { title: "AI Appointment Setter", description: "Automated scheduling that fills your calendar with qualified prospects from across the greater LA area.", icon: "Calendar" },
+        { title: "Intelligent Ad Optimization", description: "AI continuously optimizes your Google and Meta ads to reduce CPC and increase conversion rates in the competitive LA market.", icon: "Target" },
+        { title: "Automated Reputation Management", description: "AI monitors and responds to reviews across Google, Yelp, and social platforms to protect and grow your LA reputation.", icon: "Shield" },
+        { title: "SMS & WhatsApp Automation", description: "High-response messaging campaigns tailored to LA consumers who prefer mobile-first communication.", icon: "MessageSquare" },
+        { title: "Conversion Funnel Builder", description: "Multi-step landing pages and funnels designed for LA audiences with location-specific trust signals.", icon: "Layers" },
+        { title: "Revenue Attribution Dashboard", description: "Track every lead from first touch to closed deal with full revenue attribution across all channels.", icon: "PieChart" }
+      ]
+    },
+    ecosystem: {
+      title: "The Complete Growth Ecosystem",
+      subtitle: "AI automation meets marketing authority for LA businesses",
+      description: "InfiniteRankers.io powers your AI automation engine while InfiniteRankers.com delivers the marketing authority and content strategy to fuel long-term growth across the Los Angeles market.",
+      ioFeatures: [
+        { title: "AI Lead Engine", description: "Automated capture, scoring, and nurturing of every lead that enters your funnel." },
+        { title: "Smart Scheduling", description: "AI-powered appointment booking that syncs with your calendar and team availability." },
+        { title: "Workflow Automation", description: "Connect your CRM, email, SMS, and ad platforms into one automated workflow." }
+      ],
+      comFeatures: [
+        { title: "Content Marketing", description: "Authority-building content strategy that drives organic traffic and trust." },
+        { title: "Social Media Growth", description: "Platform-specific social strategies that grow your LA following and engagement." },
+        { title: "Branding & Design", description: "Premium brand identity that resonates with LA's style-conscious market." }
+      ],
+      comLinks: [
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Carlos Rivera",
+        role: "CEO",
+        company: "SoCal Solar Solutions",
+        quote: "Infinite Rankers built an AI system that tripled our lead flow in 90 days. The automated qualification means our sales team only talks to homeowners ready to go solar. Game changer for our LA operations.",
+        rating: 5
+      },
+      {
+        name: "Dr. Michelle Tran",
+        role: "Medical Director",
+        company: "Beverly Hills Aesthetics",
+        quote: "In Beverly Hills, patients expect instant, premium service. The AI chatbot and automated booking system deliver exactly that. Our new patient volume is up 245% without adding staff.",
+        rating: 5
+      },
+      {
+        name: "Marcus Johnson",
+        role: "Founder",
+        company: "Westside Fitness Collective",
+        quote: "We struggled to fill classes across our three LA locations. The AI SMS campaigns and automated trial booking system grew our membership by 180% in just four months.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "Do you serve businesses across all of Los Angeles County?", a: "Yes. We serve businesses from Downtown LA to the San Fernando Valley, Westside, South Bay, and across all LA County neighborhoods with geo-targeted AI campaigns." },
+      { q: "How does AI automation reduce my LA advertising costs?", a: "Our AI optimizes ad spend in real-time, reducing wasted clicks by up to 40%. Combined with automated lead nurturing, you convert more leads from the same budget, dramatically improving ROI." },
+      { q: "Can your AI agents handle Spanish-speaking leads?", a: "Absolutely. Our AI agents are fluent in English, Spanish, Korean, Mandarin, and other languages commonly spoken in Los Angeles, ensuring you never miss a lead due to language barriers." },
+      { q: "What types of LA businesses get the best results?", a: "We see exceptional results for med spas, solar companies, real estate agencies, law firms, dental practices, home services, and fitness studios across LA. Any service-based business benefits from AI automation." },
+      { q: "How soon will I see results from AI automation?", a: "Most LA clients see measurable lead increases within the first 2-3 weeks. Full revenue impact typically materializes within 60-90 days as AI models optimize based on your specific market data." }
+    ],
+    cta: {
+      title: "Scale Your LA Business with AI",
+      subtitle: "Join 400+ Los Angeles businesses using AI automation to capture more leads and grow revenue. Get your free strategy session now.",
+      buttonText: "Book Your Free LA Strategy Call"
+    },
+    relatedLandingPages: ["ai-automation-new-york", "ai-automation-chicago", "ai-marketing-automation-usa"],
+    relatedServices: ["ai-calling-agent", "ai-chatbot", "google-ads", "meta-ads"],
+    comLinks: [
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "Pricing Plans", url: "https://infiniterankers.com/pricing-plan/" }
+    ]
+  },
+  {
+    slug: "ai-automation-chicago",
+    type: "location",
+    seoTitle: "AI Automation Services in Chicago | Infinite Rankers",
+    seoDescription: "Chicago businesses trust Infinite Rankers for AI automation that drives leads, books appointments, and grows revenue. Serving 350+ Chicagoland businesses.",
+    seoKeywords: "AI automation Chicago, AI business solutions Chicago, automated lead generation Chicago, AI marketing Chicagoland, business automation Illinois",
+    canonical: "https://infiniterankers.io/ai-automation-chicago",
+    hero: {
+      badge: "Trusted by 350+ Chicagoland Businesses",
+      title: "AI Automation Services in",
+      titleHighlight: "Chicago",
+      subtitle: "The Windy City's business landscape is as tough as its winters. Our AI automation systems give Chicago businesses the edge they need to capture more leads, close more deals, and outpace the competition year-round.",
+      stats: [
+        { value: "350+", label: "Chicago Clients Served" },
+        { value: "275%", label: "Avg. Lead Growth" },
+        { value: "$8.2M+", label: "Revenue Generated" },
+        { value: "92%", label: "Client Retention" }
+      ]
+    },
+    painPoints: {
+      title: "What Chicago Businesses Face Today",
+      subtitle: "Midwest grit meets modern marketing challenges",
+      points: [
+        { title: "Seasonal Revenue Swings", description: "Chicago's harsh winters create dramatic seasonal dips for many businesses. AI automation keeps leads flowing and revenue steady even in the slowest months.", icon: "Activity" },
+        { title: "Neighborhood-Level Competition", description: "Chicago's 77 distinct neighborhoods each have unique demographics. Generic marketing misses the mark in a city where local identity matters deeply.", icon: "MapPin" },
+        { title: "Talent Retention Struggles", description: "Hiring and keeping skilled sales and marketing staff in Chicago is expensive and competitive. AI fills the gap without the overhead.", icon: "Users" },
+        { title: "Multi-Channel Fragmentation", description: "Chicago consumers engage across search, social, email, and phone. Without unified AI systems, leads slip through fragmented funnels.", icon: "Network" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Systems Engineered for Chicago",
+      subtitle: "Automation that understands the Chicagoland market",
+      description: "From the Loop to the suburbs, our AI platform adapts to Chicago's diverse market with neighborhood-specific targeting, seasonal campaign optimization, and systems built for Midwest business culture.",
+      capabilities: [
+        { title: "Neighborhood Targeting Engine", description: "AI campaigns tailored to Chicago's 77 neighborhoods with demographic-specific messaging and local keyword optimization.", icon: "MapPin" },
+        { title: "Seasonal Revenue Stabilizer", description: "Automated campaign pacing and lead nurturing strategies that maintain pipeline momentum through Chicago's seasonal fluctuations.", icon: "LineChart" },
+        { title: "Midwest Communication Style", description: "AI agents trained with friendly, straightforward Midwest communication style that builds trust with Chicago consumers.", icon: "MessageSquare" },
+        { title: "Suburban Expansion Engine", description: "Extend your reach beyond the city into Chicagoland suburbs with geo-fenced AI campaigns targeting high-value neighborhoods.", icon: "Globe" }
+      ]
+    },
+    pipeline: {
+      title: "Chicago AI Deployment Roadmap",
+      subtitle: "A structured approach to AI-driven growth in the Windy City",
+      steps: [
+        { step: "1", title: "Chicagoland Audit", description: "Comprehensive analysis of your market position across Chicago neighborhoods and suburbs, identifying untapped growth opportunities.", icon: "Search" },
+        { step: "2", title: "AI Configuration", description: "Build and train AI agents with Chicago-specific conversation scripts, local market data, and CRM integrations.", icon: "Cpu" },
+        { step: "3", title: "Phased Rollout", description: "Launch AI systems across priority channels first, then expand to full omnichannel automation with performance monitoring.", icon: "Rocket" },
+        { step: "4", title: "Continuous Growth", description: "Monthly strategy reviews, AI retraining, and campaign expansion based on performance data and market shifts.", icon: "TrendingUp" }
+      ]
+    },
+    results: {
+      title: "Chicago Business Wins",
+      subtitle: "Real results from Chicagoland companies using our AI",
+      cases: [
+        {
+          business: "Lakeview Dental Group",
+          industry: "Dental Practice",
+          metrics: [
+            { value: "260%", label: "New Patient Growth" },
+            { value: "$45K", label: "Monthly Revenue Increase" },
+            { value: "88%", label: "Show Rate" }
+          ],
+          quote: "We serve three Chicago neighborhoods and the AI system handles lead routing perfectly. New patient volume is up 260% across all locations."
+        },
+        {
+          business: "Windy City HVAC",
+          industry: "Home Services",
+          metrics: [
+            { value: "420%", label: "Service Call Increase" },
+            { value: "$680K", label: "Annual Revenue Growth" },
+            { value: "3.9x", label: "Marketing ROI" }
+          ],
+          quote: "Before AI automation, we lost most after-hours calls. Now we capture every lead and the AI books service appointments automatically. Revenue jumped 420%."
+        },
+        {
+          business: "Loop Financial Advisors",
+          industry: "Financial Services",
+          metrics: [
+            { value: "185%", label: "Qualified Lead Increase" },
+            { value: "$1.8M", label: "AUM Growth in 6 Months" },
+            { value: "34%", label: "Conversion Rate" }
+          ],
+          quote: "The AI lead qualification system filters out tire-kickers so our advisors only meet with prospects who have real investable assets. Quality over quantity."
+        }
+      ]
+    },
+    features: {
+      title: "AI Features for Chicago Businesses",
+      subtitle: "A complete automation stack built for the Chicagoland market",
+      items: [
+        { title: "AI Receptionist", description: "Never miss a call from a Chicago prospect. Our AI answers instantly, qualifies, and routes every inquiry 24/7.", icon: "Phone" },
+        { title: "Automated Appointment Booking", description: "AI schedules appointments directly into your calendar, accounting for travel time across the Chicagoland area.", icon: "Calendar" },
+        { title: "Email Drip Campaigns", description: "Intelligent email sequences that nurture leads over weeks and months with personalized, behavior-driven content.", icon: "Mail" },
+        { title: "Google Business Optimization", description: "Dominate local search across Chicago with AI-optimized Google Business profiles and review management.", icon: "Search" },
+        { title: "Sales Pipeline Automation", description: "Automated CRM updates, deal stage progression, and task creation for your Chicago sales team.", icon: "Workflow" },
+        { title: "Performance Reporting", description: "Weekly reports with Chicago market benchmarks, lead attribution, and actionable growth insights.", icon: "BarChart3" }
+      ]
+    },
+    ecosystem: {
+      title: "Your Complete Chicago Growth System",
+      subtitle: "AI automation plus marketing authority equals market dominance",
+      description: "InfiniteRankers.io handles AI-powered lead generation and conversion while InfiniteRankers.com builds your marketing authority through SEO, content, and paid advertising optimized for the Chicago market.",
+      ioFeatures: [
+        { title: "AI Calling & Chat", description: "Automated phone and chat agents that handle inbound and outbound communications." },
+        { title: "Lead Qualification", description: "AI-powered scoring that identifies your highest-value prospects instantly." },
+        { title: "CRM Integration", description: "Seamless connection to your existing CRM with automated data enrichment." }
+      ],
+      comFeatures: [
+        { title: "Local SEO", description: "Dominate Google Maps and local search results across Chicagoland." },
+        { title: "Google Ads Management", description: "Data-driven PPC campaigns that maximize every dollar of ad spend." },
+        { title: "Website Development", description: "Fast, conversion-optimized websites designed for Chicago audiences." }
+      ],
+      comLinks: [
+        { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Patricia Kowalski",
+        role: "Practice Manager",
+        company: "Lakeview Dental Group",
+        quote: "Managing three dental offices across Chicago was a nightmare for lead routing. Infinite Rankers built an AI system that perfectly directs patients to the nearest location. Our new patient numbers exploded.",
+        rating: 5
+      },
+      {
+        name: "Mike O'Brien",
+        role: "Owner",
+        company: "Windy City HVAC",
+        quote: "Chicago winters mean emergency calls at all hours. Our AI receptionist captures every call and books service appointments automatically. We added $680K in revenue without hiring a single dispatcher.",
+        rating: 5
+      },
+      {
+        name: "Raj Patel",
+        role: "Managing Director",
+        company: "Loop Financial Advisors",
+        quote: "The AI qualification system transformed our prospecting. Instead of meeting with everyone, our advisors now focus on high-net-worth leads. AUM grew by $1.8M in six months.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "Do you serve businesses in Chicago suburbs as well?", a: "Yes. We serve businesses throughout Chicagoland including Naperville, Schaumburg, Evanston, Oak Brook, and all surrounding suburbs with targeted AI campaigns for each area." },
+      { q: "How does AI automation help during Chicago's slow winter months?", a: "Our AI systems run year-round, keeping your lead pipeline active through automated outreach, retargeting, and nurture campaigns even when foot traffic slows. Clients typically see 40% less seasonal revenue dip." },
+      { q: "What size Chicago business benefits most from AI automation?", a: "Businesses generating $500K-$50M in annual revenue see the strongest ROI. This includes practices, agencies, home service companies, and professional service firms across Chicagoland." },
+      { q: "Can you integrate with the CRM and tools we already use?", a: "Absolutely. We integrate with HubSpot, Salesforce, GoHighLevel, ServiceTitan, Dentrix, and dozens of other platforms. Our team handles all technical integration." },
+      { q: "What is the typical ROI timeline for Chicago businesses?", a: "Most Chicago clients see positive ROI within 45-60 days. By month three, the average client generates 3-5x return on their investment in AI automation." }
+    ],
+    cta: {
+      title: "Grow Your Chicago Business with AI",
+      subtitle: "Join 350+ Chicagoland businesses using AI to generate leads and revenue on autopilot. Book your free strategy call today.",
+      buttonText: "Get Your Free Chicago Strategy Session"
+    },
+    relatedLandingPages: ["ai-automation-new-york", "ai-automation-los-angeles", "ai-lead-generation-usa"],
+    relatedServices: ["ai-receptionist", "ai-appointment-booking", "local-seo", "google-ads"],
+    comLinks: [
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
+      { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" }
+    ]
+  },
+  {
+    slug: "ai-revenue-growth-real-estate",
+    type: "industry",
+    seoTitle: "AI Revenue Growth for Real Estate | Infinite Rankers",
+    seoDescription: "AI-powered lead generation and revenue growth for real estate agents, brokers, and agencies. Automate lead qualification, follow-ups, and appointment booking.",
+    seoKeywords: "AI real estate, real estate lead generation AI, AI for realtors, real estate automation, AI revenue growth real estate",
+    canonical: "https://infiniterankers.io/ai-revenue-growth-real-estate",
+    hero: {
+      badge: "Built for Real Estate Professionals",
+      title: "AI Revenue Growth for",
+      titleHighlight: "Real Estate",
+      subtitle: "Stop chasing cold leads and start closing deals. Our AI systems qualify buyers and sellers instantly, book showings automatically, and nurture prospects until they are ready to transact.",
+      stats: [
+        { value: "320+", label: "Real Estate Clients" },
+        { value: "4.2x", label: "Avg. Lead-to-Close Rate" },
+        { value: "$48M+", label: "Deals Closed via AI" },
+        { value: "< 2min", label: "Avg. Lead Response" }
+      ]
+    },
+    painPoints: {
+      title: "Why Real Estate Agents Struggle to Scale",
+      subtitle: "The industry's biggest revenue killers and how AI solves them",
+      points: [
+        { title: "Unqualified Lead Overload", description: "Zillow, Realtor.com, and portal leads are 80% unqualified. Agents waste hours chasing prospects who are months away from buying or just browsing.", icon: "Users" },
+        { title: "Slow Response Times", description: "The average real estate agent takes 5+ hours to respond to a new lead. By then, the prospect has already contacted three other agents.", icon: "Clock" },
+        { title: "Inconsistent Follow-Up", description: "Real estate cycles are long. Most agents give up after 2-3 touchpoints, but 80% of deals close after the 5th follow-up or later.", icon: "Mail" },
+        { title: "Manual Transaction Coordination", description: "From showing scheduling to document collection, manual processes eat up 20+ hours per week that should be spent on revenue-generating activities.", icon: "Briefcase" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Built for Real Estate Revenue",
+      subtitle: "Intelligent automation designed for the real estate transaction cycle",
+      description: "Our AI platform understands real estate timelines, buyer motivation signals, and market dynamics. It qualifies leads based on purchase readiness, budget, and timeline, then nurtures them through the entire decision journey.",
+      capabilities: [
+        { title: "Buyer Intent Scoring", description: "AI analyzes 30+ behavioral signals to score leads by purchase readiness, pre-approval status, and timeline urgency.", icon: "Brain" },
+        { title: "Automated Showing Scheduler", description: "AI coordinates showing schedules between agents, buyers, and listing availability without manual back-and-forth.", icon: "Calendar" },
+        { title: "Long-Term Nurture Engine", description: "AI maintains contact with early-stage leads over 6-18 months with market updates, new listings, and personalized follow-ups.", icon: "Heart" },
+        { title: "Market Intelligence Alerts", description: "Automated market reports and price alerts sent to prospects based on their saved searches and preferences.", icon: "TrendingUp" }
+      ]
+    },
+    pipeline: {
+      title: "How AI Transforms Your Real Estate Pipeline",
+      subtitle: "From lead capture to closing with AI at every stage",
+      steps: [
+        { step: "1", title: "Lead Capture & Scoring", description: "AI captures leads from all sources, portal sites, your website, social media, and open houses, then scores them by readiness to transact.", icon: "Target" },
+        { step: "2", title: "Instant Qualification", description: "AI engages leads via text, call, or chat within 60 seconds, qualifying on budget, timeline, pre-approval status, and property preferences.", icon: "Zap" },
+        { step: "3", title: "Automated Nurture & Booking", description: "Qualified leads are booked for showings or consultations. Others enter personalized drip campaigns that keep you top-of-mind.", icon: "Mail" },
+        { step: "4", title: "Close & Grow", description: "AI tracks deal progress, sends reminders, collects documents, and generates referral requests after closing to fuel your next deal.", icon: "DollarSign" }
+      ]
+    },
+    results: {
+      title: "Real Estate Teams Winning with AI",
+      subtitle: "How top-producing agents and brokerages use AI to close more deals",
+      cases: [
+        {
+          business: "Pinnacle Realty Group",
+          industry: "Residential Real Estate",
+          metrics: [
+            { value: "380%", label: "Lead Volume Increase" },
+            { value: "$3.2M", label: "Closed Volume in 90 Days" },
+            { value: "28%", label: "Lead-to-Close Rate" }
+          ],
+          quote: "Our agents were drowning in unqualified Zillow leads. The AI qualification system filters out browsers and only sends ready-to-buy prospects to our team. Volume is up 380%."
+        },
+        {
+          business: "Coastal Luxury Properties",
+          industry: "Luxury Real Estate",
+          metrics: [
+            { value: "5.1x", label: "ROI on AI Investment" },
+            { value: "$8.5M", label: "Listing Appointments Booked" },
+            { value: "< 90s", label: "Lead Response Time" }
+          ],
+          quote: "In luxury real estate, the first agent to respond wins the listing. Our AI responds in under 90 seconds and books listing appointments while I focus on showings."
+        },
+        {
+          business: "Metro Property Management",
+          industry: "Property Management",
+          metrics: [
+            { value: "210%", label: "Tenant Lead Increase" },
+            { value: "95%", label: "Occupancy Rate Achieved" },
+            { value: "$120K", label: "Annual Savings on Staff" }
+          ],
+          quote: "The AI handles all tenant inquiries, schedules tours, and follows up automatically. Our vacancy rate dropped to 5% and we saved $120K in staff costs."
+        }
+      ]
+    },
+    features: {
+      title: "AI Tools for Real Estate Professionals",
+      subtitle: "Everything you need to capture, qualify, and close more deals",
+      items: [
+        { title: "AI Lead Qualification", description: "Automatically qualify leads on budget, timeline, pre-approval, and motivation level before they reach your agents.", icon: "CheckCircle2" },
+        { title: "Automated Showing Scheduler", description: "AI coordinates availability between agents, buyers, and properties to book showings without manual effort.", icon: "Calendar" },
+        { title: "Drip Campaign Automation", description: "Personalized email and SMS sequences with market updates, new listings, and price drop alerts.", icon: "Mail" },
+        { title: "AI Calling Agent", description: "Automated calls that engage leads, answer property questions, and book consultations with natural conversation.", icon: "Phone" },
+        { title: "CRM Pipeline Manager", description: "Visual pipeline with AI-driven deal stage updates, task reminders, and probability-weighted forecasting.", icon: "Database" },
+        { title: "Referral Generation System", description: "Automated post-close referral requests, review solicitation, and past-client re-engagement campaigns.", icon: "Share2" }
+      ]
+    },
+    ecosystem: {
+      title: "The Real Estate Growth Ecosystem",
+      subtitle: "AI automation plus marketing authority for real estate dominance",
+      description: "InfiniteRankers.io powers the AI engine that qualifies and converts leads while InfiniteRankers.com builds your real estate brand authority through SEO, content, and digital advertising.",
+      ioFeatures: [
+        { title: "AI Lead Engine", description: "Capture and qualify leads from every source with intelligent scoring and instant engagement." },
+        { title: "Transaction Automation", description: "Streamline the showing-to-close workflow with automated scheduling and document tracking." },
+        { title: "Agent Performance Analytics", description: "Track individual agent performance, lead response times, and conversion metrics." }
+      ],
+      comFeatures: [
+        { title: "Real Estate SEO", description: "Rank for hyperlocal real estate keywords and neighborhood search terms." },
+        { title: "IDX Website Development", description: "High-converting real estate websites with IDX integration and lead capture." },
+        { title: "Social Media Marketing", description: "Instagram and Facebook strategies that showcase listings and build agent brands." }
+      ],
+      comLinks: [
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Jason Whitfield",
+        role: "Team Lead",
+        company: "Pinnacle Realty Group",
+        quote: "My team of 8 agents was overwhelmed with unqualified leads. Infinite Rankers built an AI qualification system that routes only serious buyers to our agents. We closed $3.2M in just 90 days after implementation.",
+        rating: 5
+      },
+      {
+        name: "Victoria Sterling",
+        role: "Broker/Owner",
+        company: "Coastal Luxury Properties",
+        quote: "In luxury real estate, speed and sophistication are everything. The AI responds to leads in under 90 seconds with personalized property recommendations. My listing appointments have increased 5x.",
+        rating: 5
+      },
+      {
+        name: "Anthony Brooks",
+        role: "Operations Director",
+        company: "Metro Property Management",
+        quote: "We manage 400+ units and the AI handles tenant inquiries, tour scheduling, and application follow-ups. Occupancy is at 95% and we saved $120K annually on admin staff.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "Does your AI work with my existing real estate CRM?", a: "Yes. We integrate with Follow Up Boss, KvCore, Chime, LionDesk, Sierra Interactive, and all major real estate CRMs. Data flows seamlessly between your AI systems and existing tools." },
+      { q: "Can the AI handle buyer and seller leads differently?", a: "Absolutely. Our AI uses separate qualification scripts for buyers and sellers, asking the right questions based on lead type and routing to the appropriate agent or team." },
+      { q: "How does AI handle leads that are 6-12 months away from buying?", a: "Our long-term nurture engine maintains automated contact through market updates, new listing alerts, and personalized check-ins, keeping you top-of-mind until they are ready to transact." },
+      { q: "Will this work for a solo agent or just teams?", a: "Both. Solo agents benefit from AI handling the volume they cannot manage alone, while teams benefit from intelligent routing and lead distribution that maximizes each agent's productivity." },
+      { q: "What portal integrations do you support?", a: "We integrate with Zillow, Realtor.com, Redfin, Homes.com, and other major portals. Leads flow directly into the AI system for instant qualification and response." }
+    ],
+    cta: {
+      title: "Close More Real Estate Deals with AI",
+      subtitle: "Join 320+ real estate professionals using AI to qualify leads faster and close more transactions. Get your free strategy session.",
+      buttonText: "Get Your Free Real Estate AI Demo"
+    },
+    relatedLandingPages: ["ai-revenue-growth-law-firms", "ai-lead-generation-usa", "ai-automation-new-york"],
+    relatedServices: ["ai-lead-qualification", "ai-calling-agent", "ai-appointment-booking", "ai-follow-up"],
+    comLinks: [
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+      { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" }
+    ]
+  },
+  {
+    slug: "ai-revenue-growth-healthcare",
+    type: "industry",
+    seoTitle: "AI Revenue Growth for Healthcare | Infinite Rankers",
+    seoDescription: "HIPAA-compliant AI automation for healthcare practices. Automate patient intake, appointment booking, follow-ups, and revenue growth for medical offices.",
+    seoKeywords: "AI healthcare, healthcare AI automation, medical practice AI, patient acquisition AI, healthcare revenue growth, HIPAA compliant AI",
+    canonical: "https://infiniterankers.io/ai-revenue-growth-healthcare",
+    hero: {
+      badge: "HIPAA-Compliant AI Solutions",
+      title: "AI Revenue Growth for",
+      titleHighlight: "Healthcare",
+      subtitle: "Grow your patient base and revenue with HIPAA-compliant AI that automates intake, scheduling, follow-ups, and reactivation campaigns. Let technology handle the admin so you can focus on patient care.",
+      stats: [
+        { value: "280+", label: "Healthcare Clients" },
+        { value: "245%", label: "Avg. Patient Growth" },
+        { value: "$32M+", label: "Revenue Generated" },
+        { value: "HIPAA", label: "Fully Compliant" }
+      ]
+    },
+    painPoints: {
+      title: "Revenue Challenges in Healthcare",
+      subtitle: "What keeps healthcare practices from reaching their full potential",
+      points: [
+        { title: "No-Show Epidemic", description: "Healthcare practices lose an average of $150,000 annually to no-shows and last-minute cancellations. Manual reminder calls barely make a dent in the problem.", icon: "Calendar" },
+        { title: "Overwhelmed Front Desk", description: "Your reception team juggles calls, check-ins, insurance verification, and scheduling simultaneously. Important calls go to voicemail and new patients choose competitors.", icon: "Phone" },
+        { title: "Patient Reactivation Gap", description: "Over 30% of patients become inactive after their first visit. Without systematic reactivation campaigns, you are leaving hundreds of thousands in lifetime value on the table.", icon: "Users" },
+        { title: "Insurance & Billing Complexity", description: "Complex insurance verification and billing processes delay revenue. Patients abandon the process when administrative friction is too high.", icon: "Shield" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Purpose-Built for Healthcare",
+      subtitle: "HIPAA-compliant automation that grows your practice",
+      description: "Our healthcare AI platform is built from the ground up with HIPAA compliance, patient privacy, and medical workflow integration. Every interaction is encrypted, auditable, and designed to enhance the patient experience.",
+      capabilities: [
+        { title: "HIPAA-Compliant Communication", description: "All AI communications, calls, texts, and emails, are fully HIPAA-compliant with end-to-end encryption and BAA coverage.", icon: "Shield" },
+        { title: "Intelligent Patient Intake", description: "AI guides new patients through intake forms, insurance verification, and pre-visit questionnaires before they arrive.", icon: "CheckCircle2" },
+        { title: "Smart Scheduling Engine", description: "AI optimizes your schedule by factoring in procedure duration, provider availability, equipment needs, and patient preferences.", icon: "Calendar" },
+        { title: "Patient Reactivation AI", description: "Automated campaigns re-engage inactive patients with personalized health reminders, check-up prompts, and special offers.", icon: "Heart" }
+      ]
+    },
+    pipeline: {
+      title: "How AI Grows Your Healthcare Practice",
+      subtitle: "From first call to long-term patient retention",
+      steps: [
+        { step: "1", title: "Patient Acquisition", description: "AI captures inquiries from Google, your website, and referrals, qualifying patients on insurance, symptoms, and urgency.", icon: "Target" },
+        { step: "2", title: "Automated Intake & Booking", description: "Qualified patients are guided through online intake and booked into optimal appointment slots with automated confirmations.", icon: "Calendar" },
+        { step: "3", title: "No-Show Prevention", description: "AI sends personalized reminders via SMS, email, and phone at strategic intervals, reducing no-shows by up to 65%.", icon: "CheckCircle2" },
+        { step: "4", title: "Retention & Reactivation", description: "Post-visit follow-ups, review requests, and reactivation campaigns keep patients returning and referring others.", icon: "Heart" }
+      ]
+    },
+    results: {
+      title: "Healthcare Practices Thriving with AI",
+      subtitle: "See how medical practices are growing revenue with automation",
+      cases: [
+        {
+          business: "Sunrise Family Medicine",
+          industry: "Primary Care",
+          metrics: [
+            { value: "290%", label: "New Patient Growth" },
+            { value: "$58K", label: "Monthly Revenue Increase" },
+            { value: "72%", label: "No-Show Reduction" }
+          ],
+          quote: "Our no-show rate dropped from 28% to 8% with the AI reminder system. Combined with automated intake, we added $58K in monthly revenue without extending hours."
+        },
+        {
+          business: "Pacific Dental Arts",
+          industry: "Dental Practice",
+          metrics: [
+            { value: "340%", label: "Appointment Bookings" },
+            { value: "$72K", label: "Monthly Production Increase" },
+            { value: "94%", label: "Patient Satisfaction" }
+          ],
+          quote: "The AI handles 80% of our scheduling calls and books hygiene appointments automatically. Our front desk finally has time to deliver exceptional in-office experiences."
+        }
+      ]
+    },
+    features: {
+      title: "Healthcare AI Feature Suite",
+      subtitle: "Every tool your practice needs to grow patient volume and revenue",
+      items: [
+        { title: "AI Patient Intake", description: "Digital intake forms with AI-guided completion, insurance verification, and medical history collection before arrival.", icon: "CheckCircle2" },
+        { title: "Smart Appointment Reminders", description: "Multi-channel reminders via SMS, email, and voice that reduce no-shows by up to 65% with personalized messaging.", icon: "Calendar" },
+        { title: "AI Phone Agent", description: "HIPAA-compliant AI answers calls, schedules appointments, and handles common patient questions 24/7.", icon: "Phone" },
+        { title: "Patient Reactivation Campaigns", description: "Automated outreach to inactive patients with personalized health reminders and appointment prompts.", icon: "Heart" },
+        { title: "Review Generation", description: "Automated post-visit review requests that build your Google and Healthgrades reputation.", icon: "Star" },
+        { title: "Practice Analytics", description: "Real-time dashboards tracking patient acquisition costs, lifetime value, no-show rates, and revenue per provider.", icon: "PieChart" }
+      ]
+    },
+    ecosystem: {
+      title: "The Healthcare Growth Ecosystem",
+      subtitle: "AI automation meets medical marketing expertise",
+      description: "InfiniteRankers.io provides HIPAA-compliant AI automation while InfiniteRankers.com delivers healthcare-specific marketing strategies including medical SEO, reputation management, and patient acquisition advertising.",
+      ioFeatures: [
+        { title: "HIPAA-Compliant AI", description: "Fully encrypted, auditable AI communications with BAA coverage and compliance documentation." },
+        { title: "Patient Journey Automation", description: "End-to-end automation from first inquiry through treatment completion and follow-up." },
+        { title: "Practice Management Integration", description: "Seamless connection to Dentrix, OpenDental, eClinicalWorks, Athena, and more." }
+      ],
+      comFeatures: [
+        { title: "Medical SEO", description: "Rank for high-intent medical keywords and symptom-based search queries." },
+        { title: "Healthcare Advertising", description: "Google Ads and Meta campaigns targeting patients actively seeking care." },
+        { title: "Reputation Management", description: "Proactive review generation and management across healthcare platforms." }
+      ],
+      comLinks: [
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Dr. Rebecca Martinez",
+        role: "Medical Director",
+        company: "Sunrise Family Medicine",
+        quote: "The AI reminder and reactivation system transformed our practice. No-shows dropped 72%, inactive patients came back, and we added $58K in monthly revenue. All while staying fully HIPAA compliant.",
+        rating: 5
+      },
+      {
+        name: "Dr. Kevin Nakamura",
+        role: "Owner",
+        company: "Pacific Dental Arts",
+        quote: "We were losing patients because our front desk could not keep up with calls. The AI phone agent now handles 80% of scheduling calls and our production is up $72K per month.",
+        rating: 5
+      },
+      {
+        name: "Lisa Thornton",
+        role: "Practice Administrator",
+        company: "Evergreen Orthopedics",
+        quote: "Insurance verification used to take our staff hours. The AI intake system collects and verifies information before patients arrive. Our administrative costs dropped 35% in the first quarter.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "Is your AI system HIPAA compliant?", a: "Yes. Our entire platform is built with HIPAA compliance at its core. We provide BAAs, end-to-end encryption, audit trails, and regular compliance reviews. PHI is never stored in unsecured systems." },
+      { q: "Does the AI integrate with my practice management software?", a: "We integrate with Dentrix, OpenDental, eClinicalWorks, AthenaHealth, DrChrono, Kareo, and most major EHR/PM systems. Custom integrations are available for specialized platforms." },
+      { q: "How does AI reduce no-shows?", a: "Our system sends personalized reminders via SMS, email, and voice calls at optimized intervals (72 hours, 24 hours, and 2 hours before appointments). Patients can confirm, reschedule, or cancel with one tap, and the AI automatically fills cancelled slots." },
+      { q: "Can the AI handle new patient intake?", a: "Absolutely. Our AI guides patients through digital intake forms, insurance information collection, medical history questionnaires, and consent forms before they arrive, reducing in-office wait times by 15-20 minutes." },
+      { q: "What specialties do you work with?", a: "We serve primary care, dental, dermatology, orthopedics, ophthalmology, chiropractic, physical therapy, mental health, and multi-specialty group practices across the USA." }
+    ],
+    cta: {
+      title: "Grow Your Healthcare Practice with AI",
+      subtitle: "Join 280+ healthcare practices using HIPAA-compliant AI to increase patient volume and revenue. Schedule your free demo today.",
+      buttonText: "Get Your Free Healthcare AI Demo"
+    },
+    relatedLandingPages: ["ai-revenue-growth-law-firms", "ai-revenue-growth-real-estate", "ai-lead-generation-usa"],
+    relatedServices: ["ai-receptionist", "ai-appointment-booking", "ai-follow-up", "ai-sms-automation"],
+    comLinks: [
+      { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" }
+    ]
+  },
+  {
+    slug: "ai-revenue-growth-law-firms",
+    type: "industry",
+    seoTitle: "AI Revenue Growth for Law Firms | Infinite Rankers",
+    seoDescription: "AI-powered client acquisition and revenue growth for law firms. Automate intake, lead qualification, follow-ups, and case management to grow your practice.",
+    seoKeywords: "AI for law firms, law firm AI automation, legal lead generation AI, attorney marketing automation, law firm revenue growth",
+    canonical: "https://infiniterankers.io/ai-revenue-growth-law-firms",
+    hero: {
+      badge: "Trusted by 200+ Law Firms Nationwide",
+      title: "AI Revenue Growth for",
+      titleHighlight: "Law Firms",
+      subtitle: "Never miss a potential case again. Our AI systems handle intake calls 24/7, qualify cases instantly, and ensure every lead is followed up until they retain your firm.",
+      stats: [
+        { value: "200+", label: "Law Firms Served" },
+        { value: "190%", label: "Avg. Case Intake Growth" },
+        { value: "$28M+", label: "Case Value Generated" },
+        { value: "24/7", label: "Intake Coverage" }
+      ]
+    },
+    painPoints: {
+      title: "Why Law Firms Struggle to Grow",
+      subtitle: "Critical revenue leaks that AI automation eliminates",
+      points: [
+        { title: "After-Hours Missed Calls", description: "46% of potential client calls come outside business hours. Every unanswered call is a case, and revenue, handed to a competitor who picks up.", icon: "Phone" },
+        { title: "Slow Intake Process", description: "Potential clients contact an average of 3 firms. The first firm to respond and qualify the case wins the retainer 78% of the time.", icon: "Clock" },
+        { title: "Inconsistent Follow-Up", description: "Intake coordinators juggle dozens of leads. Without systematic follow-up, 60% of interested prospects never schedule a consultation.", icon: "Mail" },
+        { title: "High Cost Per Acquisition", description: "Legal advertising costs $100-$500+ per click. Without AI-optimized qualification, you waste budget on leads that never become cases.", icon: "DollarSign" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Designed for Legal Client Acquisition",
+      subtitle: "Intelligent systems that understand legal intake and case qualification",
+      description: "Our AI is trained on legal intake workflows, practice area qualification criteria, and attorney-client communication standards. It conducts initial screening, determines case viability, and routes qualified prospects to your attorneys.",
+      capabilities: [
+        { title: "Legal Intake AI", description: "AI conducts structured intake interviews covering incident details, injuries, timelines, and jurisdiction to determine case viability.", icon: "Scale" },
+        { title: "Practice Area Routing", description: "Automatically route leads to the right attorney based on practice area, case type, geographic jurisdiction, and case value.", icon: "Network" },
+        { title: "Statute of Limitations Tracking", description: "AI identifies time-sensitive cases and escalates leads approaching statute deadlines for immediate attorney review.", icon: "Clock" },
+        { title: "Conflict Check Integration", description: "Automated conflict checking against your existing client database before routing new leads to attorneys.", icon: "Shield" }
+      ]
+    },
+    pipeline: {
+      title: "The AI Legal Client Acquisition Pipeline",
+      subtitle: "From first contact to signed retainer with AI at every step",
+      steps: [
+        { step: "1", title: "24/7 Lead Capture", description: "AI answers every call, chat, and form submission instantly, conducting initial screening to identify viable cases.", icon: "Phone" },
+        { step: "2", title: "Case Qualification", description: "Structured intake interview covering case facts, damages, timeline, and jurisdiction with AI-powered viability scoring.", icon: "Scale" },
+        { step: "3", title: "Attorney Connection", description: "Qualified cases are routed to the appropriate attorney with a complete intake summary, warm-transferred or scheduled for consultation.", icon: "Briefcase" },
+        { step: "4", title: "Retainer Conversion", description: "Automated follow-ups, consultation reminders, and nurture sequences ensure maximum retainer signing rates.", icon: "CheckCircle2" }
+      ]
+    },
+    results: {
+      title: "Law Firms Winning More Cases with AI",
+      subtitle: "How legal practices are growing revenue with AI automation",
+      cases: [
+        {
+          business: "Hartwell & Associates",
+          industry: "Personal Injury",
+          metrics: [
+            { value: "210%", label: "Case Intake Increase" },
+            { value: "$1.4M", label: "Additional Case Value/Quarter" },
+            { value: "24/7", label: "Intake Coverage" }
+          ],
+          quote: "We were losing cases every night and weekend. The AI intake system now captures every call 24/7 and qualifies cases before our attorneys even get involved. Case intake is up 210%."
+        },
+        {
+          business: "Crawford Family Law",
+          industry: "Family Law",
+          metrics: [
+            { value: "175%", label: "Consultation Booking Rate" },
+            { value: "$82K", label: "Monthly Revenue Growth" },
+            { value: "89%", label: "Show Rate" }
+          ],
+          quote: "Family law clients need immediate reassurance. The AI responds with empathy and urgency, booking consultations before emotions cool. Our conversion rate has never been higher."
+        }
+      ]
+    },
+    features: {
+      title: "AI Tools for Law Firm Growth",
+      subtitle: "Every tool your firm needs to capture and convert more cases",
+      items: [
+        { title: "AI Intake Receptionist", description: "24/7 call answering with legal intake scripts, case screening, and warm transfers to available attorneys.", icon: "Phone" },
+        { title: "Case Qualification Bot", description: "Structured intake questionnaires that assess case viability, damages, and jurisdiction before attorney involvement.", icon: "Scale" },
+        { title: "Automated Follow-Up", description: "Multi-channel follow-up sequences via email, SMS, and phone that nurture leads until they schedule a consultation.", icon: "Mail" },
+        { title: "Consultation Scheduler", description: "AI books consultations directly into attorney calendars with automated reminders and preparation materials.", icon: "Calendar" },
+        { title: "Client Communication Portal", description: "Secure, encrypted communication channel for case updates, document sharing, and client messaging.", icon: "MessageSquare" },
+        { title: "Legal Analytics Dashboard", description: "Track cost per case, intake conversion rates, revenue per practice area, and marketing attribution.", icon: "BarChart3" }
+      ]
+    },
+    ecosystem: {
+      title: "The Legal Growth Ecosystem",
+      subtitle: "AI automation meets legal marketing expertise",
+      description: "InfiniteRankers.io provides the AI intake and conversion engine while InfiniteRankers.com delivers legal marketing strategies including attorney SEO, Google Ads for law firms, and reputation management.",
+      ioFeatures: [
+        { title: "24/7 AI Intake", description: "Round-the-clock AI receptionist that captures and qualifies legal leads instantly." },
+        { title: "Case Management Integration", description: "Connect with Clio, MyCase, PracticePanther, and other legal management platforms." },
+        { title: "Lead Attribution Tracking", description: "Know exactly which marketing channels generate your highest-value cases." }
+      ],
+      comFeatures: [
+        { title: "Attorney SEO", description: "Rank for high-value legal keywords like 'personal injury lawyer near me' and practice-area terms." },
+        { title: "Legal PPC Campaigns", description: "Google Ads campaigns optimized for legal keywords with AI-driven bid management." },
+        { title: "Law Firm Web Design", description: "Authority-building websites designed for trust, credibility, and lead capture." }
+      ],
+      comLinks: [
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Thomas Hartwell",
+        role: "Managing Partner",
+        company: "Hartwell & Associates",
+        quote: "Before AI automation, we estimated losing $500K annually in missed after-hours calls. Now every potential client is captured, screened, and scheduled. Case intake increased 210% in the first quarter.",
+        rating: 5
+      },
+      {
+        name: "Sarah Crawford",
+        role: "Founding Attorney",
+        company: "Crawford Family Law",
+        quote: "Family law clients are emotional and need immediate attention. The AI intake system responds with empathy and urgency, booking consultations within minutes. Our revenue grew $82K monthly.",
+        rating: 5
+      },
+      {
+        name: "Marcus Williams",
+        role: "Senior Partner",
+        company: "Williams Immigration Law",
+        quote: "Immigration cases require multilingual intake. The AI handles English and Spanish-speaking clients equally well, qualifies visa categories, and routes to the right attorney. Game changer for our practice.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "Is AI intake confidential and secure?", a: "Absolutely. All communications are encrypted and our systems comply with attorney-client privilege requirements. We provide detailed security documentation and can sign NDAs." },
+      { q: "Can the AI qualify cases by practice area?", a: "Yes. We configure custom intake scripts for each practice area including personal injury, family law, criminal defense, immigration, estate planning, and more. Each has unique qualification criteria." },
+      { q: "How does AI handle sensitive legal matters?", a: "Our AI is trained to communicate with appropriate sensitivity and empathy. For highly sensitive matters, it seamlessly transfers to a live intake coordinator while maintaining call continuity." },
+      { q: "Does it integrate with legal practice management software?", a: "We integrate with Clio, MyCase, PracticePanther, Filevine, Litify, and other legal management platforms. Contact records, case notes, and documents sync automatically." },
+      { q: "What is the typical ROI for a law firm?", a: "Our law firm clients typically see 5-10x ROI within 90 days. For a firm spending $10K/month on advertising, improved intake conversion alone can generate $50K-$100K in additional case value." }
+    ],
+    cta: {
+      title: "Never Miss Another Case",
+      subtitle: "Join 200+ law firms using AI to capture every lead, qualify every case, and grow revenue 24/7. Book your free strategy call.",
+      buttonText: "Get Your Free Law Firm AI Demo"
+    },
+    relatedLandingPages: ["ai-revenue-growth-real-estate", "ai-revenue-growth-healthcare", "ai-lead-generation-usa"],
+    relatedServices: ["ai-receptionist", "ai-lead-qualification", "ai-follow-up", "seo-authority"],
+    comLinks: [
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" },
+      { label: "Pricing Plans", url: "https://infiniterankers.com/pricing-plan/" }
+    ]
+  },
+  {
+    slug: "ai-revenue-growth-ecommerce",
+    type: "industry",
+    seoTitle: "AI Revenue Growth for E-Commerce | Infinite Rankers",
+    seoDescription: "AI-powered revenue growth for e-commerce brands. Automate cart recovery, personalized marketing, customer retention, and conversion optimization at scale.",
+    seoKeywords: "AI ecommerce, ecommerce AI automation, AI cart recovery, ecommerce revenue growth, AI marketing ecommerce, online store automation",
+    canonical: "https://infiniterankers.io/ai-revenue-growth-ecommerce",
+    hero: {
+      badge: "Powering 250+ E-Commerce Brands",
+      title: "AI Revenue Growth for",
+      titleHighlight: "E-Commerce",
+      subtitle: "Recover abandoned carts, personalize customer journeys, and maximize lifetime value with AI automation built for online retail. Turn browsers into buyers and buyers into repeat customers.",
+      stats: [
+        { value: "250+", label: "E-Commerce Clients" },
+        { value: "5.8x", label: "Avg. ROAS Improvement" },
+        { value: "$65M+", label: "Revenue Recovered" },
+        { value: "62%", label: "Cart Recovery Rate" }
+      ]
+    },
+    painPoints: {
+      title: "E-Commerce Revenue Killers",
+      subtitle: "The hidden problems draining your online store's profitability",
+      points: [
+        { title: "Cart Abandonment Crisis", description: "The average e-commerce cart abandonment rate is 70%. Without AI-powered recovery, you are losing 7 out of 10 potential sales every single day.", icon: "ShoppingCart" },
+        { title: "Rising Customer Acquisition Costs", description: "Facebook and Google CPCs increase 15-20% annually. Without AI-optimized targeting and retargeting, your customer acquisition costs will outpace your margins.", icon: "DollarSign" },
+        { title: "Low Repeat Purchase Rates", description: "Most e-commerce stores see only 25% repeat purchases. Without automated retention campaigns, you are constantly paying to acquire customers you already won.", icon: "Users" },
+        { title: "Generic Customer Experience", description: "One-size-fits-all product recommendations and email blasts convert at 1-2%. AI personalization delivers 5-8x better engagement and conversion.", icon: "Target" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Built for E-Commerce Revenue",
+      subtitle: "Intelligent automation across the entire customer lifecycle",
+      description: "Our e-commerce AI platform connects to your store, ad platforms, and email systems to create a unified revenue engine. From first click to repeat purchase, AI optimizes every touchpoint for maximum conversion and lifetime value.",
+      capabilities: [
+        { title: "Predictive Cart Recovery", description: "AI identifies abandonment patterns and triggers personalized recovery sequences via email, SMS, and retargeting ads at the optimal moment.", icon: "ShoppingCart" },
+        { title: "Dynamic Product Recommendations", description: "Machine learning analyzes browsing behavior, purchase history, and similar customer data to serve hyper-relevant product suggestions.", icon: "Brain" },
+        { title: "Customer Lifetime Value Optimization", description: "AI segments customers by predicted LTV and tailors acquisition spend, messaging, and offers to maximize long-term value.", icon: "TrendingUp" },
+        { title: "Automated Win-Back Campaigns", description: "Re-engage lapsed customers with personalized offers based on their purchase history and browsing behavior.", icon: "Heart" }
+      ]
+    },
+    pipeline: {
+      title: "The AI E-Commerce Revenue Pipeline",
+      subtitle: "Maximize revenue at every stage of the customer journey",
+      steps: [
+        { step: "1", title: "Traffic Optimization", description: "AI optimizes ad spend across Google, Meta, and TikTok to drive the highest-quality traffic to your store at the lowest cost per acquisition.", icon: "Globe" },
+        { step: "2", title: "Conversion Maximization", description: "Personalized product recommendations, dynamic pricing, and optimized checkout flows increase conversion rates by 30-80%.", icon: "TrendingUp" },
+        { step: "3", title: "Cart Recovery & Retention", description: "Multi-channel cart recovery sequences and post-purchase flows turn one-time buyers into repeat customers.", icon: "ShoppingCart" },
+        { step: "4", title: "Lifetime Value Growth", description: "AI-driven loyalty programs, win-back campaigns, and cross-sell sequences maximize revenue per customer over time.", icon: "DollarSign" }
+      ]
+    },
+    results: {
+      title: "E-Commerce Brands Scaling with AI",
+      subtitle: "How online stores are growing revenue with intelligent automation",
+      cases: [
+        {
+          business: "NovaBright Skincare",
+          industry: "Beauty & Skincare DTC",
+          metrics: [
+            { value: "62%", label: "Cart Recovery Rate" },
+            { value: "$340K", label: "Monthly Revenue Increase" },
+            { value: "5.8x", label: "ROAS Improvement" }
+          ],
+          quote: "We were losing $400K monthly to cart abandonment. The AI recovery system now brings back 62% of abandoned carts, adding $340K in monthly revenue we were leaving on the table."
+        },
+        {
+          business: "Apex Athletic Gear",
+          industry: "Sportswear E-Commerce",
+          metrics: [
+            { value: "180%", label: "Repeat Purchase Rate" },
+            { value: "$1.2M", label: "Annual Revenue Growth" },
+            { value: "42%", label: "Customer LTV Increase" }
+          ],
+          quote: "The AI-driven product recommendations and win-back campaigns transformed our retention. Repeat purchases are up 180% and customer lifetime value grew 42%."
+        },
+        {
+          business: "HomeHaven Decor",
+          industry: "Home Decor E-Commerce",
+          metrics: [
+            { value: "320%", label: "Email Revenue Growth" },
+            { value: "4.2x", label: "Return on Ad Spend" },
+            { value: "$28", label: "Revenue Per Email (from $4)" }
+          ],
+          quote: "AI-personalized emails generate $28 per send compared to $4 from our old campaigns. That is a 7x improvement and our email channel is now our highest-revenue source."
+        }
+      ]
+    },
+    features: {
+      title: "E-Commerce AI Feature Suite",
+      subtitle: "Every tool you need to maximize online store revenue",
+      items: [
+        { title: "AI Cart Recovery", description: "Multi-channel abandoned cart sequences via email, SMS, and retargeting with personalized incentives and urgency triggers.", icon: "ShoppingCart" },
+        { title: "Product Recommendation Engine", description: "Machine learning powered upsell, cross-sell, and personalized product suggestions across your store and email.", icon: "Brain" },
+        { title: "Dynamic Email Campaigns", description: "AI-generated email content with personalized product feeds, dynamic pricing, and behavior-triggered send times.", icon: "Mail" },
+        { title: "Ad Spend Optimizer", description: "Real-time ad budget allocation across Google, Meta, and TikTok based on ROAS predictions and inventory levels.", icon: "Target" },
+        { title: "Customer Segmentation", description: "AI segments customers by behavior, LTV prediction, purchase frequency, and engagement level for targeted campaigns.", icon: "Users" },
+        { title: "Revenue Analytics", description: "Real-time dashboards tracking revenue by channel, product, customer segment, and campaign with full attribution.", icon: "LineChart" }
+      ]
+    },
+    ecosystem: {
+      title: "The E-Commerce Growth Ecosystem",
+      subtitle: "AI automation plus digital marketing for maximum online revenue",
+      description: "InfiniteRankers.io powers the AI conversion and retention engine while InfiniteRankers.com provides e-commerce SEO, paid advertising management, and conversion rate optimization to drive qualified traffic.",
+      ioFeatures: [
+        { title: "AI Conversion Engine", description: "Automated cart recovery, upselling, and personalized shopping experiences." },
+        { title: "Customer Journey Automation", description: "End-to-end email, SMS, and retargeting workflows triggered by customer behavior." },
+        { title: "Inventory-Aware Campaigns", description: "Marketing campaigns that automatically adjust based on stock levels and margins." }
+      ],
+      comFeatures: [
+        { title: "E-Commerce SEO", description: "Product page optimization, category SEO, and technical site improvements for organic traffic." },
+        { title: "Paid Social Advertising", description: "Facebook, Instagram, and TikTok campaigns with AI-optimized creative and targeting." },
+        { title: "CRO & UX Design", description: "Data-driven checkout optimization and user experience improvements." }
+      ],
+      comLinks: [
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Sophia Laurent",
+        role: "Founder & CEO",
+        company: "NovaBright Skincare",
+        quote: "Infinite Rankers built an AI system that recovers 62% of our abandoned carts. That single feature adds $340K monthly. Combined with their ad optimization, we are scaling faster than ever.",
+        rating: 5
+      },
+      {
+        name: "Derek Chang",
+        role: "VP of Marketing",
+        company: "Apex Athletic Gear",
+        quote: "The AI product recommendation engine increased our average order value by 35% and repeat purchases by 180%. Customer lifetime value jumped 42% in just six months.",
+        rating: 5
+      },
+      {
+        name: "Amanda Foster",
+        role: "E-Commerce Director",
+        company: "HomeHaven Decor",
+        quote: "Our email revenue per send went from $4 to $28 after implementing AI-personalized campaigns. Email is now our highest-revenue channel and it runs almost entirely on autopilot.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "What e-commerce platforms do you integrate with?", a: "We integrate with Shopify, WooCommerce, BigCommerce, Magento, and custom platforms. Our API connects to any e-commerce system with standard webhooks and data feeds." },
+      { q: "How does AI cart recovery work?", a: "When a customer abandons their cart, our AI triggers a personalized recovery sequence via email, SMS, and retargeting ads. The AI determines optimal timing, incentive levels, and messaging based on customer behavior patterns." },
+      { q: "Can AI really improve our ROAS?", a: "Yes. Our clients see average ROAS improvements of 3-6x. The AI optimizes ad targeting, bidding, and creative in real-time while our cart recovery and retention systems increase revenue from existing traffic." },
+      { q: "How long until we see results?", a: "Cart recovery improvements are typically visible within the first week. Ad optimization shows meaningful improvements within 2-3 weeks. Full revenue impact across all channels materializes within 60-90 days." },
+      { q: "Do you work with DTC brands or marketplace sellers?", a: "Both. We specialize in DTC brands on Shopify and WooCommerce, but also work with Amazon sellers looking to build their direct channel and reduce marketplace dependency." }
+    ],
+    cta: {
+      title: "Maximize Your E-Commerce Revenue",
+      subtitle: "Join 250+ e-commerce brands using AI to recover lost sales, increase repeat purchases, and scale profitably. Get your free revenue audit.",
+      buttonText: "Get Your Free E-Commerce Revenue Audit"
+    },
+    relatedLandingPages: ["ai-revenue-growth-restaurants", "ai-marketing-automation-usa", "ai-lead-generation-usa"],
+    relatedServices: ["ai-email-automation", "ai-chatbot", "conversion-rate-optimization", "meta-ads"],
+    comLinks: [
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" }
+    ]
+  },
+  {
+    slug: "ai-revenue-growth-restaurants",
+    type: "industry",
+    seoTitle: "AI Revenue Growth for Restaurants | Infinite Rankers",
+    seoDescription: "AI-powered marketing and automation for restaurants. Increase reservations, online orders, and customer loyalty with intelligent restaurant marketing systems.",
+    seoKeywords: "AI for restaurants, restaurant AI marketing, restaurant automation, restaurant revenue growth, AI ordering system restaurants",
+    canonical: "https://infiniterankers.io/ai-revenue-growth-restaurants",
+    hero: {
+      badge: "Serving 180+ Restaurant Brands",
+      title: "AI Revenue Growth for",
+      titleHighlight: "Restaurants",
+      subtitle: "Fill more seats, increase online orders, and build a loyal customer base with AI automation designed for the restaurant industry. From reservation management to review generation, let AI handle the marketing while you focus on the food.",
+      stats: [
+        { value: "180+", label: "Restaurant Clients" },
+        { value: "240%", label: "Avg. Online Order Growth" },
+        { value: "$18M+", label: "Revenue Generated" },
+        { value: "35%", label: "Avg. Repeat Visit Increase" }
+      ]
+    },
+    painPoints: {
+      title: "Restaurant Revenue Challenges",
+      subtitle: "What keeps restaurants from reaching full profitability",
+      points: [
+        { title: "Empty Tables During Off-Peak", description: "Most restaurants operate at 40-60% capacity during weekday lunch and early dinner. Without targeted promotions, those empty seats are pure lost revenue.", icon: "Utensils" },
+        { title: "Third-Party Delivery Commissions", description: "DoorDash, UberEats, and Grubhub take 15-30% of every order. Building direct ordering channels is critical to protecting your margins.", icon: "DollarSign" },
+        { title: "One-Time Visitors", description: "70% of restaurant customers visit only once. Without a retention system, you are constantly spending to acquire new diners instead of maximizing lifetime value.", icon: "Users" },
+        { title: "Reputation Vulnerability", description: "A single negative review on Google or Yelp can cost thousands in lost revenue. Proactive review management is essential but time-consuming.", icon: "Star" }
+      ]
+    },
+    aiSystem: {
+      title: "AI Made for Restaurant Revenue",
+      subtitle: "Intelligent automation tailored to food service operations",
+      description: "Our restaurant AI platform integrates with your POS, reservation system, and marketing channels to create a unified growth engine. From automated SMS promotions during slow periods to AI-driven review management, every system is designed to increase covers and revenue.",
+      capabilities: [
+        { title: "Smart Reservation Management", description: "AI optimizes table assignments, predicts no-shows, manages waitlists, and sends automated confirmations to maximize covers.", icon: "Calendar" },
+        { title: "Direct Ordering Engine", description: "AI-powered online ordering that bypasses third-party platforms, saving 15-30% in commission fees on every order.", icon: "ShoppingCart" },
+        { title: "Guest Loyalty Automation", description: "Automated loyalty programs with personalized offers based on visit frequency, order history, and dining preferences.", icon: "Heart" },
+        { title: "Review Generation System", description: "AI requests reviews from satisfied diners at the perfect moment and helps manage negative feedback before it damages your reputation.", icon: "Star" }
+      ]
+    },
+    pipeline: {
+      title: "How AI Grows Restaurant Revenue",
+      subtitle: "From empty seats to a packed house with AI at every stage",
+      steps: [
+        { step: "1", title: "Local Visibility", description: "AI optimizes your Google Business profile, local SEO, and social media to drive discovery from diners searching for restaurants nearby.", icon: "MapPin" },
+        { step: "2", title: "Reservation & Ordering", description: "Automated reservation management and direct online ordering capture diners through your own channels, not third-party apps.", icon: "Utensils" },
+        { step: "3", title: "Guest Experience", description: "AI-powered table management, wait time updates, and personalized service recommendations enhance the dining experience.", icon: "Star" },
+        { step: "4", title: "Retention & Loyalty", description: "Automated post-visit follow-ups, loyalty rewards, and targeted promotions bring guests back and increase average spend.", icon: "Heart" }
+      ]
+    },
+    results: {
+      title: "Restaurants Thriving with AI",
+      subtitle: "How restaurant operators are boosting revenue with automation",
+      cases: [
+        {
+          business: "Harvest & Vine",
+          industry: "Farm-to-Table Restaurant",
+          metrics: [
+            { value: "240%", label: "Online Order Increase" },
+            { value: "$34K", label: "Monthly Revenue Growth" },
+            { value: "52%", label: "Repeat Visit Rate" }
+          ],
+          quote: "Moving online orders from DoorDash to our direct platform saved us $8K monthly in commissions. The AI SMS campaigns bring regulars back every two weeks."
+        },
+        {
+          business: "Sushi Nori Group",
+          industry: "Multi-Location Restaurant",
+          metrics: [
+            { value: "185%", label: "Reservation Volume" },
+            { value: "#1", label: "Google Maps Ranking" },
+            { value: "4.8/5", label: "Average Review Score" }
+          ],
+          quote: "The AI review system got us to #1 on Google Maps and our reservation volume almost tripled. Every location now runs the same automated marketing playbook."
+        }
+      ]
+    },
+    features: {
+      title: "Restaurant AI Feature Suite",
+      subtitle: "Every tool your restaurant needs to fill seats and grow revenue",
+      items: [
+        { title: "AI Reservation Manager", description: "Automated reservation booking, confirmation, and no-show prediction with SMS reminders and waitlist management.", icon: "Calendar" },
+        { title: "Direct Online Ordering", description: "Commission-free ordering platform with AI-driven menu recommendations, upsells, and loyalty integration.", icon: "ShoppingCart" },
+        { title: "SMS Marketing Engine", description: "Targeted SMS campaigns for slow periods, special events, and personalized offers based on dining history.", icon: "MessageSquare" },
+        { title: "Google Business Optimizer", description: "AI-managed Google Business profile with optimized menus, photos, hours, and automated review responses.", icon: "Search" },
+        { title: "Guest Loyalty Platform", description: "Automated points, rewards, and VIP programs that increase visit frequency and average check size.", icon: "Award" },
+        { title: "Restaurant Analytics", description: "Real-time dashboards tracking covers, revenue per seat, online order volume, review scores, and marketing ROI.", icon: "PieChart" }
+      ]
+    },
+    ecosystem: {
+      title: "The Restaurant Growth Ecosystem",
+      subtitle: "AI automation meets restaurant marketing expertise",
+      description: "InfiniteRankers.io powers the AI ordering, reservation, and retention engine while InfiniteRankers.com delivers restaurant-specific local SEO, social media marketing, and brand development.",
+      ioFeatures: [
+        { title: "AI Ordering & Reservations", description: "Automated systems for direct ordering and reservation management across all locations." },
+        { title: "Guest Retention Engine", description: "Loyalty programs, win-back campaigns, and personalized offers that drive repeat visits." },
+        { title: "Multi-Location Management", description: "Unified marketing automation across all restaurant locations from one dashboard." }
+      ],
+      comFeatures: [
+        { title: "Restaurant SEO", description: "Dominate 'restaurants near me' and cuisine-specific searches in your area." },
+        { title: "Food Photography & Content", description: "Professional food photography and social content that drives cravings and visits." },
+        { title: "Social Media Marketing", description: "Instagram and TikTok strategies that showcase your food and build community." }
+      ],
+      comLinks: [
+        { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Chef Marco DeLuca",
+        role: "Owner/Chef",
+        company: "Harvest & Vine",
+        quote: "Switching from DoorDash to our AI-powered direct ordering saved $8K monthly. The automated SMS campaigns keep our regulars coming back. Revenue is up $34K per month.",
+        rating: 5
+      },
+      {
+        name: "Yuki Tanaka",
+        role: "Operations Director",
+        company: "Sushi Nori Group",
+        quote: "Managing marketing for 4 locations was chaos. The AI system unified everything, got all locations to 4.8+ stars, and tripled our reservations. It runs on autopilot.",
+        rating: 5
+      },
+      {
+        name: "Maria Santos",
+        role: "General Manager",
+        company: "Casa del Sol Mexican Grill",
+        quote: "Our Tuesday and Wednesday covers were terrible. The AI SMS system sends targeted lunch specials to nearby workers and our midweek revenue jumped 65%. Those were practically free seats.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "Does your AI work with our POS system?", a: "Yes. We integrate with Toast, Square, Clover, Revel, Aloha, and most major restaurant POS systems. Online order data flows directly into your existing workflow." },
+      { q: "How does AI help reduce third-party delivery commissions?", a: "We build a direct online ordering channel for your restaurant with AI-powered marketing to shift orders from DoorDash/UberEats to your commission-free platform. Most clients save 15-30% on delivery orders." },
+      { q: "Can AI really improve our Google reviews?", a: "Absolutely. Our AI sends review requests to satisfied diners at the optimal time after their visit. Clients typically see their average rating increase by 0.3-0.5 stars within 60 days." },
+      { q: "How does the SMS marketing work?", a: "Our AI sends targeted text promotions based on dining history, time of day, and location. Slow Tuesday lunch? The AI sends a lunch special to diners within a 3-mile radius who visited before." },
+      { q: "Do you work with multi-location restaurant groups?", a: "Yes. We specialize in multi-location restaurant brands with unified marketing, per-location analytics, and automated campaigns that adapt to each location's unique audience and performance." }
+    ],
+    cta: {
+      title: "Fill More Seats & Grow Revenue",
+      subtitle: "Join 180+ restaurants using AI to increase reservations, online orders, and customer loyalty. Get your free restaurant growth audit.",
+      buttonText: "Get Your Free Restaurant Growth Audit"
+    },
+    relatedLandingPages: ["ai-revenue-growth-ecommerce", "ai-lead-generation-usa", "ai-automation-new-york"],
+    relatedServices: ["ai-sms-automation", "local-seo", "social-media-marketing", "ai-chatbot"],
+    comLinks: [
+      { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+      { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+      { label: "Contact Us", url: "https://infiniterankers.com/contact-us/" }
+    ]
+  },
+  {
+    slug: "ai-lead-generation-usa",
+    type: "service",
+    seoTitle: "AI Lead Generation for Small Business USA | Infinite Rankers",
+    seoDescription: "AI-powered lead generation systems for small businesses across the USA. Capture, qualify, and convert more leads with intelligent automation that works 24/7.",
+    seoKeywords: "AI lead generation USA, small business lead generation, AI lead capture, automated lead generation, AI business leads USA",
+    canonical: "https://infiniterankers.io/ai-lead-generation-usa",
+    hero: {
+      badge: "America's #1 AI Lead Generation Agency",
+      title: "AI Lead Generation for",
+      titleHighlight: "Small Business USA",
+      subtitle: "Stop paying for leads that never convert. Our AI-powered lead generation systems capture high-intent prospects, qualify them instantly, and deliver them to your sales team ready to buy.",
+      stats: [
+        { value: "2,500+", label: "US Businesses Served" },
+        { value: "380%", label: "Avg. Lead Growth" },
+        { value: "$50M+", label: "Revenue Generated" },
+        { value: "4.7x", label: "Avg. ROI" }
+      ]
+    },
+    painPoints: {
+      title: "Why Small Businesses Struggle with Lead Generation",
+      subtitle: "The biggest lead generation challenges facing US small businesses",
+      points: [
+        { title: "Wasted Ad Spend", description: "Small businesses waste an average of 40% of their advertising budget on unqualified clicks. Without AI optimization, you are paying for traffic that never converts.", icon: "DollarSign" },
+        { title: "No Lead Follow-Up System", description: "80% of sales require 5+ follow-ups, but 44% of salespeople give up after one. Without automation, your most valuable leads go cold.", icon: "Mail" },
+        { title: "Competing with Big Budgets", description: "Enterprise competitors outspend you 10:1 on advertising. You need smarter systems, not bigger budgets, to compete and win.", icon: "Building2" },
+        { title: "Lack of Lead Intelligence", description: "Without knowing which leads are hot and which are cold, your sales team wastes hours chasing prospects who will never buy.", icon: "Brain" }
+      ]
+    },
+    aiSystem: {
+      title: "The AI Lead Generation Engine",
+      subtitle: "Intelligent systems that outperform traditional lead gen by 3-5x",
+      description: "Our AI lead generation platform combines predictive targeting, instant engagement, intelligent qualification, and automated nurturing into a single system that generates more qualified leads at a lower cost than any traditional approach.",
+      capabilities: [
+        { title: "Predictive Audience Targeting", description: "AI identifies and targets prospects who match your ideal customer profile based on behavioral signals, demographics, and purchase intent.", icon: "Target" },
+        { title: "Instant Lead Engagement", description: "Respond to every inquiry within 30 seconds via AI calling, SMS, or chat, before prospects contact your competitors.", icon: "Zap" },
+        { title: "Multi-Channel Lead Capture", description: "Capture leads from Google, social media, your website, referrals, and offline events through a unified AI-powered funnel.", icon: "Layers" },
+        { title: "Intelligent Lead Scoring", description: "AI scores every lead on 40+ data points to predict purchase likelihood, enabling your team to focus on the highest-value opportunities.", icon: "BarChart3" }
+      ]
+    },
+    pipeline: {
+      title: "The AI Lead Generation Pipeline",
+      subtitle: "From prospect to paying customer in four automated steps",
+      steps: [
+        { step: "1", title: "Attract & Capture", description: "AI-optimized ads, SEO, and content attract high-intent prospects. Smart forms and chatbots capture lead information with minimal friction.", icon: "Target" },
+        { step: "2", title: "Qualify & Score", description: "AI engages leads instantly via phone, SMS, or chat to qualify on budget, timeline, authority, and need. Each lead gets a purchase probability score.", icon: "Brain" },
+        { step: "3", title: "Nurture & Book", description: "Qualified leads are booked for consultations or demos. Others enter personalized drip campaigns that build trust and move them toward purchase.", icon: "Calendar" },
+        { step: "4", title: "Convert & Retain", description: "AI assists your sales team with deal intelligence, follow-up reminders, and post-sale engagement that drives referrals and repeat business.", icon: "DollarSign" }
+      ]
+    },
+    results: {
+      title: "Small Businesses Winning with AI Leads",
+      subtitle: "Real results from American small businesses using AI lead generation",
+      cases: [
+        {
+          business: "Patriot Plumbing & HVAC",
+          industry: "Home Services",
+          metrics: [
+            { value: "450%", label: "Service Call Increase" },
+            { value: "$92K", label: "Monthly Revenue Growth" },
+            { value: "3.8x", label: "Marketing ROI" }
+          ],
+          quote: "We went from 15 service calls a week to 65+. The AI qualification system filters out tire-kickers so our technicians only show up to paying jobs. Revenue is up $92K monthly."
+        },
+        {
+          business: "Summit Financial Group",
+          industry: "Financial Advisory",
+          metrics: [
+            { value: "280%", label: "Qualified Lead Growth" },
+            { value: "$4.2M", label: "AUM Added in 6 Months" },
+            { value: "32%", label: "Conversion Rate" }
+          ],
+          quote: "The AI pre-qualifies prospects on investable assets before my advisors even get on the phone. We added $4.2M in assets under management in just six months."
+        },
+        {
+          business: "BrightPath Tutoring",
+          industry: "Education Services",
+          metrics: [
+            { value: "320%", label: "Student Enrollment Growth" },
+            { value: "$38K", label: "Monthly Revenue Increase" },
+            { value: "88%", label: "Parent Satisfaction" }
+          ],
+          quote: "Parents need quick answers about tutoring options. The AI chatbot answers questions and books trial sessions 24/7. Our enrollment tripled and parent satisfaction is at an all-time high."
+        }
+      ]
+    },
+    features: {
+      title: "AI Lead Generation Tools",
+      subtitle: "Everything your small business needs to generate and convert more leads",
+      items: [
+        { title: "AI Ad Optimization", description: "Machine learning continuously optimizes your Google and Meta ads to reduce cost per lead while increasing lead quality.", icon: "Target" },
+        { title: "Conversational AI Bot", description: "Website, SMS, and social media chatbot that engages visitors, answers questions, and captures lead information 24/7.", icon: "Bot" },
+        { title: "AI Calling Agent", description: "Automated outbound and inbound calls that qualify leads and book appointments with natural, human-like conversation.", icon: "Phone" },
+        { title: "Email & SMS Sequences", description: "AI-powered nurture campaigns that adapt to lead behavior, sending the right message at the right time.", icon: "Mail" },
+        { title: "Lead Scoring Dashboard", description: "Visual lead scoring with AI-predicted conversion probabilities, helping your team prioritize the hottest leads.", icon: "BarChart3" },
+        { title: "ROI Tracking & Attribution", description: "Full-funnel attribution showing exactly which channels, campaigns, and keywords generate your highest-value leads.", icon: "PieChart" }
+      ]
+    },
+    ecosystem: {
+      title: "The Complete Lead Generation Ecosystem",
+      subtitle: "AI automation meets marketing authority for maximum lead flow",
+      description: "InfiniteRankers.io delivers the AI lead capture and qualification engine while InfiniteRankers.com provides the marketing foundation, SEO, paid ads, and content, that drives qualified traffic into your funnel.",
+      ioFeatures: [
+        { title: "AI Lead Engine", description: "Automated capture, scoring, and nurturing of every lead from every channel." },
+        { title: "Omnichannel Engagement", description: "AI agents on phone, SMS, email, and chat that respond instantly to every inquiry." },
+        { title: "Sales Intelligence", description: "AI-powered deal insights, follow-up recommendations, and conversion predictions." }
+      ],
+      comFeatures: [
+        { title: "Search Engine Marketing", description: "Google Ads and SEO strategies that drive high-intent traffic to your lead funnels." },
+        { title: "Social Media Advertising", description: "Facebook, Instagram, and LinkedIn campaigns targeted at your ideal customer profile." },
+        { title: "Landing Page Optimization", description: "High-converting landing pages A/B tested for maximum lead capture rates." }
+      ],
+      comLinks: [
+        { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+        { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+        { label: "Technical SEO", url: "https://infiniterankers.com/technical-seo/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Frank Delgado",
+        role: "Owner",
+        company: "Patriot Plumbing & HVAC",
+        quote: "I was skeptical about AI but the results speak for themselves. Service calls jumped 450%, revenue is up $92K monthly, and I did not have to hire a single additional dispatcher. Best investment I have made.",
+        rating: 5
+      },
+      {
+        name: "Catherine Wells",
+        role: "Managing Partner",
+        company: "Summit Financial Group",
+        quote: "Our advisors used to waste half their day on unqualified prospects. The AI pre-qualifies on investable assets so every meeting is with a real prospect. We added $4.2M in AUM in six months.",
+        rating: 5
+      },
+      {
+        name: "David Kim",
+        role: "Founder",
+        company: "BrightPath Tutoring",
+        quote: "Parents call at all hours and expect immediate answers. The AI chatbot and calling agent handle everything from inquiries to trial session booking. Enrollment is up 320% and we are opening two new locations.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "How is AI lead generation different from traditional lead gen?", a: "Traditional lead gen captures contact info and leaves follow-up to humans. AI lead generation captures, qualifies, scores, and nurtures leads automatically, responding instantly and following up consistently until they convert." },
+      { q: "What types of small businesses benefit most?", a: "Service-based businesses, home services, professional services, healthcare, legal, financial advisory, education, and local retail, see the strongest ROI from AI lead generation." },
+      { q: "How much does AI lead generation cost?", a: "Our systems typically cost less than hiring one full-time sales rep while generating 3-5x more qualified leads. Packages start at $1,497/month with custom pricing based on your lead volume and goals." },
+      { q: "Do I need technical expertise to use your AI systems?", a: "Not at all. We handle all setup, integration, and management. Your team receives qualified leads via your existing CRM, email, or phone, no technical skills required." },
+      { q: "How quickly will I see more leads?", a: "Most clients see a measurable increase in lead volume within the first 1-2 weeks. Full pipeline impact typically materializes within 30-60 days as AI models optimize based on your conversion data." }
+    ],
+    cta: {
+      title: "Generate More Leads on Autopilot",
+      subtitle: "Join 2,500+ US small businesses using AI to capture, qualify, and convert more leads. Get your free lead generation audit today.",
+      buttonText: "Get Your Free Lead Generation Audit"
+    },
+    relatedLandingPages: ["ai-marketing-automation-usa", "ai-automation-new-york", "ai-automation-los-angeles"],
+    relatedServices: ["ai-lead-qualification", "ai-calling-agent", "google-ads", "conversion-funnels"],
+    comLinks: [
+      { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" },
+      { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+      { label: "Map & Citations", url: "https://infiniterankers.com/map-citation-pages/" }
+    ]
+  },
+  {
+    slug: "ai-marketing-automation-usa",
+    type: "service",
+    seoTitle: "AI Marketing Automation Systems USA | Infinite Rankers",
+    seoDescription: "Complete AI marketing automation for US businesses. Automate email campaigns, social media, ad management, and customer journeys with intelligent AI systems.",
+    seoKeywords: "AI marketing automation USA, marketing automation systems, AI email automation, automated marketing USA, AI campaign management",
+    canonical: "https://infiniterankers.io/ai-marketing-automation-usa",
+    hero: {
+      badge: "Complete AI Marketing Automation",
+      title: "AI Marketing Automation",
+      titleHighlight: "Systems USA",
+      subtitle: "Eliminate manual marketing tasks and let AI run your campaigns, emails, social media, and customer journeys on autopilot. Save 30+ hours per week while generating better results than a full marketing team.",
+      stats: [
+        { value: "1,800+", label: "US Businesses Automated" },
+        { value: "32hrs", label: "Weekly Time Saved" },
+        { value: "$42M+", label: "Revenue Driven" },
+        { value: "5.2x", label: "Avg. Marketing ROI" }
+      ]
+    },
+    painPoints: {
+      title: "Marketing Bottlenecks Killing Growth",
+      subtitle: "Why US businesses cannot scale without marketing automation",
+      points: [
+        { title: "Manual Campaign Management", description: "Your marketing team spends 60% of their time on repetitive tasks: scheduling posts, sending emails, updating CRM, pulling reports. That is time not spent on strategy and growth.", icon: "Clock" },
+        { title: "Disconnected Marketing Channels", description: "Email, social media, ads, and your website operate in silos. Without unified automation, messaging is inconsistent and customer data is fragmented.", icon: "Network" },
+        { title: "Inability to Personalize at Scale", description: "Personalized marketing drives 6x higher transaction rates, but manually personalizing communications for thousands of contacts is impossible.", icon: "Users" },
+        { title: "No Closed-Loop Attribution", description: "Without end-to-end tracking, you cannot tell which campaigns actually drive revenue. You are making budget decisions on incomplete data.", icon: "PieChart" }
+      ]
+    },
+    aiSystem: {
+      title: "The AI Marketing Automation Platform",
+      subtitle: "One system to automate your entire marketing operation",
+      description: "Our AI marketing automation platform unifies email, SMS, social media, advertising, and web personalization into a single intelligent system. AI decides what to send, when to send it, and who to send it to for maximum engagement and conversion.",
+      capabilities: [
+        { title: "AI Campaign Orchestration", description: "AI plans, schedules, and executes multi-channel marketing campaigns across email, SMS, social, and ads without manual intervention.", icon: "Workflow" },
+        { title: "Behavioral Trigger Engine", description: "Automated marketing actions triggered by customer behavior, website visits, email opens, purchase activity, and engagement patterns.", icon: "Zap" },
+        { title: "Content Generation AI", description: "AI writes email subject lines, ad copy, social posts, and blog outlines optimized for engagement and conversion.", icon: "Code" },
+        { title: "Unified Analytics Engine", description: "Complete marketing attribution across all channels with AI-powered insights and recommendations for budget optimization.", icon: "LineChart" }
+      ]
+    },
+    pipeline: {
+      title: "Marketing Automation Deployment",
+      subtitle: "From manual marketing to AI-powered growth in four phases",
+      steps: [
+        { step: "1", title: "Marketing Audit", description: "We map your current marketing stack, identify automation opportunities, and design an AI-powered marketing architecture.", icon: "Search" },
+        { step: "2", title: "System Integration", description: "Connect your CRM, email platform, social accounts, ad platforms, and website into a unified AI marketing engine.", icon: "Plug" },
+        { step: "3", title: "Automation Build", description: "Design and deploy automated workflows for email campaigns, social posting, ad management, lead nurturing, and customer retention.", icon: "Workflow" },
+        { step: "4", title: "AI Optimization", description: "AI continuously tests, learns, and optimizes every campaign element, send times, subject lines, targeting, and budgets, for peak performance.", icon: "Brain" }
+      ]
+    },
+    results: {
+      title: "Marketing Automation Success Stories",
+      subtitle: "How US businesses transformed their marketing with AI",
+      cases: [
+        {
+          business: "Velocity SaaS",
+          industry: "B2B Software",
+          metrics: [
+            { value: "420%", label: "Marketing Qualified Leads" },
+            { value: "$180K", label: "Pipeline Value Growth/Month" },
+            { value: "32hrs", label: "Weekly Time Saved" }
+          ],
+          quote: "Our marketing team of 3 now outperforms what used to require 8 people. AI automation handles campaign execution while we focus on strategy. MQLs are up 420%."
+        },
+        {
+          business: "Heritage Home Services",
+          industry: "Home Services",
+          metrics: [
+            { value: "290%", label: "Lead Generation Increase" },
+            { value: "$64K", label: "Monthly Revenue Growth" },
+            { value: "5.2x", label: "Marketing ROI" }
+          ],
+          quote: "We automated our entire marketing operation, Google Ads, email follow-ups, review requests, and social media. Revenue grew $64K monthly while we spend 80% less time on marketing."
+        },
+        {
+          business: "Prestige Accounting Group",
+          industry: "Professional Services",
+          metrics: [
+            { value: "175%", label: "Client Acquisition Growth" },
+            { value: "$220K", label: "Annual Revenue Increase" },
+            { value: "22hrs", label: "Weekly Time Saved" }
+          ],
+          quote: "Tax season used to consume all our marketing bandwidth. Now AI handles client communications, follow-ups, and referral campaigns year-round. Client acquisition is up 175%."
+        }
+      ]
+    },
+    features: {
+      title: "AI Marketing Automation Features",
+      subtitle: "Every tool you need to run marketing on autopilot",
+      items: [
+        { title: "Email Marketing AI", description: "Automated email campaigns with AI-written content, personalized sends, and behavior-triggered sequences.", icon: "Mail" },
+        { title: "Social Media Autopilot", description: "AI plans, creates, and publishes social media content across all platforms with optimal timing and hashtag strategy.", icon: "Share2" },
+        { title: "Ad Campaign Manager", description: "AI manages Google and Meta ad campaigns with automated bidding, creative testing, and budget optimization.", icon: "Target" },
+        { title: "Customer Journey Builder", description: "Visual workflow builder for multi-step customer journeys with conditional logic and AI-powered path optimization.", icon: "Workflow" },
+        { title: "AI Content Writer", description: "Generate email copy, ad headlines, social posts, and blog outlines optimized for your brand voice and conversion goals.", icon: "Code" },
+        { title: "Marketing Intelligence", description: "Unified analytics with AI insights, channel attribution, and actionable recommendations for growth.", icon: "LineChart" }
+      ]
+    },
+    ecosystem: {
+      title: "The Marketing Automation Ecosystem",
+      subtitle: "AI-powered execution meets strategic marketing expertise",
+      description: "InfiniteRankers.io automates your marketing execution with AI while InfiniteRankers.com provides the strategic foundation, branding, content strategy, and campaign architecture, that makes automation effective.",
+      ioFeatures: [
+        { title: "AI Campaign Engine", description: "Automated execution of email, SMS, social, and ad campaigns across all channels." },
+        { title: "Behavioral Automation", description: "Event-triggered workflows that respond to customer actions in real-time." },
+        { title: "Performance Optimization", description: "AI continuously tests and improves every element of your marketing campaigns." }
+      ],
+      comFeatures: [
+        { title: "Brand Strategy", description: "Strategic brand positioning and messaging that resonates with your target market." },
+        { title: "Content Strategy", description: "Editorial calendars, content pillars, and storytelling frameworks that drive engagement." },
+        { title: "Conversion Optimization", description: "Landing page design and CRO strategies that maximize lead capture and conversion." }
+      ],
+      comLinks: [
+        { label: "Content Creation", url: "https://infiniterankers.com/content-creation/" },
+        { label: "Social Media Advertising", url: "https://infiniterankers.com/social-media-advertising/" },
+        { label: "On-Page SEO", url: "https://infiniterankers.com/on-page-seo/" }
+      ]
+    },
+    testimonials: [
+      {
+        name: "Rachel Henderson",
+        role: "VP of Marketing",
+        company: "Velocity SaaS",
+        quote: "We replaced 5 marketing tools with Infinite Rankers' AI automation platform. Our team of 3 now generates 420% more MQLs while spending 32 fewer hours per week on execution. The ROI is remarkable.",
+        rating: 5
+      },
+      {
+        name: "Tom Bradley",
+        role: "Owner",
+        company: "Heritage Home Services",
+        quote: "I used to spend every Sunday planning the week's marketing. Now AI handles everything from Google Ads to follow-up emails. Revenue grew $64K monthly and I have my weekends back.",
+        rating: 5
+      },
+      {
+        name: "Jessica Nguyen",
+        role: "Managing Partner",
+        company: "Prestige Accounting Group",
+        quote: "Marketing was always an afterthought at our firm. The AI automation system runs year-round campaigns, referral programs, and client communications without us touching it. Client acquisition jumped 175%.",
+        rating: 5
+      }
+    ],
+    faqs: [
+      { q: "What marketing channels does your AI automate?", a: "Our platform automates email marketing, SMS campaigns, social media posting, Google Ads, Meta Ads, review management, blog publishing, and customer journey sequences across all channels." },
+      { q: "Do I need to replace my existing marketing tools?", a: "Not necessarily. Our AI platform integrates with HubSpot, Mailchimp, ActiveCampaign, Hootsuite, and most major marketing tools. We can either replace or orchestrate your existing stack." },
+      { q: "How much time will marketing automation save?", a: "Most clients save 20-35 hours per week in manual marketing tasks. Activities like email scheduling, social posting, report pulling, lead follow-up, and campaign management become fully automated." },
+      { q: "Will AI-generated content sound like my brand?", a: "Yes. We train our AI on your brand voice, messaging guidelines, and past content to ensure every piece of automated content sounds authentically like your business." },
+      { q: "What is the ROI of marketing automation?", a: "Our clients average 5.2x ROI on their marketing automation investment. This factors in both revenue growth from better campaign performance and cost savings from reduced manual labor." }
+    ],
+    cta: {
+      title: "Automate Your Marketing with AI",
+      subtitle: "Join 1,800+ US businesses running their marketing on autopilot. Save 30+ hours weekly while generating 3-5x better results. Book your free consultation.",
+      buttonText: "Get Your Free Marketing Automation Audit"
+    },
+    relatedLandingPages: ["ai-lead-generation-usa", "ai-automation-new-york", "ai-revenue-growth-ecommerce"],
+    relatedServices: ["ai-email-automation", "ai-sms-automation", "workflow-automation", "social-media-marketing"],
+    comLinks: [
+      { label: "Google Ads & PPC", url: "https://infiniterankers.com/google-ads-campaign-ppc-campaign/" },
+      { label: "Keyword Research", url: "https://infiniterankers.com/keyword-research/" },
+      { label: "Pricing Plans", url: "https://infiniterankers.com/pricing-plan/" }
+    ]
+  }
+];
+const ALL_LANDING_PAGES = LANDING_PAGES$1;
+const getLandingPage = (slug) => LANDING_PAGES$1.find((p) => p.slug === slug);
+function NotFound() {
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "min-h-screen w-full flex items-center justify-center bg-gray-50", children: /* @__PURE__ */ jsxRuntime.jsx(Card, { className: "w-full max-w-md mx-4", children: /* @__PURE__ */ jsxRuntime.jsxs(CardContent, { className: "pt-6", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex mb-4 gap-2", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.AlertCircle, { className: "h-8 w-8 text-red-500" }),
+      /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-2xl font-bold text-gray-900", children: "404 Page Not Found" })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("p", { className: "mt-4 text-sm text-gray-600", children: "Did you forget to add the page to the router?" })
+  ] }) }) });
+}
+const iconMap = {
+  Bot: lucideReact.Bot,
+  Target: lucideReact.Target,
+  Globe: lucideReact.Globe,
+  Zap: lucideReact.Zap,
+  Phone: lucideReact.Phone,
+  TrendingUp: lucideReact.TrendingUp,
+  BarChart3: lucideReact.BarChart3,
+  Search: lucideReact.Search,
+  MapPin: lucideReact.MapPin,
+  Shield: lucideReact.Shield,
+  Clock: lucideReact.Clock,
+  DollarSign: lucideReact.DollarSign,
+  Users: lucideReact.Users,
+  Building2: lucideReact.Building2,
+  Stethoscope: lucideReact.Stethoscope,
+  Scale: lucideReact.Scale,
+  ShoppingCart: lucideReact.ShoppingCart,
+  Utensils: lucideReact.Utensils,
+  Brain: lucideReact.Brain,
+  Rocket: lucideReact.Rocket,
+  Award: lucideReact.Award,
+  CheckCircle2: lucideReact.CheckCircle2,
+  Mail: lucideReact.Mail,
+  MessageSquare: lucideReact.MessageSquare,
+  Database: lucideReact.Database,
+  Workflow: lucideReact.Workflow,
+  Cpu: lucideReact.Cpu,
+  Activity: lucideReact.Activity,
+  LineChart: lucideReact.LineChart,
+  Layers: lucideReact.Layers,
+  Network: lucideReact.Network,
+  Settings: lucideReact.Settings,
+  Plug: lucideReact.Plug,
+  PieChart: lucideReact.PieChart,
+  Code: lucideReact.Code,
+  Share2: lucideReact.Share2,
+  Calendar: lucideReact.Calendar,
+  Star: lucideReact.Star,
+  Heart: lucideReact.Heart,
+  Briefcase: lucideReact.Briefcase
+};
+function FAQItem({ q, a, index }) {
+  const [open, setOpen] = React.useState(false);
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      initial: { opacity: 0, y: 10 },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true },
+      transition: { delay: index * 0.05 },
+      className: "border border-gray-200/60 rounded-md",
+      "data-testid": `faq-item-${index}`,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          "button",
+          {
+            type: "button",
+            className: "w-full flex items-center justify-between gap-4 p-4 sm:p-5 text-left cursor-pointer",
+            onClick: () => setOpen(!open),
+            "data-testid": `faq-toggle-${index}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "font-medium text-sm sm:text-base text-gray-900", children: q }),
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronDown, { className: `w-4 h-4 flex-shrink-0 text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}` })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "div",
+          {
+            className: "grid transition-all duration-200",
+            style: { gridTemplateRows: open ? "1fr" : "0fr" },
+            children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "overflow-hidden", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "px-4 sm:px-5 pb-4 sm:pb-5", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 leading-relaxed", children: a }) }) })
+          }
+        )
+      ]
+    }
+  );
+}
+function LandingPage({ slug }) {
+  const page = slug ? getLandingPage(slug) : null;
+  if (!page) {
+    return /* @__PURE__ */ jsxRuntime.jsx(NotFound, {});
+  }
+  const relatedPages = page.relatedLandingPages.map((slug2) => ALL_LANDING_PAGES.find((p) => p.slug === slug2)).filter(Boolean);
+  const relatedServiceData = page.relatedServices.map((slug2) => ALL_SERVICES$1.find((s) => s.slug === slug2)).filter(Boolean);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: page.seoTitle,
+        description: page.seoDescription,
+        keywords: page.seoKeywords,
+        canonical: page.canonical
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-28 sm:pt-32 pb-16 sm:pb-20 overflow-hidden", "data-testid": "section-hero", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/40 to-indigo-50/30" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-20 right-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-100/30 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-10 left-10 w-48 sm:w-72 h-48 sm:h-72 bg-indigo-100/20 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, className: "max-w-4xl mx-auto text-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-4 sm:mb-5", "data-testid": "badge-hero", children: page.hero.badge }),
+        /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight", "data-testid": "text-hero-title", children: [
+          page.hero.title,
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: page.hero.titleHighlight })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed mb-8 sm:mb-10 max-w-3xl mx-auto", children: page.hero.subtitle }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-14", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { className: "w-full sm:w-auto", "data-testid": "button-hero-cta", children: [
+            "Get Your Free Strategy Session ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/pricing", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outline", className: "w-full sm:w-auto", "data-testid": "button-hero-pricing", children: "View Pricing Plans" }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6", children: page.hero.stats.map((stat, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 15 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.3 + i * 0.1 },
+            className: "text-center p-3 sm:p-4 rounded-xl bg-white/60 backdrop-blur border border-gray-200/40",
+            "data-testid": `stat-hero-${i}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent", children: stat.value }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs sm:text-sm text-gray-500 mt-1", children: stat.label })
+            ]
+          },
+          i
+        )) })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", "data-testid": "section-pain-points", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "The Challenge", title: page.painPoints.title, description: page.painPoints.subtitle }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 gap-4 sm:gap-6", children: page.painPoints.points.map((point, i) => {
+        const Icon = iconMap[point.icon] || lucideReact.Zap;
+        return /* @__PURE__ */ jsxRuntime.jsx(GlassCard, { delay: i * 0.08, "data-testid": `pain-point-${i}`, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex gap-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center flex-shrink-0 border border-red-100/50", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-5 h-5 sm:w-6 sm:h-6 text-red-500" }) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base", children: point.title }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-600 leading-relaxed", children: point.description })
+          ] })
+        ] }) }, i);
+      }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "section-ai-system", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "The Solution", title: page.aiSystem.title, description: page.aiSystem.subtitle }),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.p,
+        {
+          initial: { opacity: 0 },
+          whileInView: { opacity: 1 },
+          viewport: { once: true },
+          className: "text-center text-gray-600 leading-relaxed max-w-3xl mx-auto mb-10 sm:mb-14 text-sm sm:text-base",
+          children: page.aiSystem.description
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6", children: page.aiSystem.capabilities.map((cap, i) => {
+        const Icon = iconMap[cap.icon] || lucideReact.Zap;
+        return /* @__PURE__ */ jsxRuntime.jsx(GlassCard, { delay: i * 0.08, glow: true, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg shadow-blue-200/30", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-6 h-6 sm:w-7 sm:h-7 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 mb-2 text-sm sm:text-base", children: cap.title }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-600 leading-relaxed", children: cap.description })
+        ] }) }, i);
+      }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", "data-testid": "section-pipeline", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Our Process", title: page.pipeline.title, description: page.pipeline.subtitle }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8", children: page.pipeline.steps.map((step, i) => {
+        const Icon = iconMap[step.icon] || lucideReact.Zap;
+        return /* @__PURE__ */ jsxRuntime.jsxs(
+          framerMotion.motion.div,
+          {
+            initial: { opacity: 0, y: 20 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { delay: i * 0.1 },
+            className: "relative text-center",
+            "data-testid": `pipeline-step-${i}`,
+            children: [
+              i < page.pipeline.steps.length - 1 && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "hidden lg:block absolute top-8 left-[60%] w-[80%] h-px bg-gradient-to-r from-blue-300 to-indigo-300/30" }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-200/30 mb-4", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-6 h-6 sm:w-7 sm:h-7 text-white" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border-2 border-blue-500 text-xs font-bold text-blue-600 flex items-center justify-center", children: step.step })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 mb-2 text-sm sm:text-base", children: step.title }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-600 leading-relaxed", children: step.description })
+            ]
+          },
+          i
+        );
+      }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "section-results", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Proven Results", title: page.results.title, description: page.results.subtitle }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: page.results.cases.map((cs, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.1, glow: true, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center gap-2 mb-3", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "text-xs", children: cs.industry }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 mb-3 text-sm sm:text-base", "data-testid": `result-business-${i}`, children: cs.business }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-3 gap-2 mb-4", children: cs.metrics.map((m, j) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center p-2 rounded-lg bg-blue-50/60 border border-blue-100/40", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-base sm:text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent", children: m.value }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-[10px] sm:text-xs text-gray-500 mt-0.5", children: m.label })
+        ] }, j)) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "relative pl-4 border-l-2 border-blue-200", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Quote, { className: "w-3 h-3 text-blue-300 absolute -left-1.5 -top-0.5 bg-white" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-600 italic leading-relaxed", children: cs.quote })
+        ] })
+      ] }, i)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", "data-testid": "section-features", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Features", title: page.features.title, description: page.features.subtitle }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: page.features.items.map((feat, i) => {
+        const Icon = iconMap[feat.icon] || lucideReact.Zap;
+        return /* @__PURE__ */ jsxRuntime.jsx(GlassCard, { delay: i * 0.06, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex gap-3 sm:gap-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center flex-shrink-0 border border-blue-100/40", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-5 h-5 text-blue-600" }) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 mb-1 text-sm sm:text-base", children: feat.title }),
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-600 leading-relaxed", children: feat.description })
+          ] })
+        ] }) }, i);
+      }) }),
+      relatedServiceData.length > 0 && /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 10 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          className: "mt-8 sm:mt-10 text-center",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-500 mb-3", children: "Explore related services on our platform:" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap justify-center gap-2", children: relatedServiceData.map((s) => s && /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${s.slug}`, children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "outline", className: "cursor-pointer text-xs", "data-testid": `link-related-service-${s.slug}`, children: s.title }) }, s.slug)) })
+          ]
+        }
+      )
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "section-ecosystem", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Our Ecosystem", title: page.ecosystem.title, description: page.ecosystem.subtitle }),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        framerMotion.motion.p,
+        {
+          initial: { opacity: 0 },
+          whileInView: { opacity: 1 },
+          viewport: { once: true },
+          className: "text-center text-gray-600 leading-relaxed max-w-3xl mx-auto mb-10 sm:mb-14 text-sm sm:text-base",
+          children: page.ecosystem.description
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { glow: true, children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 mb-4 sm:mb-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Cpu, { className: "w-5 h-5 text-white" }) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 text-sm sm:text-base", children: "infiniterankers.io" }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-gray-500", children: "AI Infrastructure & Automation" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-3", children: page.ecosystem.ioFeatures.map((f, i) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm font-medium text-gray-900", children: f.title }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-gray-500", children: f.description })
+            ] })
+          ] }, i)) })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { glow: true, children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 mb-4 sm:mb-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Globe, { className: "w-5 h-5 text-white" }) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-gray-900 text-sm sm:text-base", children: "infiniterankers.com" }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-gray-500", children: "Marketing Authority & Content" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-3", children: page.ecosystem.comFeatures.map((f, i) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm font-medium text-gray-900", children: f.title }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-gray-500", children: f.description })
+            ] })
+          ] }, i)) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-4 pt-3 border-t border-gray-200/60", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-gray-500 mb-2", children: "Explore on infiniterankers.com:" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap gap-2", children: page.ecosystem.comLinks.map((link, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+              "a",
+              {
+                href: link.url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                className: "inline-flex items-center gap-1 text-xs font-medium text-purple-600 hover:text-purple-700 transition-colors",
+                "data-testid": `link-com-ecosystem-${i}`,
+                children: [
+                  link.label,
+                  " ",
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+                ]
+              },
+              i
+            )) })
+          ] })
+        ] })
+      ] }),
+      page.comLinks.length > 0 && /* @__PURE__ */ jsxRuntime.jsxs(
+        framerMotion.motion.div,
+        {
+          initial: { opacity: 0, y: 10 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          className: "text-center p-4 sm:p-6 rounded-xl bg-white border border-gray-200/60",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mb-3", children: "Both platforms work together as one unified agency ecosystem to maximize your growth." }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap justify-center gap-3", children: page.comLinks.map((link, i) => /* @__PURE__ */ jsxRuntime.jsxs(
+              "a",
+              {
+                href: link.url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                className: "inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors",
+                "data-testid": `link-com-${i}`,
+                children: [
+                  link.label,
+                  " ",
+                  /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+                ]
+              },
+              i
+            )) })
+          ]
+        }
+      )
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", "data-testid": "section-testimonials", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Testimonials", title: "What Our Clients Say", description: "Real feedback from businesses using our AI automation systems." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: page.testimonials.map((test, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.1, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex gap-0.5 mb-3", children: Array.from({ length: test.rating }).map((_, j) => /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Star, { className: "w-4 h-4 fill-amber-400 text-amber-400" }, j)) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-sm text-gray-700 leading-relaxed mb-4 italic", "data-testid": `testimonial-quote-${i}`, children: [
+          '"',
+          test.quote,
+          '"'
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 pt-3 border-t border-gray-200/60", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold", children: test.name.charAt(0) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm font-medium text-gray-900", children: test.name }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-xs text-gray-500", children: [
+              test.role,
+              ", ",
+              test.company
+            ] })
+          ] })
+        ] })
+      ] }, i)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "section-faq", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-3xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "FAQ", title: "Frequently Asked Questions", description: "Get answers to the most common questions about our AI automation systems." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-3", children: page.faqs.map((faq, i) => /* @__PURE__ */ jsxRuntime.jsx(FAQItem, { q: faq.q, a: faq.a, index: i }, i)) })
+    ] }) }),
+    relatedPages.length > 0 && /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-16 sm:py-20 lg:py-24", "data-testid": "section-related-pages", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Related", title: "Explore More Solutions", description: "Discover how our AI systems serve other markets and industries." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6", children: relatedPages.map((rp, i) => rp && /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${rp.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.08, glow: true, className: "cursor-pointer h-full", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "mb-3 text-xs", children: rp.type === "location" ? "Location" : rp.type === "industry" ? "Industry" : "Service" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("h3", { className: "font-semibold text-gray-900 mb-2 text-sm sm:text-base", "data-testid": `related-page-${rp.slug}`, children: [
+          rp.hero.title,
+          " ",
+          rp.hero.titleHighlight
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs sm:text-sm text-gray-600 leading-relaxed line-clamp-2", children: rp.hero.subtitle }),
+        /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1 text-xs font-medium text-blue-600 mt-3", children: [
+          "Explore ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3" })
+        ] })
+      ] }) }, rp.slug)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-16 sm:py-20 lg:py-24 relative overflow-hidden", "data-testid": "section-cta", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700" }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 opacity-10", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0", style: {
+        backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+        backgroundSize: "60px 60px"
+      } }) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6", "data-testid": "text-cta-title", children: page.cta.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-base sm:text-lg text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto", children: page.cta.subtitle }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", className: "w-full sm:w-auto", "data-testid": "button-cta-main", children: [
+            page.cta.buttonText,
+            " ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/contact", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outline", className: "w-full sm:w-auto backdrop-blur bg-white/90 text-gray-900 border-white", "data-testid": "button-cta-contact", children: "Contact Us" }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col items-center mt-8", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/60 text-xs sm:text-sm", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4" }),
+              " Free Strategy Session"
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4" }),
+              " Flexible Plans Available"
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4" }),
+              " Results in 30 Days"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "compact" }) })
+        ] })
+      ] }) })
+    ] })
+  ] });
+}
+const fadeIn = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true }
+};
+function HeroSection({ label, title, highlight, description, ctaText, ctaHref }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "relative pt-32 pb-20 overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-10 right-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-10 left-10 w-60 h-60 bg-purple-100/30 rounded-full blur-3xl" }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { ...fadeIn, className: "max-w-3xl mx-auto text-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3", children: label }),
+      /* @__PURE__ */ jsxRuntime.jsxs("h1", { className: "text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight", children: [
+        title,
+        " ",
+        /* @__PURE__ */ jsxRuntime.jsx("span", { className: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: highlight })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-muted-foreground leading-relaxed mb-8", children: description }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-center gap-3", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("a", { href: ctaHref, target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-hero-cta", children: [
+          ctaText,
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-4 h-4 ml-1" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", "data-testid": "button-hero-demo", children: [
+          "Book Free Strategy Session ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] })
+    ] }) })
+  ] });
+}
+function StatsBanner({ stats }) {
+  return /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-14 bg-gradient-to-r from-blue-600 to-purple-600", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-8", children: stats.map((s, i) => /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.1 }, className: "text-center", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-3xl sm:text-4xl font-bold text-white mb-1", children: s.value }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm text-white/80", children: s.label })
+  ] }, s.label)) }) }) });
+}
+function CTASection({ title, subtitle, buttonText, href }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "py-16 sm:py-24 relative overflow-hidden", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0F172A] to-[#1E1B4B]" }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute top-0 left-1/4 w-48 sm:w-96 h-48 sm:h-96 bg-blue-600/10 rounded-full blur-[120px]" }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute bottom-0 right-1/4 w-48 sm:w-96 h-48 sm:h-96 bg-indigo-600/10 rounded-full blur-[120px]" }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { ...fadeIn, children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6", children: title }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-lg text-white/80 mb-8 max-w-2xl mx-auto", children: subtitle }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-center gap-3", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("a", { href, target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "secondary", "data-testid": "button-cta-visit", children: [
+          buttonText,
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-4 h-4 ml-1" })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", className: "backdrop-blur bg-white/90 text-gray-900 border-white", "data-testid": "button-cta-demo", children: [
+          "Book Free Demo ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
+        ] }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col items-center mt-8", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/60 text-xs sm:text-sm", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4" }),
+            " Free Strategy Session"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4" }),
+            " Flexible Plans Available"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4" }),
+            " Results in 30 Days"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "compact" }) })
+      ] })
+    ] }) })
+  ] });
+}
+function InfiniteRankersAgency() {
+  const services = [
+    { icon: lucideReact.Brain, title: "AI Automation & Chatbots", desc: "Custom AI agents, chatbots, and automation workflows that engage leads 24/7 and convert them into paying customers automatically.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Target, title: "Google & Meta Ads Management", desc: "Data-driven PPC campaigns across Google and Meta platforms, optimized by AI for maximum ROAS and lead quality.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Search, title: "SEO & Content Marketing", desc: "Authority-building SEO strategies, keyword-optimized content, and technical SEO to dominate organic search rankings.", link: "https://infiniterankers.com/blog" },
+    { icon: lucideReact.Globe, title: "Website & Funnel Development", desc: "High-converting websites, landing pages, and sales funnels engineered for maximum conversion rates.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Share2, title: "Social Media Marketing", desc: "Strategic social media management across Instagram, Facebook, LinkedIn, and TikTok to build brand authority and engagement.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Mail, title: "Email & SMS Automation", desc: "AI-powered drip campaigns, nurture sequences, and automated follow-ups that keep leads warm and drive conversions.", link: "https://infiniterankers.com/services" }
+  ];
+  const reasons = [
+    { icon: lucideReact.Cpu, title: "AI-First Approach", desc: "Every solution is built with artificial intelligence at its core, delivering faster results and smarter optimization than traditional agencies." },
+    { icon: lucideReact.TrendingUp, title: "Revenue-Focused Results", desc: "We measure success by one metric: your revenue growth. Everything we build directly impacts your bottom line." },
+    { icon: lucideReact.Shield, title: "Flexible Plans Available", desc: "Monthly, quarterly, or annual partnerships designed to fit your business goals. Choose the plan that matches your growth ambitions." },
+    { icon: lucideReact.Rocket, title: "Results in 30 Days", desc: "Most clients see measurable improvements within the first month. Our proven frameworks are battle-tested across 9,500+ businesses." },
+    { icon: lucideReact.Users, title: "Dedicated Growth Team", desc: "Your own team of AI strategists, marketers, designers, and developers working together to scale your revenue." },
+    { icon: lucideReact.Clock, title: "24/7 AI Systems", desc: "Our automation systems work around the clock — nights, weekends, holidays — so you never miss a lead or opportunity." }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Infinite Rankers - AI Revenue Growth Agency | Full-Service Digital Marketing",
+        description: "Infinite Rankers is a full-service AI revenue growth agency helping 9,500+ businesses worldwide generate more leads, customers, and revenue with AI-powered marketing automation.",
+        keywords: "Infinite Rankers, AI marketing agency, revenue growth agency, digital marketing, AI automation, lead generation, SEO, PPC, social media marketing"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      HeroSection,
+      {
+        label: "About Infinite Rankers",
+        title: "Meet Infinite Rankers — The",
+        highlight: "AI Revenue Growth Agency",
+        description: "Infinite Rankers is a full-service digital marketing agency that combines artificial intelligence with proven marketing strategies to help businesses generate more leads, customers, and revenue. Serving 9,500+ businesses across the USA, UK, and worldwide.",
+        ctaText: "Visit infiniterankers.com",
+        ctaHref: "https://infiniterankers.com"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(StatsBanner, { stats: [
+      { value: "9,500+", label: "Clients Worldwide" },
+      { value: "$50M+", label: "Revenue Generated" },
+      { value: "98%", label: "Client Retention" },
+      { value: "24/7", label: "AI Systems Active" }
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Who We Are",
+          title: "A Revenue Growth Engine, Not Just an Agency",
+          description: "Infinite Rankers was founded on a simple belief: businesses shouldn't have to choose between growing revenue and managing complex technology. We combine AI automation with proven marketing systems to create predictable, scalable growth."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-8 mb-12", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Target, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-3", children: "Our Mission" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "To empower every business with AI-driven automation systems that eliminate manual inefficiency and create predictable revenue growth. We believe no business should lose customers because of slow response times, missed follow-ups, or outdated marketing approaches." }),
+          /* @__PURE__ */ jsxRuntime.jsxs("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-4", "data-testid": "link-mission-com", children: [
+            "Learn more at infiniterankers.com ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: 0.1, children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-12 h-12 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Lightbulb, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-xl font-bold text-foreground mb-3", children: "Our Vision" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "To become the world's leading AI revenue growth agency, where every business — from local shops to global enterprises — has access to enterprise-grade AI automation that levels the playing field and drives exponential growth." }),
+          /* @__PURE__ */ jsxRuntime.jsxs("a", { href: "https://infiniterankers.com/about", target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-4", "data-testid": "link-vision-com", children: [
+            "About our team ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+          ] })
+        ] })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Our Services",
+          title: "What Infinite Rankers Provides",
+          description: "From AI chatbots to paid advertising, SEO to social media — Infinite Rankers offers a complete suite of digital marketing and automation services."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: services.map((s, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.08, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(s.icon, { className: "w-5 h-5 text-blue-600" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", children: s.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: s.desc }),
+        /* @__PURE__ */ jsxRuntime.jsxs("a", { href: s.link, target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-xs font-medium text-blue-600", "data-testid": `link-service-${i}`, children: [
+          "Explore on infiniterankers.com ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+        ] })
+      ] }, s.title)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Why Choose Us",
+          title: "Why Businesses Trust Infinite Rankers",
+          description: "We're not just another marketing agency. Here's what makes Infinite Rankers the growth partner of choice for 9,500+ businesses."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: reasons.map((r, i) => /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.08 }, children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-6 h-full", "data-testid": `reason-card-${i}`, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(r.icon, { className: "w-5 h-5 text-white" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", children: r.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: r.desc })
+      ] }) }, r.title)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Our Ecosystem",
+          title: "Two Platforms, One Unified Agency",
+          description: "Infinite Rankers operates through two interconnected platforms to deliver maximum value."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-8", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { glow: true, children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Cpu, { className: "w-5 h-5 text-white" }) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground", children: "infiniterankers.io" }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: "AI Infrastructure & Automation SaaS" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-3", children: ["AI Chatbot & Voice Agent Platform", "CRM Automation & Workflow Builder", "Lead Scoring & Qualification Engine", "Appointment Booking Automation", "Analytics & Performance Dashboards"].map((f, i) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex gap-2 text-sm text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" }),
+            f
+          ] }, i)) }),
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-4 cursor-pointer", children: [
+            "Explore AI Services ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3" })
+          ] }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { glow: true, children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-3 mb-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Globe, { className: "w-5 h-5 text-white" }) }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground", children: "infiniterankers.com" }),
+              /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: "Marketing Authority & Content Hub" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-3", children: ["SEO & Content Marketing Strategy", "Google & Meta Ads Management", "Social Media Marketing", "Branding & Creative Design", "Marketing Blog & Resources"].map((f, i) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex gap-2 text-sm text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" }),
+            f
+          ] }, i)) }),
+          /* @__PURE__ */ jsxRuntime.jsxs("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-sm font-medium text-purple-600 mt-4", "data-testid": "link-ecosystem-com", children: [
+            "Visit infiniterankers.com ",
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+          ] })
+        ] })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      CTASection,
+      {
+        title: "Ready to Grow Your Revenue with AI?",
+        subtitle: "Join 9,500+ businesses already using Infinite Rankers to generate more leads, customers, and revenue on autopilot.",
+        buttonText: "Visit infiniterankers.com",
+        href: "https://infiniterankers.com"
+      }
+    )
+  ] });
+}
+function InfiniteRankersSEO() {
+  const seoServices = [
+    { icon: lucideReact.Search, title: "Technical SEO Audits", desc: "Comprehensive site audits covering crawlability, indexation, site speed, Core Web Vitals, schema markup, and technical infrastructure to ensure search engines can discover and rank every page." },
+    { icon: lucideReact.PenTool, title: "Content Strategy & Creation", desc: "Keyword-researched, SEO-optimized blog posts, landing pages, and pillar content designed to capture high-intent search traffic and establish topical authority in your industry." },
+    { icon: lucideReact.MapPin, title: "Local SEO & Google Business", desc: "Google Business Profile optimization, local citation building, review management, and geo-targeted content to dominate local search results and Google Maps rankings." },
+    { icon: lucideReact.Layers, title: "Link Building & Authority", desc: "White-hat link acquisition through digital PR, guest posting, resource page outreach, and content partnerships to build domain authority and improve rankings." },
+    { icon: lucideReact.BarChart3, title: "SEO Analytics & Reporting", desc: "Real-time dashboards tracking keyword rankings, organic traffic, conversions, and ROI. Monthly reports with actionable insights and strategic recommendations." },
+    { icon: lucideReact.Globe, title: "International & Multi-Location SEO", desc: "Hreflang implementation, international keyword research, and multi-location optimization for businesses targeting audiences across different regions and languages." }
+  ];
+  const results = [
+    { metric: "Organic Traffic", before: "2,500/mo", after: "28,000/mo", increase: "+1,020%" },
+    { metric: "Keyword Rankings", before: "12 on Page 1", after: "156 on Page 1", increase: "+1,200%" },
+    { metric: "Lead Generation", before: "30 leads/mo", after: "340 leads/mo", increase: "+1,033%" },
+    { metric: "Revenue from SEO", before: "$8K/mo", after: "$95K/mo", increase: "+1,087%" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Infinite Rankers SEO Services | AI-Powered Search Engine Optimization",
+        description: "Infinite Rankers provides AI-powered SEO services including technical audits, content strategy, local SEO, and link building. Dominate search rankings with data-driven optimization.",
+        keywords: "Infinite Rankers SEO, SEO services, search engine optimization, local SEO, content marketing, link building, technical SEO, AI SEO"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      HeroSection,
+      {
+        label: "SEO Services",
+        title: "Dominate Search Rankings with",
+        highlight: "AI-Powered SEO",
+        description: "Infinite Rankers combines artificial intelligence with proven SEO methodologies to deliver sustainable organic growth. Our data-driven approach has helped businesses achieve 10x organic traffic increases and dominate their competitive landscapes.",
+        ctaText: "SEO Services at infiniterankers.com",
+        ctaHref: "https://infiniterankers.com/services"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(StatsBanner, { stats: [
+      { value: "10x", label: "Avg Traffic Increase" },
+      { value: "156+", label: "Page 1 Rankings" },
+      { value: "95%", label: "Client ROI Positive" },
+      { value: "30 Days", label: "First Results" }
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "SEO Solutions",
+          title: "Complete SEO Services from Infinite Rankers",
+          description: "Our SEO team uses AI-driven tools and strategies to optimize every aspect of your search presence. Explore the full range of SEO services available at infiniterankers.com."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: seoServices.map((s, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.08, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(s.icon, { className: "w-5 h-5 text-blue-600" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", children: s.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: s.desc })
+      ] }, s.title)) }),
+      /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { ...fadeIn, className: "mt-10 text-center", children: /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com/services", target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-seo-explore", children: [
+        "View All SEO Services at infiniterankers.com ",
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-4 h-4 ml-1" })
+      ] }) }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Proven Results", title: "Real SEO Results from Infinite Rankers", description: "Data-driven results from businesses that partnered with Infinite Rankers for organic growth." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-4 gap-6", children: results.map((r, i) => /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.1 }, children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-6 text-center", "data-testid": `seo-result-${i}`, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm text-muted-foreground mb-3", children: r.metric }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-center gap-2 mb-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-red-500 line-through", children: r.before }),
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-muted-foreground" }),
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm font-bold text-emerald-600", children: r.after })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", className: "text-xs", children: r.increase })
+      ] }) }, r.metric)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Our Process", title: "How Infinite Rankers Does SEO", description: "A proven 5-step process that delivers consistent organic growth for every client." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-3xl mx-auto space-y-6", children: [
+        { step: "1", title: "Deep Audit & Research", desc: "We analyze your website, competitors, and market to identify the highest-impact SEO opportunities and build a custom strategy." },
+        { step: "2", title: "Technical Optimization", desc: "Fix crawl errors, improve site speed, implement schema markup, and ensure your site meets Google's technical standards." },
+        { step: "3", title: "Content Strategy & Creation", desc: "AI-assisted keyword research and content creation targeting high-intent search queries your ideal customers are searching for." },
+        { step: "4", title: "Authority Building", desc: "Strategic link acquisition and digital PR to build domain authority and establish your brand as an industry leader." },
+        { step: "5", title: "Monitor, Optimize, Scale", desc: "Continuous monitoring, A/B testing, and optimization to compound growth and maintain rankings long-term." }
+      ].map((s, i) => /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.1 }, className: "flex gap-4", "data-testid": `seo-step-${i}`, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-white font-bold text-sm", children: s.step }) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-1", children: s.title }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: s.desc })
+        ] })
+      ] }, s.step)) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center mt-10", children: /* @__PURE__ */ jsxRuntime.jsxs("a", { href: "https://infiniterankers.com/blog", target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-sm font-medium text-blue-600", "data-testid": "link-seo-blog", children: [
+        "Read SEO guides on the Infinite Rankers blog ",
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+      ] }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      CTASection,
+      {
+        title: "Ready to Dominate Organic Search?",
+        subtitle: "Get a free SEO audit and custom growth strategy from Infinite Rankers. See exactly how much organic traffic and revenue you're leaving on the table.",
+        buttonText: "Get Free SEO Audit",
+        href: "https://infiniterankers.com/contact"
+      }
+    )
+  ] });
+}
+function InfiniteRankersAds() {
+  const platforms = [
+    { icon: lucideReact.Search, title: "Google Search Ads", desc: "Capture high-intent buyers actively searching for your products and services. AI-optimized bidding, ad copy, and targeting for maximum Quality Score and lowest CPC.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Globe, title: "Google Display & YouTube", desc: "Reach your audience across 3 million+ websites and YouTube with visually compelling display ads and video campaigns optimized for awareness and retargeting.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Share2, title: "Meta Ads (Facebook & Instagram)", desc: "Precision-targeted campaigns leveraging Meta's advanced audience tools, AI-generated creatives, and lookalike audiences to drive leads and sales at scale.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.MapPin, title: "Google Local Service Ads", desc: "Appear at the very top of local search results with Google Guaranteed badges. Perfect for service businesses, contractors, lawyers, and healthcare providers.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.LineChart, title: "Performance Max Campaigns", desc: "Leverage Google's AI-powered Performance Max to reach customers across Search, Display, YouTube, Gmail, and Maps from a single campaign.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Target, title: "Retargeting & Remarketing", desc: "Re-engage website visitors and past customers with personalized ads across Google and Meta. Recover abandoned carts and nurture cold leads into conversions.", link: "https://infiniterankers.com/services" }
+  ];
+  const metrics = [
+    { label: "Average ROAS", value: "15x", desc: "Return on ad spend" },
+    { label: "Cost Per Lead", value: "-62%", desc: "Reduction in CPL" },
+    { label: "Conversion Rate", value: "+340%", desc: "Increase in CVR" },
+    { label: "Revenue Growth", value: "+580%", desc: "Average increase" }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Infinite Rankers Paid Advertising | Google Ads & Meta Ads Management",
+        description: "Infinite Rankers manages high-performance Google Ads and Meta Ads campaigns using AI optimization. Average 15x ROAS with data-driven PPC management.",
+        keywords: "Infinite Rankers ads, Google Ads management, Meta Ads, Facebook Ads, PPC agency, paid advertising, ad management, ROAS optimization"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      HeroSection,
+      {
+        label: "Paid Advertising",
+        title: "Maximize Ad ROI with",
+        highlight: "AI-Optimized Campaigns",
+        description: "Infinite Rankers manages Google Ads and Meta Ads campaigns that deliver an average 15x return on ad spend. Our AI optimization technology continuously improves targeting, bidding, and creatives to maximize every dollar of your ad budget.",
+        ctaText: "Ad Services at infiniterankers.com",
+        ctaHref: "https://infiniterankers.com/services"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(StatsBanner, { stats: metrics.map((m) => ({ value: m.value, label: m.label })) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Ad Platforms",
+          title: "Paid Advertising Platforms We Manage",
+          description: "Infinite Rankers manages campaigns across all major advertising platforms, optimizing each for maximum performance and ROI."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: platforms.map((p, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.08, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(p.icon, { className: "w-5 h-5 text-blue-600" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", children: p.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: p.desc }),
+        /* @__PURE__ */ jsxRuntime.jsxs("a", { href: p.link, target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-xs font-medium text-blue-600", "data-testid": `link-ad-${i}`, children: [
+          "Learn more at infiniterankers.com ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+        ] })
+      ] }, p.title)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Our Advantage", title: "Why Infinite Rankers Ads Outperform", description: "Our AI-powered approach to paid advertising delivers consistently higher results than traditional agencies." }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-8", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-4", children: [
+          "AI bid optimization that adjusts 1000x faster than manual management",
+          "Dynamic ad creative testing with AI-generated copy and visuals",
+          "Real-time budget allocation across campaigns based on performance",
+          "Advanced audience modeling using first-party data and lookalikes",
+          "Automated negative keyword management to eliminate wasted spend",
+          "Cross-platform attribution tracking for accurate ROI measurement",
+          "Google Partner certified team with access to beta features"
+        ].map((item, i) => /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.05 }, className: "flex items-start gap-3", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: item })
+        ] }, i)) }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-6", children: [
+          metrics.map((m, i) => /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.1 }, children: /* @__PURE__ */ jsxRuntime.jsx(Card, { className: "p-5", "data-testid": `metric-card-${i}`, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm text-muted-foreground", children: m.label }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground", children: m.desc })
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent", children: m.value })
+          ] }) }) }, m.label)),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center", children: /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "inline" }) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center mt-10", children: /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com/services", target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-ads-explore", children: [
+        "Explore Ad Management at infiniterankers.com ",
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-4 h-4 ml-1" })
+      ] }) }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      CTASection,
+      {
+        title: "Ready to Maximize Your Ad ROI?",
+        subtitle: "Get a free ad account audit and see exactly how much revenue you're leaving on the table. Our AI optimization can typically reduce cost-per-lead by 40-60%.",
+        buttonText: "Free Ad Audit",
+        href: "https://infiniterankers.com/contact"
+      }
+    )
+  ] });
+}
+function InfiniteRankersAutomation() {
+  const automations = [
+    { icon: lucideReact.Brain, title: "AI Chatbots & Voice Agents", desc: "Custom-trained AI chatbots and voice agents that engage website visitors, qualify leads, answer questions, and book appointments 24/7 without human intervention.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Phone, title: "AI Calling & Receptionist", desc: "AI-powered phone systems that answer calls, route inquiries, schedule appointments, and follow up with leads automatically — never miss a call again.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Mail, title: "Email & SMS Drip Campaigns", desc: "AI-personalized email and SMS sequences that nurture leads through the buying journey with perfectly timed, relevant messages that drive conversions.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Settings, title: "CRM & Workflow Automation", desc: "End-to-end CRM automation including lead scoring, pipeline management, task assignment, and deal tracking — all running on autopilot.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.MessageSquare, title: "Lead Qualification & Scoring", desc: "AI algorithms that instantly score and qualify every lead based on behavior, demographics, and engagement — so your sales team only talks to hot prospects.", link: "https://infiniterankers.com/services" },
+    { icon: lucideReact.Plug, title: "SaaS & API Integrations", desc: "Seamless integration with 5,000+ tools including Salesforce, HubSpot, Zapier, Slack, Calendly, and more to create unified automation ecosystems.", link: "https://infiniterankers.com/services" }
+  ];
+  const workflow = [
+    { title: "Visitor Lands on Your Website", desc: "AI chatbot immediately engages the visitor with personalized conversation." },
+    { title: "Lead is Qualified Automatically", desc: "AI scores the lead based on responses, behavior, and intent signals." },
+    { title: "Appointment is Booked Instantly", desc: "Qualified leads are booked directly into your calendar without human intervention." },
+    { title: "Follow-Up Sequences Activate", desc: "AI sends personalized email and SMS follow-ups to nurture and convert." },
+    { title: "CRM Updates Automatically", desc: "All data syncs to your CRM with full conversation history and lead scores." },
+    { title: "Revenue Grows on Autopilot", desc: "The system runs 24/7, continuously generating and converting leads." }
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Infinite Rankers AI Automation | Chatbots, CRM & Marketing Automation",
+        description: "Infinite Rankers builds AI-powered automation systems including chatbots, CRM automation, email sequences, and workflow automation. Automate your entire revenue pipeline.",
+        keywords: "Infinite Rankers automation, AI chatbot, CRM automation, marketing automation, workflow automation, lead qualification, AI voice agent, email automation"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      HeroSection,
+      {
+        label: "AI Automation",
+        title: "Automate Your Entire Revenue Pipeline with",
+        highlight: "AI-Powered Systems",
+        description: "Infinite Rankers builds custom AI automation systems that handle lead generation, qualification, follow-up, and conversion — all on autopilot. Our systems work 24/7 so you can focus on running your business while revenue grows automatically.",
+        ctaText: "Automation at infiniterankers.com",
+        ctaHref: "https://infiniterankers.com/services"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(StatsBanner, { stats: [
+      { value: "200+", label: "Automations Built" },
+      { value: "5,000+", label: "Tool Integrations" },
+      { value: "24/7", label: "Always Running" },
+      { value: "< 5 sec", label: "Lead Response Time" }
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        SectionHeader,
+        {
+          label: "Automation Solutions",
+          title: "AI Automation Services from Infinite Rankers",
+          description: "From chatbots to CRM automation, email sequences to voice agents — Infinite Rankers provides end-to-end automation that eliminates manual work and scales your revenue."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: automations.map((a, i) => /* @__PURE__ */ jsxRuntime.jsxs(GlassCard, { delay: i * 0.08, children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4", children: /* @__PURE__ */ jsxRuntime.jsx(a.icon, { className: "w-5 h-5 text-blue-600" }) }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold text-foreground mb-2", children: a.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: a.desc }),
+        /* @__PURE__ */ jsxRuntime.jsxs("a", { href: a.link, target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-xs font-medium text-blue-600", "data-testid": `link-auto-${i}`, children: [
+          "Explore at infiniterankers.com ",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+        ] })
+      ] }, a.title)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "How It Works", title: "The Infinite Rankers Automation Workflow", description: "See how our AI systems create a seamless pipeline from first contact to closed deal — all running automatically." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-3xl mx-auto", children: workflow.map((w, i) => /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.08 }, className: "flex gap-4 mb-8 last:mb-0", "data-testid": `workflow-step-${i}`, children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col items-center", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-white font-bold text-sm", children: i + 1 }) }),
+          i < workflow.length - 1 && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-0.5 flex-1 bg-gradient-to-b from-blue-300 to-transparent mt-2" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "pb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-1", children: w.title }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: w.desc })
+        ] })
+      ] }, w.title)) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center mt-10", children: /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com/services", target: "_blank", rel: "noopener noreferrer", children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { "data-testid": "button-auto-explore", children: [
+        "Build Your Automation at infiniterankers.com ",
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-4 h-4 ml-1" })
+      ] }) }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-20 lg:py-28", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SectionHeader, { label: "Industries", title: "Industries We Automate", description: "Infinite Rankers has built custom automation systems for businesses across dozens of industries." }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4", children: [
+        { icon: lucideReact.Building2, name: "Real Estate" },
+        { icon: lucideReact.Megaphone, name: "Marketing Agencies" },
+        { icon: lucideReact.Code, name: "SaaS & Tech" },
+        { icon: lucideReact.Users, name: "Professional Services" },
+        { icon: lucideReact.DollarSign, name: "E-Commerce" },
+        { icon: lucideReact.Award, name: "Law Firms" },
+        { icon: lucideReact.Globe, name: "Healthcare" },
+        { icon: lucideReact.Rocket, name: "Startups" }
+      ].map((ind, i) => /* @__PURE__ */ jsxRuntime.jsx(framerMotion.motion.div, { ...fadeIn, transition: { delay: i * 0.05 }, children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-4 text-center", "data-testid": `industry-${i}`, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(ind.icon, { className: "w-6 h-6 text-blue-600 mx-auto mb-2" }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm font-medium text-foreground", children: ind.name })
+      ] }) }, ind.name)) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-center mt-8", children: /* @__PURE__ */ jsxRuntime.jsxs("a", { href: "https://infiniterankers.com/blog", target: "_blank", rel: "noopener noreferrer", className: "inline-flex items-center gap-1 text-sm font-medium text-blue-600", "data-testid": "link-auto-blog", children: [
+        "Read automation case studies on the Infinite Rankers blog ",
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ExternalLink, { className: "w-3 h-3" })
+      ] }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      CTASection,
+      {
+        title: "Ready to Automate Your Revenue Growth?",
+        subtitle: "Book a free strategy session and see how Infinite Rankers can build custom AI automation systems for your business. Most clients see results within 30 days.",
+        buttonText: "Start Automating at infiniterankers.com",
+        href: "https://infiniterankers.com/contact"
+      }
+    )
+  ] });
+}
+function Terms() {
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Terms of Service | Infinite Rankers",
+        description: "Terms of Service for Infinite Rankers AI Revenue Growth Agency. Read our terms and conditions for using our services and website.",
+        canonical: "https://infiniterankers.io/terms"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "pt-28 pb-12 sm:pt-32 sm:pb-16 bg-gradient-to-b from-gray-50 to-white", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 }, children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-3xl sm:text-4xl font-bold text-foreground mb-3", "data-testid": "text-terms-title", children: "Terms of Service" }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground", children: "Last updated: February 14, 2026" })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { delay: 0.2 }, className: "prose prose-gray max-w-none space-y-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "1. Agreement to Terms" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "By accessing or using the website at ",
+          /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "infiniterankers.io" }),
+          " and our associated platform at",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "text-blue-600 hover:underline", children: "infiniterankers.com" }),
+          ", operated by ",
+          COMPANY.name,
+          ' ("',
+          COMPANY.name,
+          '," "we," "us," or "our"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not access our services.'
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "2. Description of Services" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          COMPANY.name,
+          " provides AI-powered revenue growth services including but not limited to: AI automation, lead generation, social media marketing, content creation, web development, SEO optimization, paid advertising management, and marketing automation. Our services are delivered through our primary platform at ",
+          /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "infiniterankers.io" }),
+          " and our marketing authority hub at",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "text-blue-600 hover:underline", children: "infiniterankers.com" }),
+          "."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "3. User Accounts & Registration" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "When you submit a contact form, book a demo, or engage with our services, you agree to provide accurate, current, and complete information. You are responsible for maintaining the confidentiality of any account credentials and for all activities that occur under your account." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "4. Service Agreements & Payments" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "All service engagements are subject to a separate service agreement or statement of work (SOW). Pricing displayed on our website is subject to change and serves as a general guideline. Final pricing will be confirmed in your individual service agreement. Payment terms, refund policies, and cancellation procedures are outlined in your specific service contract." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "5. Intellectual Property" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "All content, features, and functionality on infiniterankers.io and infiniterankers.com — including but not limited to text, graphics, logos, icons, images, software, and the compilation thereof — are the exclusive property of ",
+          COMPANY.name,
+          " and are protected by United States and international copyright, trademark, and other intellectual property laws."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "6. Client Deliverables" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "Upon full payment, clients receive ownership of deliverables as specified in their service agreement. ",
+          COMPANY.name,
+          " reserves the right to showcase completed work in our portfolio and case studies unless otherwise agreed in writing. Any proprietary AI models, automation workflows, or tools developed by ",
+          COMPANY.name,
+          " remain our intellectual property."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "7. Acceptable Use" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "You agree not to:" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc pl-6 mt-2 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Use our services for any unlawful purpose or in violation of any applicable laws" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Attempt to gain unauthorized access to our systems, servers, or networks" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Reproduce, duplicate, copy, sell, or exploit any portion of our services without express written permission" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Use our services to distribute spam, malware, or any harmful content" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Interfere with or disrupt the integrity or performance of our platforms" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Misrepresent your identity or affiliation with any person or organization" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "8. Third-Party Services" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "Our services may integrate with third-party platforms including but not limited to Google Ads, Meta Ads, CRM systems, and AI platforms. ",
+          COMPANY.name,
+          " is not responsible for the terms, privacy practices, or content of third-party services. Your use of third-party services is governed by their respective terms of service."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "9. Results & Disclaimers" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "While we strive to deliver measurable results, ",
+          COMPANY.name,
+          " does not guarantee specific outcomes, revenue increases, or ranking improvements. Results vary based on industry, market conditions, competition, and client cooperation. Case studies and testimonials on our website represent individual client results and are not guarantees of future performance."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "10. Limitation of Liability" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "To the fullest extent permitted by law, ",
+          COMPANY.name,
+          ", its directors, employees, partners, agents, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or business opportunities, arising from your use of our services or websites."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "11. Indemnification" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "You agree to defend, indemnify, and hold harmless ",
+          COMPANY.name,
+          " and its officers, directors, employees, and agents from any claims, damages, obligations, losses, or expenses arising from your use of our services or violation of these Terms."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "12. Governing Law" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "These Terms shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts located in Dover, Delaware." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "13. Changes to Terms" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "We reserve the right to modify or replace these Terms at any time. Material changes will be communicated through our website. Your continued use of our services after changes are posted constitutes acceptance of the revised Terms." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "14. Contact Information" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "If you have questions about these Terms of Service, please contact us:" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-none mt-3 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Email:" }),
+            " ",
+            COMPANY.email
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Phone:" }),
+            " ",
+            COMPANY.phone
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Address:" }),
+            " ",
+            COMPANY.address
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Website:" }),
+            " infiniterankers.io | ",
+            /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "text-blue-600 hover:underline", children: "infiniterankers.com" })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "pt-6 border-t", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-sm text-muted-foreground", children: [
+        "Also see our ",
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/privacy", className: "text-blue-600 hover:underline", "data-testid": "link-privacy-from-terms", children: "Privacy Policy" }),
+        " for information on how we handle your data."
+      ] }) })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/terms", type: "page" })
+  ] });
+}
+function Privacy() {
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Privacy Policy | Infinite Rankers",
+        description: "Privacy Policy for Infinite Rankers AI Revenue Growth Agency. Learn how we collect, use, and protect your personal information.",
+        canonical: "https://infiniterankers.io/privacy"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "pt-28 pb-12 sm:pt-32 sm:pb-16 bg-gradient-to-b from-gray-50 to-white", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 }, children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-3xl sm:text-4xl font-bold text-foreground mb-3", "data-testid": "text-privacy-title", children: "Privacy Policy" }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground", children: "Last updated: February 14, 2026" })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-12 sm:py-16", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntime.jsxs(framerMotion.motion.div, { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { delay: 0.2 }, className: "prose prose-gray max-w-none space-y-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "1. Introduction" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          COMPANY.name,
+          ' ("we," "us," or "our") operates the websites ',
+          /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "infiniterankers.io" }),
+          " and",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "text-blue-600 hover:underline", children: "infiniterankers.com" }),
+          ". This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you visit our websites, use our services, or interact with us. Please read this policy carefully."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "2. Information We Collect" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed mb-3", children: "We may collect the following types of information:" }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-base font-semibold text-foreground mt-4 mb-2", children: "Personal Information" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc pl-6 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Name, email address, phone number" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Company name and website URL" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Business revenue and industry information (when voluntarily provided through demo bookings)" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Messages and communications submitted through contact forms" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Service preferences and project requirements" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-base font-semibold text-foreground mt-4 mb-2", children: "Automatically Collected Information" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc pl-6 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "IP address, browser type, and operating system" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Pages visited, time spent on pages, and navigation patterns" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Referring website addresses and search terms" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Device identifiers and cookie data" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "3. How We Use Your Information" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed mb-3", children: "We use the information we collect to:" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc pl-6 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Provide, operate, and maintain our services" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Respond to inquiries, demo requests, and customer service needs" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Send service-related communications and updates" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Personalize your experience and deliver relevant content" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Analyze website usage to improve our platforms and services" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Process transactions and manage client accounts" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Comply with legal obligations and protect against fraud" }),
+          /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Send marketing communications (with your consent, where required)" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "4. Information Sharing" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed mb-3", children: "We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc pl-6 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Service Providers:" }),
+            " With trusted third-party vendors who assist in operating our websites and delivering services (e.g., hosting providers, email services, analytics tools)"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Business Partners:" }),
+            " With our partner platform at infiniterankers.com for integrated service delivery"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Legal Requirements:" }),
+            " When required by law, court order, or governmental regulation"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Business Transfers:" }),
+            " In connection with a merger, acquisition, or sale of assets"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Consent:" }),
+            " With your explicit consent for any other purpose"
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "5. Cookies & Tracking Technologies" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "Our websites use cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and understand user behavior. Cookies are small data files stored on your device. You can control cookie preferences through your browser settings. Note that disabling cookies may affect certain features of our websites." }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed mt-3", children: "We use the following types of cookies:" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc pl-6 mt-2 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Essential Cookies:" }),
+            " Required for basic site functionality"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Analytics Cookies:" }),
+            " Help us understand how visitors interact with our sites"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Marketing Cookies:" }),
+            " Used to deliver relevant advertisements and track campaign performance"
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "6. Data Security" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "We implement industry-standard security measures to protect your personal information, including SSL/TLS encryption, secure servers, and access controls. However, no method of electronic transmission or storage is 100% secure, and we cannot guarantee absolute security. We encourage you to use strong passwords and protect your account credentials." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "7. Data Retention" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "We retain your personal information for as long as necessary to fulfill the purposes for which it was collected, comply with legal obligations, resolve disputes, and enforce our agreements. Contact form submissions and demo booking data are retained for the duration of our business relationship and for a reasonable period thereafter." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "8. Your Rights" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed mb-3", children: "Depending on your jurisdiction, you may have the following rights:" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc pl-6 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Access:" }),
+            " Request a copy of the personal information we hold about you"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Correction:" }),
+            " Request correction of inaccurate or incomplete information"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Deletion:" }),
+            " Request deletion of your personal information (subject to legal obligations)"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Opt-Out:" }),
+            " Unsubscribe from marketing communications at any time"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Portability:" }),
+            " Request your data in a structured, machine-readable format"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Restriction:" }),
+            " Request restriction of processing in certain circumstances"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed mt-3", children: [
+          "To exercise any of these rights, please contact us at ",
+          /* @__PURE__ */ jsxRuntime.jsx("strong", { children: COMPANY.email }),
+          "."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "9. California Privacy Rights (CCPA)" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "If you are a California resident, you have the right to request disclosure of the categories and specific pieces of personal information we have collected, the categories of sources, the business purpose for collecting your information, and the categories of third parties with whom we share your data. California residents may submit a verifiable consumer request by contacting us at ",
+          COMPANY.email,
+          "."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "10. Children's Privacy" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If we become aware that a child under 18 has provided us with personal information, we will take steps to delete such information promptly." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "11. Third-Party Links" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-muted-foreground leading-relaxed", children: [
+          "Our websites may contain links to third-party websites, including our partner platform at",
+          " ",
+          /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "text-blue-600 hover:underline", children: "infiniterankers.com" }),
+          " ",
+          "and other external services. We are not responsible for the privacy practices or content of these third-party sites. We encourage you to review the privacy policies of any third-party websites you visit."
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "12. International Data Transfers" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "Your information may be transferred to and processed in countries other than your country of residence. These countries may have different data protection laws. By using our services, you consent to the transfer of your information to the United States and other jurisdictions where we operate." })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "13. Changes to This Policy" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: 'We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. The updated policy will be posted on this page with a revised "Last updated" date. We encourage you to review this policy periodically.' })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-foreground mb-3", children: "14. Contact Us" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground leading-relaxed", children: "If you have questions or concerns about this Privacy Policy or our data practices, please contact us:" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-none mt-3 space-y-1.5 text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Email:" }),
+            " ",
+            COMPANY.email
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Phone:" }),
+            " ",
+            COMPANY.phone
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Address:" }),
+            " ",
+            COMPANY.address
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs("li", { children: [
+            /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Website:" }),
+            " infiniterankers.io | ",
+            /* @__PURE__ */ jsxRuntime.jsx("a", { href: "https://infiniterankers.com", target: "_blank", rel: "noopener noreferrer", className: "text-blue-600 hover:underline", children: "infiniterankers.com" })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "pt-6 border-t", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-sm text-muted-foreground", children: [
+        "Also see our ",
+        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/terms", className: "text-blue-600 hover:underline", "data-testid": "link-terms-from-privacy", children: "Terms of Service" }),
+        " for the terms governing your use of our services."
+      ] }) })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/privacy", type: "page" })
+  ] });
+}
+const MAIN_PAGES = [
+  { title: "Home", href: "/" },
+  { title: "About", href: "/about" },
+  { title: "Services", href: "/services" },
+  { title: "Portfolio", href: "/portfolio" },
+  { title: "Pricing", href: "/pricing" },
+  { title: "Contact", href: "/contact" },
+  { title: "Blog", href: "/blog" },
+  { title: "Book Demo", href: "/book-demo" }
+];
+const LANDING_PAGES = [
+  { slug: "ai-automation-new-york", title: "AI Automation New York" },
+  { slug: "ai-automation-los-angeles", title: "AI Automation Los Angeles" },
+  { slug: "ai-automation-chicago", title: "AI Automation Chicago" },
+  { slug: "ai-revenue-growth-real-estate", title: "AI Revenue Growth for Real Estate" },
+  { slug: "ai-revenue-growth-healthcare", title: "AI Revenue Growth for Healthcare" },
+  { slug: "ai-revenue-growth-law-firms", title: "AI Revenue Growth for Law Firms" },
+  { slug: "ai-revenue-growth-ecommerce", title: "AI Revenue Growth for E-Commerce" },
+  { slug: "ai-revenue-growth-restaurants", title: "AI Revenue Growth for Restaurants" },
+  { slug: "ai-lead-generation-usa", title: "AI Lead Generation USA" },
+  { slug: "ai-marketing-automation-usa", title: "AI Marketing Automation USA" }
+];
+const PARTNER_PAGES = [
+  { slug: "infinite-rankers-agency", title: "About Infinite Rankers Agency" },
+  { slug: "infinite-rankers-seo-services", title: "SEO Services" },
+  { slug: "infinite-rankers-paid-advertising", title: "Paid Advertising" },
+  { slug: "infinite-rankers-ai-automation", title: "AI Automation Solutions" }
+];
+const sectionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+function SitemapSection({ title, icon: Icon, children, delay = 0 }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    framerMotion.motion.div,
+    {
+      variants: sectionVariants,
+      initial: "hidden",
+      whileInView: "visible",
+      viewport: { once: true, margin: "-40px" },
+      transition: { duration: 0.5, delay },
+      className: "mb-10",
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-200", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: "w-4 h-4 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: title })
+        ] }),
+        children
+      ]
+    }
+  );
+}
+function SitemapLink({ href, title, testId }) {
+  return /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href, children: /* @__PURE__ */ jsxRuntime.jsxs(
+    "span",
+    {
+      className: "flex items-center gap-1.5 py-1.5 text-sm text-gray-600 hover:text-blue-600 transition-colors cursor-pointer group",
+      "data-testid": testId,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronRight, { className: "w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500 transition-colors flex-shrink-0" }),
+        title
+      ]
+    }
+  ) });
+}
+function SitemapPage() {
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      SEOHead,
+      {
+        title: "Sitemap | Infinite Rankers",
+        description: "Browse all pages on infiniterankers.io. Find services, case studies, blog posts, and more.",
+        keywords: "sitemap, infinite rankers, all pages"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "relative pt-28 pb-12 bg-gradient-to-b from-white via-blue-50/30 to-white overflow-hidden", "data-testid": "sitemap-hero", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: /* @__PURE__ */ jsxRuntime.jsxs(
+      framerMotion.motion.div,
+      {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.5 },
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Site Navigation" }),
+          /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-3xl sm:text-4xl font-bold text-gray-900 mb-3", "data-testid": "text-sitemap-title", children: "Sitemap" }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600 text-base sm:text-lg", "data-testid": "text-sitemap-subtitle", children: "Browse all pages on infiniterankers.io" })
+        ]
+      }
+    ) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("section", { className: "py-10 sm:py-16", "data-testid": "sitemap-content", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SitemapSection, { title: "Main Pages", icon: lucideReact.Globe, delay: 0, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-x-6", children: MAIN_PAGES.map((page) => /* @__PURE__ */ jsxRuntime.jsx(
+        SitemapLink,
+        {
+          href: page.href,
+          title: page.title,
+          testId: `link-main-${page.title.toLowerCase().replace(/\s/g, "-")}`
+        },
+        page.href
+      )) }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SitemapSection, { title: "Services", icon: lucideReact.Briefcase, delay: 0.05, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6", children: SERVICE_CATEGORIES.map((category) => /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm font-semibold text-gray-800 mb-2", children: category.title }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-0.5", children: category.services.map((service) => /* @__PURE__ */ jsxRuntime.jsx(
+          SitemapLink,
+          {
+            href: `/${service.slug}`,
+            title: service.title,
+            testId: `link-service-${service.slug}`
+          },
+          service.slug
+        )) })
+      ] }, category.id)) }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SitemapSection, { title: "Case Studies", icon: lucideReact.FileText, delay: 0.1, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6", children: CASE_STUDIES.map((cs) => /* @__PURE__ */ jsxRuntime.jsx(
+        SitemapLink,
+        {
+          href: `/${cs.id}`,
+          title: cs.title,
+          testId: `link-case-study-${cs.id}`
+        },
+        cs.id
+      )) }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SitemapSection, { title: "Blog Posts", icon: lucideReact.BookOpen, delay: 0.15, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6", children: BLOG_POSTS_FULL.map((post) => /* @__PURE__ */ jsxRuntime.jsx(
+        SitemapLink,
+        {
+          href: `/${post.slug}`,
+          title: post.title,
+          testId: `link-blog-${post.slug}`
+        },
+        post.slug
+      )) }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SitemapSection, { title: "Landing Pages", icon: lucideReact.MapPin, delay: 0.2, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6", children: LANDING_PAGES.map((page) => /* @__PURE__ */ jsxRuntime.jsx(
+        SitemapLink,
+        {
+          href: `/${page.slug}`,
+          title: page.title,
+          testId: `link-landing-${page.slug}`
+        },
+        page.slug
+      )) }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SitemapSection, { title: "Partner Pages", icon: lucideReact.Handshake, delay: 0.25, children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-x-6", children: PARTNER_PAGES.map((page) => /* @__PURE__ */ jsxRuntime.jsx(
+        SitemapLink,
+        {
+          href: `/${page.slug}`,
+          title: page.title,
+          testId: `link-partner-${page.slug}`
+        },
+        page.slug
+      )) }) }),
+      /* @__PURE__ */ jsxRuntime.jsx(SitemapSection, { title: "Legal", icon: lucideReact.Scale, delay: 0.3, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-x-6", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(SitemapLink, { href: "/terms", title: "Terms of Service", testId: "link-legal-terms" }),
+        /* @__PURE__ */ jsxRuntime.jsx(SitemapLink, { href: "/privacy", title: "Privacy Policy", testId: "link-legal-privacy" })
+      ] }) })
+    ] }) })
+  ] });
+}
+function AdminDashboard() {
+  const [adminKey, setAdminKey] = React.useState("");
+  const [authenticated, setAuthenticated] = React.useState(false);
+  const [status, setStatus] = React.useState(null);
+  const [submissionResult, setSubmissionResult] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const fetchStatus = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/indexing-status", {
+        headers: { "x-admin-key": adminKey }
+      });
+      if (res.status === 401) {
+        setAuthenticated(false);
+        return;
+      }
+      const data = await res.json();
+      setStatus(data);
+      setAuthenticated(true);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const submitIndexNow = async () => {
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/indexnow-submit", {
+        method: "POST",
+        headers: { "x-admin-key": adminKey, "Content-Type": "application/json" }
+      });
+      const data = await res.json();
+      setSubmissionResult(data);
+    } catch (err) {
+      setSubmissionResult({ success: false, error: err.message });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  if (!authenticated) {
+    return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "min-h-screen bg-background flex items-center justify-center p-4", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(SEOHead, { title: "Admin Dashboard", description: "Indexing monitoring dashboard" }),
+      /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-6 w-full max-w-sm", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-lg font-bold mb-4", children: "Admin Dashboard" }),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Input,
+          {
+            type: "password",
+            placeholder: "Enter admin key",
+            value: adminKey,
+            onChange: (e) => setAdminKey(e.target.value),
+            className: "mb-3",
+            "data-testid": "input-admin-key"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(Button, { onClick: fetchStatus, disabled: !adminKey || loading, className: "w-full", "data-testid": "button-login", children: loading ? "Checking..." : "Access Dashboard" })
+      ] })
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "min-h-screen bg-background", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(SEOHead, { title: "Admin - Indexing Dashboard", description: "Indexing monitoring" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-4 mb-6 flex-wrap", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-2xl font-bold", "data-testid": "text-dashboard-title", children: "Indexing Monitor" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 flex-wrap", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs(Button, { onClick: fetchStatus, disabled: loading, variant: "outline", "data-testid": "button-refresh", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.RefreshCw, { className: `w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}` }),
+            " Refresh"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs(Button, { onClick: submitIndexNow, disabled: submitting, "data-testid": "button-submit-indexnow", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Send, { className: `w-4 h-4 mr-1 ${submitting ? "animate-spin" : ""}` }),
+            " Submit to IndexNow"
+          ] })
+        ] })
+      ] }),
+      status && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 mb-6", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-4 text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-2xl font-bold text-blue-600", "data-testid": "text-total-pages", children: status.totalPages }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground", children: "Total Pages" })
+          ] }),
+          Object.entries(status.breakdown).map(([key, count2]) => /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-4 text-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xl font-bold", children: count2 }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xs text-muted-foreground capitalize", children: key })
+          ] }, key))
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("h2", { className: "font-semibold mb-3 flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Globe, { className: "w-4 h-4" }),
+              " SEO Endpoints"
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-2", children: Object.entries(status.seoEndpoints).map(([name, url]) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center justify-between gap-2", children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-muted-foreground capitalize", children: name.replace(/([A-Z])/g, " $1").trim() }),
+              /* @__PURE__ */ jsxRuntime.jsx("a", { href: url, target: "_blank", rel: "noopener noreferrer", className: "text-xs text-blue-600 hover:underline truncate max-w-[200px]", children: url.replace("https://infiniterankers.io", "") })
+            ] }, name)) })
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-5", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("h2", { className: "font-semibold mb-3 flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Activity, { className: "w-4 h-4" }),
+              " Quick Actions"
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-2", children: [
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-green-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { children: "robots.txt - All bots allowed, /api/ blocked" })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-green-500" }),
+                /* @__PURE__ */ jsxRuntime.jsxs("span", { children: [
+                  "sitemap.xml - ",
+                  status.totalPages,
+                  " URLs"
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Rss, { className: "w-4 h-4 text-orange-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { children: "RSS Feed - 15 blog posts" })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.FileText, { className: "w-4 h-4 text-purple-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { children: "llms.txt - AI discovery ready" })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Search, { className: "w-4 h-4 text-blue-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { children: "IndexNow key verified" })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-green-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Gzip compression enabled" })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-green-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Breadcrumbs on all pages" })
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-green-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { children: "Mega footer with 91 internal links" })
+              ] })
+            ] })
+          ] })
+        ] }),
+        submissionResult && /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-5 mb-6", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("h2", { className: "font-semibold mb-3 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Send, { className: "w-4 h-4" }),
+            " Last Submission Result"
+          ] }),
+          submissionResult.error ? /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-red-600", children: [
+            /* @__PURE__ */ jsxRuntime.jsx(lucideReact.AlertCircle, { className: "w-4 h-4" }),
+            " ",
+            submissionResult.error
+          ] }) : /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-3", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: submissionResult.message }),
+            submissionResult.indexNow && /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm font-medium mb-1", children: "IndexNow Engines:" }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-1", children: submissionResult.indexNow.map((r, i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                r.ok ? /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-3.5 h-3.5 text-green-500" }) : /* @__PURE__ */ jsxRuntime.jsx(lucideReact.AlertCircle, { className: "w-3.5 h-3.5 text-red-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground", children: r.engine.replace("https://", "") }),
+                /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: r.ok ? "default" : "destructive", className: "text-xs", children: r.status })
+              ] }, i)) })
+            ] }),
+            submissionResult.pings && /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-sm font-medium mb-1", children: "Ping Services:" }),
+              /* @__PURE__ */ jsxRuntime.jsx("div", { className: "space-y-1", children: submissionResult.pings.map((p, i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [
+                p.ok ? /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-3.5 h-3.5 text-green-500" }) : /* @__PURE__ */ jsxRuntime.jsx(lucideReact.AlertCircle, { className: "w-3.5 h-3.5 text-yellow-500" }),
+                /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground", children: p.service }),
+                /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: p.ok ? "default" : "secondary", className: "text-xs", children: p.status || "timeout" })
+              ] }, i)) })
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: "p-5", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("h2", { className: "font-semibold mb-3", children: [
+            "All ",
+            status.totalPages,
+            " URLs"
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "max-h-96 overflow-y-auto space-y-1", children: status.allUrls.map((url, i) => /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 text-xs py-0.5", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-muted-foreground w-6 text-right", children: [
+              i + 1,
+              "."
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsx("a", { href: url, target: "_blank", rel: "noopener noreferrer", className: "text-blue-600 hover:underline truncate", children: url.replace("https://infiniterankers.io", "") })
+          ] }, i)) })
+        ] })
+      ] })
+    ] })
+  ] });
+}
+function SmartPage({ params }) {
+  const slug = params.slug;
+  if (ALL_SERVICES$1.some((s) => s.slug === slug)) return /* @__PURE__ */ jsxRuntime.jsx(ServiceDetail, {});
+  if (getBlogPostBySlug(slug)) return /* @__PURE__ */ jsxRuntime.jsx(BlogPost, {});
+  if (CASE_STUDIES.some((cs) => cs.id === slug)) return /* @__PURE__ */ jsxRuntime.jsx(CaseStudyDetail, {});
+  return /* @__PURE__ */ jsxRuntime.jsx(LandingPage, { slug });
+}
+function AppRouter() {
+  return /* @__PURE__ */ jsxRuntime.jsxs(wouter.Switch, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/", component: Home }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/about", component: About }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/services", component: Services }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/portfolio", component: Portfolio }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/pricing", component: Pricing }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/contact", component: Contact }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/blog", component: Blog }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/book-demo", component: BookDemo }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/infinite-rankers-agency", component: InfiniteRankersAgency }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/infinite-rankers-seo-services", component: InfiniteRankersSEO }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/infinite-rankers-paid-advertising", component: InfiniteRankersAds }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/infinite-rankers-ai-automation", component: InfiniteRankersAutomation }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/terms", component: Terms }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/privacy", component: Privacy }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/sitemap", component: SitemapPage }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/admin/indexing", component: AdminDashboard }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { path: "/:slug", children: (params) => /* @__PURE__ */ jsxRuntime.jsx(SmartPage, { params }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(wouter.Route, { component: NotFound })
+  ] });
+}
+const isServer = typeof window === "undefined";
+const defaultQueryClient = isServer ? new reactQuery.QueryClient() : new reactQuery.QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } }
+});
+function App({ ssrUrl, queryClient }) {
+  const qc = queryClient || defaultQueryClient;
+  const content = /* @__PURE__ */ jsxRuntime.jsx(ThemeProvider, { children: /* @__PURE__ */ jsxRuntime.jsx(reactQuery.QueryClientProvider, { client: qc, children: /* @__PURE__ */ jsxRuntime.jsxs(TooltipProvider, { children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "min-h-screen bg-background", children: [
+      !isServer && /* @__PURE__ */ jsxRuntime.jsx(ScrollToTop, {}),
+      /* @__PURE__ */ jsxRuntime.jsx(Navbar, {}),
+      /* @__PURE__ */ jsxRuntime.jsxs("main", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(Breadcrumbs, {}),
+        /* @__PURE__ */ jsxRuntime.jsx(AppRouter, {})
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx(Footer, {})
+    ] }),
+    !isServer && /* @__PURE__ */ jsxRuntime.jsx(Toaster, {})
+  ] }) }) });
+  if (ssrUrl) {
+    return /* @__PURE__ */ jsxRuntime.jsx(wouter.Router, { ssrPath: ssrUrl, children: content });
+  }
+  return content;
+}
+function render(url) {
+  const queryClient = new reactQuery.QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false
+      }
+    }
+  });
+  const html = server.renderToString(/* @__PURE__ */ jsxRuntime.jsx(App, { ssrUrl: url, queryClient }));
+  queryClient.clear();
+  return html;
+}
+exports.render = render;
