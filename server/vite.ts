@@ -51,10 +51,8 @@ export async function setupVite(server: Server, app: Express) {
 
       let appHtml = "";
       try {
-        const mod = await vite.ssrLoadModule("/src/entry-server.tsx");
-        console.log("SSR module loaded, keys:", Object.keys(mod));
-        appHtml = mod.render(url);
-        console.log("SSR rendered", url, "length:", appHtml.length);
+        const { render } = await vite.ssrLoadModule("/src/entry-server.tsx");
+        appHtml = render(url);
       } catch (e) {
         vite.ssrFixStacktrace(e as Error);
         console.error("SSR error:", e);
