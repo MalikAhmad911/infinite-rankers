@@ -5489,51 +5489,108 @@ function RelatedLinks({ currentPath, type }) {
   const relatedServices = ALL_SERVICES.filter((s) => `/${s.slug}` !== currentPath).slice(0, 6);
   const relatedBlogs = BLOG_POSTS.filter((b) => `/${b.slug}` !== currentPath).slice(0, 4);
   const relatedCases = CASE_STUDIES.filter((c) => `/${c.id}` !== currentPath).slice(0, 4);
-  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-border/50", "data-testid": "related-links", children: [
-    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8", children: [
-      type !== "service" && /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Explore Our Services" }),
-        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedServices.slice(0, 6).map((s) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${s.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1", "data-testid": `related-service-${s.slug}`, children: [
-          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-blue-500" }),
-          " ",
-          s.title
-        ] }) }) }, s.slug)) }),
-        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/services", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-blue-600 hover:text-blue-700 mt-2 inline-block cursor-pointer", children: "View All 30+ Services" }) })
+  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14", "data-testid": "related-links", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-10", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-foreground mb-2", children: "Explore More" }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground max-w-lg mx-auto", children: "Discover our services, insights, and success stories to help grow your business." })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-6", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Layers, { className: "w-4 h-4 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-bold text-foreground text-base", children: type === "service" ? "Related Services" : "Our Services" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5 mb-4", children: relatedServices.map((s) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsxs(
+          wouter.Link,
+          {
+            href: `/${s.slug}`,
+            className: "group flex items-center gap-2 py-1.5 px-2 rounded-lg hover:bg-blue-100/60 transition-colors",
+            "data-testid": `related-service-${s.slug}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 text-blue-500 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-gray-700 group-hover:text-blue-700 transition-colors", children: s.title })
+            ]
+          }
+        ) }, s.slug)) }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          wouter.Link,
+          {
+            href: "/services",
+            className: "inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors",
+            children: [
+              "View All 30+ Services ",
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5" })
+            ]
+          }
+        )
       ] }),
-      type === "service" && /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Related Services" }),
-        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedServices.slice(0, 8).map((s) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${s.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1", "data-testid": `related-service-${s.slug}`, children: [
-          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-blue-500" }),
-          " ",
-          s.title
-        ] }) }) }, s.slug)) })
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-100 rounded-2xl p-6", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.BookOpen, { className: "w-4 h-4 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-bold text-foreground text-base", children: "Latest Blog Posts" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5 mb-4", children: relatedBlogs.map((b) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsxs(
+          wouter.Link,
+          {
+            href: `/${b.slug}`,
+            className: "group flex items-start gap-2 py-1.5 px-2 rounded-lg hover:bg-purple-100/60 transition-colors",
+            "data-testid": `related-blog-${b.slug}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-gray-700 group-hover:text-purple-700 transition-colors line-clamp-2", children: b.title })
+            ]
+          }
+        ) }, b.slug)) }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          wouter.Link,
+          {
+            href: "/blog",
+            className: "inline-flex items-center gap-1 text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors",
+            children: [
+              "Read All Articles ",
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5" })
+            ]
+          }
+        )
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Latest Blog Posts" }),
-        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedBlogs.map((b) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${b.slug}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1 line-clamp-1", "data-testid": `related-blog-${b.slug}`, children: [
-          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-purple-500" }),
-          " ",
-          b.title
-        ] }) }) }, b.slug)) }),
-        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/blog", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-blue-600 hover:text-blue-700 mt-2 inline-block cursor-pointer", children: "Read All Articles" }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold text-foreground mb-3 text-sm", children: "Success Stories" }),
-        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2", children: relatedCases.map((c) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: `/${c.id}`, children: /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1 line-clamp-1", "data-testid": `related-case-${c.id}`, children: [
-          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3 h-3 text-cyan-500" }),
-          " ",
-          c.title
-        ] }) }) }, c.id)) }),
-        /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/portfolio", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-blue-600 hover:text-blue-700 mt-2 inline-block cursor-pointer", children: "View All Case Studies" }) })
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-100 rounded-2xl p-6 sm:col-span-2 lg:col-span-1", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Briefcase, { className: "w-4 h-4 text-white" }) }),
+          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-bold text-foreground text-base", children: "Success Stories" })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5 mb-4", children: relatedCases.map((c) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsxs(
+          wouter.Link,
+          {
+            href: `/${c.id}`,
+            className: "group flex items-start gap-2 py-1.5 px-2 rounded-lg hover:bg-cyan-100/60 transition-colors",
+            "data-testid": `related-case-${c.id}`,
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 text-cyan-500 flex-shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-gray-700 group-hover:text-cyan-700 transition-colors line-clamp-2", children: c.title })
+            ]
+          }
+        ) }, c.id)) }),
+        /* @__PURE__ */ jsxRuntime.jsxs(
+          wouter.Link,
+          {
+            href: "/portfolio",
+            className: "inline-flex items-center gap-1 text-sm font-semibold text-cyan-600 hover:text-cyan-800 transition-colors",
+            children: [
+              "View All Case Studies ",
+              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5" })
+            ]
+          }
+        )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-8 flex flex-wrap gap-3 items-center justify-center", children: [
-      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Home" }) }),
-      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/pricing", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Pricing" }) }),
-      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/about", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "About Us" }) }),
-      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/contact", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Contact" }) }),
-      /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs text-muted-foreground hover:text-foreground cursor-pointer", children: "Book a Demo" }) })
-    ] })
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-10 pt-6 border-t border-border/40 flex flex-wrap gap-x-6 gap-y-2 items-center justify-center", children: [
+      { href: "/", label: "Home" },
+      { href: "/pricing", label: "Pricing" },
+      { href: "/about", label: "About Us" },
+      { href: "/contact", label: "Contact" },
+      { href: "/book-demo", label: "Book a Demo" },
+      { href: "/sitemap", label: "Sitemap" }
+    ].map((link) => /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: link.href, className: "text-sm text-muted-foreground hover:text-foreground transition-colors", children: link.label }, link.href)) })
   ] });
 }
 function About() {
