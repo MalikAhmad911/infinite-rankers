@@ -155,11 +155,37 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
+  img, video, svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  section {
+    overflow-x: hidden;
+  }
+
+  h1 { @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight; }
+  h2 { @apply text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight; }
+  h3 { @apply text-xl sm:text-2xl font-semibold leading-snug; }
+  h4 { @apply text-lg sm:text-xl font-semibold; }
+  h5 { @apply text-base sm:text-lg font-medium; }
+  h6 { @apply text-sm sm:text-base font-medium; }
 }
 
 /**

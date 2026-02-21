@@ -43,9 +43,9 @@ export default function Contact() {
   });
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {seo}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
         <div className="absolute bottom-10 left-10 w-72 h-72 bg-indigo-100/40 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,34 +53,35 @@ export default function Contact() {
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
               Contact Us
             </span>
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight">
+            <h1 className="font-bold text-foreground mb-6 leading-tight" style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
               Let's Build Your{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Revenue Engine</span>
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }}>
               Have a question or ready to get started? Reach out and our team will respond within 24 hours.
             </p>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28">
+      <section className="py-16 sm:py-20 lg:py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-5 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
             <div className="lg:col-span-3">
               <GlassCard>
-                <h2 className="text-xl font-bold text-foreground mb-6">Send Us a Message</h2>
+                <h2 className="font-bold text-foreground mb-6" style={{ fontSize: "clamp(1.125rem, 3vw, 1.25rem)" }}>Send Us a Message</h2>
                 <form
                   onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
                   className="space-y-5"
                   data-testid="form-contact"
                 >
-                  <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <Label htmlFor="name" className="text-sm mb-1.5 block">Full Name *</Label>
                       <Input
                         id="name"
                         placeholder="John Smith"
+                        className="w-full"
                         {...form.register("name")}
                         data-testid="input-contact-name"
                       />
@@ -94,6 +95,7 @@ export default function Contact() {
                         id="email"
                         type="email"
                         placeholder="john@company.com"
+                        className="w-full"
                         {...form.register("email")}
                         data-testid="input-contact-email"
                       />
@@ -102,12 +104,13 @@ export default function Contact() {
                       )}
                     </div>
                   </div>
-                  <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <Label htmlFor="phone" className="text-sm mb-1.5 block">Phone Number</Label>
                       <Input
                         id="phone"
                         placeholder="(555) 123-4567"
+                        className="w-full"
                         {...form.register("phone")}
                         data-testid="input-contact-phone"
                       />
@@ -117,6 +120,7 @@ export default function Contact() {
                       <Input
                         id="company"
                         placeholder="Your Company"
+                        className="w-full"
                         {...form.register("company")}
                         data-testid="input-contact-company"
                       />
@@ -127,7 +131,7 @@ export default function Contact() {
                     <Textarea
                       id="message"
                       placeholder="Tell us about your business and goals..."
-                      className="resize-none min-h-[120px]"
+                      className="resize-none min-h-[120px] w-full"
                       {...form.register("message")}
                       data-testid="input-contact-message"
                     />
@@ -149,13 +153,13 @@ export default function Contact() {
 
             <div className="lg:col-span-2 space-y-6">
               <GlassCard>
-                <h3 className="text-lg font-semibold text-foreground mb-4">Contact Information</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Contact Information</h3>
                 <div className="space-y-4">
                   <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-email">
                     <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
                       <Mail className="w-5 h-5 text-blue-600" />
                     </div>
-                    {COMPANY.email}
+                    <span className="break-all">{COMPANY.email}</span>
                   </a>
                   <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-phone">
                     <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
@@ -182,12 +186,12 @@ export default function Contact() {
               </GlassCard>
 
               <GlassCard className="bg-gradient-to-br from-blue-600 to-purple-700 border-0">
-                <h3 className="text-lg font-semibold text-white mb-2">Book a Free Strategy Session</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-white mb-2">Book a Free Strategy Session</h3>
                 <p className="text-sm text-white/80 mb-4">
                   Get a personalized AI revenue growth plan for your business. No obligation.
                 </p>
                 <Link href="/book-demo">
-                  <Button variant="secondary" className="w-full" data-testid="button-contact-book-demo">
+                  <Button variant="secondary" className="w-full sm:w-auto" data-testid="button-contact-book-demo">
                     Book Demo <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
@@ -197,9 +201,9 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="pb-20">
+      <section className="pb-16 sm:pb-20 lg:pb-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-md overflow-hidden border border-border h-[400px]">
+          <div className="rounded-md overflow-hidden border border-border h-[300px] sm:h-[400px]">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3090.4567!2d-75.5243!3d39.1582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c764a5ae02a53d%3A0x0!2s203+N+Caroline+Pl%2C+Dover%2C+DE+19904!5e0!3m2!1sen!2sus!4v1234567890"
               width="100%"

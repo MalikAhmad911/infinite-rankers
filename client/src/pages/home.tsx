@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/seo-head";
@@ -53,57 +53,14 @@ function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: strin
 }
 
 function GradientMeshBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationId: number;
-    let time = 0;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const orbs = [
-      { x: 0.2, y: 0.3, r: 300, color: "rgba(99, 102, 241, 0.12)", speed: 0.0003, phase: 0 },
-      { x: 0.7, y: 0.2, r: 350, color: "rgba(139, 92, 246, 0.10)", speed: 0.0004, phase: 1 },
-      { x: 0.5, y: 0.7, r: 280, color: "rgba(6, 182, 212, 0.08)", speed: 0.0005, phase: 2 },
-      { x: 0.8, y: 0.6, r: 320, color: "rgba(59, 130, 246, 0.09)", speed: 0.0003, phase: 3 },
-      { x: 0.3, y: 0.8, r: 260, color: "rgba(168, 85, 247, 0.07)", speed: 0.0004, phase: 4 },
-    ];
-
-    const animate = () => {
-      time += 1;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      orbs.forEach((orb) => {
-        const x = canvas.width * (orb.x + Math.sin(time * orb.speed + orb.phase) * 0.08);
-        const y = canvas.height * (orb.y + Math.cos(time * orb.speed * 0.7 + orb.phase) * 0.06);
-        const gradient = ctx.createRadialGradient(x, y, 0, x, y, orb.r * (canvas.width / 1400));
-        gradient.addColorStop(0, orb.color);
-        gradient.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      });
-
-      animationId = requestAnimationFrame(animate);
-    };
-    animate();
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" style={{ willChange: "transform" }} />;
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute top-[20%] left-[15%] w-[300px] h-[300px] rounded-full bg-indigo-500/[0.08] blur-[80px]" />
+      <div className="absolute top-[10%] right-[20%] w-[350px] h-[350px] rounded-full bg-violet-500/[0.07] blur-[90px]" />
+      <div className="absolute bottom-[20%] left-[40%] w-[280px] h-[280px] rounded-full bg-cyan-500/[0.06] blur-[70px]" />
+      <div className="absolute bottom-[30%] right-[15%] w-[320px] h-[320px] rounded-full bg-blue-500/[0.07] blur-[85px]" />
+    </div>
+  );
 }
 
 function FloatingGridLines() {
@@ -115,15 +72,6 @@ function FloatingGridLines() {
           backgroundSize: "80px 80px",
         }}
       />
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent"
-          style={{ top: `${20 + i * 15}%`, width: "100%" }}
-          animate={{ opacity: [0.1, 0.3, 0.1], x: ["-5%", "5%", "-5%"] }}
-          transition={{ duration: 8 + i * 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-        />
-      ))}
     </div>
   );
 }
@@ -990,8 +938,9 @@ function PricingSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
+              className="h-full"
             >
-              <Card className={`p-5 sm:p-6 h-full relative ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-card-${tier.name.toLowerCase()}`}>
+              <Card className={`p-6 sm:p-8 h-full relative flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-card-${tier.name.toLowerCase()}`}>
                 {tier.discount && (
                   <div className="absolute -top-3 right-4">
                     <Badge data-testid={`badge-discount-${tier.name.toLowerCase()}`}>{tier.discount}</Badge>
@@ -1011,7 +960,7 @@ function PricingSection() {
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">Month-to-month, cancel anytime</p>
                 </div>
-                <ul className="space-y-2.5 mb-6">
+                <ul className="space-y-3 flex-1">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
@@ -1019,7 +968,7 @@ function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/book-demo">
+                <Link href="/book-demo" className="block mt-6">
                   <Button className="w-full" variant={tier.popular ? "default" : "outline"} data-testid={`button-pricing-${tier.name.toLowerCase()}`}>
                     {tier.cta} <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>

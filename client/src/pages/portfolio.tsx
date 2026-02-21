@@ -87,11 +87,11 @@ function StatCounter({ icon: Icon, target, suffix, prefix, label }: {
   const count = useCountUp(target);
   return (
     <div className="flex flex-col items-center gap-2" data-testid={`stat-${label.toLowerCase().replace(/\s+/g, "-")}`}>
-      <Icon className="w-6 h-6 text-blue-400" />
-      <span className="text-2xl sm:text-3xl font-bold text-white">
+      <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
+      <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
         {prefix}{count.toLocaleString()}{suffix}
       </span>
-      <span className="text-sm text-white/70">{label}</span>
+      <span className="text-xs sm:text-sm text-white/70">{label}</span>
     </div>
   );
 }
@@ -105,13 +105,13 @@ export default function Portfolio() {
       : CASE_STUDIES.filter((cs) => cs.tags.includes(selectedTag));
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <SEOHead
         title="Portfolio & Case Studies - Infinite Rankers | Proven AI Growth Results"
         description="Explore real case studies showing how our AI automation and marketing systems have generated measurable growth for businesses across industries."
       />
 
-      <section className="relative pt-32 pb-20 overflow-hidden" data-testid="hero-section">
+      <section className="relative pt-32 pb-16 sm:pb-20 overflow-hidden" data-testid="hero-section">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-900" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
@@ -125,13 +125,13 @@ export default function Portfolio() {
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
               Portfolio
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight" data-testid="hero-title">
+            <h1 className="font-bold text-white mb-6 leading-tight" style={{ fontSize: "clamp(1.75rem, 5vw, 3.75rem)" }} data-testid="hero-title">
               Our{" "}
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Success Stories
               </span>
             </h1>
-            <p className="text-lg text-white/70 leading-relaxed max-w-2xl mx-auto mb-16" data-testid="hero-subtitle">
+            <p className="text-white/70 leading-relaxed max-w-2xl mx-auto mb-12 sm:mb-16" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }} data-testid="hero-subtitle">
               Explore how our AI automation and marketing systems have generated
               measurable growth for businesses across industries.
             </p>
@@ -141,7 +141,7 @@ export default function Portfolio() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-4xl mx-auto"
             data-testid="stats-row"
           >
             {STATS.map((stat) => (
@@ -151,7 +151,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28" data-testid="portfolio-section">
+      <section className="py-16 sm:py-20 lg:py-24 overflow-hidden" data-testid="portfolio-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             label="Case Studies"
@@ -159,11 +159,11 @@ export default function Portfolio() {
             description="Filter by category to see how we've helped businesses like yours achieve extraordinary growth."
           />
 
-          <div className="flex overflow-x-auto pb-4 mb-12 gap-2 scrollbar-hide" data-testid="filter-tabs-container">
+          <div className="flex flex-wrap gap-2 mb-10 sm:mb-12" data-testid="filter-tabs-container">
             <button
               onClick={() => setSelectedTag("All")}
               data-testid="filter-tab-all"
-              className={`flex-shrink-0 px-5 py-2 rounded-md text-sm font-medium transition-all toggle-elevate ${
+              className={`px-4 sm:px-5 py-2 rounded-md text-xs sm:text-sm font-medium transition-all toggle-elevate ${
                 selectedTag === "All"
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white toggle-elevated"
                   : "bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700 text-muted-foreground"
@@ -176,7 +176,7 @@ export default function Portfolio() {
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
                 data-testid={`filter-tab-${tag.toLowerCase().replace(/\s+/g, "-")}`}
-                className={`flex-shrink-0 px-5 py-2 rounded-md text-sm font-medium transition-all toggle-elevate ${
+                className={`px-4 sm:px-5 py-2 rounded-md text-xs sm:text-sm font-medium transition-all toggle-elevate ${
                   selectedTag === tag
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white toggle-elevated"
                     : "bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-gray-700 text-muted-foreground"
@@ -194,7 +194,7 @@ export default function Portfolio() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               data-testid="portfolio-grid"
             >
               {filteredStudies.map((cs, i) => (
@@ -233,14 +233,14 @@ export default function Portfolio() {
                       </div>
                     </div>
 
-                    <div className="p-5 flex flex-col flex-1">
-                      <h3 className="text-lg font-bold text-foreground mb-1" data-testid={`card-title-${cs.id}`}>
+                    <div className="p-4 sm:p-5 flex flex-col flex-1">
+                      <h3 className="text-base sm:text-lg font-bold text-foreground mb-1" data-testid={`card-title-${cs.id}`}>
                         {cs.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground mb-3" data-testid={`card-business-${cs.id}`}>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-3" data-testid={`card-business-${cs.id}`}>
                         {cs.business}
                       </p>
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2" data-testid={`card-challenge-${cs.id}`}>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-4 line-clamp-2" data-testid={`card-challenge-${cs.id}`}>
                         {cs.challenge}
                       </p>
 
@@ -253,13 +253,13 @@ export default function Portfolio() {
                         ].map((r, idx) => (
                           <div
                             key={idx}
-                            className={`p-2.5 rounded-md text-center ${METRIC_COLORS[idx]}`}
+                            className={`p-2 sm:p-2.5 rounded-md text-center ${METRIC_COLORS[idx]}`}
                             data-testid={`metric-${idx}-${cs.id}`}
                           >
-                            <div className={`text-base font-bold ${METRIC_TEXT_COLORS[idx]}`}>
+                            <div className={`text-sm sm:text-base font-bold ${METRIC_TEXT_COLORS[idx]}`}>
                               {r.metric}
                             </div>
-                            <div className="text-[11px] text-muted-foreground leading-tight">
+                            <div className="text-[10px] sm:text-[11px] text-muted-foreground leading-tight">
                               {r.label}
                             </div>
                           </div>
@@ -282,7 +282,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 relative overflow-hidden" data-testid="dashboard-showcase">
+      <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden" data-testid="dashboard-showcase">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-900" />
         <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "3s" }} />
@@ -291,20 +291,20 @@ export default function Portfolio() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 sm:mb-16"
           >
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
               Analytics
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4" data-testid="dashboard-title">
+            <h2 className="font-bold text-white mb-4" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }} data-testid="dashboard-title">
               AI-Powered Results Dashboard
             </h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+            <p className="text-white/60 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }}>
               Real-time insights powering data-driven decisions for every client.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -313,12 +313,12 @@ export default function Portfolio() {
               className="animate-float"
               data-testid="panel-revenue"
             >
-              <div className="rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-6">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <div className="rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6">
+                <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm sm:text-base">
                   <TrendingUp className="w-5 h-5 text-blue-400" />
                   Revenue Growth
                 </h3>
-                <div className="flex items-end gap-2 h-40">
+                <div className="flex items-end gap-2 h-32 sm:h-40">
                   {[35, 50, 45, 70, 60, 85, 95].map((h, idx) => (
                     <motion.div
                       key={idx}
@@ -345,8 +345,8 @@ export default function Portfolio() {
               style={{ animationDelay: "1s" }}
               data-testid="panel-pipeline"
             >
-              <div className="rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-6">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <div className="rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6">
+                <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm sm:text-base">
                   <Users className="w-5 h-5 text-purple-400" />
                   Lead Pipeline
                 </h3>
@@ -357,7 +357,7 @@ export default function Portfolio() {
                     { label: "Converted", pct: 42, color: "from-indigo-600 to-indigo-400" },
                   ].map((item) => (
                     <div key={item.label}>
-                      <div className="flex justify-between text-sm mb-1.5">
+                      <div className="flex justify-between text-xs sm:text-sm mb-1.5">
                         <span className="text-white/80">{item.label}</span>
                         <span className="text-white/60">{item.pct}%</span>
                       </div>
@@ -385,8 +385,8 @@ export default function Portfolio() {
               style={{ animationDelay: "2s" }}
               data-testid="panel-funnel"
             >
-              <div className="rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-6">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <div className="rounded-md border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6">
+                <h3 className="text-white font-semibold mb-4 flex items-center gap-2 text-sm sm:text-base">
                   <BarChart3 className="w-5 h-5 text-green-400" />
                   Conversion Funnel
                 </h3>
@@ -417,7 +417,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 relative overflow-hidden" data-testid="cta-section">
+      <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden" data-testid="cta-section">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -425,16 +425,16 @@ export default function Portfolio() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            <h2 className="font-bold text-white mb-6" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
               Want Results Like These?
             </h2>
-            <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-white/80 mb-8 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }}>
               Book a free strategy session and we'll show you exactly how our AI
               systems can transform your business growth.
             </p>
             <Link href="/book-demo">
               <Button
-                className="bg-white text-blue-700 border-0"
+                className="w-full sm:w-auto bg-white text-blue-700 border-0"
                 data-testid="button-portfolio-cta"
               >
                 Book Free Strategy Session{" "}

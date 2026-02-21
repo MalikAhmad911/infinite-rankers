@@ -403,7 +403,7 @@ const SERVICE_CATEGORIES = [
     ]
   }
 ];
-const ALL_SERVICES$1 = SERVICE_CATEGORIES.flatMap(
+const ALL_SERVICES = SERVICE_CATEGORIES.flatMap(
   (cat) => cat.services.map((s) => ({ ...s, category: cat.title, categoryId: cat.id }))
 );
 const CASE_STUDIES = [
@@ -4153,7 +4153,7 @@ function getBreadcrumbs(path) {
   const crumbs = [{ label: "Home", href: "/" }];
   if (path === "/") return crumbs;
   const slug = path.replace("/", "");
-  const service = ALL_SERVICES$1.find((s) => s.slug === slug);
+  const service = ALL_SERVICES.find((s) => s.slug === slug);
   if (service) {
     crumbs.push({ label: "Services", href: "/services" });
     crumbs.push({ label: service.title });
@@ -5415,115 +5415,6 @@ function GlassCard({ children, className, hover = true, delay = 0, glow = false 
     }
   );
 }
-const ALL_SERVICES = SERVICE_CATEGORIES.flatMap((cat) => cat.services);
-function RelatedLinks({ currentPath, type }) {
-  const relatedServices = ALL_SERVICES.filter((s) => `/${s.slug}` !== currentPath).slice(0, 6);
-  const relatedBlogs = BLOG_POSTS.filter((b) => `/${b.slug}` !== currentPath).slice(0, 4);
-  const relatedCases = CASE_STUDIES.filter((c) => `/${c.id}` !== currentPath).slice(0, 4);
-  return /* @__PURE__ */ jsxRuntime.jsxs("section", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14", "data-testid": "related-links", children: [
-    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-10", children: [
-      /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-foreground mb-2", children: "Explore More" }),
-      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground max-w-lg mx-auto", children: "Discover our services, insights, and success stories to help grow your business." })
-    ] }),
-    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6", children: [
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-6", children: [
-        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
-          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Layers, { className: "w-4 h-4 text-white" }) }),
-          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-bold text-foreground text-base", children: type === "service" ? "Related Services" : "Our Services" })
-        ] }),
-        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5 mb-4", children: relatedServices.map((s) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsxs(
-          wouter.Link,
-          {
-            href: `/${s.slug}`,
-            className: "group flex items-center gap-2 py-1.5 px-2 rounded-lg hover:bg-blue-100/60 transition-colors",
-            "data-testid": `related-service-${s.slug}`,
-            children: [
-              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 text-blue-500 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" }),
-              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-gray-700 group-hover:text-blue-700 transition-colors", children: s.title })
-            ]
-          }
-        ) }, s.slug)) }),
-        /* @__PURE__ */ jsxRuntime.jsxs(
-          wouter.Link,
-          {
-            href: "/services",
-            className: "inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors",
-            children: [
-              "View All 30+ Services ",
-              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5" })
-            ]
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-100 rounded-2xl p-6", children: [
-        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
-          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.BookOpen, { className: "w-4 h-4 text-white" }) }),
-          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-bold text-foreground text-base", children: "Latest Blog Posts" })
-        ] }),
-        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5 mb-4", children: relatedBlogs.map((b) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsxs(
-          wouter.Link,
-          {
-            href: `/${b.slug}`,
-            className: "group flex items-start gap-2 py-1.5 px-2 rounded-lg hover:bg-purple-100/60 transition-colors",
-            "data-testid": `related-blog-${b.slug}`,
-            children: [
-              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" }),
-              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-gray-700 group-hover:text-purple-700 transition-colors line-clamp-2", children: b.title })
-            ]
-          }
-        ) }, b.slug)) }),
-        /* @__PURE__ */ jsxRuntime.jsxs(
-          wouter.Link,
-          {
-            href: "/blog",
-            className: "inline-flex items-center gap-1 text-sm font-semibold text-purple-600 hover:text-purple-800 transition-colors",
-            children: [
-              "Read All Articles ",
-              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5" })
-            ]
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-gradient-to-br from-cyan-50 to-teal-50 border border-cyan-100 rounded-2xl p-6 sm:col-span-2 lg:col-span-1", children: [
-        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
-          /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Briefcase, { className: "w-4 h-4 text-white" }) }),
-          /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-bold text-foreground text-base", children: "Success Stories" })
-        ] }),
-        /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-1.5 mb-4", children: relatedCases.map((c) => /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsxs(
-          wouter.Link,
-          {
-            href: `/${c.id}`,
-            className: "group flex items-start gap-2 py-1.5 px-2 rounded-lg hover:bg-cyan-100/60 transition-colors",
-            "data-testid": `related-case-${c.id}`,
-            children: [
-              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5 text-cyan-500 flex-shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" }),
-              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-gray-700 group-hover:text-cyan-700 transition-colors line-clamp-2", children: c.title })
-            ]
-          }
-        ) }, c.id)) }),
-        /* @__PURE__ */ jsxRuntime.jsxs(
-          wouter.Link,
-          {
-            href: "/portfolio",
-            className: "inline-flex items-center gap-1 text-sm font-semibold text-cyan-600 hover:text-cyan-800 transition-colors",
-            children: [
-              "View All Case Studies ",
-              /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-3.5 h-3.5" })
-            ]
-          }
-        )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-10 pt-6 border-t border-border/40 flex flex-wrap gap-x-6 gap-y-2 items-center justify-center", children: [
-      { href: "/", label: "Home" },
-      { href: "/pricing", label: "Pricing" },
-      { href: "/about", label: "About Us" },
-      { href: "/contact", label: "Contact" },
-      { href: "/book-demo", label: "Book a Demo" },
-      { href: "/sitemap", label: "Sitemap" }
-    ].map((link) => /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: link.href, className: "text-sm text-muted-foreground hover:text-foreground transition-colors", children: link.label }, link.href)) })
-  ] });
-}
 function About() {
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
     /* @__PURE__ */ jsxRuntime.jsx(
@@ -5647,8 +5538,7 @@ function About() {
           /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
         ] }) })
       ] }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/about", type: "page" })
+    ] })
   ] });
 }
 const iconMap$2 = {
@@ -7116,7 +7006,7 @@ const defaultTheme = {
 };
 function ServiceDetail() {
   const params = wouter.useParams();
-  const service = ALL_SERVICES$1.find((s) => s.slug === params.slug);
+  const service = ALL_SERVICES.find((s) => s.slug === params.slug);
   if (!service) {
     return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "min-h-screen flex items-center justify-center pt-20", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center", children: [
       /* @__PURE__ */ jsxRuntime.jsx("h1", { className: "text-2xl font-bold text-foreground mb-4", children: "Service Not Found" }),
@@ -7132,7 +7022,7 @@ function ServiceDetail() {
   const categoryId = service.categoryId;
   const pricing = getServicePricing(params.slug);
   const heroGradient = theme.heroGradient.includes("#") ? "from-gray-50/80 via-blue-50/30 to-white" : theme.heroGradient;
-  const relatedServiceData = content.relatedServices.map((slug) => ALL_SERVICES$1.find((s) => s.slug === slug)).filter(Boolean).slice(0, 4);
+  const relatedServiceData = content.relatedServices.map((slug) => ALL_SERVICES.find((s) => s.slug === slug)).filter(Boolean).slice(0, 4);
   const relatedCaseStudies = CASE_STUDIES.filter(
     (cs) => cs.tags.some((tag) => {
       const categoryLower = service.category.toLowerCase();
@@ -7379,8 +7269,7 @@ function ServiceDetail() {
         ] }) }),
         /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-6", children: /* @__PURE__ */ jsxRuntime.jsx(GooglePartnerBadge, { variant: "compact" }) })
       ] }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: `/${params.slug}`, type: "service" })
+    ] })
   ] });
 }
 const PORTFOLIO_IMAGES$1 = {
@@ -8055,8 +7944,7 @@ function CaseStudyDetail() {
           /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/portfolio", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outline", className: "w-full sm:w-auto backdrop-blur bg-white/90 text-gray-900 border-white", "data-testid": "button-case-cta-portfolio", children: "View More Case Studies" }) })
         ] })
       ] }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: `/${id}`, type: "portfolio" })
+    ] })
   ] });
 }
 const labelVariants = classVarianceAuthority.cva(
@@ -8328,10 +8216,11 @@ function Pricing() {
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true },
         transition: { delay: i * 0.1 },
-        children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: `p-5 sm:p-6 h-full relative ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`, "data-testid": `pricing-card-${tier.name.toLowerCase()}`, children: [
+        className: "h-full",
+        children: /* @__PURE__ */ jsxRuntime.jsxs(Card, { className: `p-6 sm:p-8 h-full relative flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`, "data-testid": `pricing-card-${tier.name.toLowerCase()}`, children: [
           tier.discount && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -top-3 right-4", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { "data-testid": `badge-discount-${tier.name.toLowerCase()}`, children: tier.discount }) }),
           tier.popular && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "absolute -top-3 left-4", children: /* @__PURE__ */ jsxRuntime.jsx(Badge, { variant: "secondary", children: "Most Popular" }) }),
-          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-6 sm:mb-8", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-center mb-6", children: [
             /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg sm:text-xl font-semibold text-foreground mb-1", children: tier.name }),
             /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-4", children: tier.description }),
             /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-baseline justify-center gap-1 mb-1", children: [
@@ -8340,11 +8229,11 @@ function Pricing() {
             ] }),
             /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: "Month-to-month, cancel anytime" })
           ] }),
-          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-2.5 mb-6 sm:mb-8", children: tier.features.map((f) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex items-start gap-2 text-sm", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("ul", { className: "space-y-3 flex-1", children: tier.features.map((f) => /* @__PURE__ */ jsxRuntime.jsxs("li", { className: "flex items-start gap-2 text-sm", children: [
             /* @__PURE__ */ jsxRuntime.jsx(lucideReact.CheckCircle2, { className: "w-4 h-4 text-primary flex-shrink-0 mt-0.5" }),
             /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-muted-foreground", children: f })
           ] }, f)) }),
-          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", children: /* @__PURE__ */ jsxRuntime.jsxs(
+          /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/book-demo", className: "block mt-6", children: /* @__PURE__ */ jsxRuntime.jsxs(
             Button,
             {
               className: "w-full",
@@ -8373,8 +8262,7 @@ function Pricing() {
           /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
         ] }) })
       ] }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/pricing", type: "page" })
+    ] })
   ] });
 }
 const Input = React__namespace.forwardRef(
@@ -8675,8 +8563,7 @@ function Contact() {
         title: "Infinite Rankers Location",
         "data-testid": "map-embed"
       }
-    ) }) }) }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/contact", type: "page" })
+    ) }) }) })
   ] });
 }
 function Blog() {
@@ -8997,8 +8884,7 @@ function BlogPost() {
           /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowRight, { className: "w-4 h-4 ml-1" })
         ] }) })
       ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: `/${slug}`, type: "blog" })
+    ] })
   ] });
 }
 const Select = SelectPrimitive__namespace.Root;
@@ -9377,8 +9263,7 @@ function BookDemo() {
           /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-xs text-muted-foreground", children: "We take on a limited number of new clients each month to ensure quality results." })
         ] }) })
       ] })
-    ] }) }) }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/book-demo", type: "page" })
+    ] }) }) })
   ] });
 }
 const LANDING_PAGES$1 = [
@@ -11049,7 +10934,7 @@ function LandingPage({ slug }) {
     return /* @__PURE__ */ jsxRuntime.jsx(NotFound, {});
   }
   const relatedPages = page.relatedLandingPages.map((slug2) => ALL_LANDING_PAGES.find((p) => p.slug === slug2)).filter(Boolean);
-  const relatedServiceData = page.relatedServices.map((slug2) => ALL_SERVICES$1.find((s) => s.slug === slug2)).filter(Boolean);
+  const relatedServiceData = page.relatedServices.map((slug2) => ALL_SERVICES.find((s) => s.slug === slug2)).filter(Boolean);
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
     /* @__PURE__ */ jsxRuntime.jsx(
       SEOHead,
@@ -12074,8 +11959,7 @@ function Terms() {
         /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/privacy", className: "text-blue-600 hover:underline", "data-testid": "link-privacy-from-terms", children: "Privacy Policy" }),
         " for information on how we handle your data."
       ] }) })
-    ] }) }) }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/terms", type: "page" })
+    ] }) }) })
   ] });
 }
 function Privacy() {
@@ -12287,8 +12171,7 @@ function Privacy() {
         /* @__PURE__ */ jsxRuntime.jsx(wouter.Link, { href: "/terms", className: "text-blue-600 hover:underline", "data-testid": "link-terms-from-privacy", children: "Terms of Service" }),
         " for the terms governing your use of our services."
       ] }) })
-    ] }) }) }),
-    /* @__PURE__ */ jsxRuntime.jsx(RelatedLinks, { currentPath: "/privacy", type: "page" })
+    ] }) }) })
   ] });
 }
 const MAIN_PAGES = [
@@ -12637,7 +12520,7 @@ function AdminDashboard() {
 }
 function SmartPage({ params }) {
   const slug = params.slug;
-  if (ALL_SERVICES$1.some((s) => s.slug === slug)) return /* @__PURE__ */ jsxRuntime.jsx(ServiceDetail, {});
+  if (ALL_SERVICES.some((s) => s.slug === slug)) return /* @__PURE__ */ jsxRuntime.jsx(ServiceDetail, {});
   if (getBlogPostBySlug(slug)) return /* @__PURE__ */ jsxRuntime.jsx(BlogPost, {});
   if (CASE_STUDIES.some((cs) => cs.id === slug)) return /* @__PURE__ */ jsxRuntime.jsx(CaseStudyDetail, {});
   return /* @__PURE__ */ jsxRuntime.jsx(LandingPage, { slug });

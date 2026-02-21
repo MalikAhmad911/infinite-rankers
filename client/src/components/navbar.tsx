@@ -57,14 +57,11 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+      <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-white/80 backdrop-blur-xl border-b border-gray-200/60 shadow-sm"
-            : "bg-transparent"
+            ? "bg-white/90 backdrop-blur-xl border-b border-gray-200/60 shadow-sm"
+            : "bg-white/60 backdrop-blur-md"
         }`}
         data-testid="navbar"
       >
@@ -148,7 +145,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       <AnimatePresence>
         {megaMenuOpen && (

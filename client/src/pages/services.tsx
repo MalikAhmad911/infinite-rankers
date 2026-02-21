@@ -31,12 +31,12 @@ const catIcons: Record<string, any> = {
 
 export default function Services() {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <SEOHead
         title="Services - Infinite Rankers | AI Automation & Revenue Growth"
         description="Explore our complete suite of AI automation, lead generation, social media, and development services designed to grow your revenue."
       />
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-100/40 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,11 +44,11 @@ export default function Services() {
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
               Our Services
             </span>
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight">
+            <h1 className="font-bold text-foreground mb-6 leading-tight" style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
               Complete AI Revenue{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Growth Systems</span>
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }}>
               From AI automation to lead generation, social media to custom development — every system is designed to generate customers and grow your revenue.
             </p>
           </motion.div>
@@ -60,7 +60,7 @@ export default function Services() {
         return (
           <section
             key={cat.id}
-            className={`py-20 lg:py-28 ${catIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`}
+            className={`py-16 sm:py-20 lg:py-24 overflow-hidden ${catIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`}
             data-testid={`section-${cat.id}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,23 +74,23 @@ export default function Services() {
                   <CatIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground">{cat.title}</h2>
-                  <p className="text-muted-foreground">{cat.description}</p>
+                  <h2 className="font-bold text-foreground" style={{ fontSize: "clamp(1.25rem, 3vw, 1.875rem)" }}>{cat.title}</h2>
+                  <p className="text-sm sm:text-base text-muted-foreground">{cat.description}</p>
                 </div>
               </motion.div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {cat.services.map((service, i) => {
                   const Icon = iconMap[service.icon] || Zap;
                   return (
                     <Link key={service.slug} href={`/${service.slug}`}>
-                      <GlassCard delay={i * 0.05} className="cursor-pointer h-full">
+                      <GlassCard delay={i * 0.05} className="cursor-pointer h-full flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                         <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4">
                           <Icon className="w-5 h-5 text-blue-600" />
                         </div>
-                        <h3 className="text-lg font-semibold text-foreground mb-2">{service.title}</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-4">{service.shortDesc}</p>
-                        <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600">
+                        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">{service.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">{service.shortDesc}</p>
+                        <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-auto">
                           Explore Service <ArrowRight className="w-3 h-3" />
                         </span>
                       </GlassCard>
@@ -103,18 +103,18 @@ export default function Services() {
         );
       })}
 
-      <section className="py-20 lg:py-28 relative overflow-hidden">
+      <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            <h2 className="font-bold text-white mb-6" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
               Not Sure Which System You Need?
             </h2>
-            <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-white/80 mb-8 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }}>
               Book a free strategy session and we'll build a custom AI revenue plan for your business.
             </p>
             <Link href="/book-demo">
-              <Button variant="secondary" data-testid="button-services-cta">
+              <Button variant="secondary" className="w-full sm:w-auto" data-testid="button-services-cta">
                 Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>

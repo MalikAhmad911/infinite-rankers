@@ -268,8 +268,9 @@ export default function Pricing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
+                className="h-full"
               >
-                <Card className={`p-5 sm:p-6 h-full relative ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-card-${tier.name.toLowerCase()}`}>
+                <Card className={`p-6 sm:p-8 h-full relative flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-card-${tier.name.toLowerCase()}`}>
                   {tier.discount && (
                     <div className="absolute -top-3 right-4">
                       <Badge data-testid={`badge-discount-${tier.name.toLowerCase()}`}>{tier.discount}</Badge>
@@ -280,7 +281,7 @@ export default function Pricing() {
                       <Badge variant="secondary">Most Popular</Badge>
                     </div>
                   )}
-                  <div className="text-center mb-6 sm:mb-8">
+                  <div className="text-center mb-6">
                     <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-1">{tier.name}</h3>
                     <p className="text-sm text-muted-foreground mb-4">{tier.description}</p>
                     <div className="flex items-baseline justify-center gap-1 mb-1">
@@ -289,7 +290,7 @@ export default function Pricing() {
                     </div>
                     <p className="text-xs text-muted-foreground">Month-to-month, cancel anytime</p>
                   </div>
-                  <ul className="space-y-2.5 mb-6 sm:mb-8">
+                  <ul className="space-y-3 flex-1">
                     {tier.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm">
                         <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
@@ -297,7 +298,7 @@ export default function Pricing() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/book-demo">
+                  <Link href="/book-demo" className="block mt-6">
                     <Button
                       className="w-full"
                       variant={tier.popular ? "default" : "outline"}

@@ -92,9 +92,9 @@ export default function BookDemo() {
   };
 
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {seo}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
         <div className="absolute top-10 right-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,24 +102,24 @@ export default function BookDemo() {
             <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
               Book a Demo
             </span>
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight">
+            <h1 className="font-bold text-foreground mb-6 leading-tight" style={{ fontSize: "clamp(1.75rem, 5vw, 3rem)" }}>
               Get Your Free{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Strategy Session</span>
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }}>
               See how our AI revenue systems can be customized for your business. 30-minute strategy call — no obligation.
             </p>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28">
+      <section className="py-16 sm:py-20 lg:py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-5 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
             <div className="lg:col-span-3">
               <GlassCard>
-                <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                  <CalendarCheck className="w-5 h-5 text-blue-600" />
+                <h2 className="font-bold text-foreground mb-6 flex items-center gap-2" style={{ fontSize: "clamp(1.125rem, 3vw, 1.25rem)" }}>
+                  <CalendarCheck className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   Schedule Your Session
                 </h2>
 
@@ -130,7 +130,7 @@ export default function BookDemo() {
                 >
                   <div>
                     <Label className="text-sm font-medium mb-3 block">Select a Date *</Label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {dates.map((d) => (
                         <Button
                           key={d.value}
@@ -153,7 +153,7 @@ export default function BookDemo() {
                   {selectedDate && (
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                       <Label className="text-sm font-medium mb-3 block">Select a Time *</Label>
-                      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                      <div className="flex flex-wrap gap-2">
                         {timeSlots.map((t) => (
                           <Button
                             key={t}
@@ -176,28 +176,28 @@ export default function BookDemo() {
 
                   <div className="border-t border-border/50 pt-6">
                     <h3 className="text-sm font-semibold text-foreground mb-4">Your Information</h3>
-                    <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="demo-name" className="text-sm mb-1.5 block">Full Name *</Label>
-                        <Input id="demo-name" placeholder="John Smith" {...form.register("name")} data-testid="input-demo-name" />
+                        <Input id="demo-name" placeholder="John Smith" className="w-full" {...form.register("name")} data-testid="input-demo-name" />
                         {form.formState.errors.name && <p className="text-xs text-red-500 mt-1">{form.formState.errors.name.message}</p>}
                       </div>
                       <div>
                         <Label htmlFor="demo-email" className="text-sm mb-1.5 block">Email *</Label>
-                        <Input id="demo-email" type="email" placeholder="john@company.com" {...form.register("email")} data-testid="input-demo-email" />
+                        <Input id="demo-email" type="email" placeholder="john@company.com" className="w-full" {...form.register("email")} data-testid="input-demo-email" />
                         {form.formState.errors.email && <p className="text-xs text-red-500 mt-1">{form.formState.errors.email.message}</p>}
                       </div>
                       <div>
                         <Label htmlFor="demo-phone" className="text-sm mb-1.5 block">Phone</Label>
-                        <Input id="demo-phone" placeholder="(555) 123-4567" {...form.register("phone")} data-testid="input-demo-phone" />
+                        <Input id="demo-phone" placeholder="(555) 123-4567" className="w-full" {...form.register("phone")} data-testid="input-demo-phone" />
                       </div>
                       <div>
                         <Label htmlFor="demo-company" className="text-sm mb-1.5 block">Company</Label>
-                        <Input id="demo-company" placeholder="Your Company" {...form.register("company")} data-testid="input-demo-company" />
+                        <Input id="demo-company" placeholder="Your Company" className="w-full" {...form.register("company")} data-testid="input-demo-company" />
                       </div>
                       <div>
                         <Label htmlFor="demo-website" className="text-sm mb-1.5 block">Website</Label>
-                        <Input id="demo-website" placeholder="www.yourcompany.com" {...form.register("website")} data-testid="input-demo-website" />
+                        <Input id="demo-website" placeholder="www.yourcompany.com" className="w-full" {...form.register("website")} data-testid="input-demo-website" />
                       </div>
                       <div>
                         <Label htmlFor="demo-revenue" className="text-sm mb-1.5 block">Monthly Revenue</Label>
@@ -206,7 +206,7 @@ export default function BookDemo() {
                           name="revenue"
                           render={({ field }) => (
                             <Select onValueChange={field.onChange} value={field.value || ""}>
-                              <SelectTrigger data-testid="select-demo-revenue">
+                              <SelectTrigger className="w-full" data-testid="select-demo-revenue">
                                 <SelectValue placeholder="Select range" />
                               </SelectTrigger>
                               <SelectContent>
@@ -226,6 +226,7 @@ export default function BookDemo() {
                       <Input
                         id="demo-service"
                         placeholder="e.g. AI Calling Agent, Lead Generation, SEO..."
+                        className="w-full"
                         {...form.register("service")}
                         data-testid="input-demo-service"
                       />
@@ -235,7 +236,7 @@ export default function BookDemo() {
                       <Textarea
                         id="demo-message"
                         placeholder="Tell us about your biggest growth challenge..."
-                        className="resize-none min-h-[80px]"
+                        className="resize-none min-h-[80px] w-full"
                         {...form.register("message")}
                         data-testid="input-demo-message"
                       />
@@ -256,7 +257,7 @@ export default function BookDemo() {
 
             <div className="lg:col-span-2 space-y-6">
               <GlassCard>
-                <h3 className="text-lg font-semibold text-foreground mb-4">What to Expect</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">What to Expect</h3>
                 <ul className="space-y-3">
                   {[
                     "30-minute strategy call with an AI growth expert",
