@@ -221,6 +221,40 @@ export function registerSitemapRoutes(app: Express) {
     res.set("Cache-Control", "public, max-age=3600");
     res.send(buildCrawlHub(allUrls));
   });
+
+  const INDEXNOW_KEY = "ab46281059004b0585c391ab6b289a5e";
+
+  app.get(`/${INDEXNOW_KEY}.txt`, (_req, res) => {
+    res.set("Content-Type", "text/plain; charset=utf-8");
+    res.set("Cache-Control", "public, max-age=86400");
+    res.send(INDEXNOW_KEY);
+  });
+
+  app.get("/api/indexnow-submit", async (_req, res) => {
+    const allUrls = getAllURLs();
+    const payload = {
+      host: "infiniterankers.io",
+      key: INDEXNOW_KEY,
+      keyLocation: `${BASE}/${INDEXNOW_KEY}.txt`,
+      urlList: allUrls,
+    };
+    try {
+      const resp = await fetch("https://api.indexnow.org/IndexNow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+      res.json({
+        success: resp.ok,
+        status: resp.status,
+        statusText: resp.statusText,
+        urlsSubmitted: allUrls.length,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (e: any) {
+      res.json({ success: false, error: e.message });
+    }
+  });
 }
 
 function buildIndexingChecklist(): string {
