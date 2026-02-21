@@ -1,6 +1,5 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { Switch, Route, Router as WouterRouter } from "wouter";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -37,7 +36,7 @@ function SmartPage({ params }: { params: { slug: string } }) {
   return <LandingPage slug={slug} />;
 }
 
-function Router() {
+function AppRouter() {
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -62,25 +61,38 @@ function Router() {
   );
 }
 
-function App() {
-  return (
+const isServer = typeof window === "undefined";
+
+const defaultQueryClient = isServer ? new QueryClient() : new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
+
+function App({ ssrUrl, queryClient }: { ssrUrl?: string; queryClient?: QueryClient }) {
+  const qc = queryClient || defaultQueryClient;
+  const content = (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={qc}>
         <TooltipProvider>
           <div className="min-h-screen bg-background">
-            <ScrollToTop />
+            {!isServer && <ScrollToTop />}
             <Navbar />
             <main>
               <Breadcrumbs />
-              <Router />
+              <AppRouter />
             </main>
             <Footer />
           </div>
-          <Toaster />
+          {!isServer && <Toaster />}
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );
+
+  if (ssrUrl) {
+    return <WouterRouter ssrPath={ssrUrl}>{content}</WouterRouter>;
+  }
+
+  return content;
 }
 
 export default App;

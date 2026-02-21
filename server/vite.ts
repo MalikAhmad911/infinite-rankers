@@ -42,14 +42,26 @@ export async function setupVite(server: Server, app: Express) {
         "index.html",
       );
 
-      // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
       template = template.replace(
-        `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`,
+        `src="/src/entry-client.tsx"`,
+        `src="/src/entry-client.tsx?v=${nanoid()}"`,
       );
-      const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+      template = await vite.transformIndexHtml(url, template);
+
+      let appHtml = "";
+      try {
+        const mod = await vite.ssrLoadModule("/src/entry-server.tsx");
+        console.log("SSR module loaded, keys:", Object.keys(mod));
+        appHtml = mod.render(url);
+        console.log("SSR rendered", url, "length:", appHtml.length);
+      } catch (e) {
+        vite.ssrFixStacktrace(e as Error);
+        console.error("SSR error:", e);
+      }
+
+      const html = template.replace("<!--ssr-outlet-->", appHtml);
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);

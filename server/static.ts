@@ -13,10 +13,37 @@ export function serveStatic(app: Express) {
 
   app.use(express.static(distPath));
 
+  let render: ((url: string) => string) | null = null;
+  const ssrPath = path.resolve(__dirname, "ssr", "entry-server.cjs");
+  if (fs.existsSync(ssrPath)) {
+    try {
+      const ssrModule = require(ssrPath);
+      render = ssrModule.render;
+      console.log("SSR module loaded successfully");
+    } catch (e) {
+      console.warn("SSR module failed to load, falling back to CSR:", e);
+    }
+  }
+
+  const indexPath = path.resolve(distPath, "index.html");
+  const template = fs.readFileSync(indexPath, "utf-8");
+
   app.use("/{*path}", (req, res) => {
-    const indexPath = path.resolve(distPath, "index.html");
-    let html = fs.readFileSync(indexPath, "utf-8");
+    let html = template;
+
+    if (render) {
+      try {
+        const appHtml = render(req.originalUrl);
+        html = html.replace("<!--ssr-outlet-->", appHtml);
+      } catch (e) {
+        console.error("SSR render error for", req.originalUrl, e);
+      }
+    }
+
     html = injectSEO(html, req.originalUrl);
-    res.status(200).set({ "Content-Type": "text/html" }).end(html);
+    res.status(200).set({
+      "Content-Type": "text/html",
+      "Cache-Control": "no-cache",
+    }).end(html);
   });
 }
