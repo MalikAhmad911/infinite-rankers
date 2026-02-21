@@ -40,7 +40,8 @@ const METRIC_GRADIENTS = [
 ];
 
 export default function CaseStudyDetail() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ slug: string }>();
+  const id = params.slug;
   const csIndex = CASE_STUDIES.findIndex((cs) => cs.id === id);
   const cs = CASE_STUDIES[csIndex];
 
