@@ -311,21 +311,21 @@ export default function ServiceDetail() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <Card className={`p-5 sm:p-6 h-full relative ${i === 1 ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-tier-${tier.name.toLowerCase()}`}>
+                  <Card className={`p-6 sm:p-8 h-full relative flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${i === 1 ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-tier-${tier.name.toLowerCase()}`}>
                     {i === 1 && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                         <Badge variant="secondary">Most Popular</Badge>
                       </div>
                     )}
-                    <div className="text-center mb-5">
-                      <h3 className="text-base font-semibold text-foreground mb-3">{tier.name}</h3>
+                    <div className="text-center mb-6">
+                      <h3 className="text-lg font-semibold text-foreground mb-3">{tier.name}</h3>
                       <div className="flex items-baseline justify-center gap-1">
                         <span className="text-3xl sm:text-4xl font-bold text-foreground">${tier.price.toLocaleString()}</span>
                         <span className="text-sm text-muted-foreground">{pricing.unit}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">Month-to-month</p>
                     </div>
-                    <ul className="space-y-2 mb-6">
+                    <ul className="space-y-2.5 flex-1">
                       {tier.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
                           <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
@@ -333,11 +333,13 @@ export default function ServiceDetail() {
                         </li>
                       ))}
                     </ul>
-                    <Link href={`/book-demo?service=${encodeURIComponent(service.title)}`}>
-                      <Button className="w-full" variant={i === 1 ? "default" : "outline"} data-testid={`button-get-started-${tier.name.toLowerCase()}`}>
-                        Get Started <ArrowRight className="w-4 h-4 ml-1" />
-                      </Button>
-                    </Link>
+                    <div className="mt-8">
+                      <Link href={`/book-demo?service=${encodeURIComponent(service.title)}`}>
+                        <Button className="w-full" variant={i === 1 ? "default" : "outline"} data-testid={`button-get-started-${tier.name.toLowerCase()}`}>
+                          Get Started <ArrowRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </Link>
+                    </div>
                   </Card>
                 </motion.div>
               ))}
