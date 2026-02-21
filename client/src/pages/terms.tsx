@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import SEOHead from "@/components/seo-head";
-import RelatedLinks from "@/components/related-links";
 import { COMPANY } from "@/lib/constants";
 
 export default function Terms() {
@@ -147,7 +146,6 @@ export default function Terms() {
           </motion.div>
         </div>
       </section>
-      <RelatedLinks currentPath="/terms" type="page" />
     </>
   );
 }

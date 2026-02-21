@@ -11,7 +11,6 @@ import SectionHeader from "@/components/section-header";
 import GlassCard from "@/components/glass-card";
 import { PRICING_TIERS, SERVICE_PRICING } from "@/lib/constants";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
-import RelatedLinks from "@/components/related-links";
 import {
   ArrowRight, CheckCircle2, Shield, Clock, DollarSign,
   ChevronDown, ChevronUp,
@@ -333,7 +332,6 @@ export default function Pricing() {
           </motion.div>
         </div>
       </section>
-      <RelatedLinks currentPath="/pricing" type="page" />
     </div>
   );
 }

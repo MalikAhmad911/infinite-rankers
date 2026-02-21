@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import GlassCard from "@/components/glass-card";
-import RelatedLinks from "@/components/related-links";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -299,7 +298,6 @@ export default function BookDemo() {
           </div>
         </div>
       </section>
-      <RelatedLinks currentPath="/book-demo" type="page" />
     </div>
   );
 }

@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 import { ArrowLeft, ArrowRight, Clock, Calendar, User, Share2 } from "lucide-react";
-import RelatedLinks from "@/components/related-links";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -239,7 +238,6 @@ export default function BlogPost() {
         </div>
       </section>
 
-      <RelatedLinks currentPath={`/${slug}`} type="blog" />
     </div>
   );
 }

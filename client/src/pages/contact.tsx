@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import SEOHead from "@/components/seo-head";
 import GlassCard from "@/components/glass-card";
-import RelatedLinks from "@/components/related-links";
 import { COMPANY } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -215,7 +214,6 @@ export default function Contact() {
           </div>
         </div>
       </section>
-      <RelatedLinks currentPath="/contact" type="page" />
     </div>
   );
 }
