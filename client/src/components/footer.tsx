@@ -51,7 +51,7 @@ export default function Footer() {
 
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <div className="flex items-center gap-1.5 mb-3">
-              <img src="/images/logo-icon-white.png" alt="Infinite Rankers" className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
+              <img src="/images/logo-icon-white.png" alt="Infinite Rankers" className="w-8 h-8 sm:w-9 sm:h-9 object-contain" width="36" height="36" loading="lazy" />
               <span className="font-bold text-sm sm:text-base text-white">{COMPANY.name}</span>
             </div>
             <p className="text-xs sm:text-sm text-gray-400 mb-4 leading-relaxed max-w-xs">
