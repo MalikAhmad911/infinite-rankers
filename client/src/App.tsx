@@ -1,3 +1,4 @@
+import React from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -19,12 +20,12 @@ import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import BookDemo from "@/pages/book-demo";
 import LandingPage from "@/pages/landing-page";
-import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import Terms from "@/pages/terms";
 import Privacy from "@/pages/privacy";
 import SitemapPage from "@/pages/sitemap-page";
 import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
+import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
 import { getBlogPostBySlug } from "@/lib/blog-data";
 

@@ -259,9 +259,10 @@ export default function AIChatbot() {
                 variant="ghost"
                 onClick={() => setIsOpen(false)}
                 className="text-white"
+                aria-label="Close chat"
                 data-testid="button-chatbot-close"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </Button>
             </div>
 
@@ -368,12 +369,13 @@ export default function AIChatbot() {
                   variant="ghost"
                   disabled={!input.trim() || isStreaming}
                   className="shrink-0"
+                  aria-label="Send message"
                   data-testid="button-chatbot-send"
                 >
                   {isStreaming ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                   ) : (
-                    <Send className="w-4 h-4" />
+                    <Send className="w-4 h-4" aria-hidden="true" />
                   )}
                 </Button>
               </div>
@@ -396,9 +398,10 @@ export default function AIChatbot() {
               <button
                 onClick={(e) => { e.stopPropagation(); setShowBubble(false); setBubbleDismissed(true); }}
                 className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-500 text-white flex items-center justify-center text-xs leading-none"
+                aria-label="Dismiss notification"
                 data-testid="button-bubble-close"
               >
-                <X className="w-3 h-3" />
+                <X className="w-3 h-3" aria-hidden="true" />
               </button>
               <p
                 className="text-sm text-gray-800 font-medium cursor-pointer"
@@ -413,6 +416,9 @@ export default function AIChatbot() {
       </AnimatePresence>
 
       <motion.div
+        role="button"
+        aria-label={isOpen ? "Close chat" : "Open chat"}
+        tabIndex={0}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.5, type: "spring", stiffness: 200 }}

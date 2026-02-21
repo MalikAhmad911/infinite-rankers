@@ -29,8 +29,8 @@ export default function ChatbotPlaceholder() {
                   <div className="text-xs text-white/70">Online</div>
                 </div>
               </div>
-              <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)} className="text-white">
-                <X className="w-4 h-4" />
+              <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)} className="text-white" aria-label="Close chat">
+                <X className="w-4 h-4" aria-hidden="true" />
               </Button>
             </div>
             <div className="p-4 h-64 flex flex-col">
@@ -50,8 +50,8 @@ export default function ChatbotPlaceholder() {
                   disabled
                   data-testid="input-chatbot"
                 />
-                <Button size="icon" disabled>
-                  <Send className="w-4 h-4" />
+                <Button size="icon" disabled aria-label="Send message">
+                  <Send className="w-4 h-4" aria-hidden="true" />
                 </Button>
               </div>
             </div>
@@ -65,9 +65,10 @@ export default function ChatbotPlaceholder() {
         transition={{ delay: 1, type: "spring" }}
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg flex items-center justify-center"
+        aria-label={isOpen ? "Close chat" : "Open chat"}
         data-testid="button-chatbot-toggle"
       >
-        {isOpen ? <X className="w-5 h-5" /> : <MessageSquare className="w-5 h-5" />}
+        {isOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <MessageSquare className="w-5 h-5" aria-hidden="true" />}
       </motion.button>
     </>
   );

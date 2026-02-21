@@ -58,6 +58,7 @@ export default function Navbar() {
   return (
     <>
       <nav
+        aria-label="Main navigation"
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
             ? "bg-white/90 backdrop-blur-xl border-b border-gray-200/60 shadow-sm"
@@ -93,10 +94,13 @@ export default function Navbar() {
                           : "text-gray-600 hover:text-gray-900"
                       }`}
                       onClick={() => setMegaMenuOpen((prev) => !prev)}
+                      aria-expanded={megaMenuOpen}
+                      aria-haspopup="true"
                       data-testid="link-nav-services"
                     >
                       {link.label}
                       <ChevronDown
+                        aria-hidden="true"
                         className={`w-3.5 h-3.5 transition-transform duration-200 ${
                           megaMenuOpen ? "rotate-180" : ""
                         }`}
@@ -134,12 +138,14 @@ export default function Navbar() {
                 variant="ghost"
                 className="lg:hidden"
                 onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label="Toggle menu"
+                aria-expanded={mobileOpen}
                 data-testid="button-mobile-menu"
               >
                 {mobileOpen ? (
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5" aria-hidden="true" />
                 ) : (
-                  <Menu className="w-5 h-5" />
+                  <Menu className="w-5 h-5" aria-hidden="true" />
                 )}
               </Button>
             </div>
@@ -223,6 +229,7 @@ export default function Navbar() {
                           : "text-gray-600"
                       }`}
                       onClick={() => setMobileServicesOpen((prev) => !prev)}
+                      aria-expanded={mobileServicesOpen}
                       data-testid="link-mobile-services"
                     >
                       <span>{link.label}</span>

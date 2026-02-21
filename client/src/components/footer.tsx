@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { COMPANY } from "@/lib/constants";
 import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+// Icons used decoratively alongside text - aria-hidden added inline
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
 
 const QUICK_LINKS = [
@@ -57,14 +58,14 @@ export default function Footer() {
               AI Revenue Growth Agency. Automated systems that generate customers and revenue for businesses worldwide.
             </p>
             <div className="space-y-2 mb-5">
-              <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-email">
-                <Mail className="w-3.5 h-3.5 flex-shrink-0" /> {COMPANY.email}
+              <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" aria-label={`Email us at ${COMPANY.email}`} data-testid="link-footer-email">
+                <Mail className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" /> {COMPANY.email}
               </a>
-              <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-phone">
-                <Phone className="w-3.5 h-3.5 flex-shrink-0" /> {COMPANY.phone}
+              <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" aria-label={`Call us at ${COMPANY.phone}`} data-testid="link-footer-phone">
+                <Phone className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" /> {COMPANY.phone}
               </a>
               <div className="flex items-start gap-2 text-xs sm:text-sm text-gray-400">
-                <MapPin className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" /> {COMPANY.address}
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" aria-hidden="true" /> {COMPANY.address}
               </div>
             </div>
             <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 mb-4">
@@ -128,8 +129,8 @@ export default function Footer() {
               {PARTNER_LINKS.map((link) => (
                 <li key={link.href}>
                   {link.external ? (
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid={`link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
-                      {link.label} <ExternalLink className="w-3 h-3" />
+                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" aria-label={`${link.label} (opens in new tab)`} data-testid={`link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
+                      {link.label} <ExternalLink className="w-3 h-3" aria-hidden="true" />
                     </a>
                   ) : (
                     <Link href={link.href}>

@@ -218,7 +218,7 @@ function HeroSection() {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <Badge variant="secondary" className="mb-4 sm:mb-6" data-testid="badge-hero-agency">
-              <Sparkles className="w-3 h-3 mr-1" /> AI Revenue Growth Agency
+              <Sparkles className="w-3 h-3 mr-1" aria-hidden="true" /> AI Revenue Growth Agency
             </Badge>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-[1.12] mb-4 sm:mb-6" style={{ fontSize: "clamp(1.75rem, 5vw, 3.75rem)" }}>
               Turn Your Business Into an{" "}
@@ -248,7 +248,7 @@ function HeroSection() {
                 { icon: Users, text: "9,500+ Clients" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-500" data-testid={`trust-${item.text.toLowerCase().replace(/\s/g, "-")}`}>
-                  <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
+                  <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" aria-hidden="true" />
                   <span>{item.text}</span>
                 </div>
               ))}
@@ -920,7 +920,7 @@ function PricingSection() {
           className="text-center mb-10 sm:mb-14"
         >
           <Badge variant="secondary" className="mb-4" data-testid="badge-pricing">
-            <DollarSign className="w-3 h-3 mr-1" /> Transparent Pricing
+            <DollarSign className="w-3 h-3 mr-1" aria-hidden="true" /> Transparent Pricing
           </Badge>
           <h2 className="font-bold text-gray-900 mb-3 sm:mb-4" style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}>
             Transparent, Results-Driven Pricing
@@ -981,9 +981,9 @@ function PricingSection() {
         <div className="text-center mt-8">
           <div className="flex flex-col items-center mb-6">
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground">
-              <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
-              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
+              <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" aria-hidden="true" /> No Hidden Fees</span>
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" aria-hidden="true" /> Month-to-Month</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" aria-hidden="true" /> Cancel Anytime</span>
             </div>
             <div className="mt-3">
               <GooglePartnerBadge variant="inline" />
@@ -1123,7 +1123,7 @@ function FinalCTASection() {
               { icon: CheckCircle2, text: "Money-Back Guarantee" },
             ].map((item) => (
               <div key={item.text} className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-400">
-                <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" />
+                <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
                 <span>{item.text}</span>
               </div>
             ))}
