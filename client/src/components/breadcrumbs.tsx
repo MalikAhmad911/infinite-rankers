@@ -69,14 +69,18 @@ export function getBreadcrumbSchema(path: string): object {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": crumbs.map((crumb, i) => ({
-      "@type": "ListItem",
-      "position": i + 1,
-      "name": crumb.label,
-      "item": crumb.href
-        ? `https://infiniterankers.io${crumb.href === "/" ? "" : crumb.href}`
-        : `https://infiniterankers.io${path}`
-    }))
+    "itemListElement": crumbs.map((crumb, i) => {
+      const isLast = i === crumbs.length - 1;
+      const item: Record<string, unknown> = {
+        "@type": "ListItem",
+        "position": i + 1,
+        "name": crumb.label,
+      };
+      if (!isLast && crumb.href) {
+        item["item"] = `https://infiniterankers.io${crumb.href === "/" ? "" : crumb.href}`;
+      }
+      return item;
+    })
   };
 }
 

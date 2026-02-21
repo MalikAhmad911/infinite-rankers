@@ -200,12 +200,18 @@ function getBreadcrumbs(path: string, seo: SEOMeta): object {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": items.map((item, i) => ({
-      "@type": "ListItem",
-      "position": i + 1,
-      "name": item.name,
-      "item": item.url,
-    })),
+    "itemListElement": items.map((item, i) => {
+      const isLast = i === items.length - 1;
+      const entry: Record<string, unknown> = {
+        "@type": "ListItem",
+        "position": i + 1,
+        "name": item.name,
+      };
+      if (!isLast) {
+        entry["item"] = item.url;
+      }
+      return entry;
+    }),
   };
 }
 
