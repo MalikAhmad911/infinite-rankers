@@ -5,3 +5,4 @@ import "./index.css";
 const root = document.getElementById("root")!;
 root.innerHTML = "";
 createRoot(root).render(<App />);
+root.classList.add("ready");
