@@ -233,17 +233,40 @@ function getStructuredData(url: string, seo: SEOMeta): string {
   const breadcrumb = getBreadcrumbs(path, seo);
   let mainSchema: object;
 
+  const SITE_NAV_SCHEMA = {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "name": "Main Navigation",
+    "hasPart": [
+      { "@type": "WebPage", "name": "Services", "description": "30+ AI-powered marketing and automation services to grow your business revenue.", "url": `${BASE_URL}/services` },
+      { "@type": "WebPage", "name": "Portfolio", "description": "Case studies and success stories from businesses we've helped grow with AI automation.", "url": `${BASE_URL}/portfolio` },
+      { "@type": "WebPage", "name": "Blog", "description": "Expert insights on AI automation, digital marketing, lead generation, and revenue growth strategies.", "url": `${BASE_URL}/blog` },
+      { "@type": "WebPage", "name": "About", "description": "Learn about Infinite Rankers — AI Revenue Growth Agency helping businesses across the USA.", "url": `${BASE_URL}/about` },
+      { "@type": "WebPage", "name": "Contact Us", "description": "Get in touch with Infinite Rankers for AI automation and digital marketing solutions.", "url": `${BASE_URL}/contact` },
+      { "@type": "WebPage", "name": "Pricing", "description": "Transparent pricing plans for AI automation, marketing, and lead generation services.", "url": `${BASE_URL}/pricing` },
+      { "@type": "WebPage", "name": "Book a Demo", "description": "Schedule a free strategy call to see how AI automation can grow your business.", "url": `${BASE_URL}/book-demo` }
+    ]
+  };
+
   if (path === "/") {
     mainSchema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Infinite Rankers",
+      "alternateName": "Infinite Rankers AI Agency",
       "url": BASE_URL,
       "description": seo.description,
       "publisher": ORG_SCHEMA,
-      "potentialAction": { "@type": "SearchAction", "target": `${BASE_URL}/{search_term_string}`, "query-input": "required name=search_term_string" }
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `${BASE_URL}/services?q={search_term_string}`
+        },
+        "query-input": "required name=search_term_string"
+      }
     };
-    return JSON.stringify(mainSchema);
+    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(SITE_NAV_SCHEMA)}`;
   }
 
   const ssSlug = path.replace(/^\//, "");
@@ -274,7 +297,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
         "acceptedAnswer": { "@type": "Answer", "text": f.a }
       }))
     } : null;
-    const parts = [JSON.stringify(mainSchema), JSON.stringify(breadcrumb)];
+    const parts = [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)];
     if (faqSchema) parts.push(JSON.stringify(faqSchema));
     return parts.join('</script><script type="application/ld+json">');
   }
@@ -293,7 +316,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "dateModified": new Date().toISOString().split("T")[0],
       "mainEntityOfPage": { "@type": "WebPage", "@id": seo.canonical }
     };
-    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
+    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
   }
 
   if (isCasePage) {
@@ -305,7 +328,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": seo.canonical,
       "author": ORG_SCHEMA
     };
-    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
+    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
   }
 
   if (path === "/about") {
@@ -317,7 +340,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": seo.canonical,
       "mainEntity": ORG_SCHEMA
     };
-    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
+    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
   }
 
   if (path === "/contact") {
@@ -329,7 +352,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": seo.canonical,
       "mainEntity": ORG_SCHEMA
     };
-    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
+    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
   }
 
   if (path === "/pricing") {
@@ -348,7 +371,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
         ]
       }
     };
-    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
+    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
   }
 
   mainSchema = {
@@ -359,7 +382,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
     "url": seo.canonical,
     "publisher": ORG_SCHEMA
   };
-  return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(breadcrumb)}`;
+  return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
 }
 
 export function injectSEO(html: string, url: string): string {
