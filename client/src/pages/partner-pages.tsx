@@ -128,7 +128,7 @@ export function InfiniteRankersAgency() {
     { icon: Cpu, title: "AI-First Approach", desc: "Every solution is built with artificial intelligence at its core, delivering faster results and smarter optimization than traditional agencies." },
     { icon: TrendingUp, title: "Revenue-Focused Results", desc: "We measure success by one metric: your revenue growth. Everything we build directly impacts your bottom line." },
     { icon: Shield, title: "Flexible Plans Available", desc: "Monthly, quarterly, or annual partnerships designed to fit your business goals. Choose the plan that matches your growth ambitions." },
-    { icon: Rocket, title: "Results in 30 Days", desc: "Most clients see measurable improvements within the first month. Our proven frameworks are battle-tested across 9,500+ businesses." },
+    { icon: Rocket, title: "Results in 30 Days", desc: "Most clients see measurable improvements within the first month. Our proven frameworks are battle-tested across 200+ businesses." },
     { icon: Users, title: "Dedicated Growth Team", desc: "Your own team of AI strategists, marketers, designers, and developers working together to scale your revenue." },
     { icon: Clock, title: "24/7 AI Systems", desc: "Our automation systems work around the clock — nights, weekends, holidays — so you never miss a lead or opportunity." },
   ];
@@ -137,7 +137,7 @@ export function InfiniteRankersAgency() {
     <div>
       <SEOHead
         title="Infinite Rankers - AI Revenue Growth Agency | Full-Service Digital Marketing"
-        description="Infinite Rankers is a full-service AI revenue growth agency helping 9,500+ businesses worldwide generate more leads, customers, and revenue with AI-powered marketing automation."
+        description="Infinite Rankers is a full-service AI revenue growth agency helping 200+ businesses worldwide generate more leads, customers, and revenue with AI-powered marketing automation."
         keywords="Infinite Rankers, AI marketing agency, revenue growth agency, digital marketing, AI automation, lead generation, SEO, PPC, social media marketing"
       />
 
@@ -145,15 +145,15 @@ export function InfiniteRankersAgency() {
         label="About Infinite Rankers"
         title="Meet Infinite Rankers — The"
         highlight="AI Revenue Growth Agency"
-        description="Infinite Rankers is a full-service digital marketing agency that combines artificial intelligence with proven marketing strategies to help businesses generate more leads, customers, and revenue. Serving 9,500+ businesses across the USA, UK, and worldwide."
+        description="Infinite Rankers is a full-service digital marketing agency that combines artificial intelligence with proven marketing strategies to help businesses generate more leads, customers, and revenue. Serving 200+ businesses across the USA, UK, and worldwide."
         ctaText="Visit infiniterankers.com"
         ctaHref="https://infiniterankers.com"
       />
 
       <StatsBanner stats={[
-        { value: "9,500+", label: "Clients Worldwide" },
-        { value: "$50M+", label: "Revenue Generated" },
-        { value: "98%", label: "Client Retention" },
+        { value: "200+", label: "Clients Worldwide" },
+        { value: "$4.8M+", label: "Revenue Generated" },
+        { value: "94%", label: "Client Retention" },
         { value: "24/7", label: "AI Systems Active" },
       ]} />
 
@@ -222,7 +222,7 @@ export function InfiniteRankersAgency() {
           <SectionHeader
             label="Why Choose Us"
             title="Why Businesses Trust Infinite Rankers"
-            description="We're not just another marketing agency. Here's what makes Infinite Rankers the growth partner of choice for 9,500+ businesses."
+            description="We're not just another marketing agency. Here's what makes Infinite Rankers the growth partner of choice for 200+ businesses."
           />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {reasons.map((r, i) => (
@@ -294,7 +294,7 @@ export function InfiniteRankersAgency() {
 
       <CTASection
         title="Ready to Grow Your Revenue with AI?"
-        subtitle="Join 9,500+ businesses already using Infinite Rankers to generate more leads, customers, and revenue on autopilot."
+        subtitle="Join 200+ businesses already using Infinite Rankers to generate more leads, customers, and revenue on autopilot."
         buttonText="Visit infiniterankers.com"
         href="https://infiniterankers.com"
       />
@@ -313,10 +313,10 @@ export function InfiniteRankersSEO() {
   ];
 
   const results = [
-    { metric: "Organic Traffic", before: "2,500/mo", after: "28,000/mo", increase: "+1,020%" },
-    { metric: "Keyword Rankings", before: "12 on Page 1", after: "156 on Page 1", increase: "+1,200%" },
-    { metric: "Lead Generation", before: "30 leads/mo", after: "340 leads/mo", increase: "+1,033%" },
-    { metric: "Revenue from SEO", before: "$8K/mo", after: "$95K/mo", increase: "+1,087%" },
+    { metric: "Organic Traffic", before: "2,500/mo", after: "8,200/mo", increase: "+228%" },
+    { metric: "Keyword Rankings", before: "12 on Page 1", after: "42 on Page 1", increase: "+250%" },
+    { metric: "Lead Generation", before: "30 leads/mo", after: "95 leads/mo", increase: "+217%" },
+    { metric: "Revenue from SEO", before: "$8K/mo", after: "$28K/mo", increase: "+250%" },
   ];
 
   return (
@@ -338,8 +338,8 @@ export function InfiniteRankersSEO() {
 
       <StatsBanner stats={[
         { value: "10x", label: "Avg Traffic Increase" },
-        { value: "156+", label: "Page 1 Rankings" },
-        { value: "95%", label: "Client ROI Positive" },
+        { value: "42+", label: "Page 1 Rankings" },
+        { value: "91%", label: "Client ROI Positive" },
         { value: "30 Days", label: "First Results" },
       ]} />
 

@@ -77,8 +77,8 @@ function FloatingGridLines() {
 }
 
 function LiveDashboard() {
-  const [revenue, setRevenue] = useState(47832);
-  const [leads, setLeads] = useState(1247);
+  const [revenue, setRevenue] = useState(12450);
+  const [leads, setLeads] = useState(187);
   const [conversion, setConversion] = useState(12.4);
 
   useEffect(() => {
@@ -195,7 +195,7 @@ function LiveDashboard() {
         >
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <span className="text-[10px] sm:text-xs text-gray-500">Projected Monthly Revenue</span>
-            <span className="text-xs sm:text-sm font-bold text-blue-700">+$48,000</span>
+            <span className="text-xs sm:text-sm font-bold text-blue-700">+$12,500</span>
           </div>
         </motion.div>
       </div>
@@ -245,7 +245,7 @@ function HeroSection() {
               {[
                 { icon: Shield, text: "Flexible Plans Available" },
                 { icon: Clock, text: "Results in 30 Days" },
-                { icon: Users, text: "9,500+ Clients" },
+                { icon: Users, text: "200+ Clients" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-500" data-testid={`trust-${item.text.toLowerCase().replace(/\s/g, "-")}`}>
                   <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" aria-hidden="true" />
@@ -595,9 +595,9 @@ function TrustSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {[
-            { value: "9500+", label: "Clients Worldwide", icon: Users },
-            { value: "$50M+", label: "Revenue Generated", icon: DollarSign },
-            { value: "98%", label: "Client Retention", icon: Award },
+            { value: "200+", label: "Clients Worldwide", icon: Users },
+            { value: "$4.8M+", label: "Revenue Generated", icon: DollarSign },
+            { value: "94%", label: "Client Retention", icon: Award },
             { value: "24/7", label: "AI Systems Active", icon: Cpu },
           ].map((stat, i) => (
             <motion.div
@@ -701,9 +701,9 @@ function TestimonialsCarousel() {
 function TeamSection() {
   const experts = [
     { name: "AI Automation", desc: "Custom AI agents and chatbots that convert leads 24/7", icon: Brain, stat: "200+ Automations Built" },
-    { name: "Revenue Strategy", desc: "Data-driven growth strategies tailored to your business", icon: LineChart, stat: "$50M+ Generated" },
-    { name: "Ad Management", desc: "Google & Meta campaigns optimized by AI for maximum ROAS", icon: Target, stat: "15x Average ROAS" },
-    { name: "Development", desc: "High-converting websites and landing pages that sell", icon: Layers, stat: "9,500+ Projects Delivered" },
+    { name: "Revenue Strategy", desc: "Data-driven growth strategies tailored to your business", icon: LineChart, stat: "$4.8M+ Generated" },
+    { name: "Ad Management", desc: "Google & Meta campaigns optimized by AI for maximum ROAS", icon: Target, stat: "3.8x Average ROAS" },
+    { name: "Development", desc: "High-converting websites and landing pages that sell", icon: Layers, stat: "200+ Projects Delivered" },
   ];
 
   return (
@@ -754,9 +754,9 @@ function TeamSection() {
 
 function ResultsGallery() {
   const results = [
-    { title: "E-Commerce Revenue", before: "$12K/mo", after: "$89K/mo", increase: "+642%", metric: "Monthly Revenue" },
-    { title: "SaaS Lead Generation", before: "50 leads/mo", after: "340 leads/mo", increase: "+580%", metric: "Qualified Leads" },
-    { title: "Local Service Business", before: "15 calls/week", after: "87 calls/week", increase: "+480%", metric: "Inbound Calls" },
+    { title: "E-Commerce Revenue", before: "$12K/mo", after: "$38K/mo", increase: "+217%", metric: "Monthly Revenue" },
+    { title: "SaaS Lead Generation", before: "50 leads/mo", after: "145 leads/mo", increase: "+190%", metric: "Qualified Leads" },
+    { title: "Local Service Business", before: "15 calls/week", after: "42 calls/week", increase: "+180%", metric: "Inbound Calls" },
   ];
 
   return (
@@ -1102,7 +1102,7 @@ function FinalCTASection() {
             </span>
           </h2>
           <p className="text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }}>
-            Join 9,500+ businesses already using AI automation to generate more customers and revenue.
+            Join 200+ businesses already using AI automation to generate more customers and revenue.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <Link href="/book-demo">

@@ -101,7 +101,7 @@ export default function About() {
               { icon: Rocket, title: "Revenue-Focused Results", desc: "We measure success by one metric: your revenue growth. Everything we build is designed to directly impact your bottom line." },
               { icon: Shield, title: "Flexible Plans Available", desc: "We offer monthly, quarterly, and annual partnerships designed to fit your business needs. Choose the plan that works best for your growth goals." },
               { icon: Lightbulb, title: "Full-Stack Automation", desc: "From the first ad impression to closed deal, every touchpoint is automated and optimized for maximum conversion." },
-              { icon: Zap, title: "Speed to Results", desc: "Most clients see measurable improvements within 30 days. Our proven frameworks are battle-tested across 9,500+ businesses." },
+              { icon: Zap, title: "Speed to Results", desc: "Most clients see measurable improvements within 30 days. Our proven frameworks are battle-tested across 200+ businesses." },
             ].map((item, i) => (
               <GlassCard key={item.title} delay={i * 0.08}>
                 <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4">
