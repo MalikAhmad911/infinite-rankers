@@ -57,7 +57,7 @@ script/
 7. Contact - Contact form, Google Maps, business info
 8. Blog - 6 blog post previews
 9. Book Demo - Calendar date picker, time slots, qualification form
-10. Landing Pages (10 pages) - High-converting funnel pages at /:slug with 10 sections each
+10. Landing Pages (19 pages) - High-converting funnel pages at /:slug with 10 sections each (10 location/industry + 9 keyword-targeted SEO pages)
 11. Terms of Service (/terms) - 14-section legal page
 12. Privacy Policy (/privacy) - 14-section privacy page
 

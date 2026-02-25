@@ -58,6 +58,9 @@ function getAllSitemapEntries(): SitemapURL[] {
     "ai-revenue-growth-real-estate", "ai-revenue-growth-healthcare", "ai-revenue-growth-law-firms",
     "ai-revenue-growth-ecommerce", "ai-revenue-growth-restaurants",
     "ai-lead-generation-usa", "ai-marketing-automation-usa",
+    "seo-agency", "seo-consultant", "ppc-agency", "digital-marketing-agency",
+    "social-media-marketing-agency", "content-marketing-services",
+    "email-marketing-services", "branding-agency", "b2b-lead-generation",
   ];
   for (const slug of landingPages) {
     entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.8" });

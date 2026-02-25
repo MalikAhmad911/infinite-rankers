@@ -83,7 +83,7 @@ const CASE_STUDIES: Record<string, { title: string; desc: string }> = {
   "21": { title: "Mortgage Broker Lead System", desc: "How Premier Mortgage Solutions increased qualified applications by 210% with AI pre-qualification." },
 };
 
-const LANDING_PAGES: Record<string, { title: string; desc: string }> = {
+const LANDING_PAGES: Record<string, { title: string; desc: string; faqs?: { q: string; a: string }[] }> = {
   "ai-automation-new-york": { title: "AI Automation Services in New York | Infinite Rankers", desc: "Transform your New York business with AI automation systems that generate leads, book appointments, and grow revenue 24/7. Trusted by 500+ NYC businesses." },
   "ai-automation-los-angeles": { title: "AI Automation Services in Los Angeles | Infinite Rankers", desc: "Grow your Los Angeles business with AI automation that generates leads, books appointments, and increases revenue 24/7. Serving 400+ LA businesses." },
   "ai-automation-chicago": { title: "AI Automation Services in Chicago | Infinite Rankers", desc: "Chicago businesses trust Infinite Rankers for AI automation that drives leads, books appointments, and grows revenue. Serving 350+ Chicagoland businesses." },
@@ -94,6 +94,15 @@ const LANDING_PAGES: Record<string, { title: string; desc: string }> = {
   "ai-revenue-growth-restaurants": { title: "AI Revenue Growth for Restaurants | Infinite Rankers", desc: "AI-powered marketing and automation for restaurants. Increase reservations, online orders, and customer loyalty with intelligent restaurant marketing systems." },
   "ai-lead-generation-usa": { title: "AI Lead Generation for Small Business USA | Infinite Rankers", desc: "AI-powered lead generation systems for small businesses across the USA. Capture, qualify, and convert more leads with intelligent automation that works 24/7." },
   "ai-marketing-automation-usa": { title: "AI Marketing Automation Systems USA | Infinite Rankers", desc: "Complete AI marketing automation for US businesses. Automate email campaigns, social media, ad management, and customer journeys with intelligent AI systems." },
+  "seo-agency": { title: "SEO Agency | Infinite Rankers", desc: "Results-driven SEO agency that increases organic traffic and rankings. Data-backed strategies, technical audits, and content optimization for measurable growth.", faqs: [{ q: "What does an SEO agency do?", a: "An SEO agency optimizes your website to rank higher on Google through technical improvements, content strategy, link building, and ongoing performance tracking." }, { q: "How long does it take to see SEO results?", a: "Most businesses see meaningful ranking improvements within 3-6 months, with compounding traffic growth continuing over 12-18 months." }, { q: "How much does SEO cost?", a: "Our SEO services start at $1,599/month and scale based on competition, industry, and the scope of optimization required." }] },
+  "seo-consultant": { title: "SEO Consultant | Infinite Rankers", desc: "Expert SEO consultant providing audits, keyword strategy, and actionable plans that drive organic growth. Proven results across 500+ businesses.", faqs: [{ q: "What does an SEO consultant do?", a: "An SEO consultant analyzes your website, identifies ranking opportunities, builds a keyword strategy, and provides a roadmap to improve your organic search visibility." }, { q: "Do I need an SEO consultant or an SEO agency?", a: "If you need strategy and guidance, a consultant is ideal. If you need full execution — content, links, and technical fixes — an agency delivers end-to-end results." }, { q: "How do you measure SEO consulting success?", a: "We track keyword rankings, organic traffic growth, lead volume from search, and revenue attributed to organic channels." }] },
+  "ppc-agency": { title: "PPC Agency | Infinite Rankers", desc: "High-performance PPC agency managing Google Ads and Meta Ads campaigns. We maximize ROAS and generate qualified leads at scale.", faqs: [{ q: "What is a PPC agency?", a: "A PPC agency manages pay-per-click advertising campaigns on platforms like Google Ads and Meta Ads, optimizing bids, targeting, and creatives to maximize return on ad spend." }, { q: "What ROAS can I expect from PPC?", a: "Our clients typically achieve 4-6x ROAS within 90 days through AI-optimized bidding, audience targeting, and continuous creative testing." }, { q: "How much should I spend on PPC?", a: "We recommend a minimum monthly ad spend of $2,000 for Google Ads and $1,500 for Meta Ads to generate statistically significant data and meaningful results." }] },
+  "digital-marketing-agency": { title: "Digital Marketing Agency | Infinite Rankers", desc: "Full-service digital marketing agency combining SEO, PPC, social media, and AI automation to drive revenue growth for your business.", faqs: [{ q: "What services does a digital marketing agency provide?", a: "We provide SEO, paid advertising, social media marketing, content creation, email automation, CRM setup, conversion optimization, and AI-powered lead generation." }, { q: "How is Infinite Rankers different from other agencies?", a: "We integrate AI automation into every marketing channel — from AI calling agents to smart email sequences — delivering higher efficiency and ROI than traditional agencies." }, { q: "Do you work with small businesses?", a: "Yes. We serve businesses of all sizes with scalable plans starting at $1,599/month, designed to deliver measurable growth regardless of company size." }] },
+  "social-media-marketing-agency": { title: "Social Media Marketing Agency | Infinite Rankers", desc: "Strategic social media marketing agency managing Instagram, Facebook, LinkedIn, and TikTok to build brand authority and generate leads.", faqs: [{ q: "Which social media platforms do you manage?", a: "We manage Instagram, Facebook, LinkedIn, TikTok, Twitter/X, and YouTube — creating platform-specific content strategies for each." }, { q: "How many posts do you create per month?", a: "Depending on your plan, we create 12-20 posts per month across platforms, including graphics, short-form video, and copywriting." }, { q: "Can social media marketing generate leads?", a: "Absolutely. We combine organic content with paid social campaigns and AI-powered DM automation to turn followers into qualified leads." }] },
+  "content-marketing-services": { title: "Content Marketing Services | Infinite Rankers", desc: "SEO-driven content marketing services that build authority, rank on Google, and convert organic traffic into revenue for your business.", faqs: [{ q: "What is content marketing?", a: "Content marketing is the creation and distribution of valuable, relevant content — blog posts, guides, videos, and more — designed to attract and convert your target audience." }, { q: "How does content marketing improve SEO?", a: "High-quality content targets search keywords, earns backlinks, and builds topical authority — all signals Google uses to rank your site higher." }, { q: "How often should I publish new content?", a: "We recommend 4-8 optimized pieces per month for most businesses, with frequency adjusted based on your industry competition and growth goals." }] },
+  "email-marketing-services": { title: "Email Marketing Services | Infinite Rankers", desc: "AI-powered email marketing services that increase open rates, drive conversions, and nurture leads into customers on autopilot.", faqs: [{ q: "Is email marketing still effective?", a: "Yes. Email marketing delivers an average ROI of $36 for every $1 spent, making it one of the highest-returning digital channels available." }, { q: "What email platforms do you work with?", a: "We integrate with Mailchimp, ActiveCampaign, HubSpot, Klaviyo, GoHighLevel, and all major email service providers." }, { q: "How does AI improve email marketing?", a: "AI optimizes send times, personalizes subject lines and content dynamically, segments audiences automatically, and triggers follow-ups based on recipient behavior." }] },
+  "branding-agency": { title: "Branding Agency | Infinite Rankers", desc: "Premium branding agency crafting brand identities that command trust and recognition. Logo design, brand strategy, and visual systems.", faqs: [{ q: "What does a branding agency do?", a: "A branding agency develops your brand identity — logo, color palette, typography, messaging, and brand guidelines — to create a cohesive, memorable market presence." }, { q: "How long does a branding project take?", a: "Typically 2-4 weeks from discovery workshops to final deliverables, including logo design, brand guidelines, and collateral templates." }, { q: "Can you rebrand an existing business?", a: "Yes. We handle strategic rebranding including market research, competitive analysis, new visual identity, and brand rollout planning." }] },
+  "b2b-lead-generation": { title: "B2B Lead Generation | Infinite Rankers", desc: "AI-powered B2B lead generation that fills your pipeline with qualified prospects. Automated outreach, scoring, and nurturing at scale.", faqs: [{ q: "How does AI improve B2B lead generation?", a: "AI automates prospect research, personalizes outreach at scale, scores leads by intent signals, and triggers multi-channel follow-up sequences that convert." }, { q: "What channels do you use for B2B leads?", a: "We combine LinkedIn outreach, email sequences, Google Ads, content marketing, and AI calling agents to build a multi-channel B2B pipeline." }, { q: "How many leads can I expect per month?", a: "Results vary by industry, but most B2B clients generate 50-200 qualified leads per month within the first 90 days of campaign optimization." }] },
 };
 
 const PARTNER_PAGES: Record<string, { title: string; desc: string }> = {
@@ -372,6 +381,32 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       }
     };
     return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
+  }
+
+  const lpData = LANDING_PAGES[ssSlug];
+  if (lpData) {
+    mainSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": seo.title,
+      "description": seo.description,
+      "url": seo.canonical,
+      "publisher": ORG_SCHEMA
+    };
+    const parts = [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)];
+    if (lpData.faqs?.length) {
+      const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": lpData.faqs.map(f => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      };
+      parts.push(JSON.stringify(faqSchema));
+    }
+    return parts.join('</script><script type="application/ld+json">');
   }
 
   mainSchema = {
