@@ -1090,7 +1090,7 @@ export const HOW_IT_WORKS_STEPS = [
 ];
 
 export const ACHIEVEMENTS = [
-  { value: "200+", label: "Businesses Transformed" },
+  { value: "4000+", label: "Businesses Transformed" },
   { value: "$4.8M+", label: "Revenue Generated" },
   { value: "85K+", label: "Leads Qualified by AI" },
   { value: "94%", label: "Client Retention Rate" },

@@ -37,7 +37,7 @@ const ALL_TAGS = Array.from(new Set(CASE_STUDIES.flatMap((cs) => cs.tags)));
 
 const STATS = [
   { icon: BarChart3, target: 180, suffix: "+", label: "Projects" },
-  { icon: Users, target: 200, suffix: "+", label: "Clients" },
+  { icon: Users, target: 4000, suffix: "+", label: "Clients" },
   { icon: TrendingUp, target: 4.8, prefix: "$", suffix: "M+", label: "Revenue Generated" },
   { icon: Award, target: 94, suffix: "%", label: "Client Satisfaction" },
 ];

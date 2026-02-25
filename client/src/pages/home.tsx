@@ -245,7 +245,7 @@ function HeroSection() {
               {[
                 { icon: Shield, text: "Flexible Plans Available" },
                 { icon: Clock, text: "Results in 30 Days" },
-                { icon: Users, text: "200+ Clients" },
+                { icon: Users, text: "4000+ Clients" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-500" data-testid={`trust-${item.text.toLowerCase().replace(/\s/g, "-")}`}>
                   <item.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" aria-hidden="true" />
@@ -595,7 +595,7 @@ function TrustSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {[
-            { value: "200+", label: "Clients Worldwide", icon: Users },
+            { value: "4000+", label: "Clients Worldwide", icon: Users },
             { value: "$4.8M+", label: "Revenue Generated", icon: DollarSign },
             { value: "94%", label: "Client Retention", icon: Award },
             { value: "24/7", label: "AI Systems Active", icon: Cpu },
@@ -1102,7 +1102,7 @@ function FinalCTASection() {
             </span>
           </h2>
           <p className="text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }}>
-            Join 200+ businesses already using AI automation to generate more customers and revenue.
+            Join 4,000+ businesses already using AI automation to generate more customers and revenue.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <Link href="/book-demo">
