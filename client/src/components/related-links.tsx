@@ -119,7 +119,6 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
           { href: "/about", label: "About Us" },
           { href: "/contact", label: "Contact" },
           { href: "/book-demo", label: "Book a Demo" },
-          { href: "/sitemap", label: "Sitemap" },
         ].map(link => (
           <Link key={link.href} href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             {link.label}
