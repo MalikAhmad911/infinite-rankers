@@ -61,6 +61,13 @@ function getAllSitemapEntries(): SitemapURL[] {
     "seo-agency", "seo-consultant", "ppc-agency", "digital-marketing-agency",
     "social-media-marketing-agency", "content-marketing-services",
     "email-marketing-services", "branding-agency", "b2b-lead-generation",
+    "seo-services", "google-seo", "seo-specialist", "best-seo-companies",
+    "search-engine-marketing", "website-ranking", "seo-agency-near-me",
+    "seo-keywords", "digital-marketing-company", "digital-marketing-services",
+    "marketing-agency-near-me", "best-digital-marketing-agencies",
+    "paid-media-agency", "ppc-management-services", "digital-marketing-seo",
+    "online-marketing-company", "digital-marketing-firms",
+    "social-media-marketing-agency-near-me", "automation-agency",
   ];
   for (const slug of landingPages) {
     entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.8" });
