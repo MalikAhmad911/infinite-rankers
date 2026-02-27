@@ -23,7 +23,7 @@ export function GooglePartnerBadge({ variant = "inline" }: GooglePartnerBadgePro
           <GoogleLogo size={24} />
           <span className="text-[#5F6368] font-medium text-[10px] leading-tight">Google Partner</span>
         </div>
-        <p className="text-blue-400 font-semibold text-xs mt-2">We're Google Partners!</p>
+        <p className="text-blue-400 font-semibold text-xs mt-2 inline-flex items-center gap-1">We're Google Partners! <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></p>
       </Link>
     );
   }
