@@ -60,7 +60,7 @@ export default function GooglePartnerPage() {
                 <p className="text-[#5F6368] text-sm leading-relaxed pt-2" data-testid="text-partner-description">
                   Infinite Rankers LLC has met all of the requirements to be a Google Partner.{" "}
                   <a
-                    href="https://www.google.com/partners/about/"
+                    href="https://support.google.com/google-ads/answer/9702452"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[#1a73e8] hover:underline"
