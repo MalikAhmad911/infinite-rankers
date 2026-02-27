@@ -1,3 +1,5 @@
+import { Link } from "wouter";
+
 function GoogleLogo({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -16,29 +18,29 @@ interface GooglePartnerBadgeProps {
 export function GooglePartnerBadge({ variant = "inline" }: GooglePartnerBadgeProps) {
   if (variant === "footer") {
     return (
-      <div data-testid="badge-google-partner-footer">
-        <div className="bg-white rounded-md p-3 inline-flex flex-col items-center gap-1.5 w-[100px]">
+      <Link href="/google-partner" data-testid="badge-google-partner-footer">
+        <div className="bg-white rounded-md p-3 inline-flex flex-col items-center gap-1.5 w-[100px] cursor-pointer hover:shadow-md transition-shadow">
           <GoogleLogo size={24} />
           <span className="text-[#5F6368] font-medium text-[10px] leading-tight">Google Partner</span>
         </div>
         <p className="text-blue-400 font-semibold text-xs mt-2">We're Google Partners!</p>
-      </div>
+      </Link>
     );
   }
 
   if (variant === "compact") {
     return (
-      <span className="inline-flex items-center gap-1.5 bg-white rounded px-2 py-1" data-testid="badge-google-partner-compact">
+      <Link href="/google-partner" className="inline-flex items-center gap-1.5 bg-white rounded px-2 py-1 cursor-pointer hover:shadow-sm transition-shadow" data-testid="badge-google-partner-compact">
         <GoogleLogo size={14} />
         <span className="text-[#5F6368] font-medium text-[10px]">Google Partner</span>
-      </span>
+      </Link>
     );
   }
 
   return (
-    <span className="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded px-2.5 py-1.5 shadow-sm" data-testid="badge-google-partner">
+    <Link href="/google-partner" className="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded px-2.5 py-1.5 shadow-sm cursor-pointer hover:shadow-md transition-shadow" data-testid="badge-google-partner">
       <GoogleLogo size={16} />
       <span className="text-[#5F6368] font-semibold text-xs">Google Partner</span>
-    </span>
+    </Link>
   );
 }

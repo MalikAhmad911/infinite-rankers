@@ -26,6 +26,7 @@ import SitemapPage from "@/pages/sitemap-page";
 import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
 import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
+import GooglePartnerPage from "@/pages/google-partner-page";
 import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
 import { getBlogPostBySlug } from "@/lib/blog-data";
 
@@ -52,6 +53,7 @@ function AppRouter() {
       <Route path="/infinite-rankers-seo-services" component={InfiniteRankersSEO} />
       <Route path="/infinite-rankers-paid-advertising" component={InfiniteRankersAds} />
       <Route path="/infinite-rankers-ai-automation" component={InfiniteRankersAutomation} />
+      <Route path="/google-partner" component={GooglePartnerPage} />
       <Route path="/terms" component={Terms} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/sitemap" component={SitemapPage} />

@@ -143,6 +143,7 @@ const STATIC_PAGES: Record<string, SEOMeta> = {
   "/sitemap": { title: `Sitemap - ${BRAND}`, description: "Browse all 90+ pages on infiniterankers.io. Complete directory of our AI marketing services, blog posts, case studies, and landing pages.", canonical: `${BASE}/sitemap` },
   "/terms": { title: `Terms of Service - ${BRAND}`, description: "Terms of Service for Infinite Rankers AI Revenue Growth Agency. Read our terms governing use of infiniterankers.io and infiniterankers.com.", canonical: `${BASE}/terms` },
   "/privacy": { title: `Privacy Policy - ${BRAND}`, description: "Privacy Policy for Infinite Rankers. Learn how we collect, use, and protect your data across infiniterankers.io and infiniterankers.com.", canonical: `${BASE}/privacy` },
+  "/google-partner": { title: `Google Partner | ${BRAND}`, description: "Infinite Rankers LLC is a certified Google Partner agency with verified performance, ad spend management, and Google Ads certifications.", canonical: `${BASE}/google-partner` },
 };
 
 export function getSEOForRoute(url: string): SEOMeta | null {
