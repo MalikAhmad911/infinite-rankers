@@ -46,7 +46,7 @@ export default function GooglePartnerPage() {
             <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
               <div className="flex items-start gap-6">
                 <a
-                  href="https://www.google.com/partners/agency?id=3886498963"
+                  href="https://support.google.com/google-ads/answer/9702452"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-shrink-0"
