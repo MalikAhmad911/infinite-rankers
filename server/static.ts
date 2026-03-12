@@ -11,7 +11,7 @@ export function serveStatic(app: Express) {
     );
   }
 
-  app.use(express.static(distPath));
+  app.use(express.static(distPath, { index: false }));
 
   let render: ((url: string) => string) | null = null;
   const ssrPath = path.resolve(__dirname, "ssr", "entry-server.cjs");

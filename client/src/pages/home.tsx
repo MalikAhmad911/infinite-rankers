@@ -1138,8 +1138,8 @@ export default function Home() {
   return (
     <div>
       <SEOHead
-        title="Infinite Rankers - AI Revenue Growth Agency"
-        description="Turn your business into an AI-powered revenue machine. We build automated systems that generate customers and revenue."
+        title="Infinite Rankers | #1 AI Revenue Growth Agency — Free Strategy Call"
+        description="Join 4,000+ businesses using AI automation to generate leads, book appointments & grow revenue 24/7. Free strategy call — see results in 30 days."
         canonical="https://infiniterankers.io/"
       />
       <HeroSection />
