@@ -125,10 +125,10 @@ const LANDING_PAGES: Record<string, { title: string; desc: string; faqs?: { q: s
 };
 
 const PARTNER_PAGES: Record<string, { title: string; desc: string }> = {
-  "infinite-rankers-agency": { title: "Infinite Rankers - Full Service AI Marketing Agency", desc: "Infinite Rankers is a full-service AI marketing agency providing automation, lead generation, and revenue growth systems for businesses across the USA." },
-  "infinite-rankers-seo-services": { title: "Infinite Rankers SEO Services - Dominate Search Rankings", desc: "Professional SEO services by Infinite Rankers. We help businesses dominate Google search rankings with data-driven SEO strategies and AI-powered optimization." },
-  "infinite-rankers-paid-advertising": { title: "Infinite Rankers Paid Advertising - Google & Meta Ads", desc: "Expert paid advertising management by Infinite Rankers. Google Ads, Meta Ads, and multi-channel campaigns that maximize ROI and revenue growth." },
-  "infinite-rankers-ai-automation": { title: "Infinite Rankers AI Automation - Intelligent Business Systems", desc: "AI automation solutions by Infinite Rankers. Chatbots, calling agents, email automation, CRM systems, and workflow automation that scale your business." },
+  "infinite-rankers-agency": { title: `Full-Service AI Marketing Agency | 4,000+ Clients | ${BRAND}`, desc: "Infinite Rankers is a full-service AI marketing agency providing automation, lead generation, and revenue growth systems for businesses across the USA." },
+  "infinite-rankers-seo-services": { title: `SEO Services That Rank — 158% Avg Traffic Growth | ${BRAND}`, desc: "Professional SEO services by Infinite Rankers. We help businesses dominate Google search rankings with data-driven SEO strategies and AI-powered optimization." },
+  "infinite-rankers-paid-advertising": { title: `Google & Meta Ads Management | 4-6x ROAS | ${BRAND}`, desc: "Expert paid advertising management by Infinite Rankers. Google Ads, Meta Ads, and multi-channel campaigns that maximize ROI and revenue growth." },
+  "infinite-rankers-ai-automation": { title: `AI Business Automation | 30+ Intelligent Systems | ${BRAND}`, desc: "AI automation solutions by Infinite Rankers. Chatbots, calling agents, email automation, CRM systems, and workflow automation that scale your business." },
 };
 
 const STATIC_PAGES: Record<string, SEOMeta> = {
@@ -158,7 +158,7 @@ export function getSEOForRoute(url: string): SEOMeta | null {
   const svc = SERVICES.find(s => s.slug === slug);
   if (svc) {
     return {
-      title: `${svc.title} - ${BRAND}`,
+      title: (svc as any).seoTitle || `${svc.title} | Free Demo — ${BRAND}`,
       description: svc.desc,
       canonical: `${BASE}/${svc.slug}`,
     };
@@ -530,7 +530,9 @@ export function injectSEO(html: string, url: string): string {
   }
 
   const noindexPaths = ["/sitemap", "/crawl-hub"];
-  if (noindexPaths.includes(url.split("?")[0])) {
+  const urlPath = url.split("?")[0];
+  const isAdminPath = urlPath.startsWith("/admin");
+  if (noindexPaths.includes(urlPath) || isAdminPath) {
     extraTags.push(`<meta name="robots" content="noindex, nofollow" />`);
   } else if (!result.includes('name="robots"')) {
     extraTags.push(`<meta name="robots" content="index, follow" />`);
