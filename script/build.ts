@@ -51,6 +51,7 @@ async function buildAll() {
       },
     },
     root: path.resolve(root, "client"),
+    publicDir: false,
     build: {
       ssr: true,
       outDir: path.resolve(root, "dist/ssr"),
