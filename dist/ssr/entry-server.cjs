@@ -946,14 +946,14 @@ function requireReact_development() {
         function escapeUserProvidedKey(text) {
           return text.replace(userProvidedKeyEscapeRegex, "$&/");
         }
-        function getElementKey(element, index2) {
+        function getElementKey(element, index) {
           if (typeof element === "object" && element !== null && element.key != null) {
             {
               checkKeyStringCoercion(element.key);
             }
             return escape("" + element.key);
           }
-          return index2.toString(36);
+          return index.toString(36);
         }
         function mapIntoArray(children, array, escapedPrefix, nameSoFar, callback) {
           var type = typeof children;
@@ -3117,6 +3117,12 @@ function requireJsxRuntime() {
   return jsxRuntime.exports;
 }
 var jsxRuntimeExports = requireJsxRuntime();
+var reactExports = requireReact();
+const React = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
+const React$1 = /* @__PURE__ */ _mergeNamespaces({
+  __proto__: null,
+  default: React
+}, [reactExports]);
 var server_node = {};
 var reactDomServerLegacy_node_production_min = {};
 var hasRequiredReactDomServerLegacy_node_production_min;
@@ -7717,10 +7723,10 @@ function requireReactDomServerLegacy_node_development() {
         }
         var escape;
         var html = "";
-        var index2;
+        var index;
         var lastIndex = 0;
-        for (index2 = match.index; index2 < str.length; index2++) {
-          switch (str.charCodeAt(index2)) {
+        for (index = match.index; index < str.length; index++) {
+          switch (str.charCodeAt(index)) {
             case 34:
               escape = "&quot;";
               break;
@@ -7739,13 +7745,13 @@ function requireReactDomServerLegacy_node_development() {
             default:
               continue;
           }
-          if (lastIndex !== index2) {
-            html += str.substring(lastIndex, index2);
+          if (lastIndex !== index) {
+            html += str.substring(lastIndex, index);
           }
-          lastIndex = index2 + 1;
+          lastIndex = index + 1;
           html += escape;
         }
-        return lastIndex !== index2 ? html + str.substring(lastIndex, index2) : html;
+        return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
       }
       function escapeTextForBrowser(text) {
         if (typeof text === "boolean" || typeof text === "number") {
@@ -9939,12 +9945,12 @@ function requireReactDomServerLegacy_node_development() {
         var id = idWithLeadingBit & ~getLeadingBit(idWithLeadingBit);
         return id.toString(32) + overflow;
       }
-      function pushTreeContext(baseContext, totalChildren, index2) {
+      function pushTreeContext(baseContext, totalChildren, index) {
         var baseIdWithLeadingBit = baseContext.id;
         var baseOverflow = baseContext.overflow;
         var baseLength = getBitLength(baseIdWithLeadingBit) - 1;
         var baseId = baseIdWithLeadingBit & ~(1 << baseLength);
-        var slot = index2 + 1;
+        var slot = index + 1;
         var length = getBitLength(totalChildren) + baseLength;
         if (length > 30) {
           var numberOfOverflowBits = baseLength - baseLength % 5;
@@ -10444,12 +10450,12 @@ function requireReactDomServerLegacy_node_development() {
         abortSet.add(task);
         return task;
       }
-      function createPendingSegment(request, index2, boundary, formatContext, lastPushedText, textEmbedded) {
+      function createPendingSegment(request, index, boundary, formatContext, lastPushedText, textEmbedded) {
         return {
           status: PENDING,
           id: -1,
           // lazily assigned later
-          index: index2,
+          index,
           parentFlushed: false,
           chunks: [],
           children: [],
@@ -10709,8 +10715,8 @@ function requireReactDomServerLegacy_node_development() {
           if (hasId) {
             var prevTreeContext = task.treeContext;
             var totalChildren = 1;
-            var index2 = 0;
-            task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index2);
+            var index = 0;
+            task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index);
             try {
               renderNodeDestructive(request, task, value);
             } finally {
@@ -10772,8 +10778,8 @@ function requireReactDomServerLegacy_node_development() {
         if (hasId) {
           var prevTreeContext = task.treeContext;
           var totalChildren = 1;
-          var index2 = 0;
-          task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index2);
+          var index = 0;
+          task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index);
           try {
             renderNodeDestructive(request, task, children);
           } finally {
@@ -13225,10 +13231,10 @@ function requireReactDomServer_node_development() {
         }
         var escape;
         var html = "";
-        var index2;
+        var index;
         var lastIndex = 0;
-        for (index2 = match.index; index2 < str.length; index2++) {
-          switch (str.charCodeAt(index2)) {
+        for (index = match.index; index < str.length; index++) {
+          switch (str.charCodeAt(index)) {
             case 34:
               escape = "&quot;";
               break;
@@ -13247,13 +13253,13 @@ function requireReactDomServer_node_development() {
             default:
               continue;
           }
-          if (lastIndex !== index2) {
-            html += str.substring(lastIndex, index2);
+          if (lastIndex !== index) {
+            html += str.substring(lastIndex, index);
           }
-          lastIndex = index2 + 1;
+          lastIndex = index + 1;
           html += escape;
         }
-        return lastIndex !== index2 ? html + str.substring(lastIndex, index2) : html;
+        return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
       }
       function escapeTextForBrowser(text) {
         if (typeof text === "boolean" || typeof text === "number") {
@@ -15414,12 +15420,12 @@ function requireReactDomServer_node_development() {
         var id = idWithLeadingBit & ~getLeadingBit(idWithLeadingBit);
         return id.toString(32) + overflow;
       }
-      function pushTreeContext(baseContext, totalChildren, index2) {
+      function pushTreeContext(baseContext, totalChildren, index) {
         var baseIdWithLeadingBit = baseContext.id;
         var baseOverflow = baseContext.overflow;
         var baseLength = getBitLength(baseIdWithLeadingBit) - 1;
         var baseId = baseIdWithLeadingBit & ~(1 << baseLength);
-        var slot = index2 + 1;
+        var slot = index + 1;
         var length = getBitLength(totalChildren) + baseLength;
         if (length > 30) {
           var numberOfOverflowBits = baseLength - baseLength % 5;
@@ -15919,12 +15925,12 @@ function requireReactDomServer_node_development() {
         abortSet.add(task);
         return task;
       }
-      function createPendingSegment(request, index2, boundary, formatContext, lastPushedText, textEmbedded) {
+      function createPendingSegment(request, index, boundary, formatContext, lastPushedText, textEmbedded) {
         return {
           status: PENDING,
           id: -1,
           // lazily assigned later
-          index: index2,
+          index,
           parentFlushed: false,
           chunks: [],
           children: [],
@@ -16184,8 +16190,8 @@ function requireReactDomServer_node_development() {
           if (hasId) {
             var prevTreeContext = task.treeContext;
             var totalChildren = 1;
-            var index2 = 0;
-            task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index2);
+            var index = 0;
+            task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index);
             try {
               renderNodeDestructive(request, task, value);
             } finally {
@@ -16247,8 +16253,8 @@ function requireReactDomServer_node_development() {
         if (hasId) {
           var prevTreeContext = task.treeContext;
           var totalChildren = 1;
-          var index2 = 0;
-          task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index2);
+          var index = 0;
+          task.treeContext = pushTreeContext(prevTreeContext, totalChildren, index);
           try {
             renderNodeDestructive(request, task, children);
           } finally {
@@ -17078,13 +17084,7 @@ function requireServer_node() {
   return server_node;
 }
 var server_nodeExports = requireServer_node();
-var reactExports = requireReact();
-const index = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
-const React = /* @__PURE__ */ _mergeNamespaces({
-  __proto__: null,
-  default: index
-}, [reactExports]);
-const useBuiltinInsertionEffect = React["useInsertionEffect"];
+const useBuiltinInsertionEffect = React$1["useInsertionEffect"];
 const canUseDOM = !!(typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined");
 const useIsomorphicLayoutEffect = canUseDOM ? reactExports.useLayoutEffect : reactExports.useEffect;
 const useInsertionEffect = useBuiltinInsertionEffect || useIsomorphicLayoutEffect;
@@ -17406,9 +17406,9 @@ function useToast() {
   reactExports.useEffect(() => {
     listeners.push(setState);
     return () => {
-      const index2 = listeners.indexOf(setState);
-      if (index2 > -1) {
-        listeners.splice(index2, 1);
+      const index = listeners.indexOf(setState);
+      if (index > -1) {
+        listeners.splice(index, 1);
       }
     };
   }, [state]);
@@ -32542,7 +32542,7 @@ const iconMap = {
   Heart: lucideReact.Heart,
   Briefcase: lucideReact.Briefcase
 };
-function FAQItem({ q, a, index: index2 }) {
+function FAQItem({ q, a, index }) {
   const [open, setOpen] = reactExports.useState(false);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     framerMotion.motion.div,
@@ -32550,9 +32550,9 @@ function FAQItem({ q, a, index: index2 }) {
       initial: { opacity: 0, y: 10 },
       whileInView: { opacity: 1, y: 0 },
       viewport: { once: true },
-      transition: { delay: index2 * 0.05 },
+      transition: { delay: index * 0.05 },
       className: "border border-gray-200/60 rounded-md",
-      "data-testid": `faq-item-${index2}`,
+      "data-testid": `faq-item-${index}`,
       children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
@@ -32560,7 +32560,7 @@ function FAQItem({ q, a, index: index2 }) {
             type: "button",
             className: "w-full flex items-center justify-between gap-4 p-4 sm:p-5 text-left cursor-pointer",
             onClick: () => setOpen(!open),
-            "data-testid": `faq-toggle-${index2}`,
+            "data-testid": `faq-toggle-${index}`,
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium text-sm sm:text-base text-gray-900", children: q }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(lucideReact.ChevronDown, { className: `w-4 h-4 flex-shrink-0 text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}` })
@@ -34309,6 +34309,7 @@ function App({ ssrUrl, queryClient }) {
   }
   return content;
 }
+React.useLayoutEffect = React.useEffect;
 function render(url) {
   const queryClient = new reactQuery.QueryClient({
     defaultOptions: {
