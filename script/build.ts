@@ -1,6 +1,8 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
+import react from "@vitejs/plugin-react";
 import { rm, readFile } from "fs/promises";
+import path from "path";
 
 const allowlist = [
   "@google/generative-ai",
@@ -37,17 +39,32 @@ async function buildAll() {
   await viteBuild();
 
   console.log("building SSR bundle...");
+  const root = process.cwd();
   await viteBuild({
+    configFile: false,
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@": path.resolve(root, "client/src"),
+        "@shared": path.resolve(root, "shared"),
+        "@assets": path.resolve(root, "attached_assets"),
+      },
+    },
+    root: path.resolve(root, "client"),
     build: {
       ssr: true,
-      outDir: "dist/ssr",
+      outDir: path.resolve(root, "dist/ssr"),
+      emptyOutDir: true,
       rollupOptions: {
-        input: "client/src/entry-server.tsx",
+        input: path.resolve(root, "client/src/entry-server.tsx"),
         output: {
           format: "cjs",
           entryFileNames: "entry-server.cjs",
         },
       },
+    },
+    ssr: {
+      noExternal: ["react", "react-dom", "wouter"],
     },
   });
 
