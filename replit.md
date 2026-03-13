@@ -11,9 +11,14 @@ Premium multi-page business website for Infinite Rankers, an AI Revenue Growth A
 
 ## Running the Project
 - **Dev**: `npm run dev` (starts Express + Vite on port 5000)
-- **Build**: `npm run build` (builds client with Vite, bundles server with esbuild)
-- **Production**: `npm run start` (runs built server from dist/index.cjs)
+- **Build**: `tsx script/build.ts` (builds 3 outputs: client bundle, SSR bundle, server bundle)
+- **Production**: `NODE_ENV=production node dist/index.cjs` (runs built server from dist/index.cjs)
 - **DB Push**: `npm run db:push` (push schema changes to database)
+
+## Build Outputs (all required for Hostinger deployment)
+- `dist/public/` — Client bundle (Vite)
+- `dist/ssr/entry-server.cjs` — SSR bundle for server-side rendering
+- `dist/index.cjs` — Express server bundle (esbuild)
 
 ## Project Structure
 ```
