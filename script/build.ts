@@ -65,7 +65,7 @@ async function buildAll() {
       },
     },
     ssr: {
-      noExternal: ["react", "react-dom", "wouter"],
+      noExternal: true,
     },
   });
 
