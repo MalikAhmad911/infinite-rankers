@@ -49,16 +49,7 @@ export async function setupVite(server: Server, app: Express) {
       );
       template = await vite.transformIndexHtml(url, template);
 
-      let appHtml = "";
-      try {
-        const { render } = await vite.ssrLoadModule("/src/entry-server.tsx");
-        appHtml = render(url);
-      } catch (e) {
-        vite.ssrFixStacktrace(e as Error);
-        console.error("SSR error:", e);
-      }
-
-      const html = template.replace("<!--ssr-outlet-->", appHtml);
+      const html = template.replace("<!--ssr-outlet-->", "");
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
