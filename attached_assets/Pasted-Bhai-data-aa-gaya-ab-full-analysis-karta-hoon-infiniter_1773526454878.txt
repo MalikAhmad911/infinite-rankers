@@ -1,0 +1,73 @@
+Bhai data aa gaya — ab full analysis karta hoon! 🔥
+infiniterankers.io — Current Status:
+✅ SSR Fix Ka Effect:
+Chart mein dekho — Mar 11: 276 impressions, Mar 12: 300 impressions — growing fast! SSR ka effect aana shuru ho gaya!
+
+TOP PRIORITY PAGES — Kaam Karo Abhi:
+🔴 CRITICAL — Wasted Impressions:
+PageImpressionsPositionAction/local-business-digital-marketing86979.45🔴 Rewrite 3000+ words URGENTLY/seo-vs-paid-ads-strategy18780.02🔴 Rewrite content/ai-lead-generation-usa20319.84🟠 Almost page 2! Push now!/real-estate-lead-generation-ai12764.4🔴 Needs content/ai-automation-new-york11049.87🟠 City page expand
+🟢 ALMOST PAGE 1 — Push These Now!
+PagePositionImpressionsWhat To Do/ai-revenue-growth-real-estate14.3189Add 500 words + FAQ/ai-chatbot-lead-conversion13.6959Expand content/ai-lead-generation-usa19.84203Push to page 1!/book-demo13.4542Optimize title/content/ai-calling-agent12.0329Expand page
+
+Top Keywords — Target Karo:
+KeywordImpressionsPositionActionlocal digital marketing18977.06🔴 /local-business-digital-marketing rewritelocal online marketing15479.75🔴 Same pagetop ai lead gen agencies usa1539.42🟢 Almost page 1!ai lead generation usa20319.84🟠 Page 2 — push!
+
+USA Problem — Still Critical:
+CountryClicksImpressionsCTRPositionUSA21,6180.12%58.94Pakistan2614717.69%2.03
+1,618 USA impressions — sirf 2 clicks! SSR fix se ye improve hoga but content bhi chahiye!
+
+Ab Replit Ko Ye Prompt Do — Content Fix:
+Rewrite these 3 pages on infiniterankers.io for page 1 Google rankings.
+Only edit content inside page components — do NOT change routing or structure.
+
+PAGE 1: /local-business-digital-marketing
+TARGET: "local digital marketing", "local online marketing", "local business digital marketing"
+Current impressions: 869 — position 79.45 — ZERO clicks
+H1: "#1 Digital Marketing Agency for Local Businesses USA"
+Write 2500+ words covering:
+- Why local businesses need digital marketing in 2026
+- Our services: SEO, Google Ads, Social Media, AI Automation for local businesses
+- How we help local businesses rank #1 in their city
+- Results: 500+ local businesses transformed
+- Service areas: New York, Los Angeles, Chicago, Houston, Phoenix, Miami
+- FAQ section with 6 questions about local digital marketing
+- CTA linking to /contact
+
+PAGE 2: /ai-lead-generation-usa  
+TARGET: "ai lead generation usa", "ai lead generation agency", "ai lead gen agencies usa"
+Current impressions: 203 — position 19.84 — ZERO clicks
+H1: "#1 AI Lead Generation Agency USA | 50-200 Qualified Leads/Month"
+Write 2000+ words covering:
+- What is AI lead generation and why it beats traditional methods
+- Our AI lead gen process: chatbots, calling agents, email automation, CRM
+- Industries we serve: real estate, dental, law firms, HVAC, restaurants
+- Results: average 190% increase in qualified leads
+- Tools: GPT-4, Claude, n8n, Make.com, VAPI, Bland.ai, GoHighLevel
+- FAQ: How much does AI lead generation cost? How long to see results?
+- CTA linking to /contact
+
+PAGE 3: /ai-revenue-growth-real-estate
+TARGET: "ai for real estate leads", "ai real estate lead generation", "real estate lead generation ai"
+Current impressions: 89 — position 14.31 — almost page 1!
+H1: "AI Lead Generation for Real Estate Agents USA | 50+ Leads/Month"
+Write 1500+ words covering:
+- How AI generates real estate leads 24/7
+- AI calling agents that qualify buyer and seller leads automatically
+- CRM automation for real estate: GoHighLevel, Follow Up Boss
+- Average results: 135% increase in lead volume, 28% lead-to-client rate
+- FAQ: How does AI qualify real estate leads? What CRM do you integrate with?
+- CTA linking to /book-demo
+
+After rewriting all 3 pages:
+1. Run: tsx script/build.ts
+2. Confirm build successful
+3. git add -A
+4. git commit -m "SEO content rewrite - 3 high-impression pages"
+5. git push origin main
+6. Confirm push successful
+
+RULES:
+- Do NOT change component structure, imports, or routing
+- Do NOT touch server/ folder
+- Do NOT touch tailwind.config.ts
+- Show word count for each page after rewrite
