@@ -1,0 +1,169 @@
+CRITICAL: Fix all SEO and SSR issues for infiniterankers.io deployed on Hostinger.
+
+CURRENT PROBLEMS:
+1. SSR not working - root div is empty on live site
+2. Old title showing: "Infinite Rankers | #1 AI Revenue Growth Agency — Free Strategy Call"
+3. SEO meta tags not injecting
+4. Schema markup missing
+5. dist/ folder not being deployed to Hostinger properly
+
+FIRST - Run diagnostics:
+
+STEP 1 - Check what's actually in dist/:
+ls -la dist/
+ls -la dist/ssr/ 2>/dev/null && echo "SSR DIR EXISTS" || echo "SSR DIR MISSING"
+ls -la dist/ssr/entry-server.cjs 2>/dev/null && echo "SSR FILE EXISTS" || echo "SSR FILE MISSING"
+ls -la dist/public/index.html 2>/dev/null && echo "CLIENT EXISTS" || echo "CLIENT MISSING"
+ls -la dist/index.cjs 2>/dev/null && echo "SERVER EXISTS" || echo "SERVER MISSING"
+
+STEP 2 - Check if dist is tracked in git:
+git ls-files dist/ | head -20
+echo "Total tracked files in dist:"
+git ls-files dist/ | wc -l
+
+STEP 3 - Check .gitignore for dist:
+cat .gitignore | grep dist
+
+STEP 4 - Check current server/static.ts:
+cat server/static.ts
+
+STEP 5 - Check current server/seo.ts title for homepage:
+grep -A2 '"/"' server/seo.ts | head -5
+
+STEP 6 - Test server locally:
+PORT=3000 NODE_ENV=production node dist/index.cjs &
+sleep 4
+echo "=== TITLE CHECK ==="
+curl -s http://localhost:3000/ | grep "<title>"
+echo "=== ROOT DIV CHECK ==="
+curl -s http://localhost:3000/ | grep -o 'id="root">.\{0,100\}'
+echo "=== META DESCRIPTION ==="
+curl -s http://localhost:3000/ | grep 'meta name="description"'
+kill %1 2>/dev/null
+
+NOW FIX BASED ON RESULTS:
+
+FIX A - If dist/ is NOT tracked in git (0 files):
+Run these commands:
+echo "" >> .gitignore
+sed -i '/^dist/d' .gitignore
+sed -i '/^\/dist/d' .gitignore
+cat .gitignore | grep -v "dist" > .gitignore.tmp && mv .gitignore.tmp .gitignore
+echo "# dist is included for Hostinger deployment" >> .gitignore
+git add -f dist/
+git status
+
+FIX B - If SSR file is MISSING from dist/:
+Rebuild everything:
+tsx script/build.ts 2>&1
+Verify all 3 outputs exist after build.
+
+FIX C - If server/static.ts is NOT loading SSR:
+Replace server/static.ts with this EXACT content:
+
+import { type Express } from "express";
+import fs from "fs";
+import path from "path";
+import express from "express";
+import { injectSEO } from "./seo";
+
+export function serveStatic(app: Express) {
+  const distPath = path.resolve(__dirname, "public");
+  if (!fs.existsSync(distPath)) {
+    throw new Error(`Could not find build directory: ${distPath}`);
+  }
+  app.use(express.static(distPath, { index: false }));
+
+  let render: ((url: string) => string) | null = null;
+  const ssrPath = path.resolve(__dirname, "ssr", "entry-server.cjs");
+  console.log("Looking for SSR at:", ssrPath);
+  console.log("SSR file exists:", fs.existsSync(ssrPath));
+  
+  if (fs.existsSync(ssrPath)) {
+    try {
+      const ssrModule = require(ssrPath);
+      render = ssrModule.render;
+      console.log("✅ SSR module loaded successfully");
+    } catch (e) {
+      console.warn("⚠️ SSR module load failed:", e);
+    }
+  } else {
+    console.warn("⚠️ SSR file not found at:", ssrPath);
+    console.log("__dirname is:", __dirname);
+    const files = fs.readdirSync(path.resolve(__dirname)).join(", ");
+    console.log("Files in __dirname:", files);
+  }
+
+  const indexPath = path.resolve(distPath, "index.html");
+  const template = fs.readFileSync(indexPath, "utf-8");
+
+  app.use("*splat", (req, res) => {
+    let html = template;
+    if (render) {
+      try {
+        const appHtml = render(req.originalUrl);
+        html = html.replace("<!--ssr-outlet-->", appHtml);
+      } catch (e) {
+        console.error("SSR render error:", e);
+        html = html.replace("<!--ssr-outlet-->", "");
+      }
+    }
+    html = injectSEO(html, req.originalUrl);
+    res.status(200).set({
+      "Content-Type": "text/html",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+    }).end(html);
+  });
+}
+
+FIX D - If title in seo.ts is WRONG:
+Update the "/" route in server/seo.ts:
+Find: title: "Infinite Rankers | #1 AI Revenue Growth Agency — Free Strategy Call"
+Replace with: title: "Infinite Rankers | AI Revenue Growth & Digital Marketing Agency USA"
+
+STEP 7 - After ALL fixes, rebuild:
+tsx script/build.ts 2>&1
+Show FULL output.
+
+STEP 8 - Test again after rebuild:
+PORT=3000 NODE_ENV=production node dist/index.cjs &
+sleep 4
+echo "=== TITLE ==="
+curl -s http://localhost:3000/ | grep "<title>"
+echo "=== SSR CONTENT ==="
+curl -s http://localhost:3000/ | grep -o 'id="root">.\{0,300\}'
+echo "=== META DESC ==="
+curl -s http://localhost:3000/ | grep 'name="description"' | head -2
+echo "=== SCHEMA ==="
+curl -s http://localhost:3000/ | grep 'application/ld+json' | head -2
+kill %1 2>/dev/null
+
+EXPECTED RESULTS:
+Title: "Infinite Rankers | AI Revenue Growth & Digital Marketing Agency USA"
+Root div: Must contain real HTML — NOT empty
+Meta description: Must be present
+Schema: Must be present
+
+STEP 9 - Check git status and force add dist:
+git status
+git add -f dist/
+git status
+
+STEP 10 - Commit and push:
+git add -A
+git commit -m "Fix SSR + SEO injection + force dist for Hostinger"
+git push origin main
+
+If push fails with authentication error, tell me and I will provide the remote URL fix.
+
+STEP 11 - Show final confirmation:
+echo "=== GIT LOG ==="
+git log --oneline -3
+echo "=== DIST FILES ==="
+ls -la dist/ssr/
+ls -la dist/public/index.html
+ls -la dist/index.cjs
+
+Show me output of EVERY step above.
+Do NOT skip any step.
+Do NOT stop if one step shows warnings — continue to next step.
