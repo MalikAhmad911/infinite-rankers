@@ -132,7 +132,7 @@ const PARTNER_PAGES: Record<string, { title: string; desc: string }> = {
 };
 
 const STATIC_PAGES: Record<string, SEOMeta> = {
-  "/": { title: `${BRAND} | #1 AI Revenue Growth Agency — Free Strategy Call`, description: "Join 4,000+ businesses using AI automation to generate leads, book appointments & grow revenue 24/7. Free strategy call — see results in 30 days.", canonical: `${BASE}/` },
+  "/": { title: "Infinite Rankers | AI Revenue Growth & Digital Marketing Agency USA", description: "We don't just rank you — we grow your revenue. AI automation, SEO, Google Ads, social media marketing for USA businesses. Google Partner. Free strategy call.", canonical: `${BASE}/` },
   "/about": { title: `About ${BRAND} | AI Revenue Growth Experts Since 2020`, description: "Meet the AI marketing team behind 4,000+ business transformations. We build revenue-generating automation systems so you can focus on what you do best.", canonical: `${BASE}/about` },
   "/services": { title: `30+ AI Marketing & Automation Services | ${BRAND}`, description: "Explore 30+ AI-powered services: Google Ads, SEO, AI lead generation, CRM automation & more. Every service built to drive measurable revenue. Free consult.", canonical: `${BASE}/services` },
   "/portfolio": { title: `21 Client Case Studies — Real Proven Results | ${BRAND}`, description: "Real results from real businesses. 21 case studies showing 100-195% revenue growth across healthcare, real estate, law firms & e-commerce. See proof.", canonical: `${BASE}/portfolio` },
