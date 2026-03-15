@@ -1,0 +1,126 @@
+Fix SEO for infiniterankers.io - sitemap and meta tags issues.
+
+BACKGROUND:
+Pages like /1, /2, /3 ... /21 are PORTFOLIO/CASE STUDY pages - they exist 
+and should stay. They just need proper SEO titles and to be fixed in sitemap.
+
+DO THESE STEPS:
+
+STEP 1 - Check what these portfolio pages actually are:
+Find the React component for routes /1, /2, /3 etc:
+grep -r '"/1"' client/src --include="*.tsx" --include="*.ts" | head -10
+grep -r "path.*1" client/src/App.tsx | head -20
+cat client/src/App.tsx | head -100
+
+STEP 2 - Read current sitemap in server/routes.ts:
+grep -A 200 "sitemap" server/routes.ts | head -200
+
+STEP 3 - Read current server/seo.ts to see what pages have SEO:
+grep '"/' server/seo.ts | head -60
+
+STEP 4 - Fix server/seo.ts - Add SEO entries for ALL unindexed pages:
+
+Add these entries to STATIC_PAGES in server/seo.ts:
+
+Portfolio/Case Study pages:
+"/1": { title: "Digital Marketing Case Study #1 | Real Results | Infinite Rankers", description: "See how Infinite Rankers delivered measurable revenue growth for a real business using AI automation and digital marketing.", canonical: "https://infiniterankers.io/1" },
+"/2": { title: "AI Automation Case Study #2 | Client Success | Infinite Rankers", description: "Real results from AI marketing automation. See traffic growth, lead generation and revenue impact for our client.", canonical: "https://infiniterankers.io/2" },
+"/3": { title: "Google Ads Case Study #3 | 4x ROAS | Infinite Rankers", description: "How we delivered 4x ROAS for a USA business using AI-optimized Google Ads campaigns.", canonical: "https://infiniterankers.io/3" },
+"/4": { title: "Local SEO Case Study #4 | Google Maps Rankings | Infinite Rankers", description: "How we ranked a local business #1 on Google Maps in 60 days using our proven local SEO system.", canonical: "https://infiniterankers.io/4" },
+"/5": { title: "Social Media Marketing Case Study #5 | Infinite Rankers", description: "340% increase in qualified leads using AI-powered social media marketing for a USA business.", canonical: "https://infiniterankers.io/5" },
+"/6": { title: "AI Lead Generation Case Study #6 | Infinite Rankers", description: "How AI calling agents and chatbots generated 200+ qualified leads per month for our client.", canonical: "https://infiniterankers.io/6" },
+"/7": { title: "E-Commerce Growth Case Study #7 | Infinite Rankers", description: "From $12K to $47K monthly revenue using AI email automation and Google Ads optimization.", canonical: "https://infiniterankers.io/7" },
+"/8": { title: "Real Estate Lead Generation Case Study #8 | Infinite Rankers", description: "135% increase in real estate leads using AI qualification bots and targeted advertising.", canonical: "https://infiniterankers.io/8" },
+"/9": { title: "Healthcare Marketing Case Study #9 | Infinite Rankers", description: "190% increase in patient appointments using AI marketing automation for a dental practice.", canonical: "https://infiniterankers.io/9" },
+"/10": { title: "Law Firm Marketing Case Study #10 | Infinite Rankers", description: "How we helped a law firm go from page 3 to #1 on Google and increase leads by 340%.", canonical: "https://infiniterankers.io/10" },
+"/11": { title: "HVAC Business Growth Case Study #11 | Infinite Rankers", description: "Local HVAC company tripled revenue using Google Maps SEO and AI calling agents.", canonical: "https://infiniterankers.io/11" },
+"/12": { title: "Restaurant Marketing Case Study #12 | Infinite Rankers", description: "How AI marketing automation doubled foot traffic and online orders for a restaurant chain.", canonical: "https://infiniterankers.io/12" },
+"/13": { title: "SaaS Lead Generation Case Study #13 | Infinite Rankers", description: "190% increase in qualified SaaS leads using multi-channel AI marketing automation.", canonical: "https://infiniterankers.io/13" },
+"/14": { title: "Fitness Studio Growth Case Study #14 | Infinite Rankers", description: "From 200 to 340 active members in 6 months using social media and AI booking automation.", canonical: "https://infiniterankers.io/14" },
+"/15": { title: "Auto Dealer Marketing Case Study #15 | Infinite Rankers", description: "50+ qualified leads per week from organic search for an auto dealership using our SEO system.", canonical: "https://infiniterankers.io/15" },
+"/16": { title: "Hotel Marketing Case Study #16 | Infinite Rankers", description: "180% increase in direct bookings using AI-optimized marketing campaigns for a hotel.", canonical: "https://infiniterankers.io/16" },
+"/17": { title: "Financial Services Case Study #17 | Infinite Rankers", description: "45 high-net-worth client leads generated in first quarter using compliant financial marketing.", canonical: "https://infiniterankers.io/17" },
+"/18": { title: "Salon & Beauty Case Study #18 | Infinite Rankers", description: "Online bookings went from 10% to 65% using website redesign and social media marketing.", canonical: "https://infiniterankers.io/18" },
+"/19": { title: "Construction Company Case Study #19 | Infinite Rankers", description: "From struggling for projects to 6-month waitlist using AI lead generation and PPC.", canonical: "https://infiniterankers.io/19" },
+"/20": { title: "Plumbing Business Case Study #20 | Infinite Rankers", description: "Emergency calls increased 240% for a plumbing company using Google Maps SEO.", canonical: "https://infiniterankers.io/20" },
+"/21": { title: "Boutique E-Commerce Case Study #21 | Infinite Rankers", description: "E-commerce store grew from $8K to $47K per month using email marketing and Google Ads.", canonical: "https://infiniterankers.io/21" },
+
+Service pages missing SEO:
+"/digital-marketing-services": { title: "Digital Marketing Services USA | Complete Growth Package | Infinite Rankers", description: "Complete digital marketing services: SEO, Google Ads, AI automation, social media. 100+ services for USA businesses. Free consultation.", canonical: "https://infiniterankers.io/digital-marketing-services" },
+"/digital-marketing-company": { title: "Top Digital Marketing Company USA | Infinite Rankers", description: "Award-winning digital marketing company delivering measurable revenue growth. AI-powered strategies for USA businesses.", canonical: "https://infiniterankers.io/digital-marketing-company" },
+"/digital-marketing-seo": { title: "Digital Marketing & SEO Services USA | Infinite Rankers", description: "Combined digital marketing and SEO services that drive organic traffic and qualified leads. AI-enhanced strategies.", canonical: "https://infiniterankers.io/digital-marketing-seo" },
+"/seo-services": { title: "SEO Services USA | Rank #1 on Google | Infinite Rankers", description: "Professional SEO services delivering page 1 Google rankings. Technical SEO, content, link building. Free SEO audit.", canonical: "https://infiniterankers.io/seo-services" },
+"/seo-agency-near-me": { title: "SEO Agency Near Me | Local SEO Experts | Infinite Rankers", description: "Find a trusted SEO agency near you. Infinite Rankers serves businesses across all USA cities. Free local SEO audit.", canonical: "https://infiniterankers.io/seo-agency-near-me" },
+"/seo-specialist": { title: "SEO Specialist USA | Expert SEO Consultant | Infinite Rankers", description: "Certified SEO specialists delivering measurable rankings and traffic growth. 500+ businesses ranked on page 1.", canonical: "https://infiniterankers.io/seo-specialist" },
+"/seo-keywords": { title: "SEO Keyword Research Services | High-Value Keywords | Infinite Rankers", description: "Professional keyword research finding high-volume, low-competition opportunities. AI-powered keyword strategy.", canonical: "https://infiniterankers.io/seo-keywords" },
+"/google-seo": { title: "Google SEO Services USA | Rank Higher on Google | Infinite Rankers", description: "Expert Google SEO services delivering page 1 rankings. Technical optimization, content strategy, link building.", canonical: "https://infiniterankers.io/google-seo" },
+"/search-engine-marketing": { title: "Search Engine Marketing (SEM) Services USA | Infinite Rankers", description: "Complete SEM services combining SEO and Google Ads for maximum search visibility and qualified leads.", canonical: "https://infiniterankers.io/search-engine-marketing" },
+"/email-marketing-services": { title: "Email Marketing Services USA | 40% Open Rates | Infinite Rankers", description: "AI-powered email marketing delivering 40%+ open rates. Automated sequences, list building, campaign management.", canonical: "https://infiniterankers.io/email-marketing-services" },
+"/content-marketing-services": { title: "Content Marketing Services USA | Rank & Convert | Infinite Rankers", description: "Strategic content marketing that ranks on Google and converts visitors into leads. Blog posts, guides, case studies.", canonical: "https://infiniterankers.io/content-marketing-services" },
+"/content-marketing-seo-guide": { title: "Content Marketing SEO Guide 2026 | Infinite Rankers", description: "Complete guide to content marketing and SEO strategy for USA businesses. Rank higher and convert more visitors.", canonical: "https://infiniterankers.io/content-marketing-seo-guide" },
+"/video-marketing": { title: "Video Marketing Services USA | YouTube & Social | Infinite Rankers", description: "Professional video marketing for YouTube, Instagram, TikTok. Strategy, production, distribution for USA businesses.", canonical: "https://infiniterankers.io/video-marketing" },
+"/ppc-management-services": { title: "PPC Management Services USA | Google & Meta Ads | Infinite Rankers", description: "Expert PPC management delivering 4-6x ROAS. Google Ads, Meta Ads, display advertising. Free PPC audit.", canonical: "https://infiniterankers.io/ppc-management-services" },
+"/online-marketing-company": { title: "Online Marketing Company USA | Infinite Rankers", description: "Full-service online marketing company delivering measurable growth. SEO, PPC, social media, AI automation.", canonical: "https://infiniterankers.io/online-marketing-company" },
+"/marketing-agency-near-me": { title: "Marketing Agency Near Me | Top Rated USA Agency | Infinite Rankers", description: "Find a top-rated marketing agency near you. Infinite Rankers serves all USA cities with proven digital marketing.", canonical: "https://infiniterankers.io/marketing-agency-near-me" },
+"/digital-marketing-firms": { title: "Top Digital Marketing Firms USA | Infinite Rankers", description: "One of America's top digital marketing firms. AI-powered strategies, transparent reporting, measurable results.", canonical: "https://infiniterankers.io/digital-marketing-firms" },
+"/website-ranking": { title: "Website Ranking Services | Rank #1 on Google | Infinite Rankers", description: "Professional website ranking services using AI-enhanced SEO. Technical optimization, content, backlinks.", canonical: "https://infiniterankers.io/website-ranking" },
+"/ecommerce-growth-strategies": { title: "E-Commerce Growth Strategies | 3x Revenue | Infinite Rankers", description: "Proven e-commerce growth strategies: SEO, Google Shopping, email automation, CRO. Average 3x revenue growth.", canonical: "https://infiniterankers.io/ecommerce-growth-strategies" },
+"/ai-follow-up-sequences": { title: "AI Follow-Up Sequences | Never Lose a Lead | Infinite Rankers", description: "Automated AI follow-up sequences that convert cold leads into paying clients via email, SMS, and voice.", canonical: "https://infiniterankers.io/ai-follow-up-sequences" },
+"/ai-revenue-growth-ecommerce": { title: "AI Revenue Growth for E-Commerce | 3x Sales | Infinite Rankers", description: "AI-powered e-commerce growth: automated email sequences, Google Shopping optimization, cart recovery.", canonical: "https://infiniterankers.io/ai-revenue-growth-ecommerce" },
+"/workflow-automation": { title: "Workflow Automation Services | Save 20hrs/Week | Infinite Rankers", description: "Complete workflow automation using n8n, Make.com, Zapier. Automate repetitive tasks and save 20+ hours per week.", canonical: "https://infiniterankers.io/workflow-automation" },
+"/saas-integrations": { title: "SaaS Integrations & API Connections | Infinite Rankers", description: "Connect your business tools: CRM, email, ads, analytics. Expert SaaS integration services for USA businesses.", canonical: "https://infiniterankers.io/saas-integrations" },
+"/google-ads-roi-local-business": { title: "Google Ads ROI for Local Business | 4-6x ROAS | Infinite Rankers", description: "Data-driven Google Ads for local businesses. Average 4-6x ROAS. Certified Google Partner. Free audit.", canonical: "https://infiniterankers.io/google-ads-roi-local-business" },
+"/crm-automation-sales-pipeline": { title: "CRM Automation & Sales Pipeline | Infinite Rankers", description: "Automate your entire sales pipeline. CRM setup, lead routing, follow-up sequences. GoHighLevel, HubSpot experts.", canonical: "https://infiniterankers.io/crm-automation-sales-pipeline" },
+"/facebook-growth": { title: "Facebook Marketing & Growth Services | Infinite Rankers", description: "Organic and paid Facebook marketing that builds brand authority and generates qualified leads for USA businesses.", canonical: "https://infiniterankers.io/facebook-growth" },
+"/google-partner": { title: "Google Partner Agency USA | Certified Google Ads Expert | Infinite Rankers", description: "Infinite Rankers is a certified Google Partner agency. Expert Google Ads management with exclusive tools access.", canonical: "https://infiniterankers.io/google-partner" },
+"/services": { title: "All Digital Marketing Services | 30+ AI-Powered Solutions | Infinite Rankers", description: "Browse all 30+ digital marketing and AI automation services. SEO, Google Ads, social media, AI agents, CRM.", canonical: "https://infiniterankers.io/services" },
+"/b2b-lead-generation": { title: "B2B Lead Generation Services USA | Infinite Rankers", description: "AI-powered B2B lead generation delivering qualified decision-maker leads. Multi-channel outreach and automation.", canonical: "https://infiniterankers.io/b2b-lead-generation" },
+"/analytics-dashboard": { title: "Marketing Analytics Dashboard | Real-Time Reporting | Infinite Rankers", description: "Custom marketing analytics dashboards showing real-time performance across all channels. Data-driven decisions.", canonical: "https://infiniterankers.io/analytics-dashboard" },
+"/conversion-funnels": { title: "Conversion Funnel Optimization | 2x More Sales | Infinite Rankers", description: "Build high-converting sales funnels with AI optimization. Landing pages, email sequences, retargeting.", canonical: "https://infiniterankers.io/conversion-funnels" },
+"/lead-generation-strategies-2025": { title: "Lead Generation Strategies 2025 | AI-Powered Growth | Infinite Rankers", description: "Complete lead generation strategies for 2025. AI chatbots, calling agents, SEO, PPC, social media.", canonical: "https://infiniterankers.io/lead-generation-strategies-2025" },
+"/ai-automation-revenue-growth-2025": { title: "AI Automation Revenue Growth 2025 | 10x Results | Infinite Rankers", description: "How AI automation is driving 10x revenue growth for USA businesses in 2025. Case studies and strategies.", canonical: "https://infiniterankers.io/ai-automation-revenue-growth-2025" },
+"/local-seo": { title: "Local SEO Services USA | Google Maps Rankings | Infinite Rankers", description: "Expert local SEO services ranking businesses in Google Maps and local search. 300+ businesses in top 3.", canonical: "https://infiniterankers.io/local-seo" },
+"/ppc-agency": { title: "PPC Agency USA | Google & Meta Ads Experts | Infinite Rankers", description: "Top-rated PPC agency delivering measurable ROI. Certified Google Partner. Average 4-6x ROAS for clients.", canonical: "https://infiniterankers.io/ppc-agency" },
+"/seo-authority": { title: "SEO Authority Building | Domain Authority Growth | Infinite Rankers", description: "Build domain authority through strategic link building, content marketing, and technical SEO optimization.", canonical: "https://infiniterankers.io/seo-authority" },
+"/branding-agency": { title: "Branding Agency USA | Brand Identity & Design | Infinite Rankers", description: "Professional branding services for USA businesses. Logo, brand identity, guidelines, and digital presence.", canonical: "https://infiniterankers.io/branding-agency" },
+"/branding-design": { title: "Branding & Design Services | Visual Identity | Infinite Rankers", description: "Complete branding and design services. Logo design, brand guidelines, marketing materials for USA businesses.", canonical: "https://infiniterankers.io/branding-design" },
+"/brand-identity-business-growth": { title: "Brand Identity for Business Growth | Infinite Rankers", description: "How strong brand identity drives business growth. Complete branding and digital marketing for USA businesses.", canonical: "https://infiniterankers.io/brand-identity-business-growth" },
+"/ai-marketing-automation-usa": { title: "AI Marketing Automation USA | Save 20hrs/Week | Infinite Rankers", description: "Complete AI marketing automation for USA businesses. Email, social, ads, CRM on autopilot.", canonical: "https://infiniterankers.io/ai-marketing-automation-usa" },
+"/social-media-marketing-strategy-2025": { title: "Social Media Marketing Strategy 2025 | Infinite Rankers", description: "Complete social media strategy for 2025. Platform selection, content planning, paid social, ROI measurement.", canonical: "https://infiniterankers.io/social-media-marketing-strategy-2025" },
+"/paid-media-agency": { title: "Paid Media Agency USA | Google, Meta & More | Infinite Rankers", description: "Full-service paid media agency managing Google Ads, Meta Ads, LinkedIn, TikTok for USA businesses.", canonical: "https://infiniterankers.io/paid-media-agency" },
+"/ai-chatbot-lead-conversion": { title: "AI Chatbot Lead Conversion | 4x Better Than Forms | Infinite Rankers", description: "AI chatbots that convert website visitors into leads 4x better than contact forms. 24/7 lead capture.", canonical: "https://infiniterankers.io/ai-chatbot-lead-conversion" },
+
+STEP 5 - Fix sitemap in server/routes.ts:
+Update sitemap to include ALL real pages including /1 through /21 portfolio pages.
+Remove any pages that don't actually exist as routes.
+Add all the new service pages.
+
+The sitemap should include portfolio pages like this:
+{ path: "/1", freq: "monthly", priority: "0.7" },
+{ path: "/2", freq: "monthly", priority: "0.7" },
+... all the way to /21
+
+STEP 6 - Rebuild:
+tsx script/build.ts
+Show full output.
+
+STEP 7 - Test sitemap is correct:
+PORT=3000 NODE_ENV=production node dist/index.cjs &
+sleep 3
+curl -s http://localhost:3000/sitemap.xml | grep "<loc>" | head -30
+kill %1 2>/dev/null
+
+Sitemap must show real URLs - NO /1/2/3 without proper paths, all pages included.
+
+STEP 8 - Commit and push:
+git add -A
+git commit -m "Fix sitemap + add SEO meta tags for 50+ unindexed pages"
+git push origin main
+Confirm push successful!
+
+IMPORTANT RULES:
+- Do NOT delete any pages or routes
+- Do NOT change React components
+- Only add/update entries in server/seo.ts
+- Only fix sitemap in server/routes.ts
+- Show me sitemap output after fix
