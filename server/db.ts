@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import * as schema from "@shared/schema";
 
-let dbUrl = process.env.DATABASE_URL || "";
+let dbUrl = process.env.DATABASE_URL || process.env.NEON_DATABASE_URL || "";
 if (dbUrl.includes("channel_binding=require")) {
   dbUrl = dbUrl.replace(/[&?]channel_binding=require/g, "");
   console.log("Removed channel_binding=require from DATABASE_URL for compatibility");
