@@ -30,6 +30,18 @@ const catIcons: Record<string, any> = {
 };
 
 export default function Services() {
+  const enterpriseUseCases = [
+    "Multi-location lead routing and SLA-based follow-up automation",
+    "CRM, ads, and reporting integration for board-level visibility",
+    "AI-assisted sales workflows for large inbound and outbound teams",
+  ];
+
+  const localBusinessUseCases = [
+    "Google Business Profile optimization and local SEO growth",
+    "AI receptionist and booking systems for missed-call recovery",
+    "Cost-efficient lead generation for local service businesses",
+  ];
+
   return (
     <div className="overflow-x-hidden">
       <SEOHead
@@ -52,6 +64,58 @@ export default function Services() {
               From AI automation to lead generation, social media to custom development — every system is designed to generate customers and grow your revenue.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="py-14 sm:py-16 bg-gradient-to-b from-white to-blue-50/30" data-testid="section-usa-focus">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            label="USA Market Focus"
+            title="Built for Enterprise Teams and Local Businesses"
+            description="Infinite Rankers is an AI revenue growth agency focused on the United States market. We build systems that help enterprise organizations scale operations and local businesses grow qualified leads predictably."
+          />
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <GlassCard className="h-full">
+              <h3 className="text-lg font-semibold text-foreground mb-3">Enterprise Growth Systems</h3>
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                For larger teams, we combine automation, paid media, and SEO into a unified operating layer that improves response speed,
+                sales efficiency, and revenue attribution across departments.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {enterpriseUseCases.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-600" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+
+            <GlassCard className="h-full">
+              <h3 className="text-lg font-semibold text-foreground mb-3">Local Business Revenue Growth</h3>
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                For local service brands, we focus on rapid lead capture, better booking rates, and stronger local search visibility so each
+                marketing dollar delivers measurable pipeline impact.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                {localBusinessUseCases.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-600" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+          </div>
+
+          <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
+            Popular entry points for USA clients include 
+            <Link href="/ai-calling-agent"><span className="text-blue-600 hover:underline cursor-pointer"> AI Calling Agent</span></Link>,
+            <Link href="/local-seo"><span className="text-blue-600 hover:underline cursor-pointer"> Local SEO</span></Link>,
+            <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads Revenue Engine</span></Link>, and
+            <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>.
+          </p>
         </div>
       </section>
 

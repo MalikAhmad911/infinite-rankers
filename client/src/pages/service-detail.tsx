@@ -294,6 +294,49 @@ export default function ServiceDetail() {
         variant={theme.featuresLayout}
       />
 
+      <section className="py-14 sm:py-16 bg-gradient-to-b from-white to-gray-50/70" data-testid="section-usa-service-intent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            label="USA Strategy"
+            title={`${service.title} for Enterprise and Local Business Growth`}
+            description={`This system is designed for USA companies that need predictable pipeline growth, operational efficiency, and clear revenue attribution from marketing.`}
+          />
+
+          <div className="grid lg:grid-cols-2 gap-6">
+            <GlassCard className="h-full">
+              <h3 className="text-lg font-semibold text-foreground mb-3">Enterprise Use Case</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Enterprise teams use {service.title} to unify demand generation, qualification, and follow-up across multiple teams and locations.
+                This reduces response lag, improves lead quality, and gives leadership a clearer path from spend to revenue.
+              </p>
+            </GlassCard>
+
+            <GlassCard className="h-full">
+              <h3 className="text-lg font-semibold text-foreground mb-3">Local Business Use Case</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Local businesses use {service.title} to capture demand quickly, reduce missed opportunities, and convert more calls,
+                form submissions, and chats into booked appointments and paying customers.
+              </p>
+            </GlassCard>
+          </div>
+
+          {relatedServiceData.length > 0 && (
+            <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
+              To improve ROI further, most clients combine this service with
+              {relatedServiceData.slice(0, 3).map((rs, idx) => (
+                <span key={rs!.slug}>
+                  {idx === 0 ? " " : idx === relatedServiceData.slice(0, 3).length - 1 ? " and " : ", "}
+                  <Link href={`/${rs!.slug}`}>
+                    <span className="text-blue-600 hover:underline cursor-pointer">{rs!.title}</span>
+                  </Link>
+                </span>
+              ))}
+              . This connected system typically improves conversion quality and shortens sales cycles.
+            </p>
+          )}
+        </div>
+      </section>
+
       {pricing && (
         <section id="service-pricing" className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-service-pricing">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

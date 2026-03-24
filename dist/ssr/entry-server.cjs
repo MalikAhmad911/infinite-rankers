@@ -67569,6 +67569,16 @@ const catIcons = {
   "development": Code
 };
 function Services() {
+  const enterpriseUseCases = [
+    "Multi-location lead routing and SLA-based follow-up automation",
+    "CRM, ads, and reporting integration for board-level visibility",
+    "AI-assisted sales workflows for large inbound and outbound teams"
+  ];
+  const localBusinessUseCases = [
+    "Google Business Profile optimization and local SEO growth",
+    "AI receptionist and booking systems for missed-call recovery",
+    "Cost-efficient lead generation for local service businesses"
+  ];
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "overflow-x-hidden", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       SEOHead,
@@ -67590,6 +67600,45 @@ function Services() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground leading-relaxed", style: { fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }, children: "From AI automation to lead generation, social media to custom development — every system is designed to generate customers and grow your revenue." })
       ] }) })
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-14 sm:py-16 bg-gradient-to-b from-white to-blue-50/30", "data-testid": "section-usa-focus", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        SectionHeader,
+        {
+          label: "USA Market Focus",
+          title: "Built for Enterprise Teams and Local Businesses",
+          description: "Infinite Rankers is an AI revenue growth agency focused on the United States market. We build systems that help enterprise organizations scale operations and local businesses grow qualified leads predictably."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "h-full", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Enterprise Growth Systems" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground mb-4 leading-relaxed", children: "For larger teams, we combine automation, paid media, and SEO into a unified operating layer that improves response speed, sales efficiency, and revenue attribution across departments." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2 text-sm text-muted-foreground", children: enterpriseUseCases.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-600", "aria-hidden": "true" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item })
+          ] }, item)) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "h-full", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Local Business Revenue Growth" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground mb-4 leading-relaxed", children: "For local service brands, we focus on rapid lead capture, better booking rates, and stronger local search visibility so each marketing dollar delivers measurable pipeline impact." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2 text-sm text-muted-foreground", children: localBusinessUseCases.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mt-1.5 h-1.5 w-1.5 rounded-full bg-blue-600", "aria-hidden": "true" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item })
+          ] }, item)) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-6 text-sm text-muted-foreground leading-relaxed", children: [
+        "Popular entry points for USA clients include",
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-calling-agent", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Calling Agent" }) }),
+        ",",
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/local-seo", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Local SEO" }) }),
+        ",",
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads Revenue Engine" }) }),
+        ", and",
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
+        "."
+      ] })
+    ] }) }),
     SERVICE_CATEGORIES.map((cat, catIndex) => {
       const CatIcon = catIcons[cat.id] || Zap;
       return /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -69139,6 +69188,42 @@ function ServiceDetail() {
         variant: theme.featuresLayout
       }
     ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-14 sm:py-16 bg-gradient-to-b from-white to-gray-50/70", "data-testid": "section-usa-service-intent", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        SectionHeader,
+        {
+          label: "USA Strategy",
+          title: `${service.title} for Enterprise and Local Business Growth`,
+          description: `This system is designed for USA companies that need predictable pipeline growth, operational efficiency, and clear revenue attribution from marketing.`
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-2 gap-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "h-full", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Enterprise Use Case" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
+            "Enterprise teams use ",
+            service.title,
+            " to unify demand generation, qualification, and follow-up across multiple teams and locations. This reduces response lag, improves lead quality, and gives leadership a clearer path from spend to revenue."
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "h-full", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Local Business Use Case" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
+            "Local businesses use ",
+            service.title,
+            " to capture demand quickly, reduce missed opportunities, and convert more calls, form submissions, and chats into booked appointments and paying customers."
+          ] })
+        ] })
+      ] }),
+      relatedServiceData.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-6 text-sm text-muted-foreground leading-relaxed", children: [
+        "To improve ROI further, most clients combine this service with",
+        relatedServiceData.slice(0, 3).map((rs, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+          idx === 0 ? " " : idx === relatedServiceData.slice(0, 3).length - 1 ? " and " : ", ",
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: `/${rs.slug}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: rs.title }) })
+        ] }, rs.slug)),
+        ". This connected system typically improves conversion quality and shortens sales cycles."
+      ] })
+    ] }) }),
     pricing && /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "service-pricing", className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "section-service-pricing", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         SectionHeader,
