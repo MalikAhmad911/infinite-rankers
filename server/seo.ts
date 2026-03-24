@@ -317,6 +317,14 @@ function getBreadcrumbs(path: string, seo: SEOMeta): object {
 function getStructuredData(url: string, seo: SEOMeta): string {
   const path = url.split("?")[0].split("#")[0];
   const BASE_URL = "https://infiniterankers.io";
+  const FOUNDER_SCHEMA = {
+    "@type": "Person",
+    "name": "Malik Ahmad",
+    "jobTitle": "CEO & Founder",
+    "description": "AI automation and revenue growth strategist helping USA businesses scale through data-driven digital systems.",
+    "url": BASE_URL,
+    "sameAs": ["https://www.linkedin.com/company/infinite-rankers"]
+  };
   const ORG_SCHEMA = {
     "@type": "Organization",
     "name": "Infinite Rankers",
@@ -325,7 +333,9 @@ function getStructuredData(url: string, seo: SEOMeta): string {
     "description": "AI Revenue Growth Agency providing 30+ AI-powered marketing and automation services for businesses across the USA and worldwide.",
     "sameAs": ["https://infiniterankers.com", "https://infiniterankers.com/blog", "https://infiniterankers.com/about"],
     "address": { "@type": "PostalAddress", "streetAddress": "203 N Caroline Pl", "addressLocality": "Dover", "addressRegion": "DE", "postalCode": "19904", "addressCountry": "US" },
-    "contactPoint": { "@type": "ContactPoint", "telephone": "(703) 415-9373", "contactType": "sales", "email": "contact@infiniterankers.io", "availableLanguage": "English", "areaServed": "US" },
+    "contactPoint": { "@type": "ContactPoint", "telephone": "(703) 415-9373", "contactType": "sales", "email": "contact@infiniterankers.io", "availableLanguage": ["English"], "areaServed": "US" },
+    "founder": FOUNDER_SCHEMA,
+    "areaServed": "US",
     "knowsAbout": ["AI Automation", "Lead Generation", "Google Ads", "SEO", "CRM Automation", "AI Chatbot", "Digital Marketing", "Social Media Marketing", "Website Development"]
   };
 
@@ -354,6 +364,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "name": "Infinite Rankers",
       "alternateName": "Infinite Rankers AI Agency",
       "url": BASE_URL,
+      "inLanguage": "en-US",
       "description": seo.description,
       "publisher": ORG_SCHEMA,
       "potentialAction": {
@@ -371,6 +382,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "name": "Infinite Rankers",
       "description": "AI Revenue Growth Agency providing AI automation, SEO, Google Ads, lead generation, and full-service digital marketing for businesses across the USA.",
       "url": BASE_URL,
+      "inLanguage": "en-US",
       "logo": `${BASE_URL}/images/logo-full.png`,
       "image": `${BASE_URL}/images/logo-full.png`,
       "telephone": "(703) 415-9373",
@@ -417,8 +429,13 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "name": serviceName,
       "description": seo.description,
       "url": seo.canonical,
+      "inLanguage": "en-US",
       "provider": ORG_SCHEMA,
       "areaServed": { "@type": "Country", "name": "United States" },
+      "audience": [
+        { "@type": "BusinessAudience", "name": "Enterprise companies in the USA" },
+        { "@type": "BusinessAudience", "name": "Local businesses in the USA" }
+      ],
       "serviceType": "AI Marketing & Automation",
       "offers": { "@type": "Offer", "availability": "https://schema.org/InStock", "priceCurrency": "USD", "url": `${BASE_URL}/pricing` }
     };
@@ -438,15 +455,23 @@ function getStructuredData(url: string, seo: SEOMeta): string {
   }
 
   if (isBlogPage) {
+    const blogMeta = BLOG_POSTS.find(b => b.slug === ssSlug);
     mainSchema = {
       "@context": "https://schema.org",
-      "@type": "Article",
+      "@type": "BlogPosting",
       "headline": seo.title.replace(" | Infinite Rankers", ""),
       "description": seo.description,
       "url": seo.canonical,
+      "inLanguage": "en-US",
       "image": `${BASE_URL}/images/logo-full.png`,
       "publisher": { ...ORG_SCHEMA, "@context": undefined },
-      "author": { "@type": "Organization", "name": "Infinite Rankers", "url": BASE_URL },
+      "author": FOUNDER_SCHEMA,
+      "about": [
+        "AI automation for business growth",
+        "SEO and paid media strategy",
+        "USA enterprise and local business marketing"
+      ],
+      "keywords": blogMeta ? `${blogMeta.slug.replace(/-/g, ", ")}, USA marketing, enterprise growth, local business growth` : "USA marketing, AI automation",
       "datePublished": "2025-01-15",
       "dateModified": new Date().toISOString().split("T")[0],
       "mainEntityOfPage": { "@type": "WebPage", "@id": seo.canonical }
