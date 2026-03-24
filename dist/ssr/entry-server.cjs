@@ -66438,9 +66438,28 @@ function LiveDashboard() {
     }, 2e3);
     return () => clearInterval(interval2);
   }, []);
-  const sparklinePoints = reactExports.useRef(
-    Array.from({ length: 20 }, (_, i2) => 30 + Math.sin(i2 * 0.5) * 15 + Math.random() * 10)
-  ).current;
+  const sparklinePoints = [
+    32,
+    28,
+    35,
+    31,
+    38,
+    33,
+    40,
+    36,
+    42,
+    39,
+    44,
+    41,
+    46,
+    43,
+    48,
+    45,
+    50,
+    47,
+    52,
+    49
+  ];
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     motion.div,
     {
@@ -88104,13 +88123,21 @@ const LANDING_PAGES$1 = [
 ];
 const ALL_LANDING_PAGES = LANDING_PAGES$1;
 const getLandingPage = (slug) => LANDING_PAGES$1.find((p) => p.slug === slug);
+const SSRStatusContext = reactExports.createContext(null);
+function useSSRStatus() {
+  return reactExports.useContext(SSRStatusContext);
+}
 function NotFound() {
+  const ssrStatus = useSSRStatus();
+  if (ssrStatus) {
+    ssrStatus.set(404);
+  }
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen w-full flex items-center justify-center bg-gray-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "w-full max-w-md mx-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(CardContent, { className: "pt-6", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex mb-4 gap-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { className: "h-8 w-8 text-red-500" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-gray-900", children: "404 Page Not Found" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-sm text-gray-600", children: "Did you forget to add the page to the router?" })
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-sm text-gray-600", children: "The page you are looking for does not exist." })
   ] }) }) });
 }
 const iconMap = {
@@ -89905,9 +89932,12 @@ const defaultQueryClient = isServer ? new QueryClient() : new QueryClient({
 });
 function App({ ssrUrl, queryClient }) {
   const qc = queryClient || defaultQueryClient;
+  const [mounted, setMounted] = reactExports.useState(false);
+  reactExports.useEffect(() => {
+    setMounted(true);
+  }, []);
   const content = /* @__PURE__ */ jsxRuntimeExports.jsx(ThemeProvider, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: qc, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TooltipProvider, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background", children: [
-      !isServer && /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollToTop, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Navbar, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Breadcrumbs, {}),
@@ -89915,7 +89945,8 @@ function App({ ssrUrl, queryClient }) {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
     ] }),
-    !isServer && /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, {})
+    mounted && /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollToTop, {}),
+    mounted && /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, {})
   ] }) }) });
   if (ssrUrl) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Router, { ssrPath: ssrUrl, children: content });
@@ -89924,11 +89955,17 @@ function App({ ssrUrl, queryClient }) {
 }
 React.useLayoutEffect = React.useEffect;
 function render(url) {
+  const statusObj = { code: 200, set(code) {
+    this.code = code;
+  } };
   try {
-    return server_nodeExports.renderToString(/* @__PURE__ */ jsxRuntimeExports.jsx(App, { ssrUrl: url }));
+    const html = server_nodeExports.renderToString(
+      /* @__PURE__ */ jsxRuntimeExports.jsx(SSRStatusContext.Provider, { value: statusObj, children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, { ssrUrl: url }) })
+    );
+    return { html, status: statusObj.code };
   } catch (e) {
     console.error("SSR render error:", e);
-    return "";
+    return { html: "", status: 200 };
   }
 }
 exports.render = render;
