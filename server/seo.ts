@@ -599,7 +599,7 @@ export function injectSEO(html: string, url: string): string {
     extraTags.push(ogUrlTag);
   }
 
-  const noindexPaths = ["/sitemap", "/crawl-hub"];
+  const noindexPaths = ["/crawl-hub"];
   const urlPath = url.split("?")[0];
   const isAdminPath = urlPath.startsWith("/admin");
   if (noindexPaths.includes(urlPath) || isAdminPath) {
