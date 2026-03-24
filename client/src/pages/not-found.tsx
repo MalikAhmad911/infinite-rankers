@@ -1,7 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
+import { useSSRStatus } from "@/lib/ssr-status";
 
 export default function NotFound() {
+  const ssrStatus = useSSRStatus();
+  if (ssrStatus) {
+    ssrStatus.set(404);
+  }
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
       <Card className="w-full max-w-md mx-4">
@@ -12,7 +18,7 @@ export default function NotFound() {
           </div>
 
           <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
+            The page you are looking for does not exist.
           </p>
         </CardContent>
       </Card>

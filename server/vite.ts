@@ -49,8 +49,18 @@ export async function setupVite(server: Server, app: Express) {
       );
       template = await vite.transformIndexHtml(url, template);
 
-      const html = template.replace("<!--ssr-outlet-->", "");
-      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+      let appHtml = "";
+      let statusCode = 200;
+      try {
+        const { render } = await vite.ssrLoadModule("/src/entry-server.tsx");
+        const result = render(url);
+        appHtml = result.html;
+        statusCode = result.status ?? 200;
+      } catch (ssrErr) {
+        console.warn("SSR render failed in dev, falling back to CSR:", ssrErr);
+      }
+      const html = template.replace("<!--ssr-outlet-->", appHtml);
+      res.status(statusCode).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);

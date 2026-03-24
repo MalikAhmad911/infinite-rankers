@@ -13,7 +13,7 @@ export function serveStatic(app: Express) {
 
   app.use(express.static(distPath, { index: false }));
 
-  let render: ((url: string) => string) | null = null;
+  let render: ((url: string) => { html: string; status: number }) | null = null;
   const ssrPath = path.resolve(__dirname, "ssr", "entry-server.cjs");
   if (fs.existsSync(ssrPath)) {
     try {
@@ -30,11 +30,13 @@ export function serveStatic(app: Express) {
 
   app.use("/{*path}", (req, res) => {
     let html = template;
+    let statusCode = 200;
 
     if (render) {
       try {
-        const appHtml = render(req.originalUrl);
-        html = html.replace("<!--ssr-outlet-->", appHtml);
+        const result = render(req.originalUrl);
+        html = html.replace("<!--ssr-outlet-->", result.html);
+        statusCode = result.status ?? 200;
       } catch (e) {
         console.error("SSR render error for", req.originalUrl, e);
       }
@@ -42,7 +44,7 @@ export function serveStatic(app: Express) {
 
     html = injectSEO(html, req.originalUrl);
     (res as any).__seoInjected = true;
-    res.status(200).set({
+    res.status(statusCode).set({
       "Content-Type": "text/html",
       "Cache-Control": "no-cache",
     }).end(html);

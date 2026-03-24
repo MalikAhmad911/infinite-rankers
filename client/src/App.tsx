@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -72,12 +72,14 @@ const defaultQueryClient = isServer ? new QueryClient() : new QueryClient({
 
 function App({ ssrUrl, queryClient }: { ssrUrl?: string; queryClient?: QueryClient }) {
   const qc = queryClient || defaultQueryClient;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   const content = (
     <ThemeProvider>
       <QueryClientProvider client={qc}>
         <TooltipProvider>
           <div className="min-h-screen bg-background">
-            {!isServer && <ScrollToTop />}
             <Navbar />
             <main>
               <Breadcrumbs />
@@ -85,7 +87,8 @@ function App({ ssrUrl, queryClient }: { ssrUrl?: string; queryClient?: QueryClie
             </main>
             <Footer />
           </div>
-          {!isServer && <Toaster />}
+          {mounted && <ScrollToTop />}
+          {mounted && <Toaster />}
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>

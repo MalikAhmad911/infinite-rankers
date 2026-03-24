@@ -607,8 +607,12 @@ export function injectSEO(html: string, url: string): string {
   } else if (!result.includes('name="robots"')) {
     extraTags.push(`<meta name="robots" content="index, follow" />`);
   }
-  extraTags.push(`<meta property="og:type" content="website" />`);
-  extraTags.push(`<meta property="og:site_name" content="Infinite Rankers" />`);
+  if (!/property="og:type"/.test(result)) {
+    extraTags.push(`<meta property="og:type" content="website" />`);
+  }
+  if (!/property="og:site_name"/.test(result)) {
+    extraTags.push(`<meta property="og:site_name" content="Infinite Rankers" />`);
+  }
   extraTags.push(`<meta property="og:image" content="${BASE}/images/logo-full.png" />`);
   extraTags.push(`<meta name="twitter:card" content="summary_large_image" />`);
   extraTags.push(`<meta name="twitter:title" content="${escapeAttr(seo.title)}" />`);

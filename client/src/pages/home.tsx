@@ -90,9 +90,10 @@ function LiveDashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  const sparklinePoints = useRef(
-    Array.from({ length: 20 }, (_, i) => 30 + Math.sin(i * 0.5) * 15 + Math.random() * 10)
-  ).current;
+  const sparklinePoints = [
+    32, 28, 35, 31, 38, 33, 40, 36, 42, 39,
+    44, 41, 46, 43, 48, 45, 50, 47, 52, 49,
+  ];
 
   return (
     <motion.div
