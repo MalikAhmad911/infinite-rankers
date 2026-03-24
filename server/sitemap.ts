@@ -258,8 +258,6 @@ export function registerSitemapRoutes(app: Express) {
       "",
       `Sitemap: ${BASE}/rss.xml`,
       `Sitemap: ${BASE}/sitemap.xml`,
-      `Sitemap: ${BASE}/llms.txt`,
-      `Sitemap: ${BASE}/llms-full.txt`,
       `Host: ${BASE.replace("https://", "")}`,
       "",
     ].join("\n"));
