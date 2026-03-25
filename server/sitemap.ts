@@ -251,10 +251,13 @@ export function registerSitemapRoutes(app: Express) {
       "User-agent: PerplexityBot",
       "Allow: /",
       "",
-      "# All other crawlers — allow everything except admin",
+      "# All other crawlers — allow public pages, block admin/API/internal utility URLs",
       "User-agent: *",
       "Allow: /",
       "Disallow: /admin/",
+      "Disallow: /api/",
+      "Disallow: /indexing-checklist",
+      "Disallow: /backlink-strategy",
       "",
       `Sitemap: ${BASE}/rss.xml`,
       `Sitemap: ${BASE}/sitemap.xml`,
@@ -321,7 +324,7 @@ function buildIndexingChecklist(): string {
 
 <div class="stats">
 <div class="stat"><div class="num">${allUrls.length}</div><div class="label">Total Pages</div></div>
-<div class="stat"><div class="num">91</div><div class="label">Sitemap URLs</div></div>
+<div class="stat"><div class="num">${allUrls.length}</div><div class="label">Sitemap URLs</div></div>
 <div class="stat"><div class="num">30</div><div class="label">Service Pages</div></div>
 <div class="stat"><div class="num">15</div><div class="label">Blog Posts</div></div>
 </div>
