@@ -49402,6 +49402,11 @@ const Eye = createLucideIcon("Eye", [
   ],
   ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ]);
+const FileCheck2 = createLucideIcon("FileCheck2", [
+  ["path", { d: "M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4", key: "1pf5j1" }],
+  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
+  ["path", { d: "m3 15 2 2 4-4", key: "1lhrkk" }]
+]);
 const FileText = createLucideIcon("FileText", [
   ["path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z", key: "1rqfz7" }],
   ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
@@ -49671,6 +49676,11 @@ const Scale = createLucideIcon("Scale", [
   ["path", { d: "M12 3v18", key: "108xh3" }],
   ["path", { d: "M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2", key: "3gwbw2" }]
 ]);
+const SearchCheck = createLucideIcon("SearchCheck", [
+  ["path", { d: "m8 11 2 2 4-4", key: "1sed1v" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }],
+  ["path", { d: "m21 21-4.3-4.3", key: "1qie3q" }]
+]);
 const Search = createLucideIcon("Search", [
   ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }],
   ["path", { d: "m21 21-4.3-4.3", key: "1qie3q" }]
@@ -49701,6 +49711,16 @@ const Share2 = createLucideIcon("Share2", [
   ["circle", { cx: "18", cy: "19", r: "3", key: "1xt0gg" }],
   ["line", { x1: "8.59", x2: "15.42", y1: "13.51", y2: "17.49", key: "47mynk" }],
   ["line", { x1: "15.41", x2: "8.59", y1: "6.51", y2: "10.49", key: "1n3mei" }]
+]);
+const ShieldCheck = createLucideIcon("ShieldCheck", [
+  [
+    "path",
+    {
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
+    }
+  ],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
 ]);
 const Shield = createLucideIcon("Shield", [
   [
@@ -65433,6 +65453,7 @@ const QUICK_LINKS = [
 ];
 const RESOURCES = [
   { href: "/blog", label: "Blog" },
+  { href: "/content-methodology", label: "Content Methodology" },
   { href: "/book-demo", label: "Book Demo" },
   { href: "/contact", label: "Contact" }
 ];
@@ -89186,6 +89207,84 @@ function Privacy() {
     ] }) }) })
   ] });
 }
+function ContentMethodology() {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      SEOHead,
+      {
+        title: "How We Create Content | Infinite Rankers",
+        description: "Learn how Infinite Rankers creates website content using expert-led research, editorial review, factual verification, and responsible AI assistance.",
+        canonical: "https://infiniterankers.io/content-methodology"
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "relative pt-32 pb-16 sm:pb-20 overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/40 to-white" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-20 right-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(motion.div, { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "secondary", className: "mb-4", children: "Editorial Transparency" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight", children: "How We Create and Maintain Content" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl", children: "We use a hybrid workflow that combines human strategy expertise with responsible automation support. Every public page is reviewed for factual accuracy, user value, and search quality before publication." })
+      ] }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "pb-14 sm:pb-16", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(motion.div, { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, className: "rounded-md border border-border bg-card p-6 sm:p-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(SearchCheck, { className: "w-5 h-5 text-blue-600" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-semibold text-foreground", children: "1) Research and Original Framing" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground leading-relaxed", children: "We begin with topic research, intent mapping, and business context from real client scenarios. Our team defines the angle, structure, and claims before any drafting step." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(motion.div, { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, className: "rounded-md border border-border bg-card p-6 sm:p-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-5 h-5 text-blue-600" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-semibold text-foreground", children: "2) Human Editorial Oversight" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground leading-relaxed", children: "Subject-matter editors review language quality, clarity, and relevance for the intended audience. We remove low-value repetition, generic filler, and unsupported claims." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(motion.div, { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, className: "rounded-md border border-border bg-card p-6 sm:p-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(FileCheck2, { className: "w-5 h-5 text-blue-600" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-semibold text-foreground", children: "3) Responsible Automation Assistance" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm sm:text-base text-muted-foreground leading-relaxed", children: "We may use automation tools to support outlining, summarization, and drafting efficiency. Automation does not replace editorial responsibility. Final publication decisions and quality checks are performed by humans." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(motion.div, { initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, className: "rounded-md border border-border bg-card p-6 sm:p-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { className: "w-5 h-5 text-blue-600" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-semibold text-foreground", children: "4) Accuracy and Policy Checks" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-sm sm:text-base text-muted-foreground", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-green-600 mt-1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Metadata quality checks for title, description, canonical, and image alt text." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-green-600 mt-1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Structured data validation and route-level indexability controls." })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-green-600 mt-1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Periodic updates to keep content accurate, relevant, and useful." })
+          ] })
+        ] })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "py-14 sm:py-16 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-700" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-3xl font-bold text-white mb-4", children: "Questions About Our Content Standards?" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white/85 mb-7 max-w-2xl mx-auto", children: "Contact our team if you want clarification on page updates, factual corrections, or editorial practices." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row justify-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/contact", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { variant: "secondary", "data-testid": "button-content-methodology-contact", children: [
+            "Contact Us ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-4 h-4 ml-1" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/blog", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "outline", className: "bg-white/90 text-gray-900 border-white", "data-testid": "button-content-methodology-blog", children: "Read Our Blog" }) })
+        ] })
+      ] })
+    ] })
+  ] });
+}
 const MAIN_PAGES = [
   { title: "Home", href: "/" },
   { title: "About", href: "/about" },
@@ -90192,6 +90291,7 @@ function AppRouter() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/google-partner", component: GooglePartnerPage }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/terms", component: Terms }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/privacy", component: Privacy }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/content-methodology", component: ContentMethodology }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/sitemap", component: SitemapPage }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/admin/indexing", component: AdminDashboard }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/:slug", children: (params) => /* @__PURE__ */ jsxRuntimeExports.jsx(SmartPage, { params }) }),

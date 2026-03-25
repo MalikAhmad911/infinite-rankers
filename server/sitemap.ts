@@ -26,6 +26,7 @@ function getAllSitemapEntries(): SitemapURL[] {
     { path: "/contact", changefreq: "monthly", priority: "0.7" },
     { path: "/blog", changefreq: "weekly", priority: "0.8" },
     { path: "/book-demo", changefreq: "monthly", priority: "0.8" },
+    { path: "/content-methodology", changefreq: "monthly", priority: "0.5" },
     { path: "/google-partner", changefreq: "monthly", priority: "0.6" },
     { path: "/terms", changefreq: "yearly", priority: "0.3" },
     { path: "/privacy", changefreq: "yearly", priority: "0.3" },
@@ -610,7 +611,7 @@ Book a free demo: infiniterankers.io/book-demo
 }
 
 function buildCrawlHub(allUrls: string[]): string {
-  const serviceUrls = allUrls.filter(u => !u.endsWith("/") && !u.includes("/blog") && !u.includes("/about") && !u.includes("/contact") && !u.includes("/pricing") && !u.includes("/portfolio") && !u.includes("/book-demo") && !u.includes("/services") && !u.includes("/sitemap") && !u.includes("/terms") && !u.includes("/privacy"));
+  const serviceUrls = allUrls.filter(u => !u.endsWith("/") && !u.includes("/blog") && !u.includes("/about") && !u.includes("/contact") && !u.includes("/pricing") && !u.includes("/portfolio") && !u.includes("/book-demo") && !u.includes("/services") && !u.includes("/sitemap") && !u.includes("/content-methodology") && !u.includes("/terms") && !u.includes("/privacy"));
   const mainUrls = allUrls.filter(u => !serviceUrls.includes(u));
 
   return `<!DOCTYPE html>

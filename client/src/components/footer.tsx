@@ -16,6 +16,7 @@ const QUICK_LINKS = [
 
 const RESOURCES = [
   { href: "/blog", label: "Blog" },
+  { href: "/content-methodology", label: "Content Methodology" },
   { href: "/book-demo", label: "Book Demo" },
   { href: "/contact", label: "Contact" },
 ];
