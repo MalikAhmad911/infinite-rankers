@@ -69038,6 +69038,30 @@ const defaultTheme = {
   workflowLayout: "A",
   faqLayout: "A"
 };
+function buildServiceNarrative(service, content) {
+  const featureLine = content.features.slice(0, 4).join(", ");
+  const problemLine = content.problems.slice(0, 3).join("; ");
+  const solutionLine = content.solutions.slice(0, 3).join("; ");
+  const industriesLine = content.industries.slice(0, 4).map((i2) => i2.name).join(", ");
+  const workflowLine = content.workflowSteps.map((s2) => s2.step).join(" -> ");
+  const hash = Array.from(service.slug).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const positioningAngles = [
+    "revenue operations and speed-to-lead optimization",
+    "demand generation with stronger qualification and conversion control",
+    "pipeline stability through automation-first execution",
+    "commercial intent capture with full-funnel attribution"
+  ];
+  const angleA = positioningAngles[hash % positioningAngles.length];
+  return [
+    `${service.title} is structured around ${angleA}. Instead of treating growth as separate channel tasks, we design one operating layer that connects acquisition, qualification, conversion, and retention. For teams competing in crowded USA markets, this model creates consistency in execution and helps reduce the revenue volatility that happens when campaigns are managed as disconnected experiments.`,
+    `During discovery, we focus on core revenue constraints: ${problemLine}. These issues often appear across both enterprise and local operators, even when budget levels differ. The difference is in scale, not in logic. If response times are slow and follow-up is inconsistent, paid and organic traffic both underperform. That is why implementation starts with conversion mechanics before volume expansion.`,
+    `The deployment sequence follows a practical workflow: ${workflowLine}. This sequence keeps performance stable while new automation is introduced. It prevents the common pattern where teams launch tools quickly but lose operational control. In our system, each stage has clear ownership, measurable outcomes, and weekly optimization checkpoints tied to business goals rather than vanity dashboards.`,
+    `Execution quality is driven by specific capabilities such as ${featureLine}. These are not presented as standalone features. They are configured as one coordinated engine that improves lead handling, qualification quality, and close velocity. For larger organizations, this supports multi-team consistency. For local businesses, it removes missed opportunities and makes daily pipeline more predictable.`,
+    `This service is especially effective for industries including ${industriesLine}. In each vertical, buyer behavior, trust signals, and sales cycles are different, so we adapt scripts, routing rules, and follow-up pacing accordingly. The objective is not only to increase inquiry counts but to improve qualified opportunity flow so sales teams spend more time on deals likely to close.`,
+    `Our strategic response to those constraints is clear: ${solutionLine}. When these systems are aligned, the business sees faster first response, lower cost per qualified lead, and better visibility from first touch to booked revenue. Over time, this creates a compounding advantage because decisions are based on clean performance data rather than assumptions.`,
+    `For most accounts, ${service.title} also becomes the foundation for adjacent systems such as CRM automation, paid acquisition, and retention workflows. That layered approach strengthens attribution and shortens learning cycles. As a result, leadership can scale budgets with confidence, knowing that operational infrastructure can absorb more demand without sacrificing customer experience.`
+  ];
+}
 function ServiceDetail() {
   const params = useParams();
   const service = ALL_SERVICES.find((s2) => s2.slug === params.slug);
@@ -69057,6 +69081,7 @@ function ServiceDetail() {
   const pricing = getServicePricing(params.slug);
   const heroGradient = theme.heroGradient.includes("#") ? "from-gray-50/80 via-blue-50/30 to-white" : theme.heroGradient;
   const relatedServiceData = content.relatedServices.map((slug) => ALL_SERVICES.find((s2) => s2.slug === slug)).filter(Boolean).slice(0, 4);
+  const serviceNarrative = buildServiceNarrative(service, content);
   const relatedCaseStudies = CASE_STUDIES.filter(
     (cs) => cs.tags.some((tag) => {
       const categoryLower = service.category.toLowerCase();
@@ -69230,27 +69255,13 @@ function ServiceDetail() {
         {
           label: "Implementation Depth",
           title: `How ${service.title} Drives Measurable Revenue Outcomes`,
-          description: "This section explains strategy, execution, and ROI logic used by Infinite Rankers for USA enterprise and local business clients."
+          description: "This section provides page-specific strategy, operating model, and commercial execution detail for stronger indexing quality."
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-3 gap-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "lg:col-span-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Execution Framework" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: [
-            "Our deployment model for ",
-            service.title,
-            " starts with funnel diagnostics, lead routing design, and operational alignment with your current sales process. For enterprise teams, this means mapping multiple stakeholder journeys, standardizing qualification logic, and integrating conversion tracking across CRM, paid media, and reporting layers. For local businesses, the framework prioritizes speed-to-lead, missed-call recovery, and high-intent booking flows that convert nearby demand into appointments."
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "Instead of disconnected tools, we build one conversion system where each interaction is attributed to pipeline value. That includes instant responses, qualification rules, follow-up sequences, and visibility into every stage from first click to closed deal. This approach reduces wasted spend, improves team efficiency, and increases close rates over time." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
-            "Most accounts pair this service with complementary systems such as",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
-            ",",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-follow-up", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Follow-Up" }) }),
-            ", and",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads Revenue Engine" }) }),
-            "to improve lead quality and shorten time-to-revenue."
-          ] })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: serviceNarrative.map((paragraph, index2) => /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: paragraph }, index2)) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "ROI Benchmarks" }),
@@ -69818,6 +69829,20 @@ const METRIC_GRADIENTS = [
   "from-indigo-500 to-indigo-600",
   "from-cyan-500 to-cyan-600"
 ];
+function buildCaseStudyNarrative(cs) {
+  const wins = [cs.results.metric1, cs.results.metric2, cs.results.metric3].filter(Boolean).join(", ");
+  const tags = cs.tags?.slice(0, 4).join(", ") || "SEO, conversion optimization, paid growth";
+  const beforeAfterLine = cs.beforeAfter?.slice(0, 3).map((item) => `${item.metric}: ${item.before} -> ${item.after}`).join(" | ") || "lead quality improved, conversion speed increased";
+  const implementationLine = cs.implementation?.slice(0, 3).map((s2) => s2.title).join(" -> ") || "audit -> strategy -> deployment";
+  return [
+    `${cs.title} demonstrates how strategic execution can transform commercial outcomes in the ${cs.industry} category. The project was designed to solve growth friction at the operating level, not just to increase top-of-funnel traffic. That distinction matters because revenue acceleration usually depends on response quality, qualification precision, and follow-up consistency more than raw lead volume.`,
+    `The primary challenge was clear: ${cs.challenge}. To address this, we built a practical rollout model with measurable milestones. Instead of changing everything at once, we prioritized high-impact improvements first, validated results quickly, and then expanded the system in controlled phases to reduce risk and protect conversion performance.`,
+    `Our implementation sequence followed a structured path: ${implementationLine}. Each stage had its own KPI targets and accountability rules. This created visibility for the client team and made weekly decision-making faster, because performance was tied to business outcomes rather than isolated platform metrics.`,
+    `Quantitative impact came through in metrics such as ${wins}. These outcomes did not come from one isolated tactic. They were the result of aligned messaging, improved channel intent, faster lead handling, and tighter conversion workflows. When these pieces operate together, growth becomes more predictable and less dependent on campaign volatility.`,
+    `The before-versus-after data confirms operational progress: ${beforeAfterLine}. This pattern shows why process design is critical. When teams remove delays, standardize qualification, and improve handoffs, close-ready opportunities rise while wasted effort drops. Over time, this improves both marketing efficiency and sales productivity.`,
+    `From a strategic perspective, this engagement also reinforced expertise in ${tags}. That creates a reusable blueprint for similar businesses that want measurable pipeline growth, better attribution, and stronger control across their acquisition-to-conversion journey. The outcome is not just a one-time performance lift, but a scalable revenue system.`
+  ];
+}
 function CaseStudyDetail() {
   const params = useParams();
   const id2 = params.slug;
@@ -69835,6 +69860,7 @@ function CaseStudyDetail() {
   const relatedStudies = CASE_STUDIES.filter(
     (s2) => s2.id !== cs.id && s2.tags.some((t2) => cs.tags.includes(t2))
   ).slice(0, 3);
+  const caseStudyNarrative = buildCaseStudyNarrative(cs);
   const metrics2 = [
     { value: cs.results.metric1, label: cs.results.label1 },
     { value: cs.results.metric2, label: cs.results.label2 },
@@ -70020,18 +70046,19 @@ function CaseStudyDetail() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-3 gap-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "lg:col-span-2 p-6 sm:p-7", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-lg font-semibold text-foreground mb-3", children: "From Audit to Scale" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "Every successful campaign starts with diagnosis. For this account, we audited traffic sources, conversion points, sales handoff timing, and follow-up consistency before making channel changes. That process exposed where demand was leaking and which actions would create immediate commercial impact." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "Once constraints were identified, execution focused on three layers: better acquisition targeting, higher-converting landing experiences, and stronger lead operations. We improved message-market alignment, tightened qualification flows, and introduced automation to reduce delay between inquiry and contact. This lifted pipeline efficiency while preserving lead quality." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
-            "To sustain growth, we ran iterative optimization cycles with clear attribution and weekly decision checkpoints. That turned isolated wins into a repeatable engine that can scale into new cities and service categories. Similar systems are often paired with",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/seo-services", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " SEO Services" }) }),
-            ",",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads" }) }),
-            ",",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-chatbot", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Chatbot" }) }),
-            ", and",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
-            "for full-funnel performance."
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+            caseStudyNarrative.map((paragraph, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: paragraph }, idx)),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
+              "Similar systems are often paired with",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/seo-services", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " SEO Services" }) }),
+              ",",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads" }) }),
+              ",",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-chatbot", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Chatbot" }) }),
+              ", and",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
+              "for full-funnel performance."
+            ] })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-6 sm:p-7", children: [
@@ -88401,6 +88428,31 @@ function FAQItem({ q, a, index: index2 }) {
     }
   );
 }
+function buildLandingNarrative(page) {
+  const painLine = page.painPoints.points.slice(0, 3).map((p) => p.title).join(", ");
+  const capabilityLine = page.aiSystem.capabilities.slice(0, 4).map((c) => c.title).join(", ");
+  const featureLine = page.features.items.slice(0, 4).map((f) => f.title).join(", ");
+  const pipelineLine = page.pipeline.steps.map((s2) => s2.title).join(" -> ");
+  const faqLine = page.faqs.slice(0, 2).map((f) => f.q).join(" | ");
+  const resultLine = page.results.cases.slice(0, 2).map((c) => `${c.business} (${c.industry})`).join(" and ");
+  const hash = Array.from(page.slug).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const narrativeModes = [
+    "commercial-intent capture and conversion velocity",
+    "qualified pipeline growth with strict attribution visibility",
+    "scalable acquisition and lifecycle automation",
+    "high-trust demand generation with operational discipline"
+  ];
+  const selectedMode = narrativeModes[hash % narrativeModes.length];
+  return [
+    `${page.hero.title} ${page.hero.titleHighlight} is built for ${selectedMode}. The objective is not only to increase traffic, but to convert high-intent demand into revenue through a systemized workflow. In competitive markets, this distinction matters because most brands publish surface-level pages that describe services without solving operational conversion gaps.`,
+    `Our analysis for this page highlights the most common blockers: ${painLine}. These constraints affect both enterprise operators and local businesses. The difference is usually execution quality and response speed. If inquiries are not handled with urgency and context, even strong visibility fails to produce stable sales outcomes.`,
+    `The operating layer is powered by capabilities such as ${capabilityLine}. Each capability is configured as part of one connected conversion environment. This avoids channel fragmentation and makes it easier for leadership teams to understand what is driving qualified opportunities versus low-intent volume.`,
+    `Implementation follows a deliberate sequence: ${pipelineLine}. This sequence protects performance while introducing automation. It also reduces deployment risk by forcing clear checkpoints for quality assurance, script performance, and handoff consistency between marketing and sales functions.`,
+    `From an execution standpoint, features like ${featureLine} are designed to improve close velocity and reduce lead waste. Instead of adding complexity, they remove repetitive manual work and create a repeatable model teams can scale across regions, segments, or service lines.`,
+    `Evidence from engagements such as ${resultLine} shows that predictable growth is possible when strategy and operations are aligned. That alignment is what converts campaign activity into measurable pipeline, booked appointments, and downstream revenue impact.`,
+    `This page also addresses decision-stage questions prospects actually ask, including: ${faqLine}. By solving intent-level concerns directly on-page, we increase trust, reduce ambiguity, and strengthen both SEO relevance and conversion readiness at the same time.`
+  ];
+}
 function LandingPage({ slug }) {
   const page = slug ? getLandingPage(slug) : null;
   if (!page) {
@@ -88408,6 +88460,7 @@ function LandingPage({ slug }) {
   }
   const relatedPages = page.relatedLandingPages.map((slug2) => ALL_LANDING_PAGES.find((p) => p.slug === slug2)).filter(Boolean);
   const relatedServiceData = page.relatedServices.map((slug2) => ALL_SERVICES.find((s2) => s2.slug === slug2)).filter(Boolean);
+  const landingNarrative = buildLandingNarrative(page);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       SEOHead,
@@ -88697,30 +88750,14 @@ function LandingPage({ slug }) {
         SectionHeader,
         {
           label: "Growth Playbook",
-          title: `How We Scale ${topic.name} Campaigns Across USA Markets`,
-          description: "A practical framework for enterprise and local business operators who need reliable lead generation, stronger conversion rates, and clear attribution."
+          title: `How We Scale ${page.hero.titleHighlight} Campaigns Across USA Markets`,
+          description: "A page-specific execution framework generated from this market's own pain points, capabilities, pipeline, and proof data."
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-3 gap-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "lg:col-span-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Strategy and Execution Model" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: [
-            "Infinite Rankers builds each ",
-            topic.name.toLowerCase(),
-            " program around commercial intent, not vanity metrics. We start by identifying the search behaviors, ad-click patterns, and conversion frictions that block pipeline growth. From there, we align messaging, landing experience, follow-up logic, and tracking so every part of the funnel supports revenue. This approach is especially effective for companies targeting multiple cities, service lines, or buyer personas."
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "For enterprise teams, we develop standardized frameworks that can be deployed across regions while preserving local relevance. For local businesses, we prioritize high-intent visibility, speed-to-lead systems, and booking-focused page architecture. In both cases, the objective is the same: increase qualified opportunities while reducing wasted budget and operational inefficiency." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
-            "This page works best as part of a broader ecosystem that can include",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/seo-services", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " SEO Services" }) }),
-            ",",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads" }) }),
-            ",",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-chatbot", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Chatbot" }) }),
-            ", and",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
-            "for full-funnel growth."
-          ] })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: landingNarrative.map((paragraph, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed", children: paragraph }, idx)) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "What This Improves" }),

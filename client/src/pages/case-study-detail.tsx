@@ -39,6 +39,28 @@ const METRIC_GRADIENTS = [
   "from-cyan-500 to-cyan-600",
 ];
 
+function buildCaseStudyNarrative(cs: any) {
+  const wins = [cs.results.metric1, cs.results.metric2, cs.results.metric3].filter(Boolean).join(", ");
+  const tags = cs.tags?.slice(0, 4).join(", ") || "SEO, conversion optimization, paid growth";
+  const beforeAfterLine = cs.beforeAfter
+    ?.slice(0, 3)
+    .map((item: any) => `${item.metric}: ${item.before} -> ${item.after}`)
+    .join(" | ") || "lead quality improved, conversion speed increased";
+  const implementationLine = cs.implementation
+    ?.slice(0, 3)
+    .map((s: any) => s.title)
+    .join(" -> ") || "audit -> strategy -> deployment";
+
+  return [
+    `${cs.title} demonstrates how strategic execution can transform commercial outcomes in the ${cs.industry} category. The project was designed to solve growth friction at the operating level, not just to increase top-of-funnel traffic. That distinction matters because revenue acceleration usually depends on response quality, qualification precision, and follow-up consistency more than raw lead volume.`,
+    `The primary challenge was clear: ${cs.challenge}. To address this, we built a practical rollout model with measurable milestones. Instead of changing everything at once, we prioritized high-impact improvements first, validated results quickly, and then expanded the system in controlled phases to reduce risk and protect conversion performance.`,
+    `Our implementation sequence followed a structured path: ${implementationLine}. Each stage had its own KPI targets and accountability rules. This created visibility for the client team and made weekly decision-making faster, because performance was tied to business outcomes rather than isolated platform metrics.`,
+    `Quantitative impact came through in metrics such as ${wins}. These outcomes did not come from one isolated tactic. They were the result of aligned messaging, improved channel intent, faster lead handling, and tighter conversion workflows. When these pieces operate together, growth becomes more predictable and less dependent on campaign volatility.`,
+    `The before-versus-after data confirms operational progress: ${beforeAfterLine}. This pattern shows why process design is critical. When teams remove delays, standardize qualification, and improve handoffs, close-ready opportunities rise while wasted effort drops. Over time, this improves both marketing efficiency and sales productivity.`,
+    `From a strategic perspective, this engagement also reinforced expertise in ${tags}. That creates a reusable blueprint for similar businesses that want measurable pipeline growth, better attribution, and stronger control across their acquisition-to-conversion journey. The outcome is not just a one-time performance lift, but a scalable revenue system.`
+  ];
+}
+
 export default function CaseStudyDetail() {
   const params = useParams<{ slug: string }>();
   const id = params.slug;
@@ -63,6 +85,7 @@ export default function CaseStudyDetail() {
   const relatedStudies = CASE_STUDIES.filter(
     (s) => s.id !== cs.id && s.tags.some((t) => cs.tags.includes(t))
   ).slice(0, 3);
+  const caseStudyNarrative = buildCaseStudyNarrative(cs);
 
   const metrics = [
     { value: cs.results.metric1, label: cs.results.label1 },
@@ -312,25 +335,19 @@ export default function CaseStudyDetail() {
           <div className="grid lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2 p-6 sm:p-7">
               <h4 className="text-lg font-semibold text-foreground mb-3">From Audit to Scale</h4>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                Every successful campaign starts with diagnosis. For this account, we audited traffic sources, conversion points,
-                sales handoff timing, and follow-up consistency before making channel changes. That process exposed where demand was leaking
-                and which actions would create immediate commercial impact.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                Once constraints were identified, execution focused on three layers: better acquisition targeting, higher-converting landing experiences,
-                and stronger lead operations. We improved message-market alignment, tightened qualification flows, and introduced automation to reduce
-                delay between inquiry and contact. This lifted pipeline efficiency while preserving lead quality.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                To sustain growth, we ran iterative optimization cycles with clear attribution and weekly decision checkpoints. That turned isolated wins into a repeatable
-                engine that can scale into new cities and service categories. Similar systems are often paired with
-                <Link href="/seo-services"><span className="text-blue-600 hover:underline cursor-pointer"> SEO Services</span></Link>,
-                <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads</span></Link>,
-                <Link href="/ai-chatbot"><span className="text-blue-600 hover:underline cursor-pointer"> AI Chatbot</span></Link>, and
-                <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>
-                for full-funnel performance.
-              </p>
+              <div className="space-y-3">
+                {caseStudyNarrative.map((paragraph: string, idx: number) => (
+                  <p key={idx} className="text-sm text-muted-foreground leading-relaxed">{paragraph}</p>
+                ))}
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Similar systems are often paired with
+                  <Link href="/seo-services"><span className="text-blue-600 hover:underline cursor-pointer"> SEO Services</span></Link>,
+                  <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads</span></Link>,
+                  <Link href="/ai-chatbot"><span className="text-blue-600 hover:underline cursor-pointer"> AI Chatbot</span></Link>, and
+                  <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>
+                  for full-funnel performance.
+                </p>
+              </div>
             </Card>
 
             <Card className="p-6 sm:p-7">

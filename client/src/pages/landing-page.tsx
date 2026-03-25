@@ -63,6 +63,34 @@ function FAQItem({ q, a, index }: { q: string; a: string; index: number }) {
   );
 }
 
+function buildLandingNarrative(page: any) {
+  const painLine = page.painPoints.points.slice(0, 3).map((p: any) => p.title).join(", ");
+  const capabilityLine = page.aiSystem.capabilities.slice(0, 4).map((c: any) => c.title).join(", ");
+  const featureLine = page.features.items.slice(0, 4).map((f: any) => f.title).join(", ");
+  const pipelineLine = page.pipeline.steps.map((s: any) => s.title).join(" -> ");
+  const faqLine = page.faqs.slice(0, 2).map((f: any) => f.q).join(" | ");
+  const resultLine = page.results.cases.slice(0, 2).map((c: any) => `${c.business} (${c.industry})`).join(" and ");
+  const hash = Array.from(page.slug).reduce((acc: number, ch: string) => acc + ch.charCodeAt(0), 0);
+
+  const narrativeModes = [
+    "commercial-intent capture and conversion velocity",
+    "qualified pipeline growth with strict attribution visibility",
+    "scalable acquisition and lifecycle automation",
+    "high-trust demand generation with operational discipline",
+  ];
+  const selectedMode = narrativeModes[hash % narrativeModes.length];
+
+  return [
+    `${page.hero.title} ${page.hero.titleHighlight} is built for ${selectedMode}. The objective is not only to increase traffic, but to convert high-intent demand into revenue through a systemized workflow. In competitive markets, this distinction matters because most brands publish surface-level pages that describe services without solving operational conversion gaps.`,
+    `Our analysis for this page highlights the most common blockers: ${painLine}. These constraints affect both enterprise operators and local businesses. The difference is usually execution quality and response speed. If inquiries are not handled with urgency and context, even strong visibility fails to produce stable sales outcomes.`,
+    `The operating layer is powered by capabilities such as ${capabilityLine}. Each capability is configured as part of one connected conversion environment. This avoids channel fragmentation and makes it easier for leadership teams to understand what is driving qualified opportunities versus low-intent volume.`,
+    `Implementation follows a deliberate sequence: ${pipelineLine}. This sequence protects performance while introducing automation. It also reduces deployment risk by forcing clear checkpoints for quality assurance, script performance, and handoff consistency between marketing and sales functions.`,
+    `From an execution standpoint, features like ${featureLine} are designed to improve close velocity and reduce lead waste. Instead of adding complexity, they remove repetitive manual work and create a repeatable model teams can scale across regions, segments, or service lines.`,
+    `Evidence from engagements such as ${resultLine} shows that predictable growth is possible when strategy and operations are aligned. That alignment is what converts campaign activity into measurable pipeline, booked appointments, and downstream revenue impact.`,
+    `This page also addresses decision-stage questions prospects actually ask, including: ${faqLine}. By solving intent-level concerns directly on-page, we increase trust, reduce ambiguity, and strengthen both SEO relevance and conversion readiness at the same time.`
+  ];
+}
+
 export default function LandingPage({ slug }: { slug?: string }) {
   const page = slug ? getLandingPage(slug) : null;
 
@@ -77,6 +105,7 @@ export default function LandingPage({ slug }: { slug?: string }) {
   const relatedServiceData = page.relatedServices
     .map((slug) => ALL_SERVICES.find((s) => s.slug === slug))
     .filter(Boolean);
+  const landingNarrative = buildLandingNarrative(page);
 
   return (
     <div>
@@ -480,35 +509,22 @@ export default function LandingPage({ slug }: { slug?: string }) {
         </section>
       )}
 
-        <section className="py-14 sm:py-16" data-testid="section-growth-playbook-depth">
+      <section className="py-14 sm:py-16" data-testid="section-growth-playbook-depth">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
               label="Growth Playbook"
-              title={`How We Scale ${topic.name} Campaigns Across USA Markets`}
-              description="A practical framework for enterprise and local business operators who need reliable lead generation, stronger conversion rates, and clear attribution."
+              title={`How We Scale ${page.hero.titleHighlight} Campaigns Across USA Markets`}
+              description="A page-specific execution framework generated from this market's own pain points, capabilities, pipeline, and proof data."
             />
 
             <div className="grid lg:grid-cols-3 gap-6">
               <GlassCard className="lg:col-span-2">
                 <h3 className="text-lg font-semibold text-foreground mb-3">Strategy and Execution Model</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                  Infinite Rankers builds each {topic.name.toLowerCase()} program around commercial intent, not vanity metrics. We start by identifying the search behaviors,
-                  ad-click patterns, and conversion frictions that block pipeline growth. From there, we align messaging, landing experience, follow-up logic, and tracking so
-                  every part of the funnel supports revenue. This approach is especially effective for companies targeting multiple cities, service lines, or buyer personas.
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                  For enterprise teams, we develop standardized frameworks that can be deployed across regions while preserving local relevance. For local businesses,
-                  we prioritize high-intent visibility, speed-to-lead systems, and booking-focused page architecture. In both cases, the objective is the same: increase
-                  qualified opportunities while reducing wasted budget and operational inefficiency.
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  This page works best as part of a broader ecosystem that can include
-                  <Link href="/seo-services"><span className="text-blue-600 hover:underline cursor-pointer"> SEO Services</span></Link>,
-                  <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads</span></Link>,
-                  <Link href="/ai-chatbot"><span className="text-blue-600 hover:underline cursor-pointer"> AI Chatbot</span></Link>, and
-                  <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>
-                  for full-funnel growth.
-                </p>
+                <div className="space-y-3">
+                  {landingNarrative.map((paragraph: string, idx: number) => (
+                    <p key={idx} className="text-sm text-muted-foreground leading-relaxed">{paragraph}</p>
+                  ))}
+                </div>
               </GlassCard>
 
               <GlassCard>

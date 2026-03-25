@@ -91,6 +91,42 @@ const defaultTheme: ServiceVisualTheme = {
   faqLayout: "A",
 };
 
+function buildServiceNarrative(service: { slug: string; title: string; category: string }, content: typeof defaultContent) {
+  const featureLine = content.features.slice(0, 4).join(", ");
+  const problemLine = content.problems.slice(0, 3).join("; ");
+  const solutionLine = content.solutions.slice(0, 3).join("; ");
+  const industriesLine = content.industries.slice(0, 4).map((i) => i.name).join(", ");
+  const workflowLine = content.workflowSteps.map((s) => s.step).join(" -> ");
+  const hash = Array.from(service.slug).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+
+  const positioningAngles = [
+    "revenue operations and speed-to-lead optimization",
+    "demand generation with stronger qualification and conversion control",
+    "pipeline stability through automation-first execution",
+    "commercial intent capture with full-funnel attribution",
+  ];
+
+  const operatingModelAngles = [
+    "centralized standards with local execution flexibility",
+    "high-intent segmentation and lifecycle orchestration",
+    "always-on response infrastructure with clear escalation paths",
+    "automation plus human handoff for close-ready opportunities",
+  ];
+
+  const angleA = positioningAngles[hash % positioningAngles.length];
+  const angleB = operatingModelAngles[(hash + 1) % operatingModelAngles.length];
+
+  return [
+    `${service.title} is structured around ${angleA}. Instead of treating growth as separate channel tasks, we design one operating layer that connects acquisition, qualification, conversion, and retention. For teams competing in crowded USA markets, this model creates consistency in execution and helps reduce the revenue volatility that happens when campaigns are managed as disconnected experiments.`,
+    `During discovery, we focus on core revenue constraints: ${problemLine}. These issues often appear across both enterprise and local operators, even when budget levels differ. The difference is in scale, not in logic. If response times are slow and follow-up is inconsistent, paid and organic traffic both underperform. That is why implementation starts with conversion mechanics before volume expansion.`,
+    `The deployment sequence follows a practical workflow: ${workflowLine}. This sequence keeps performance stable while new automation is introduced. It prevents the common pattern where teams launch tools quickly but lose operational control. In our system, each stage has clear ownership, measurable outcomes, and weekly optimization checkpoints tied to business goals rather than vanity dashboards.`,
+    `Execution quality is driven by specific capabilities such as ${featureLine}. These are not presented as standalone features. They are configured as one coordinated engine that improves lead handling, qualification quality, and close velocity. For larger organizations, this supports multi-team consistency. For local businesses, it removes missed opportunities and makes daily pipeline more predictable.`,
+    `This service is especially effective for industries including ${industriesLine}. In each vertical, buyer behavior, trust signals, and sales cycles are different, so we adapt scripts, routing rules, and follow-up pacing accordingly. The objective is not only to increase inquiry counts but to improve qualified opportunity flow so sales teams spend more time on deals likely to close.`,
+    `Our strategic response to those constraints is clear: ${solutionLine}. When these systems are aligned, the business sees faster first response, lower cost per qualified lead, and better visibility from first touch to booked revenue. Over time, this creates a compounding advantage because decisions are based on clean performance data rather than assumptions.`,
+    `For most accounts, ${service.title} also becomes the foundation for adjacent systems such as CRM automation, paid acquisition, and retention workflows. That layered approach strengthens attribution and shortens learning cycles. As a result, leadership can scale budgets with confidence, knowing that operational infrastructure can absorb more demand without sacrificing customer experience.`
+  ];
+}
+
 export default function ServiceDetail() {
   const params = useParams<{ slug: string }>();
   const service = ALL_SERVICES.find((s) => s.slug === params.slug);
@@ -124,6 +160,7 @@ export default function ServiceDetail() {
     .map((slug) => ALL_SERVICES.find((s) => s.slug === slug))
     .filter(Boolean)
     .slice(0, 4);
+  const serviceNarrative = buildServiceNarrative(service, content);
 
   const relatedCaseStudies = CASE_STUDIES.filter((cs) =>
     cs.tags.some((tag) => {
@@ -342,30 +379,17 @@ export default function ServiceDetail() {
           <SectionHeader
             label="Implementation Depth"
             title={`How ${service.title} Drives Measurable Revenue Outcomes`}
-            description="This section explains strategy, execution, and ROI logic used by Infinite Rankers for USA enterprise and local business clients."
+            description="This section provides page-specific strategy, operating model, and commercial execution detail for stronger indexing quality."
           />
 
           <div className="grid lg:grid-cols-3 gap-6">
             <GlassCard className="lg:col-span-2">
               <h3 className="text-lg font-semibold text-foreground mb-3">Execution Framework</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                Our deployment model for {service.title} starts with funnel diagnostics, lead routing design, and operational alignment with your current sales process.
-                For enterprise teams, this means mapping multiple stakeholder journeys, standardizing qualification logic, and integrating conversion tracking across CRM,
-                paid media, and reporting layers. For local businesses, the framework prioritizes speed-to-lead, missed-call recovery, and high-intent booking flows that
-                convert nearby demand into appointments.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                Instead of disconnected tools, we build one conversion system where each interaction is attributed to pipeline value. That includes instant responses,
-                qualification rules, follow-up sequences, and visibility into every stage from first click to closed deal. This approach reduces wasted spend,
-                improves team efficiency, and increases close rates over time.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Most accounts pair this service with complementary systems such as
-                <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>,
-                <Link href="/ai-follow-up"><span className="text-blue-600 hover:underline cursor-pointer"> AI Follow-Up</span></Link>, and
-                <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads Revenue Engine</span></Link>
-                to improve lead quality and shorten time-to-revenue.
-              </p>
+              <div className="space-y-3">
+                {serviceNarrative.map((paragraph, index) => (
+                  <p key={index} className="text-sm text-muted-foreground leading-relaxed">{paragraph}</p>
+                ))}
+              </div>
             </GlassCard>
 
             <GlassCard>
