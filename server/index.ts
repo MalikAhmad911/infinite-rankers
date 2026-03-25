@@ -30,6 +30,13 @@ app.use((req, res, next) => {
   if (req.path.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)) {
     res.set("Cache-Control", "public, max-age=31536000, immutable");
   }
+  if (
+    req.path.startsWith("/api") ||
+    req.path === "/indexing-checklist" ||
+    req.path === "/backlink-strategy"
+  ) {
+    res.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  }
   res.set("X-Content-Type-Options", "nosniff");
   res.set("X-Frame-Options", "SAMEORIGIN");
   res.set("Referrer-Policy", "strict-origin-when-cross-origin");
