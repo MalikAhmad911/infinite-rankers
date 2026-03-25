@@ -578,6 +578,7 @@ export function injectSEO(html: string, url: string): string {
 
   const headEnd = html.indexOf("</head>");
   if (headEnd === -1) return html;
+  const headOpenMatch = html.match(/<head[^>]*>/i);
 
   let result = html;
   const extraTags: string[] = [];
@@ -650,7 +651,12 @@ export function injectSEO(html: string, url: string): string {
 
   if (extraTags.length > 0) {
     const insertion = extraTags.map(t => `    ${t}`).join("\n");
-    result = result.replace("</head>", `${insertion}\n  </head>`);
+    if (headOpenMatch) {
+      const headOpenTag = headOpenMatch[0];
+      result = result.replace(headOpenTag, `${headOpenTag}\n${insertion}`);
+    } else {
+      result = result.replace("</head>", `${insertion}\n  </head>`);
+    }
   }
 
   return result;

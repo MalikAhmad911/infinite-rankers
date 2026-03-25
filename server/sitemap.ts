@@ -10,98 +10,150 @@ interface SitemapURL {
   priority: string;
 }
 
+interface SitemapChild {
+  name: string;
+  path: string;
+  entries: SitemapURL[];
+}
+
+const MAIN_PAGES = [
+  { path: "/", changefreq: "weekly", priority: "1.0" },
+  { path: "/about", changefreq: "monthly", priority: "0.8" },
+  { path: "/services", changefreq: "weekly", priority: "0.9" },
+  { path: "/portfolio", changefreq: "monthly", priority: "0.7" },
+  { path: "/pricing", changefreq: "weekly", priority: "0.8" },
+  { path: "/contact", changefreq: "monthly", priority: "0.7" },
+  { path: "/blog", changefreq: "weekly", priority: "0.8" },
+  { path: "/book-demo", changefreq: "monthly", priority: "0.8" },
+  { path: "/content-methodology", changefreq: "monthly", priority: "0.5" },
+  { path: "/google-partner", changefreq: "monthly", priority: "0.6" },
+  { path: "/terms", changefreq: "yearly", priority: "0.3" },
+  { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+];
+
+const SERVICE_SLUGS = [
+  "ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "ai-appointment-booking",
+  "ai-follow-up", "ai-sales-assistant", "ai-chatbot", "ai-email-automation", "ai-sms-automation",
+  "crm-automation", "workflow-automation", "google-ads", "meta-ads", "seo-authority", "local-seo",
+  "conversion-funnels", "landing-page-optimization", "conversion-rate-optimization",
+  "social-media-marketing", "instagram-growth", "facebook-growth", "content-writing",
+  "branding-design", "video-marketing", "website-development", "landing-page-development",
+  "crm-setup", "saas-integrations", "marketing-automation-setup", "analytics-dashboard",
+];
+
+const LANDING_PAGE_SLUGS = [
+  "ai-automation-new-york", "ai-automation-los-angeles", "ai-automation-chicago",
+  "ai-revenue-growth-real-estate", "ai-revenue-growth-healthcare", "ai-revenue-growth-law-firms",
+  "ai-revenue-growth-ecommerce", "ai-revenue-growth-restaurants",
+  "ai-lead-generation-usa", "ai-marketing-automation-usa",
+  "seo-agency", "seo-consultant", "ppc-agency", "digital-marketing-agency",
+  "social-media-marketing-agency", "content-marketing-services",
+  "email-marketing-services", "branding-agency", "b2b-lead-generation",
+  "seo-services", "google-seo", "seo-specialist", "best-seo-companies",
+  "search-engine-marketing", "website-ranking", "seo-agency-near-me",
+  "seo-keywords", "digital-marketing-company", "digital-marketing-services",
+  "marketing-agency-near-me", "best-digital-marketing-agencies",
+  "paid-media-agency", "ppc-management-services", "digital-marketing-seo",
+  "online-marketing-company", "digital-marketing-firms",
+  "social-media-marketing-agency-near-me", "automation-agency",
+];
+
+const PARTNER_PAGE_SLUGS = [
+  "infinite-rankers-agency", "infinite-rankers-seo-services",
+  "infinite-rankers-paid-advertising", "infinite-rankers-ai-automation",
+];
+
+const BLOG_POST_SLUGS = [
+  "ai-automation-revenue-growth-2025", "ai-chatbot-lead-conversion", "ai-follow-up-sequences",
+  "brand-identity-business-growth", "content-marketing-seo-guide", "crm-automation-sales-pipeline",
+  "ecommerce-growth-strategies", "google-ads-roi-local-business", "healthcare-marketing-patient-acquisition",
+  "lead-generation-strategies-2025", "local-business-digital-marketing", "real-estate-lead-generation-ai",
+  "seo-vs-paid-ads-strategy", "social-media-marketing-strategy-2025", "website-conversion-optimization",
+];
+
+function createEntriesFromPaths(paths: Array<{ path: string; changefreq: string; priority: string }>): SitemapURL[] {
+  return paths.map((p) => ({
+    loc: `${BASE}${p.path}`,
+    lastmod: TODAY,
+    changefreq: p.changefreq,
+    priority: p.priority,
+  }));
+}
+
+function createEntriesFromSlugs(slugs: string[], changefreq: string, priority: string): SitemapURL[] {
+  return slugs.map((slug) => ({
+    loc: `${BASE}/${slug}`,
+    lastmod: TODAY,
+    changefreq,
+    priority,
+  }));
+}
+
+function createCaseStudyEntries(): SitemapURL[] {
+  const entries: SitemapURL[] = [];
+  for (let i = 1; i <= 21; i++) {
+    entries.push({ loc: `${BASE}/${i}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
+  }
+  return entries;
+}
+
+function getSitemapChildren(): SitemapChild[] {
+  return [
+    {
+      name: "main",
+      path: "/sitemap-main.xml",
+      entries: createEntriesFromPaths(MAIN_PAGES),
+    },
+    {
+      name: "services",
+      path: "/sitemap-services.xml",
+      entries: createEntriesFromSlugs(SERVICE_SLUGS, "monthly", "0.7"),
+    },
+    {
+      name: "cases",
+      path: "/sitemap-cases.xml",
+      entries: createCaseStudyEntries(),
+    },
+    {
+      name: "landing",
+      path: "/sitemap-landing.xml",
+      entries: createEntriesFromSlugs(LANDING_PAGE_SLUGS, "monthly", "0.8"),
+    },
+    {
+      name: "partner",
+      path: "/sitemap-partner.xml",
+      entries: createEntriesFromSlugs(PARTNER_PAGE_SLUGS, "monthly", "0.8"),
+    },
+    {
+      name: "blog",
+      path: "/sitemap-blog.xml",
+      entries: createEntriesFromSlugs(BLOG_POST_SLUGS, "monthly", "0.6"),
+    },
+  ];
+}
+
 export function getAllURLs(): string[] {
   return getAllSitemapEntries().map(e => e.loc);
 }
 
 function getAllSitemapEntries(): SitemapURL[] {
-  const entries: SitemapURL[] = [];
-
-  const mainPages = [
-    { path: "/", changefreq: "weekly", priority: "1.0" },
-    { path: "/about", changefreq: "monthly", priority: "0.8" },
-    { path: "/services", changefreq: "weekly", priority: "0.9" },
-    { path: "/portfolio", changefreq: "monthly", priority: "0.7" },
-    { path: "/pricing", changefreq: "weekly", priority: "0.8" },
-    { path: "/contact", changefreq: "monthly", priority: "0.7" },
-    { path: "/blog", changefreq: "weekly", priority: "0.8" },
-    { path: "/book-demo", changefreq: "monthly", priority: "0.8" },
-    { path: "/content-methodology", changefreq: "monthly", priority: "0.5" },
-    { path: "/google-partner", changefreq: "monthly", priority: "0.6" },
-    { path: "/terms", changefreq: "yearly", priority: "0.3" },
-    { path: "/privacy", changefreq: "yearly", priority: "0.3" },
-  ];
-
-  for (const p of mainPages) {
-    entries.push({ loc: `${BASE}${p.path}`, lastmod: TODAY, changefreq: p.changefreq, priority: p.priority });
-  }
-
-  const services = [
-    "ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "ai-appointment-booking",
-    "ai-follow-up", "ai-sales-assistant", "ai-chatbot", "ai-email-automation", "ai-sms-automation",
-    "crm-automation", "workflow-automation", "google-ads", "meta-ads", "seo-authority", "local-seo",
-    "conversion-funnels", "landing-page-optimization", "conversion-rate-optimization",
-    "social-media-marketing", "instagram-growth", "facebook-growth", "content-writing",
-    "branding-design", "video-marketing", "website-development", "landing-page-development",
-    "crm-setup", "saas-integrations", "marketing-automation-setup", "analytics-dashboard",
-  ];
-  for (const slug of services) {
-    entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.7" });
-  }
-
-  for (let i = 1; i <= 21; i++) {
-    entries.push({ loc: `${BASE}/${i}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
-  }
-
-  const landingPages = [
-    "ai-automation-new-york", "ai-automation-los-angeles", "ai-automation-chicago",
-    "ai-revenue-growth-real-estate", "ai-revenue-growth-healthcare", "ai-revenue-growth-law-firms",
-    "ai-revenue-growth-ecommerce", "ai-revenue-growth-restaurants",
-    "ai-lead-generation-usa", "ai-marketing-automation-usa",
-    "seo-agency", "seo-consultant", "ppc-agency", "digital-marketing-agency",
-    "social-media-marketing-agency", "content-marketing-services",
-    "email-marketing-services", "branding-agency", "b2b-lead-generation",
-    "seo-services", "google-seo", "seo-specialist", "best-seo-companies",
-    "search-engine-marketing", "website-ranking", "seo-agency-near-me",
-    "seo-keywords", "digital-marketing-company", "digital-marketing-services",
-    "marketing-agency-near-me", "best-digital-marketing-agencies",
-    "paid-media-agency", "ppc-management-services", "digital-marketing-seo",
-    "online-marketing-company", "digital-marketing-firms",
-    "social-media-marketing-agency-near-me", "automation-agency",
-  ];
-  for (const slug of landingPages) {
-    entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.8" });
-  }
-
-  const partnerPages = [
-    "infinite-rankers-agency", "infinite-rankers-seo-services",
-    "infinite-rankers-paid-advertising", "infinite-rankers-ai-automation",
-  ];
-  for (const slug of partnerPages) {
-    entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.8" });
-  }
-
-  const blogPosts = [
-    "ai-automation-revenue-growth-2025", "ai-chatbot-lead-conversion", "ai-follow-up-sequences",
-    "brand-identity-business-growth", "content-marketing-seo-guide", "crm-automation-sales-pipeline",
-    "ecommerce-growth-strategies", "google-ads-roi-local-business", "healthcare-marketing-patient-acquisition",
-    "lead-generation-strategies-2025", "local-business-digital-marketing", "real-estate-lead-generation-ai",
-    "seo-vs-paid-ads-strategy", "social-media-marketing-strategy-2025", "website-conversion-optimization",
-  ];
-  for (const slug of blogPosts) {
-    entries.push({ loc: `${BASE}/${slug}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
-  }
-
-  return entries;
+  return getSitemapChildren().flatMap((child) => child.entries);
 }
 
-function buildSitemapXML(): string {
-  const entries = getAllSitemapEntries();
+function buildSitemapXML(entries: SitemapURL[]): string {
   const urls = entries.map(e =>
     `  <url>\n    <loc>${e.loc}</loc>\n    <lastmod>${e.lastmod}</lastmod>\n    <changefreq>${e.changefreq}</changefreq>\n    <priority>${e.priority}</priority>\n  </url>`
   ).join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;
+}
+
+function buildSitemapIndexXML(children: SitemapChild[]): string {
+  const items = children
+    .map((child) => `  <sitemap>\n    <loc>${BASE}${child.path}</loc>\n    <lastmod>${TODAY}</lastmod>\n  </sitemap>`)
+    .join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</sitemapindex>`;
 }
 
 const BLOG_RSS_ITEMS = [
@@ -162,8 +214,26 @@ ${items}
 }
 
 export function registerSitemapRoutes(app: Express) {
+  const sitemapChildren = getSitemapChildren();
+
+  app.get("/sitemap_index.xml", (_req, res) => {
+    const xml = buildSitemapIndexXML(sitemapChildren);
+    res.set("Content-Type", "application/xml; charset=utf-8");
+    res.set("Cache-Control", "public, max-age=3600");
+    res.send(xml);
+  });
+
+  for (const child of sitemapChildren) {
+    app.get(child.path, (_req, res) => {
+      const xml = buildSitemapXML(child.entries);
+      res.set("Content-Type", "application/xml; charset=utf-8");
+      res.set("Cache-Control", "public, max-age=3600");
+      res.send(xml);
+    });
+  }
+
   app.get("/sitemap.xml", (_req, res) => {
-    const xml = buildSitemapXML();
+    const xml = buildSitemapXML(getAllSitemapEntries());
     res.set("Content-Type", "application/xml; charset=utf-8");
     res.set("Cache-Control", "public, max-age=3600");
     res.send(xml);
@@ -184,7 +254,7 @@ export function registerSitemapRoutes(app: Express) {
   });
 
   app.get("/api/ping-search-engines", async (_req, res) => {
-    const sitemapUrl = encodeURIComponent(`${BASE}/sitemap.xml`);
+    const sitemapUrl = encodeURIComponent(`${BASE}/sitemap_index.xml`);
     const results: { engine: string; status: string }[] = [];
     const endpoints = [
       { engine: "Google", url: `https://www.google.com/ping?sitemap=${sitemapUrl}` },
@@ -260,7 +330,7 @@ export function registerSitemapRoutes(app: Express) {
       "Disallow: /indexing-checklist",
       "Disallow: /backlink-strategy",
       "",
-      `Sitemap: ${BASE}/rss.xml`,
+      `Sitemap: ${BASE}/sitemap_index.xml`,
       `Sitemap: ${BASE}/sitemap.xml`,
       `Host: ${BASE.replace("https://", "")}`,
       "",
@@ -346,10 +416,10 @@ function buildIndexingChecklist(): string {
 <div class="step">
 <h3>Sitemap Submission</h3>
 <ol>
-<li>In GSC → Sitemaps → Enter: <strong>sitemap.xml</strong></li>
+<li>In GSC → Sitemaps → Enter: <strong>sitemap_index.xml</strong></li>
 <li>Click Submit</li>
-<li>Verify status shows "Success" and ${allUrls.length} URLs discovered</li>
-<li>Also submit: <strong>rss.xml</strong> as a secondary sitemap</li>
+<li>Verify status shows "Success" and all child sitemaps discovered</li>
+<li>Optional compatibility: keep <strong>sitemap.xml</strong> submitted during migration window</li>
 </ol>
 </div>
 
@@ -401,7 +471,8 @@ function buildIndexingChecklist(): string {
 <h2>Technical SEO Status</h2>
 <div class="step">
 <p><span class="check">✅</span> robots.txt - Properly configured, all pages allowed</p>
-<p><span class="check">✅</span> sitemap.xml - ${allUrls.length} URLs with lastmod, changefreq, priority</p>
+<p><span class="check">✅</span> sitemap_index.xml - Segmented sitemaps for scalable crawling</p>
+<p><span class="check">✅</span> sitemap.xml - Backward-compatible consolidated sitemap</p>
 <p><span class="check">✅</span> RSS feed - 25 items for crawl frequency boost</p>
 <p><span class="check">✅</span> Canonical tags - Every page has unique canonical</p>
 <p><span class="check">✅</span> Meta robots - All pages set to "index, follow"</p>
@@ -643,7 +714,7 @@ ${serviceUrls.map(u => { const path = u.replace("https://infiniterankers.io", ""
 
 <footer>
 <p>&copy; ${new Date().getFullYear()} Infinite Rankers. AI Revenue Growth Agency.</p>
-<p><a href="/">Home</a> | <a href="/sitemap.xml">XML Sitemap</a> | <a href="/rss.xml">RSS Feed</a></p>
+<p><a href="/">Home</a> | <a href="/sitemap_index.xml">Sitemap Index</a> | <a href="/sitemap.xml">XML Sitemap</a> | <a href="/rss.xml">RSS Feed</a></p>
 </footer>
 </body>
 </html>`;

@@ -101,6 +101,9 @@ export default function SitemapPage() {
             <p className="text-gray-600 text-base sm:text-lg" data-testid="text-sitemap-subtitle">
               Browse all pages on infiniterankers.io
             </p>
+            <p className="mt-3 text-sm text-gray-500">
+              XML sitemap index: <a href="/sitemap_index.xml" className="text-blue-600 hover:underline">/sitemap_index.xml</a>
+            </p>
           </motion.div>
         </div>
       </section>

@@ -89369,7 +89369,11 @@ function SitemapPage() {
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3", children: "Site Navigation" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl sm:text-4xl font-bold text-gray-900 mb-3", "data-testid": "text-sitemap-title", children: "Sitemap" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-600 text-base sm:text-lg", "data-testid": "text-sitemap-subtitle", children: "Browse all pages on infiniterankers.io" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-600 text-base sm:text-lg", "data-testid": "text-sitemap-subtitle", children: "Browse all pages on infiniterankers.io" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "mt-3 text-sm text-gray-500", children: [
+            "XML sitemap index: ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: "/sitemap_index.xml", className: "text-blue-600 hover:underline", children: "/sitemap_index.xml" })
+          ] })
         ]
       }
     ) }) }),
