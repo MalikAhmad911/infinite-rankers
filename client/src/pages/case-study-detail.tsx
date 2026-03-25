@@ -299,6 +299,53 @@ export default function CaseStudyDetail() {
         </div>
       </section>
 
+      <section className="py-12 sm:py-16" data-testid="section-case-study-framework-depth">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <Badge variant="outline" className="mb-3">Execution Breakdown</Badge>
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">How This Growth System Was Implemented</h3>
+            <p className="text-muted-foreground max-w-3xl mx-auto">
+              A practical view of the planning, rollout, and optimization cycle used to deliver measurable gains for this client.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            <Card className="lg:col-span-2 p-6 sm:p-7">
+              <h4 className="text-lg font-semibold text-foreground mb-3">From Audit to Scale</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                Every successful campaign starts with diagnosis. For this account, we audited traffic sources, conversion points,
+                sales handoff timing, and follow-up consistency before making channel changes. That process exposed where demand was leaking
+                and which actions would create immediate commercial impact.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                Once constraints were identified, execution focused on three layers: better acquisition targeting, higher-converting landing experiences,
+                and stronger lead operations. We improved message-market alignment, tightened qualification flows, and introduced automation to reduce
+                delay between inquiry and contact. This lifted pipeline efficiency while preserving lead quality.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                To sustain growth, we ran iterative optimization cycles with clear attribution and weekly decision checkpoints. That turned isolated wins into a repeatable
+                engine that can scale into new cities and service categories. Similar systems are often paired with
+                <Link href="/seo-services"><span className="text-blue-600 hover:underline cursor-pointer"> SEO Services</span></Link>,
+                <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads</span></Link>,
+                <Link href="/ai-chatbot"><span className="text-blue-600 hover:underline cursor-pointer"> AI Chatbot</span></Link>, and
+                <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>
+                for full-funnel performance.
+              </p>
+            </Card>
+
+            <Card className="p-6 sm:p-7">
+              <h4 className="text-lg font-semibold text-foreground mb-3">Why It Worked</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" /><span>Channel strategy aligned to commercial-intent demand.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" /><span>Landing and follow-up systems optimized for speed and clarity.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" /><span>Attribution framework tied campaign spend to revenue outcomes.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" /><span>Structured testing cadence maintained momentum over time.</span></li>
+              </ul>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {relatedStudies.length > 0 && (
         <section className="py-12 sm:py-16" data-testid="related-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -337,6 +337,50 @@ export default function ServiceDetail() {
         </div>
       </section>
 
+      <section className="py-14 sm:py-16" data-testid="section-seo-expanded-content">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            label="Implementation Depth"
+            title={`How ${service.title} Drives Measurable Revenue Outcomes`}
+            description="This section explains strategy, execution, and ROI logic used by Infinite Rankers for USA enterprise and local business clients."
+          />
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            <GlassCard className="lg:col-span-2">
+              <h3 className="text-lg font-semibold text-foreground mb-3">Execution Framework</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                Our deployment model for {service.title} starts with funnel diagnostics, lead routing design, and operational alignment with your current sales process.
+                For enterprise teams, this means mapping multiple stakeholder journeys, standardizing qualification logic, and integrating conversion tracking across CRM,
+                paid media, and reporting layers. For local businesses, the framework prioritizes speed-to-lead, missed-call recovery, and high-intent booking flows that
+                convert nearby demand into appointments.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                Instead of disconnected tools, we build one conversion system where each interaction is attributed to pipeline value. That includes instant responses,
+                qualification rules, follow-up sequences, and visibility into every stage from first click to closed deal. This approach reduces wasted spend,
+                improves team efficiency, and increases close rates over time.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Most accounts pair this service with complementary systems such as
+                <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>,
+                <Link href="/ai-follow-up"><span className="text-blue-600 hover:underline cursor-pointer"> AI Follow-Up</span></Link>, and
+                <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads Revenue Engine</span></Link>
+                to improve lead quality and shorten time-to-revenue.
+              </p>
+            </GlassCard>
+
+            <GlassCard>
+              <h3 className="text-lg font-semibold text-foreground mb-3">ROI Benchmarks</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Faster response times and better lead conversion efficiency.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Lower cost per qualified lead through tighter funnel control.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Clear attribution from channel spend to booked opportunities.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Scalable systems for both local service teams and enterprise operations.</span></li>
+              </ul>
+            </GlassCard>
+          </div>
+        </div>
+      </section>
+
       {pricing && (
         <section id="service-pricing" className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-service-pricing">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

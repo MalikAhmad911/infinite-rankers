@@ -480,6 +480,49 @@ export default function LandingPage({ slug }: { slug?: string }) {
         </section>
       )}
 
+        <section className="py-14 sm:py-16" data-testid="section-growth-playbook-depth">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              label="Growth Playbook"
+              title={`How We Scale ${topic.name} Campaigns Across USA Markets`}
+              description="A practical framework for enterprise and local business operators who need reliable lead generation, stronger conversion rates, and clear attribution."
+            />
+
+            <div className="grid lg:grid-cols-3 gap-6">
+              <GlassCard className="lg:col-span-2">
+                <h3 className="text-lg font-semibold text-foreground mb-3">Strategy and Execution Model</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  Infinite Rankers builds each {topic.name.toLowerCase()} program around commercial intent, not vanity metrics. We start by identifying the search behaviors,
+                  ad-click patterns, and conversion frictions that block pipeline growth. From there, we align messaging, landing experience, follow-up logic, and tracking so
+                  every part of the funnel supports revenue. This approach is especially effective for companies targeting multiple cities, service lines, or buyer personas.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  For enterprise teams, we develop standardized frameworks that can be deployed across regions while preserving local relevance. For local businesses,
+                  we prioritize high-intent visibility, speed-to-lead systems, and booking-focused page architecture. In both cases, the objective is the same: increase
+                  qualified opportunities while reducing wasted budget and operational inefficiency.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  This page works best as part of a broader ecosystem that can include
+                  <Link href="/seo-services"><span className="text-blue-600 hover:underline cursor-pointer"> SEO Services</span></Link>,
+                  <Link href="/google-ads"><span className="text-blue-600 hover:underline cursor-pointer"> Google Ads</span></Link>,
+                  <Link href="/ai-chatbot"><span className="text-blue-600 hover:underline cursor-pointer"> AI Chatbot</span></Link>, and
+                  <Link href="/crm-automation"><span className="text-blue-600 hover:underline cursor-pointer"> CRM Automation</span></Link>
+                  for full-funnel growth.
+                </p>
+              </GlassCard>
+
+              <GlassCard>
+                <h3 className="text-lg font-semibold text-foreground mb-3">What This Improves</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Higher visibility for commercial-intent searches.</span></li>
+                  <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Better conversion rates from landing page visits.</span></li>
+                  <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Faster response workflows that reduce lead leakage.</span></li>
+                  <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Clear reporting for decision-makers and sales leadership.</span></li>
+                </ul>
+              </GlassCard>
+            </div>
+          </div>
+        </section>
       {/* Section 10: Strong Conversion CTA */}
       <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden" data-testid="section-cta">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700" />

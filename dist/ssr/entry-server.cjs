@@ -69224,6 +69224,57 @@ function ServiceDetail() {
         ". This connected system typically improves conversion quality and shortens sales cycles."
       ] })
     ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-14 sm:py-16", "data-testid": "section-seo-expanded-content", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        SectionHeader,
+        {
+          label: "Implementation Depth",
+          title: `How ${service.title} Drives Measurable Revenue Outcomes`,
+          description: "This section explains strategy, execution, and ROI logic used by Infinite Rankers for USA enterprise and local business clients."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-3 gap-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "lg:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Execution Framework" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: [
+            "Our deployment model for ",
+            service.title,
+            " starts with funnel diagnostics, lead routing design, and operational alignment with your current sales process. For enterprise teams, this means mapping multiple stakeholder journeys, standardizing qualification logic, and integrating conversion tracking across CRM, paid media, and reporting layers. For local businesses, the framework prioritizes speed-to-lead, missed-call recovery, and high-intent booking flows that convert nearby demand into appointments."
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "Instead of disconnected tools, we build one conversion system where each interaction is attributed to pipeline value. That includes instant responses, qualification rules, follow-up sequences, and visibility into every stage from first click to closed deal. This approach reduces wasted spend, improves team efficiency, and increases close rates over time." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
+            "Most accounts pair this service with complementary systems such as",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
+            ",",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-follow-up", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Follow-Up" }) }),
+            ", and",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads Revenue Engine" }) }),
+            "to improve lead quality and shorten time-to-revenue."
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "ROI Benchmarks" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-sm text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Faster response times and better lead conversion efficiency." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Lower cost per qualified lead through tighter funnel control." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Clear attribution from channel spend to booked opportunities." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Scalable systems for both local service teams and enterprise operations." })
+            ] })
+          ] })
+        ] })
+      ] })
+    ] }) }),
     pricing && /* @__PURE__ */ jsxRuntimeExports.jsx("section", { id: "service-pricing", className: "py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white", "data-testid": "section-service-pricing", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         SectionHeader,
@@ -69960,6 +70011,52 @@ function CaseStudyDetail() {
         ] }) })
       ] }) })
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-12 sm:py-16", "data-testid": "section-case-study-framework-depth", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { variant: "outline", className: "mb-3", children: "Execution Breakdown" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl sm:text-3xl font-bold text-foreground mb-3", children: "How This Growth System Was Implemented" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground max-w-3xl mx-auto", children: "A practical view of the planning, rollout, and optimization cycle used to deliver measurable gains for this client." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-3 gap-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "lg:col-span-2 p-6 sm:p-7", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-lg font-semibold text-foreground mb-3", children: "From Audit to Scale" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "Every successful campaign starts with diagnosis. For this account, we audited traffic sources, conversion points, sales handoff timing, and follow-up consistency before making channel changes. That process exposed where demand was leaking and which actions would create immediate commercial impact." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "Once constraints were identified, execution focused on three layers: better acquisition targeting, higher-converting landing experiences, and stronger lead operations. We improved message-market alignment, tightened qualification flows, and introduced automation to reduce delay between inquiry and contact. This lifted pipeline efficiency while preserving lead quality." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
+            "To sustain growth, we ran iterative optimization cycles with clear attribution and weekly decision checkpoints. That turned isolated wins into a repeatable engine that can scale into new cities and service categories. Similar systems are often paired with",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/seo-services", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " SEO Services" }) }),
+            ",",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads" }) }),
+            ",",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-chatbot", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Chatbot" }) }),
+            ", and",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
+            "for full-funnel performance."
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-6 sm:p-7", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-lg font-semibold text-foreground mb-3", children: "Why It Worked" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-sm text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-green-600 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Channel strategy aligned to commercial-intent demand." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-green-600 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Landing and follow-up systems optimized for speed and clarity." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-green-600 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Attribution framework tied campaign spend to revenue outcomes." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-green-600 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Structured testing cadence maintained momentum over time." })
+            ] })
+          ] })
+        ] })
+      ] })
+    ] }) }),
     relatedStudies.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-12 sm:py-16", "data-testid": "related-section", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-foreground mb-8", children: "Related Case Studies" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-6", children: relatedStudies.map((related, i2) => {
@@ -88594,6 +88691,59 @@ function LandingPage({ slug }) {
           /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-3 h-3" })
         ] })
       ] }) }, rp.slug)) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-14 sm:py-16", "data-testid": "section-growth-playbook-depth", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        SectionHeader,
+        {
+          label: "Growth Playbook",
+          title: `How We Scale ${topic.name} Campaigns Across USA Markets`,
+          description: "A practical framework for enterprise and local business operators who need reliable lead generation, stronger conversion rates, and clear attribution."
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-3 gap-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { className: "lg:col-span-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "Strategy and Execution Model" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: [
+            "Infinite Rankers builds each ",
+            topic.name.toLowerCase(),
+            " program around commercial intent, not vanity metrics. We start by identifying the search behaviors, ad-click patterns, and conversion frictions that block pipeline growth. From there, we align messaging, landing experience, follow-up logic, and tracking so every part of the funnel supports revenue. This approach is especially effective for companies targeting multiple cities, service lines, or buyer personas."
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-muted-foreground leading-relaxed mb-3", children: "For enterprise teams, we develop standardized frameworks that can be deployed across regions while preserving local relevance. For local businesses, we prioritize high-intent visibility, speed-to-lead systems, and booking-focused page architecture. In both cases, the objective is the same: increase qualified opportunities while reducing wasted budget and operational inefficiency." }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-muted-foreground leading-relaxed", children: [
+            "This page works best as part of a broader ecosystem that can include",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/seo-services", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " SEO Services" }) }),
+            ",",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/google-ads", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " Google Ads" }) }),
+            ",",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/ai-chatbot", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " AI Chatbot" }) }),
+            ", and",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { href: "/crm-automation", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-blue-600 hover:underline cursor-pointer", children: " CRM Automation" }) }),
+            "for full-funnel growth."
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(GlassCard, { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-foreground mb-3", children: "What This Improves" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-sm text-muted-foreground", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Higher visibility for commercial-intent searches." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Better conversion rates from landing page visits." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Faster response workflows that reduce lead leakage." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4 text-primary mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Clear reporting for decision-makers and sales leadership." })
+            ] })
+          ] })
+        ] })
+      ] })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "py-16 sm:py-20 lg:py-24 relative overflow-hidden", "data-testid": "section-cta", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700" }),
