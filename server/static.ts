@@ -52,6 +52,13 @@ export function serveStatic(app: Express) {
   const template = fs.readFileSync(indexPath, "utf-8");
 
   app.use("/{*path}", (req, res) => {
+    // Enforce one canonical URL style by removing trailing slashes (except root).
+    if (req.path.length > 1 && req.path.endsWith("/")) {
+      const normalizedPath = req.path.replace(/\/+$/, "");
+      const redirectTo = req.url.replace(req.path, normalizedPath);
+      return res.redirect(301, redirectTo || normalizedPath);
+    }
+
     let html = template;
     let statusCode = 200;
     const urlPath = req.path;
