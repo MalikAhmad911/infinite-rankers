@@ -315,7 +315,7 @@ function getBreadcrumbs(path: string, seo: SEOMeta): object {
   };
 }
 
-function getStructuredData(url: string, seo: SEOMeta): string {
+function getStructuredData(url: string, seo: SEOMeta): object[] {
   const path = url.split("?")[0].split("#")[0];
   const BASE_URL = "https://infiniterankers.io";
   const FOUNDER_SCHEMA = {
@@ -414,7 +414,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
         "cssSelector": ["h1", ".hero-headline", ".hero-subheadline", ".kpi-stats", ".value-proposition"]
       }
     };
-    return `${JSON.stringify(mainSchema)}</script><script type="application/ld+json">${JSON.stringify(LOCAL_BUSINESS_SCHEMA)}</script><script type="application/ld+json">${JSON.stringify(SPEAKABLE_SCHEMA)}</script><script type="application/ld+json">${JSON.stringify(SITE_NAV_SCHEMA)}`;
+    return [mainSchema, LOCAL_BUSINESS_SCHEMA, SPEAKABLE_SCHEMA, SITE_NAV_SCHEMA];
   }
 
   const ssSlug = path.replace(/^\//, "");
@@ -450,9 +450,9 @@ function getStructuredData(url: string, seo: SEOMeta): string {
         "acceptedAnswer": { "@type": "Answer", "text": f.a }
       }))
     } : null;
-    const parts = [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)];
-    if (faqSchema) parts.push(JSON.stringify(faqSchema));
-    return parts.join('</script><script type="application/ld+json">');
+    const parts: object[] = [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
+    if (faqSchema) parts.push(faqSchema);
+    return parts;
   }
 
   if (isBlogPage) {
@@ -477,7 +477,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "dateModified": new Date().toISOString().split("T")[0],
       "mainEntityOfPage": { "@type": "WebPage", "@id": seo.canonical }
     };
-    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
+    return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
   }
 
   if (isCasePage) {
@@ -489,7 +489,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": seo.canonical,
       "author": ORG_SCHEMA
     };
-    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
+    return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
   }
 
   if (path === "/about") {
@@ -501,7 +501,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": seo.canonical,
       "mainEntity": ORG_SCHEMA
     };
-    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
+    return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
   }
 
   if (path === "/contact") {
@@ -513,7 +513,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": seo.canonical,
       "mainEntity": ORG_SCHEMA
     };
-    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
+    return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
   }
 
   if (path === "/pricing") {
@@ -532,7 +532,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
         ]
       }
     };
-    return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
+    return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
   }
 
   const lpData = LANDING_PAGES[ssSlug];
@@ -545,7 +545,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
       "url": seo.canonical,
       "publisher": ORG_SCHEMA
     };
-    const parts = [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)];
+    const parts: object[] = [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
     if (lpData.faqs?.length) {
       const faqSchema = {
         "@context": "https://schema.org",
@@ -556,9 +556,9 @@ function getStructuredData(url: string, seo: SEOMeta): string {
           "acceptedAnswer": { "@type": "Answer", "text": f.a }
         }))
       };
-      parts.push(JSON.stringify(faqSchema));
+      parts.push(faqSchema);
     }
-    return parts.join('</script><script type="application/ld+json">');
+    return parts;
   }
 
   mainSchema = {
@@ -569,7 +569,7 @@ function getStructuredData(url: string, seo: SEOMeta): string {
     "url": seo.canonical,
     "publisher": ORG_SCHEMA
   };
-  return [JSON.stringify(mainSchema), JSON.stringify(breadcrumb), JSON.stringify(SITE_NAV_SCHEMA)].join('</script><script type="application/ld+json">');
+  return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
 }
 
 export function injectSEO(html: string, url: string): string {
@@ -646,8 +646,10 @@ export function injectSEO(html: string, url: string): string {
   extraTags.push(`<meta name="twitter:description" content="${escapeAttr(seo.description)}" />`);
   extraTags.push(`<link rel="alternate" type="application/rss+xml" title="Infinite Rankers Blog" href="${BASE}/rss.xml" />`);
 
-  const jsonLd = getStructuredData(url, seo);
-  extraTags.push(`<script type="application/ld+json">${jsonLd}</script>`);
+  const jsonLdBlocks = getStructuredData(url, seo);
+  for (const block of jsonLdBlocks) {
+    extraTags.push(`<script type="application/ld+json">${JSON.stringify(block)}</script>`);
+  }
 
   if (extraTags.length > 0) {
     const insertion = extraTags.map(t => `    ${t}`).join("\n");
