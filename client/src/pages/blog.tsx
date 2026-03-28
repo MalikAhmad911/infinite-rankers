@@ -18,6 +18,7 @@ const CATEGORY_SERVICE_LINK: Record<string, { slug: string; label: string }> = {
   "Web Development": { slug: "website-development", label: "Website Development" },
   "Content Marketing": { slug: "content-writing", label: "Content Writing" },
   "E-Commerce": { slug: "conversion-rate-optimization", label: "CRO" },
+  "Branding": { slug: "brand-strategy", label: "Brand Strategy" },
   "Healthcare": { slug: "ai-receptionist", label: "AI Receptionist" },
   "Real Estate": { slug: "ai-lead-qualification", label: "AI Lead Qualification" },
 };
@@ -53,7 +54,7 @@ const BLOG_CLUSTERS = [
     desc: "Agency frameworks and blueprints used by our top-performing clients.",
     serviceSlug: "conversion-funnels",
     serviceLabel: "Conversion Funnels",
-    categories: ["Strategy", "Social Media", "Web Development"],
+    categories: ["Strategy", "Social Media", "Web Development", "Branding", "Healthcare", "Real Estate"],
   },
 ];
 
