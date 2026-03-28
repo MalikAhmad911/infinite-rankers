@@ -12,7 +12,7 @@ import {
   Network, Workflow, Brain, Rocket, Award, Building2,
 } from "lucide-react";
 import {
-  SERVICE_CATEGORIES, ACHIEVEMENTS, HOW_IT_WORKS_STEPS,
+  ACHIEVEMENTS, HOW_IT_WORKS_STEPS,
   TESTIMONIALS, CASE_STUDIES, COMPANY, PRICING_TIERS, BLOG_POSTS,
 } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
@@ -242,7 +242,24 @@ function HeroSection() {
                 </Button>
               </Link>
             </div>
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 mt-6 sm:mt-10">
+            <div className="flex flex-wrap items-center gap-2 mt-4 sm:mt-5">
+              <span className="text-xs text-gray-500 mr-1">Top services:</span>
+              {[
+                { slug: "ai-calling-agent", label: "AI Calling Agent" },
+                { slug: "google-ads", label: "Google Ads" },
+                { slug: "seo-authority", label: "SEO Authority" },
+              ].map((s) => (
+                <Link key={s.slug} href={`/${s.slug}`}>
+                  <span
+                    className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-full px-3 py-1 hover:bg-blue-100 transition-colors cursor-pointer"
+                    data-testid={`hero-money-page-${s.slug}`}
+                  >
+                    <Zap className="w-2.5 h-2.5" /> {s.label}
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 mt-4 sm:mt-6">
               {[
                 { icon: Shield, text: "Flexible Plans Available" },
                 { icon: Clock, text: "Results in 30 Days" },
@@ -414,14 +431,52 @@ function PipelineSection() {
   );
 }
 
-function ServicesSection() {
-  const featuredServices = SERVICE_CATEGORIES.flatMap(cat =>
-    cat.services.slice(0, 2).map(s => ({
-      ...s,
-      category: cat.title,
-    }))
-  );
+const PRIORITY_SERVICES = [
+  {
+    slug: "ai-calling-agent",
+    label: "AI & Automation",
+    title: "AI Calling Agent",
+    pitch: "Your best sales rep, automated. Qualifies inbound leads and books appointments 24/7 — no manual dialing, no missed calls. Clients average 3x booked meetings in 60 days.",
+    icon: Phone,
+  },
+  {
+    slug: "google-ads",
+    label: "Paid Advertising",
+    title: "Google Ads Revenue Engine",
+    pitch: "Intent-driven campaigns built to generate booked appointments, not vanity clicks. We manage strategy, copy, bids, and conversion tracking. Typical client ROAS: 4–6x within 90 days.",
+    icon: Target,
+  },
+  {
+    slug: "seo-authority",
+    label: "Search & SEO",
+    title: "SEO Authority Growth System",
+    pitch: "Rank for the keywords that turn into revenue. We build topical authority, fix technical foundations, and develop content that earns links — 90%+ of clients hit page 1 within 6 months.",
+    icon: LineChart,
+  },
+  {
+    slug: "ai-chatbot",
+    label: "AI & Automation",
+    title: "AI Chatbot",
+    pitch: "Converts website visitors into leads at 2am when your team is asleep. Deploys on site, WhatsApp, and Messenger with pre-qualification flows built for your service type. Live in 5–7 days.",
+    icon: MessageSquare,
+  },
+  {
+    slug: "meta-ads",
+    label: "Paid Advertising",
+    title: "Meta Ads Growth Engine",
+    pitch: "Facebook and Instagram ads that go beyond impressions — every campaign is tied to lead cost and revenue. We build the creative, copy, targeting, and funnel from scratch.",
+    icon: BarChart3,
+  },
+  {
+    slug: "crm-automation",
+    label: "AI & Automation",
+    title: "CRM Automation",
+    pitch: "End the data-entry grind. We automate your entire pipeline — from lead entry to deal closure — inside Salesforce, HubSpot, GoHighLevel, or whichever CRM your team already uses.",
+    icon: Database,
+  },
+];
 
+function ServicesSection() {
   return (
     <section className="py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/80 to-white" data-testid="services-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -432,43 +487,50 @@ function ServicesSection() {
           className="text-center mb-8 sm:mb-16"
         >
           <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
-            Our Services
+            Priority Services
           </span>
           <h2 className="font-bold text-gray-900 mb-3 sm:mb-4" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
-            Revenue-Generating Systems Built for Growth
+            The 6 Systems That Drive the Most Revenue
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }}>
-            From AI automation to lead generation, end-to-end solutions that drive measurable results.
+            Each one is purpose-built to fix a specific growth bottleneck — from lead capture to closed deals.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-          {featuredServices.map((service, i) => (
-            <motion.div
-              key={service.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.04 }}
-            >
-              <Link href={`/${service.slug}`}>
-                <div
-                  className="group bg-white rounded-xl p-3.5 sm:p-5 border border-gray-200/60 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer h-full"
-                  data-testid={`service-card-${service.slug}`}
-                >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-3 sm:mb-4 border border-blue-100/40">
-                    <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {PRIORITY_SERVICES.map((service, i) => {
+            const Icon = service.icon;
+            return (
+              <motion.div
+                key={service.slug}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
+              >
+                <Link href={`/${service.slug}`}>
+                  <div
+                    className="group bg-white rounded-xl p-5 sm:p-6 border border-gray-200/60 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer h-full flex flex-col"
+                    data-testid={`service-card-${service.slug}`}
+                  >
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center border border-blue-100/40 flex-shrink-0">
+                        <Icon className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <div className="text-[10px] sm:text-xs font-medium text-blue-600 mb-0.5">{service.label}</div>
+                        <h3 className="text-sm sm:text-base font-semibold text-gray-900 leading-snug">{service.title}</h3>
+                      </div>
+                    </div>
+                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed flex-1">{service.pitch}</p>
+                    <span className="inline-flex items-center text-xs font-medium text-blue-600 group-hover:gap-2 gap-1 transition-all mt-4">
+                      See How It Works <ArrowUpRight className="w-3 h-3" />
+                    </span>
                   </div>
-                  <div className="text-[10px] sm:text-xs font-medium text-blue-600 mb-1">{service.category}</div>
-                  <h3 className="text-xs sm:text-sm font-semibold text-gray-900 mb-1.5 sm:mb-2 leading-snug">{service.title}</h3>
-                  <p className="text-[10px] sm:text-xs text-gray-500 leading-relaxed mb-2 sm:mb-3 line-clamp-2 hidden sm:block">{service.shortDesc}</p>
-                  <span className="inline-flex items-center text-[10px] sm:text-xs font-medium text-blue-600 group-hover:gap-2 gap-1 transition-all">
-                    Explore Service <ArrowUpRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
 
         <div className="text-center mt-8 sm:mt-10">

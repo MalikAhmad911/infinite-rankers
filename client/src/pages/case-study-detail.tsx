@@ -6,7 +6,32 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { CASE_STUDIES, ALL_SERVICES } from "@/lib/constants";
-import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star, Lightbulb } from "lucide-react";
+
+const INDUSTRY_SERVICE_MAP: Record<string, string[]> = {
+  "Dental": ["ai-calling-agent", "google-ads"],
+  "E-Commerce": ["meta-ads", "crm-automation"],
+  "Real Estate": ["ai-lead-qualification", "google-ads"],
+  "B2B SaaS": ["ai-sales-assistant", "crm-automation"],
+  "Legal": ["ai-receptionist", "seo-authority"],
+  "Legal (Immigration)": ["ai-chatbot", "google-ads"],
+  "Fitness": ["ai-appointment-booking", "meta-ads"],
+  "Restaurant": ["local-seo", "ai-sms-automation"],
+  "Medical": ["ai-receptionist", "google-ads"],
+  "Healthcare": ["ai-receptionist", "google-ads"],
+  "Financial Services": ["seo-authority", "ai-lead-qualification"],
+  "Home Services": ["google-ads", "ai-calling-agent"],
+  "Automotive": ["ai-chatbot", "google-ads"],
+  "Coaching": ["ai-appointment-booking", "meta-ads"],
+  "Hospitality": ["google-ads", "conversion-rate-optimization"],
+  "Insurance": ["ai-follow-up", "crm-automation"],
+  "Construction": ["seo-authority", "google-ads"],
+  "Accounting & CPA": ["ai-email-automation", "workflow-automation"],
+  "Beauty & Salon": ["ai-appointment-booking", "instagram-growth"],
+  "Logistics & Shipping": ["crm-automation", "workflow-automation"],
+  "Manufacturing": ["seo-authority", "ai-lead-qualification"],
+  "Veterinary": ["ai-appointment-booking", "local-seo"],
+};
 
 function resolveServiceSlug(svcName: string): string | null {
   const lc = svcName.toLowerCase();
@@ -425,6 +450,53 @@ export default function CaseStudyDetail() {
           </div>
         </section>
       )}
+
+      {(() => {
+        const industrySlugs = INDUSTRY_SERVICE_MAP[cs.industry] || [];
+        const industrySvcs = industrySlugs
+          .map((s) => ALL_SERVICES.find((svc) => svc.slug === s))
+          .filter(Boolean) as typeof ALL_SERVICES;
+        if (industrySvcs.length === 0) return null;
+        return (
+          <section className="py-12 sm:py-16 bg-gradient-to-b from-blue-50/50 to-white" data-testid="industry-solution">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Lightbulb className="w-4 h-4 text-blue-600" />
+                  <span className="text-xs font-semibold uppercase tracking-widest text-blue-600">Industry Solution</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                  The Systems Behind This {cs.industry} Win
+                </h2>
+                <p className="text-sm text-gray-500 mb-6 max-w-2xl">
+                  These are the two services that did the heaviest lifting for this result — explore how they work and whether they're the right fit for your business.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {industrySvcs.map((svc) => (
+                    <Link href={`/${svc.slug}`} key={svc.slug}>
+                      <div
+                        className="group bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-blue-200 transition-all cursor-pointer"
+                        data-testid={`industry-service-${svc.slug}`}
+                      >
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <div className="w-7 h-7 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
+                            <Zap className="w-3.5 h-3.5 text-blue-600" />
+                          </div>
+                          <h3 className="font-semibold text-gray-900 text-sm">{svc.title}</h3>
+                        </div>
+                        <p className="text-xs text-gray-500 leading-relaxed mb-3">{svc.shortDesc}</p>
+                        <span className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 group-hover:gap-2 transition-all">
+                          Explore Service <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </section>
+        );
+      })()}
 
       <section className="py-16 sm:py-20 relative overflow-hidden" data-testid="case-cta">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" />

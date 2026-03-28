@@ -37,6 +37,7 @@ const CATEGORY_SERVICE_MAP: Record<string, string[]> = {
   "E-Commerce": ["conversion-rate-optimization", "meta-ads"],
   "Healthcare": ["ai-receptionist", "ai-appointment-booking"],
   "Real Estate": ["ai-lead-qualification", "google-ads"],
+  "Branding": ["branding-design", "content-writing"],
 };
 
 export default function BlogPost() {
