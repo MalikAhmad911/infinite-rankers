@@ -5,8 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
-import { CASE_STUDIES } from "@/lib/constants";
+import { CASE_STUDIES, ALL_SERVICES } from "@/lib/constants";
 import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star } from "lucide-react";
+
+function resolveServiceSlug(svcName: string): string | null {
+  const lc = svcName.toLowerCase();
+  const found = ALL_SERVICES.find((s) => {
+    const titleLc = s.title.toLowerCase();
+    return titleLc === lc ||
+      titleLc.includes(lc) ||
+      lc.includes(s.slug.replace(/-/g, " ")) ||
+      lc.replace("ai ", "").includes(s.slug.replace("ai-", "").replace(/-/g, " "));
+  });
+  return found ? found.slug : null;
+}
 
 const PORTFOLIO_IMAGES: Record<string, string> = {
   "1": "/images/portfolio/project-1-dental.jpg",
@@ -83,7 +95,11 @@ export default function CaseStudyDetail() {
   }
 
   const relatedStudies = CASE_STUDIES.filter(
-    (s) => s.id !== cs.id && s.tags.some((t) => cs.tags.includes(t))
+    (s) => s.id !== cs.id && s.industry === cs.industry
+  ).slice(0, 3).concat(
+    CASE_STUDIES.filter(
+      (s) => s.id !== cs.id && s.industry !== cs.industry && s.tags.some((t) => cs.tags.includes(t))
+    )
   ).slice(0, 3);
   const caseStudyNarrative = buildCaseStudyNarrative(cs);
 
@@ -200,12 +216,18 @@ export default function CaseStudyDetail() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h3 className="text-xl font-bold text-foreground mb-6">Services Deployed</h3>
             <div className="flex flex-wrap gap-2">
-              {cs.services.map((svc) => (
-                <Badge key={svc} variant="secondary" className="text-sm px-3 py-1.5" data-testid={`badge-svc-${svc.toLowerCase().replace(/\s+/g, "-")}`}>
-                  <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-green-500" />
-                  {svc}
-                </Badge>
-              ))}
+              {cs.services.map((svc) => {
+                const svcSlug = resolveServiceSlug(svc);
+                const badge = (
+                  <Badge key={svc} variant="secondary" className="text-sm px-3 py-1.5 cursor-pointer hover:bg-blue-50 transition-colors" data-testid={`badge-svc-${svc.toLowerCase().replace(/\s+/g, "-")}`}>
+                    <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-green-500" />
+                    {svc}
+                  </Badge>
+                );
+                return svcSlug ? (
+                  <Link key={svc} href={`/${svcSlug}`}>{badge}</Link>
+                ) : badge;
+              })}
             </div>
           </motion.div>
         </div>
@@ -366,7 +388,7 @@ export default function CaseStudyDetail() {
       {relatedStudies.length > 0 && (
         <section className="py-12 sm:py-16" data-testid="related-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 className="text-xl font-bold text-foreground mb-8">Related Case Studies</h3>
+            <h3 className="text-xl font-bold text-foreground mb-8">More {cs.industry} Case Studies</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedStudies.map((related, i) => {
                 return (

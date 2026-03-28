@@ -8,7 +8,53 @@ import { COMPANY, ACHIEVEMENTS } from "@/lib/constants";
 import {
   ArrowRight, Target, Eye, Cpu, Globe, Shield, Users,
   Lightbulb, Rocket, CheckCircle2, Zap, Building2, Phone, Mail, MapPin, Award,
+  Flag, Star, TrendingUp, BadgeCheck,
 } from "lucide-react";
+
+const TIMELINE = [
+  {
+    year: "2020",
+    title: "Founded",
+    desc: "Infinite Rankers LLC incorporated in Delaware, USA. Initial focus on SEO and Google Ads for service businesses.",
+    icon: Flag,
+    color: "from-blue-500 to-blue-600",
+  },
+  {
+    year: "2021",
+    title: "500 Clients Milestone",
+    desc: "Reached 500 active clients across the US and UK. Expanded team to include dedicated AI specialists and automation engineers.",
+    icon: Users,
+    color: "from-indigo-500 to-indigo-600",
+  },
+  {
+    year: "2022",
+    title: "Google Partner Status",
+    desc: "Earned Certified Google Partner designation, validating our advertising expertise and campaign performance standards.",
+    icon: BadgeCheck,
+    color: "from-purple-500 to-purple-600",
+  },
+  {
+    year: "2023",
+    title: "AI Revenue System Launch",
+    desc: "Launched our proprietary AI calling, lead qualification, and CRM automation systems. Onboarded 2,000+ clients.",
+    icon: Rocket,
+    color: "from-violet-500 to-violet-600",
+  },
+  {
+    year: "2024",
+    title: "$4.8M+ Revenue Generated",
+    desc: "Crossed $4.8M in tracked client revenue generated across our portfolio. Expanded industry verticals to 15+ sectors.",
+    icon: TrendingUp,
+    color: "from-cyan-500 to-cyan-600",
+  },
+  {
+    year: "2025",
+    title: "4,000+ Clients Worldwide",
+    desc: "Serving 4,000+ businesses globally with AI-driven marketing automation and full-funnel revenue growth systems.",
+    icon: Star,
+    color: "from-emerald-500 to-emerald-600",
+  },
+];
 
 export default function About() {
   return (
@@ -58,6 +104,62 @@ export default function About() {
                 <div className="text-xs sm:text-sm text-white/80">{a.label}</div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-20 lg:py-24 overflow-hidden" data-testid="timeline-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            label="Our Story"
+            title="From Startup to 4,000+ Clients"
+            description="A focused track record of delivering results — built one client at a time since 2020."
+          />
+          <div className="relative max-w-4xl mx-auto">
+            <div className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-200 via-purple-200 to-blue-200 sm:-translate-x-px" />
+            <div className="space-y-10 sm:space-y-12">
+              {TIMELINE.map((item, i) => {
+                const Icon = item.icon;
+                const isLeft = i % 2 === 0;
+                return (
+                  <motion.div
+                    key={item.year}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className={`relative flex flex-col sm:flex-row gap-4 sm:gap-8 ${isLeft ? "sm:flex-row" : "sm:flex-row-reverse"}`}
+                    data-testid={`timeline-item-${item.year}`}
+                  >
+                    <div className={`hidden sm:flex flex-1 ${isLeft ? "justify-end pr-10" : "justify-start pl-10"}`}>
+                      <div className={`max-w-xs ${isLeft ? "text-right" : "text-left"}`}>
+                        <div className={`inline-block text-xs font-bold tracking-wider uppercase bg-gradient-to-r ${item.color} bg-clip-text text-transparent mb-1`}>
+                          {item.year}
+                        </div>
+                        <h3 className="text-base font-bold text-foreground mb-1">{item.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+
+                    <div className="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-0 z-10">
+                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${item.color} flex items-center justify-center shadow-md`}>
+                        <Icon className="w-4 h-4 text-white" />
+                      </div>
+                    </div>
+
+                    <div className="sm:hidden pl-12">
+                      <div className={`inline-block text-xs font-bold tracking-wider uppercase bg-gradient-to-r ${item.color} bg-clip-text text-transparent mb-1`}>
+                        {item.year}
+                      </div>
+                      <h3 className="text-base font-bold text-foreground mb-1">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </div>
+
+                    <div className={`hidden sm:flex flex-1 ${isLeft ? "pl-10" : "pr-10 justify-end"}`} />
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

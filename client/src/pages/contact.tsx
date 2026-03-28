@@ -14,13 +14,31 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertContactSchema } from "@shared/schema";
 import type { InsertContact } from "@shared/schema";
-import { Mail, Phone, MapPin, ArrowRight, Send, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight, Send, Clock, CheckCircle2, CalendarCheck, MessageSquare } from "lucide-react";
+
+const NEXT_STEPS = [
+  {
+    icon: MessageSquare,
+    step: "We review your message",
+    desc: "A strategist reads your inquiry and identifies the best-fit solution for your industry and goals.",
+  },
+  {
+    icon: CalendarCheck,
+    step: "We schedule your session",
+    desc: "We send a calendar link to book a 30-minute strategy call at a time that works for you.",
+  },
+  {
+    icon: CheckCircle2,
+    step: "You get a custom growth plan",
+    desc: "On the call, we present a tailored AI revenue growth roadmap — at no cost and no obligation.",
+  },
+];
 
 export default function Contact() {
   const seo = (
     <SEOHead
       title="Contact Us - Infinite Rankers | Get in Touch"
-      description="Have a question or ready to get started? Contact Infinite Rankers and our team will respond within 24 hours."
+      description="Have a question or ready to get started? Contact Infinite Rankers and our team will respond within 1 business hour."
     />
   );
   const { toast } = useToast();
@@ -34,7 +52,7 @@ export default function Contact() {
       return apiRequest("POST", "/api/contacts", data);
     },
     onSuccess: () => {
-      toast({ title: "Message Sent!", description: "We'll get back to you within 24 hours." });
+      toast({ title: "Message Sent!", description: "We'll get back to you within 1 business hour." });
       form.reset();
     },
     onError: () => {
@@ -58,7 +76,7 @@ export default function Contact() {
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Revenue Engine</span>
             </h1>
             <p className="text-muted-foreground leading-relaxed" style={{ fontSize: "clamp(0.938rem, 2vw, 1.125rem)" }}>
-              Have a question or ready to get started? Reach out and our team will respond within 24 hours.
+              Have a question or ready to get started? Reach out and our team will respond within 1 business hour.
             </p>
           </motion.div>
         </div>
@@ -153,6 +171,23 @@ export default function Contact() {
 
             <div className="lg:col-span-2 space-y-6">
               <GlassCard>
+                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-5">What Happens Next</h3>
+                <div className="space-y-5">
+                  {NEXT_STEPS.map((item, i) => (
+                    <div key={i} className="flex items-start gap-3" data-testid={`next-step-${i}`}>
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-0.5">
+                        {i + 1}
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-foreground mb-0.5">{item.step}</div>
+                        <div className="text-xs text-muted-foreground leading-relaxed">{item.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </GlassCard>
+
+              <GlassCard>
                 <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Contact Information</h3>
                 <div className="space-y-4">
                   <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-email">
@@ -178,8 +213,8 @@ export default function Contact() {
                       <Clock className="w-5 h-5 text-emerald-600" />
                     </div>
                     <div>
-                      <span className="font-medium text-foreground">24/7 Support Available</span>
-                      <p className="text-xs text-muted-foreground mt-0.5">Our team responds on weekends and holidays too</p>
+                      <span className="font-medium text-foreground">Response Within 1 Business Hour</span>
+                      <p className="text-xs text-muted-foreground mt-0.5">24/7 support available for active clients</p>
                     </div>
                   </div>
                 </div>

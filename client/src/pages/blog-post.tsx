@@ -5,7 +5,37 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/blog-data";
-import { ArrowLeft, ArrowRight, Clock, Calendar, User, Share2 } from "lucide-react";
+import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
+import { ArrowLeft, ArrowRight, Clock, Calendar, User, Share2, Zap, BarChart3 } from "lucide-react";
+
+const PORTFOLIO_IMAGES: Record<string, string> = {
+  "1": "/images/portfolio/project-1-dental.jpg",
+  "2": "/images/portfolio/project-2-ecommerce.jpg",
+  "3": "/images/portfolio/project-3-realestate.jpg",
+  "4": "/images/portfolio/project-4-saas.jpg",
+  "5": "/images/portfolio/project-5-lawfirm.jpg",
+  "6": "/images/portfolio/project-6-fitness.jpg",
+  "7": "/images/portfolio/project-7-restaurant.jpg",
+  "8": "/images/portfolio/project-8-clinic.jpg",
+  "9": "/images/portfolio/project-9-finance.jpg",
+  "10": "/images/portfolio/project-10-homeservices.jpg",
+  "11": "/images/portfolio/project-11-dealership.jpg",
+  "12": "/images/portfolio/project-12-coaching.jpg",
+};
+
+const CATEGORY_SERVICE_MAP: Record<string, string[]> = {
+  "AI Automation": ["ai-calling-agent", "ai-chatbot"],
+  "Lead Generation": ["google-ads", "seo-authority"],
+  "Sales Automation": ["ai-follow-up", "crm-automation"],
+  "Local Marketing": ["local-seo", "google-ads"],
+  "Strategy": ["conversion-funnels", "landing-page-optimization"],
+  "Social Media": ["social-media-marketing", "meta-ads"],
+  "Web Development": ["website-development", "landing-page-development"],
+  "Content Marketing": ["content-writing", "seo-authority"],
+  "E-Commerce": ["conversion-rate-optimization", "meta-ads"],
+  "Healthcare": ["ai-receptionist", "ai-appointment-booking"],
+  "Real Estate": ["ai-lead-qualification", "google-ads"],
+};
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -28,6 +58,16 @@ export default function BlogPost() {
   }
 
   const related = getRelatedPosts(post.relatedPosts);
+
+  const relatedServiceSlugs = CATEGORY_SERVICE_MAP[post.category] || ["ai-chatbot", "seo-authority"];
+  const relatedServices = relatedServiceSlugs
+    .map((s) => ALL_SERVICES.find((svc) => svc.slug === s))
+    .filter(Boolean)
+    .slice(0, 2);
+
+  const relatedCaseStudy = CASE_STUDIES.find((cs) =>
+    cs.tags.some((t) => t.toLowerCase().includes(post.category.toLowerCase().split(" ")[0]))
+  ) || CASE_STUDIES[0];
 
   const handleShare = () => {
     if (navigator.share) {
@@ -97,7 +137,7 @@ export default function BlogPost() {
         </div>
       </section>
 
-      <article className="pb-16 lg:pb-24">
+      <article className="pb-12 lg:pb-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
@@ -110,19 +150,13 @@ export default function BlogPost() {
               switch (section.type) {
                 case "heading":
                   return (
-                    <h2
-                      key={i}
-                      className="text-2xl sm:text-3xl font-bold text-foreground mt-10 mb-4"
-                    >
+                    <h2 key={i} className="text-2xl sm:text-3xl font-bold text-foreground mt-10 mb-4">
                       {section.text}
                     </h2>
                   );
                 case "paragraph":
                   return (
-                    <p
-                      key={i}
-                      className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-5"
-                    >
+                    <p key={i} className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-5">
                       {section.text}
                     </p>
                   );
@@ -139,10 +173,7 @@ export default function BlogPost() {
                   );
                 case "quote":
                   return (
-                    <blockquote
-                      key={i}
-                      className="border-l-4 border-blue-500 pl-6 py-4 my-8 bg-blue-50/50 rounded-r-md"
-                    >
+                    <blockquote key={i} className="border-l-4 border-blue-500 pl-6 py-4 my-8 bg-blue-50/50 rounded-r-md">
                       <p className="text-base sm:text-lg text-foreground italic mb-2 leading-relaxed">
                         "{section.text}"
                       </p>
@@ -185,6 +216,72 @@ export default function BlogPost() {
           </div>
         </div>
       </article>
+
+      {relatedServices.length > 0 && (
+        <section className="py-12 sm:py-16 bg-gray-50/60" data-testid="related-services-section">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-blue-600" />
+              Related Services
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {relatedServices.map((svc: any) => (
+                <Link key={svc.slug} href={`/${svc.slug}`}>
+                  <Card className="p-5 hover-elevate cursor-pointer" data-testid={`related-service-${svc.slug}`}>
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-md bg-blue-50 flex items-center justify-center shrink-0">
+                        <Zap className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-foreground mb-1">{svc.title}</div>
+                        <div className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{svc.shortDesc}</div>
+                      </div>
+                    </div>
+                    <div className="mt-3 flex items-center text-xs font-medium text-blue-600 gap-1">
+                      Learn More <ArrowRight className="w-3 h-3" />
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {relatedCaseStudy && (
+        <section className="py-12 sm:py-16" data-testid="related-case-study-section">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-purple-600" />
+              Related Case Study
+            </h2>
+            <Link href={`/${relatedCaseStudy.slug}`}>
+              <Card className="overflow-hidden hover-elevate cursor-pointer" data-testid="related-case-study-card">
+                <div className="grid sm:grid-cols-2">
+                  <img
+                    src={PORTFOLIO_IMAGES[relatedCaseStudy.id] || "/images/portfolio/project-1-dental.jpg"}
+                    alt={relatedCaseStudy.title}
+                    className="w-full h-44 sm:h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="p-5 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge variant="secondary" className="text-xs">{relatedCaseStudy.industry}</Badge>
+                      </div>
+                      <h3 className="text-base font-bold text-foreground mb-2 leading-snug">{relatedCaseStudy.title}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{relatedCaseStudy.business}</p>
+                    </div>
+                    <div className="mt-4 flex items-center text-xs font-semibold text-blue-600 gap-1">
+                      View Case Study <ArrowRight className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="py-16 lg:py-20 bg-gray-50/60">
