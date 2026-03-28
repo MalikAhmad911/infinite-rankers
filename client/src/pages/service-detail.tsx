@@ -31,56 +31,6 @@ const iconMap: Record<string, any> = {
   Car, Hammer, Scale, Heart, Landmark, Dumbbell,
 };
 
-function buildServiceContent(service: { slug: string; title: string; shortDesc: string; category: string }): ServiceContent {
-  return {
-    longDesc: `${service.title} is a purpose-built revenue system designed to automate and optimize your ${service.category.toLowerCase()} operations. ${service.shortDesc} Every system is configured specifically for your business model, integrated with your existing tools, and managed by a dedicated team of specialists — so you see results without the complexity.`,
-    problems: [
-      `Inconsistent results from your current ${service.category.toLowerCase()} approach`,
-      "Leads and opportunities slipping through the cracks without proper follow-up",
-      "Manual processes creating bottlenecks and limiting scalability",
-      "No clear attribution between marketing spend and actual revenue generated",
-    ],
-    solutions: [
-      `A purpose-built ${service.title} system configured specifically for your industry`,
-      "Automated workflows that capture, qualify, and convert every opportunity",
-      "Seamless integration with your existing CRM, tools, and processes",
-      "Clear performance dashboards linking system activity to booked revenue",
-    ],
-    features: [
-      "Custom configuration for your business model and goals",
-      "Full integration with existing CRM and marketing stack",
-      "Real-time performance dashboard and KPI tracking",
-      "Dedicated account manager and monthly strategy calls",
-      "Month-to-month, no lock-in contracts",
-      "Ongoing optimization and system improvements",
-      "Multi-channel deployment and support",
-      "Transparent reporting with revenue attribution",
-    ],
-    workflowSteps: [
-      { step: "Strategy & Discovery", desc: `We audit your current ${service.category.toLowerCase()} setup and identify the highest-impact opportunities for ${service.title}.` },
-      { step: "System Configuration", desc: "Custom build and configure the system to match your business processes, tone, and goals." },
-      { step: "Integration & Testing", desc: "Connect with your CRM, calendar, and existing tools with comprehensive testing before launch." },
-      { step: "Launch & Optimize", desc: "Go live with real data, monitor performance daily, and continuously improve results over time." },
-    ],
-    industries: [
-      { name: "Real Estate", icon: "Building2" },
-      { name: "Healthcare", icon: "Stethoscope" },
-      { name: "Professional Services", icon: "Briefcase" },
-      { name: "E-Commerce", icon: "ShoppingCart" },
-      { name: "Education", icon: "GraduationCap" },
-      { name: "Restaurants", icon: "Utensils" },
-    ],
-    faqs: [
-      { q: `How quickly can ${service.title} be implemented?`, a: "Most implementations are completed within 2-4 weeks, including custom configuration, testing, and optimization for your specific business needs and goals." },
-      { q: "Do I need technical knowledge to manage this?", a: "No. We handle all the technical setup and provide a clear, user-friendly dashboard. Our team manages ongoing optimization and you receive regular performance reports." },
-      { q: "Can this integrate with my existing tools?", a: "Yes. Our systems integrate with all major CRMs, email platforms, scheduling tools, and business software — including GoHighLevel, HubSpot, Salesforce, and more." },
-      { q: "What kind of results can I expect?", a: "Most clients see measurable improvements within the first 30 days, with significant ROI within 90 days depending on implementation quality and traffic volume." },
-      { q: "Is there a minimum contract period?", a: "No long-term contracts required. We operate month-to-month because our results speak for themselves and we earn your continued investment every month." },
-    ],
-    relatedServices: [] as string[],
-  };
-}
-
 const defaultTheme: ServiceVisualTheme = {
   heroMockup: "analytics-dashboard",
   accentFrom: "from-blue-500",
@@ -113,8 +63,24 @@ export default function ServiceDetail() {
   }
 
   const Icon = iconMap[service.icon] || Zap;
-  const content = SERVICE_CONTENT[params.slug] ?? buildServiceContent(service);
+  const content = SERVICE_CONTENT[params.slug];
   const theme = SERVICE_VISUAL_THEMES[params.slug] || defaultTheme;
+
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-20">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-2">Service Page Not Found</h1>
+          <p className="text-muted-foreground mb-6">This service does not have a dedicated page yet.</p>
+          <Link href="/services">
+            <Button variant="outline" data-testid="button-back-services-404">
+              <ArrowLeft className="w-4 h-4 mr-1" /> View All Services
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
   const categoryId = service.categoryId;
   const pricing = getServicePricing(params.slug);
 

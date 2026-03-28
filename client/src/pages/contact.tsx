@@ -85,7 +85,71 @@ export default function Contact() {
       <section className="py-16 sm:py-20 lg:py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
+              <GlassCard>
+                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-5">What Happens Next</h3>
+                <div className="space-y-5">
+                  {NEXT_STEPS.map((item, i) => (
+                    <div key={i} className="flex items-start gap-3" data-testid={`next-step-${i}`}>
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-0.5">
+                        {i + 1}
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-foreground mb-0.5">{item.step}</div>
+                        <div className="text-xs text-muted-foreground leading-relaxed">{item.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </GlassCard>
+
+              <GlassCard>
+                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Contact Information</h3>
+                <div className="space-y-4">
+                  <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-email">
+                    <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <span className="break-all">{COMPANY.email}</span>
+                  </a>
+                  <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-phone">
+                    <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-blue-600" />
+                    </div>
+                    {COMPANY.phone}
+                  </a>
+                  <div className="flex items-start gap-3 text-sm text-muted-foreground">
+                    <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-blue-600" />
+                    </div>
+                    {COMPANY.address}
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <div className="w-10 h-10 rounded-md bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <span className="font-medium text-foreground">Response Within 1 Business Hour</span>
+                      <p className="text-xs text-muted-foreground mt-0.5">24/7 support available for active clients</p>
+                    </div>
+                  </div>
+                </div>
+              </GlassCard>
+
+              <GlassCard className="bg-gradient-to-br from-blue-600 to-purple-700 border-0">
+                <h3 className="text-base sm:text-lg font-semibold text-white mb-2">Book a Free Strategy Session</h3>
+                <p className="text-sm text-white/80 mb-4">
+                  Get a personalized AI revenue growth plan for your business. No obligation.
+                </p>
+                <Link href="/book-demo">
+                  <Button variant="secondary" className="w-full sm:w-auto" data-testid="button-contact-book-demo">
+                    Book Demo <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </Link>
+              </GlassCard>
+            </div>
+
+            <div className="lg:col-span-3 order-1 lg:order-2">
               <GlassCard>
                 <h2 className="font-bold text-foreground mb-6" style={{ fontSize: "clamp(1.125rem, 3vw, 1.25rem)" }}>Send Us a Message</h2>
                 <form
@@ -166,70 +230,6 @@ export default function Contact() {
                     {mutation.isPending ? "Sending..." : "Send Message"} <Send className="w-4 h-4 ml-1" />
                   </Button>
                 </form>
-              </GlassCard>
-            </div>
-
-            <div className="lg:col-span-2 space-y-6">
-              <GlassCard>
-                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-5">What Happens Next</h3>
-                <div className="space-y-5">
-                  {NEXT_STEPS.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3" data-testid={`next-step-${i}`}>
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-0.5">
-                        {i + 1}
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-foreground mb-0.5">{item.step}</div>
-                        <div className="text-xs text-muted-foreground leading-relaxed">{item.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </GlassCard>
-
-              <GlassCard>
-                <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Contact Information</h3>
-                <div className="space-y-4">
-                  <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-email">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <span className="break-all">{COMPANY.email}</span>
-                  </a>
-                  <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-contact-phone">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-5 h-5 text-blue-600" />
-                    </div>
-                    {COMPANY.phone}
-                  </a>
-                  <div className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <div className="w-10 h-10 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-5 h-5 text-blue-600" />
-                    </div>
-                    {COMPANY.address}
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <div className="w-10 h-10 rounded-md bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-5 h-5 text-emerald-600" />
-                    </div>
-                    <div>
-                      <span className="font-medium text-foreground">Response Within 1 Business Hour</span>
-                      <p className="text-xs text-muted-foreground mt-0.5">24/7 support available for active clients</p>
-                    </div>
-                  </div>
-                </div>
-              </GlassCard>
-
-              <GlassCard className="bg-gradient-to-br from-blue-600 to-purple-700 border-0">
-                <h3 className="text-base sm:text-lg font-semibold text-white mb-2">Book a Free Strategy Session</h3>
-                <p className="text-sm text-white/80 mb-4">
-                  Get a personalized AI revenue growth plan for your business. No obligation.
-                </p>
-                <Link href="/book-demo">
-                  <Button variant="secondary" className="w-full sm:w-auto" data-testid="button-contact-book-demo">
-                    Book Demo <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </Link>
               </GlassCard>
             </div>
           </div>

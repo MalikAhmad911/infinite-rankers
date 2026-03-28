@@ -138,7 +138,23 @@ export default function Blog() {
                       loading="lazy"
                     />
                     <div className="p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
-                      <Badge variant="secondary" className="self-start mb-3">{featuredPost.category}</Badge>
+                      <div className="flex items-center gap-2 mb-3 flex-wrap">
+                        <Badge variant="secondary" className="self-start">{featuredPost.category}</Badge>
+                        {CATEGORY_SERVICE_LINK[featuredPost.category] && (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              navigate(`/${CATEGORY_SERVICE_LINK[featuredPost.category].slug}`);
+                            }}
+                            className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
+                            data-testid="badge-service-featured"
+                          >
+                            <Zap className="w-2.5 h-2.5 text-blue-500" />
+                            {CATEGORY_SERVICE_LINK[featuredPost.category].label}
+                          </button>
+                        )}
+                      </div>
                       <h2 className="font-bold text-foreground mb-4 leading-tight" style={{ fontSize: "clamp(1.125rem, 3vw, 1.875rem)" }}>
                         {featuredPost.title}
                       </h2>

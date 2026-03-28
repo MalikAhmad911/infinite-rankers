@@ -96,11 +96,7 @@ export default function CaseStudyDetail() {
 
   const relatedStudies = CASE_STUDIES.filter(
     (s) => s.id !== cs.id && s.industry === cs.industry
-  ).slice(0, 3).concat(
-    CASE_STUDIES.filter(
-      (s) => s.id !== cs.id && s.industry !== cs.industry && s.tags.some((t) => cs.tags.includes(t))
-    )
-  ).slice(0, 3);
+  ).slice(0, 2);
   const caseStudyNarrative = buildCaseStudyNarrative(cs);
 
   const metrics = [
