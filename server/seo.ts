@@ -585,7 +585,7 @@ export function injectSEO(html: string, url: string): string {
   const urlPath = url.split("?")[0];
   const isAdminPath = urlPath.startsWith("/admin");
   if (noindexPaths.includes(urlPath) || isAdminPath) {
-    extraTags.push(`<meta name="robots" content="noindex, nofollow" />`);
+    extraTags.push(`<meta name="robots" content="noindex, follow" />`);
   } else if (!result.includes('name="robots"')) {
     extraTags.push(`<meta name="robots" content="index, follow" />`);
   }

@@ -29,6 +29,20 @@ const catIcons: Record<string, any> = {
   "development": Code,
 };
 
+const POPULAR_SLUGS = new Set([
+  "ai-calling-agent", "ai-chatbot", "crm-automation",
+  "google-ads", "seo-authority", "local-seo",
+  "social-media-marketing", "content-writing",
+  "website-development", "marketing-automation-setup",
+]);
+
+const CLUSTER_NAV = [
+  { id: "ai-automation", label: "AI & Automation", icon: Bot },
+  { id: "lead-generation", label: "Lead Generation", icon: Target },
+  { id: "social-content", label: "Social & Content", icon: Share2 },
+  { id: "development", label: "Development", icon: Code },
+];
+
 export default function Services() {
   const enterpriseUseCases = [
     "Multi-location lead routing and SLA-based follow-up automation",
@@ -119,12 +133,31 @@ export default function Services() {
         </div>
       </section>
 
+      <nav className="sticky top-16 z-30 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm" aria-label="Service cluster navigation">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
+            {CLUSTER_NAV.map(({ id, label, icon: Icon }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-blue-600 hover:bg-blue-50 transition-colors whitespace-nowrap flex-shrink-0"
+                data-testid={`nav-cluster-${id}`}
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+
       {SERVICE_CATEGORIES.map((cat, catIndex) => {
         const CatIcon = catIcons[cat.id] || Zap;
         return (
           <section
             key={cat.id}
-            className={`py-16 sm:py-20 lg:py-24 overflow-hidden ${catIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`}
+            id={cat.id}
+            className={`py-16 sm:py-20 lg:py-24 overflow-hidden scroll-mt-28 ${catIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`}
             data-testid={`section-${cat.id}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -146,13 +179,19 @@ export default function Services() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {cat.services.map((service, i) => {
                   const Icon = iconMap[service.icon] || Zap;
+                  const isPopular = POPULAR_SLUGS.has(service.slug);
                   return (
                     <Link key={service.slug} href={`/${service.slug}`}>
-                      <GlassCard delay={i * 0.05} className="cursor-pointer h-full flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                      <GlassCard delay={i * 0.05} className="cursor-pointer h-full flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative">
+                        {isPopular && (
+                          <span className="absolute top-4 right-4 text-[10px] font-semibold uppercase tracking-wider bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                            Most Popular
+                          </span>
+                        )}
                         <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4">
                           <Icon className="w-5 h-5 text-blue-600" />
                         </div>
-                        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">{service.title}</h3>
+                        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 pr-24">{service.title}</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">{service.shortDesc}</p>
                         <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-auto">
                           Explore Service <ArrowRight className="w-3 h-3" />
