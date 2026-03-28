@@ -31,6 +31,22 @@ const iconMap: Record<string, any> = {
   Car, Hammer, Scale, Heart, Landmark, Dumbbell,
 };
 
+const SERVICE_PRIMARY_CASE_STUDY: Record<string, string> = {
+  "ai-calling-agent": "case-study-dental-practice-revenue-transformation",
+  "ai-receptionist": "case-study-law-firm-client-intake-automation",
+  "ai-lead-qualification": "case-study-real-estate-ai-lead-generation",
+  "ai-appointment-booking": "case-study-fitness-studio-membership-growth",
+  "ai-follow-up": "case-study-insurance-agency-renewal-automation",
+  "ai-chatbot": "case-study-auto-dealership-ai-sales-acceleration",
+  "google-ads": "case-study-home-services-plumbing-hvac-lead-machine",
+  "meta-ads": "case-study-online-coaching-enrollment-automation",
+  "seo-authority": "case-study-commercial-contractor-brand-lead-growth",
+  "crm-automation": "case-study-freight-brokerage-workflow-automation",
+  "local-seo": "case-study-restaurant-chain-local-seo-transformation",
+  "content-writing": "case-study-wealth-management-digital-lead-generation",
+  "website-development": "case-study-saas-growth-acceleration",
+};
+
 const defaultTheme: ServiceVisualTheme = {
   heroMockup: "analytics-dashboard",
   accentFrom: "from-blue-500",
@@ -93,7 +109,12 @@ export default function ServiceDetail() {
     .filter((s): s is (typeof ALL_SERVICES)[number] => s !== undefined)
     .slice(0, 3);
 
-  const relatedCaseStudies = CASE_STUDIES.filter((cs) =>
+  const primaryCaseStudySlug = SERVICE_PRIMARY_CASE_STUDY[service.slug];
+  const primaryCaseStudy = primaryCaseStudySlug
+    ? CASE_STUDIES.find((cs) => cs.slug === primaryCaseStudySlug)
+    : undefined;
+  const heuristicCaseStudies = CASE_STUDIES.filter((cs) =>
+    cs.slug !== primaryCaseStudySlug &&
     cs.tags.some((tag) => {
       const categoryLower = service.category.toLowerCase();
       const tagLower = tag.toLowerCase();
@@ -105,7 +126,11 @@ export default function ServiceDetail() {
         tagLower.toLowerCase().includes("social") && categoryLower.includes("social") ||
         tagLower.toLowerCase().includes("web") && categoryLower.includes("development");
     })
-  ).slice(0, 3);
+  );
+  const relatedCaseStudies = [
+    ...(primaryCaseStudy ? [primaryCaseStudy] : []),
+    ...heuristicCaseStudies,
+  ].slice(0, 3);
 
   return (
     <div>
