@@ -124,6 +124,63 @@ const LANDING_PAGES: Record<string, { title: string; desc: string; faqs?: { q: s
   "automation-agency": { title: "AI Automation Agency | Save 20hrs/Week | Infinite Rankers", desc: "Automate lead follow-up, appointment booking & workflows with AI. Clients reduce manual work by 60% and scale revenue without adding headcount. Free demo.", faqs: [{ q: "What does an automation agency do?", a: "An automation agency designs and implements intelligent workflows that automate repetitive tasks like lead follow-up, appointment booking, data entry, and reporting." }, { q: "How can automation help with recruitment?", a: "AI automation streamlines candidate sourcing, application screening, interview scheduling, and follow-up communications — reducing time-to-hire by up to 60%." }, { q: "How quickly can automation systems be implemented?", a: "Most automation workflows are designed, built, and live within 2-4 weeks, with immediate impact on efficiency and lead response times." }] },
 };
 
+const INDUSTRY_VERTICAL_PAGES: Record<string, { title: string; desc: string; faqs: { q: string; a: string }[] }> = {
+  "ai-marketing-for-dental-practices": {
+    title: "AI Marketing for Dental Practices | 148% More Patients | Infinite Rankers",
+    desc: "Dental AI marketing system: AI calling agent, Google Ads & appointment booking. Dental practices average 148% more new patients in 90 days. Free strategy call.",
+    faqs: [
+      { q: "Is AI calling HIPAA-compliant for dental practices?", a: "Yes. Our AI calling and appointment booking systems are configured to meet HIPAA standards — no PHI is stored in non-compliant systems and all patient interactions follow privacy protocols." },
+      { q: "How fast can a dental practice go live with AI?", a: "Most dental practices are fully live — AI receptionist, appointment booking, and Google Ads optimized — within 2–3 weeks of kickoff." },
+      { q: "Will AI replace my front desk staff?", a: "No. AI handles overflow calls, after-hours inquiries, and follow-up sequences — freeing your team to deliver better in-practice service rather than replacing them." },
+    ],
+  },
+  "ai-marketing-for-hvac-plumbing": {
+    title: "AI Marketing for HVAC & Plumbing | 190% More Leads | Infinite Rankers",
+    desc: "HVAC and plumbing AI lead generation: Google Ads, AI calling & local SEO. Home services companies average 190% lead volume increase and 3.9x ROAS. Free audit.",
+    faqs: [
+      { q: "How do you target homeowners in our service area specifically?", a: "We use geo-targeted Google Ads combined with local SEO optimizations for your specific zip codes — ensuring spend is concentrated in areas your technicians actually serve." },
+      { q: "Can AI handle after-hours emergency calls?", a: "Yes. The AI calling agent answers 24/7, captures job details, and can dispatch an emergency callback or book next-morning service automatically." },
+      { q: "How do you generate leads during the off-season?", a: "We build preventive maintenance and tune-up campaigns that generate consistent bookings in slow months — smoothing your revenue curve year-round." },
+    ],
+  },
+  "ai-marketing-for-law-firms": {
+    title: "AI Marketing for Law Firms | 175% More Consultations | Infinite Rankers",
+    desc: "Law firm AI client acquisition: AI receptionist, SEO & lead qualification. Law firms average 175% more qualified consultations without adding intake staff. Free audit.",
+    faqs: [
+      { q: "Is AI intake compliant with legal ethics rules?", a: "Yes. Our AI intake system is configured to avoid creating attorney-client relationships, uses compliant disclaimers, and routes to licensed staff for all substantive legal discussion." },
+      { q: "Can the AI qualify leads by practice area?", a: "Absolutely. We configure qualification logic for your specific practice areas — PI, family, criminal, immigration — routing leads to the right attorney or intake specialist." },
+      { q: "How do you handle multilingual potential clients?", a: "Our AI systems support Spanish and other languages depending on your market, enabling you to capture leads your competitors miss." },
+    ],
+  },
+  "ai-marketing-for-real-estate": {
+    title: "AI Marketing for Real Estate | 45+ Qualified Leads/Month | Infinite Rankers",
+    desc: "Real estate AI lead generation: AI qualification, Google Ads & automated follow-up. Agents and brokerages average 45+ qualified buyer & seller leads per month. Free audit.",
+    faqs: [
+      { q: "How do you separate motivated buyers from casual browsers?", a: "Our AI qualification system scores leads across 14 behavioral and demographic signals — timeline, pre-approval status, search depth, engagement — and only routes leads meeting your threshold to agents." },
+      { q: "Can you integrate with our CRM like Follow Up Boss or LionDesk?", a: "Yes. We integrate with Follow Up Boss, LionDesk, BoomTown, kvCORE, and most major real estate CRMs to ensure leads flow directly into your existing system." },
+      { q: "Do you generate buyer leads, seller leads, or both?", a: "Both. We build separate campaigns targeting buyers at different funnel stages and seller leads through home valuation landing pages — each with tailored qualification flows." },
+    ],
+  },
+  "ai-marketing-for-medical-clinics": {
+    title: "AI Marketing for Medical Clinics | 125% Patient Growth | Infinite Rankers",
+    desc: "Medical clinic AI patient acquisition: AI receptionist, Google Ads & appointment booking. Clinics average 125% new patient volume growth. HIPAA-compliant. Free audit.",
+    faqs: [
+      { q: "How does AI handle HIPAA compliance for patient inquiries?", a: "Our AI systems are configured to meet HIPAA standards — no PHI is transmitted through non-compliant channels, consent flows are built in, and all data handling follows healthcare privacy requirements." },
+      { q: "Can AI handle insurance verification questions?", a: "Yes. The AI can answer common insurance network questions, collect insurance information for staff review, and route complex coverage questions to your billing team." },
+      { q: "Will this work for specialty clinics like dermatology or orthopedics?", a: "Absolutely. We configure the AI and ad campaigns specifically for your specialty — targeting procedures, patient demographics, and search intent relevant to your services." },
+    ],
+  },
+  "ai-marketing-for-ecommerce": {
+    title: "AI Marketing for E-Commerce | 62% Cart Recovery | Infinite Rankers",
+    desc: "E-commerce AI revenue system: Meta Ads, CRM automation & AI email sequences. Brands average 62% cart recovery rate and 180% revenue growth in 6 months. Free audit.",
+    faqs: [
+      { q: "Which e-commerce platforms do you work with?", a: "We integrate with Shopify, WooCommerce, BigCommerce, Magento, and custom platforms — connecting your store data to Meta Ads, email automation, and CRM for unified attribution." },
+      { q: "How does AI improve cart abandonment recovery?", a: "Instead of fixed-timer emails, our AI triggers recovery sequences based on individual abandonment behavior — adjusting timing, offer, and channel (email vs SMS) dynamically to maximize conversion." },
+      { q: "Can you help with Amazon or just our direct store?", a: "We focus on direct-to-consumer growth — driving traffic and revenue to your owned store — though we can advise on cross-channel strategy including Amazon brand presence." },
+    ],
+  },
+};
+
 const PARTNER_PAGES: Record<string, { title: string; desc: string }> = {
   "infinite-rankers-agency": { title: `Full-Service AI Marketing Agency | 4,000+ Clients | ${BRAND}`, desc: "Infinite Rankers is a full-service AI marketing agency providing automation, lead generation, and revenue growth systems for businesses across the USA." },
   "infinite-rankers-seo-services": { title: `SEO Services That Rank — 158% Avg Traffic Growth | ${BRAND}`, desc: "Professional SEO services by Infinite Rankers. We help businesses dominate Google search rankings with data-driven SEO strategies and AI-powered optimization." },
@@ -200,6 +257,15 @@ export function getSEOForRoute(url: string): SEOMeta | null {
     return {
       title: pp.title,
       description: pp.desc,
+      canonical: `${BASE}/${slug}`,
+    };
+  }
+
+  if (INDUSTRY_VERTICAL_PAGES[slug]) {
+    const iv = INDUSTRY_VERTICAL_PAGES[slug];
+    return {
+      title: iv.title,
+      description: iv.desc,
       canonical: `${BASE}/${slug}`,
     };
   }
@@ -478,6 +544,32 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       }
     };
     return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
+  }
+
+  const ivData = INDUSTRY_VERTICAL_PAGES[ssSlug];
+  if (ivData) {
+    mainSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": seo.title,
+      "description": seo.description,
+      "url": seo.canonical,
+      "publisher": ORG_SCHEMA
+    };
+    const parts: object[] = [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
+    if (ivData.faqs?.length) {
+      const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": ivData.faqs.map(f => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      };
+      parts.push(faqSchema);
+    }
+    return parts;
   }
 
   const lpData = LANDING_PAGES[ssSlug];

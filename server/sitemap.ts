@@ -100,6 +100,15 @@ function createCaseStudyEntries(): SitemapURL[] {
   }));
 }
 
+const INDUSTRY_VERTICAL_SLUGS = [
+  "ai-marketing-for-dental-practices",
+  "ai-marketing-for-hvac-plumbing",
+  "ai-marketing-for-law-firms",
+  "ai-marketing-for-real-estate",
+  "ai-marketing-for-medical-clinics",
+  "ai-marketing-for-ecommerce",
+];
+
 function getSitemapChildren(): SitemapChild[] {
   return [
     {
@@ -121,6 +130,11 @@ function getSitemapChildren(): SitemapChild[] {
       name: "blog",
       path: "/sitemap-blog.xml",
       entries: createEntriesFromSlugs(BLOG_POST_SLUGS, "monthly", "0.6"),
+    },
+    {
+      name: "industries",
+      path: "/sitemap-industries.xml",
+      entries: createEntriesFromSlugs(INDUSTRY_VERTICAL_SLUGS, "monthly", "0.8"),
     },
   ];
 }

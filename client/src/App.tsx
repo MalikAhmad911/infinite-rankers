@@ -20,6 +20,7 @@ import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import BookDemo from "@/pages/book-demo";
 import LandingPage from "@/pages/landing-page";
+import IndustryVertical from "@/pages/industry-vertical";
 import Terms from "@/pages/terms";
 import Privacy from "@/pages/privacy";
 import ContentMethodology from "@/pages/content-methodology";
@@ -28,7 +29,7 @@ import AdminDashboard from "@/pages/admin-dashboard";
 import NotFound from "@/pages/not-found";
 import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import GooglePartnerPage from "@/pages/google-partner-page";
-import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
+import { ALL_SERVICES, CASE_STUDIES, INDUSTRY_VERTICALS } from "@/lib/constants";
 import { getBlogPostBySlug } from "@/lib/blog-data";
 
 function SmartPage({ params }: { params: { slug: string } }) {
@@ -36,6 +37,7 @@ function SmartPage({ params }: { params: { slug: string } }) {
   if (ALL_SERVICES.some(s => s.slug === slug)) return <ServiceDetail />;
   if (getBlogPostBySlug(slug)) return <BlogPost />;
   if (CASE_STUDIES.some(cs => cs.slug === slug || cs.id === slug)) return <CaseStudyDetail />;
+  if (INDUSTRY_VERTICALS.some(v => v.slug === slug)) return <IndustryVertical />;
   return <LandingPage slug={slug} />;
 }
 

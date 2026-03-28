@@ -6,7 +6,18 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { CASE_STUDIES, ALL_SERVICES } from "@/lib/constants";
-import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star, Lightbulb } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star, Lightbulb, Building2 } from "lucide-react";
+
+const CASE_STUDY_INDUSTRY_VERTICAL: Record<string, { slug: string; name: string }> = {
+  "case-study-dental-practice-revenue-transformation": { slug: "ai-marketing-for-dental-practices", name: "Dental Practices" },
+  "case-study-home-services-plumbing-hvac-lead-machine": { slug: "ai-marketing-for-hvac-plumbing", name: "HVAC & Plumbing" },
+  "case-study-law-firm-client-intake-automation": { slug: "ai-marketing-for-law-firms", name: "Law Firms" },
+  "case-study-immigration-law-multilingual-lead-generation": { slug: "ai-marketing-for-law-firms", name: "Law Firms" },
+  "case-study-real-estate-ai-lead-generation": { slug: "ai-marketing-for-real-estate", name: "Real Estate" },
+  "case-study-medical-clinic-patient-acquisition": { slug: "ai-marketing-for-medical-clinics", name: "Medical Clinics" },
+  "case-study-veterinary-clinic-ai-appointment-growth": { slug: "ai-marketing-for-medical-clinics", name: "Medical & Veterinary Clinics" },
+  "case-study-ecommerce-cart-recovery-scaling": { slug: "ai-marketing-for-ecommerce", name: "E-Commerce Brands" },
+};
 
 const CASE_STUDY_PRIMARY_SERVICE: Record<string, string[]> = {
   "case-study-dental-practice-revenue-transformation": ["ai-calling-agent", "google-ads"],
@@ -153,6 +164,7 @@ export default function CaseStudyDetail() {
     (s) => s.id !== cs.id && s.industry === cs.industry
   ).slice(0, 2);
   const caseStudyNarrative = buildCaseStudyNarrative(cs);
+  const industryVertical = CASE_STUDY_INDUSTRY_VERTICAL[cs.slug || id];
 
   const metrics = [
     { value: cs.results.metric1, label: cs.results.label1 },
@@ -266,7 +278,7 @@ export default function CaseStudyDetail() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h3 className="text-xl font-bold text-foreground mb-6">Services Deployed</h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mb-5">
               {cs.services.slice(0, 3).map((svc) => {
                 const svcSlug = resolveServiceSlug(svc);
                 const badge = (
@@ -280,6 +292,17 @@ export default function CaseStudyDetail() {
                 ) : badge;
               })}
             </div>
+            {industryVertical && (
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-blue-50 border border-blue-100 w-fit" data-testid="industry-vertical-link">
+                <Building2 className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                <span className="text-sm text-gray-600">Industry hub:</span>
+                <Link href={`/${industryVertical.slug}`}>
+                  <span className="text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer">
+                    AI Marketing for {industryVertical.name} →
+                  </span>
+                </Link>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>

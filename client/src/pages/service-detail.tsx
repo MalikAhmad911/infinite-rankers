@@ -7,7 +7,7 @@ import GlassCard from "@/components/glass-card";
 import SectionHeader from "@/components/section-header";
 import ServiceHeroMockup from "@/components/service-mockups";
 import { ProblemSolutionSection, FeaturesSection, WorkflowSection, FAQSection } from "@/components/service-sections";
-import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, type ServiceVisualTheme, type ServiceContent, getServicePricing } from "@/lib/constants";
+import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, INDUSTRY_VERTICALS, type ServiceVisualTheme, type ServiceContent, getServicePricing } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
 import {
@@ -448,6 +448,28 @@ export default function ServiceDetail() {
               );
             })}
           </div>
+          {(() => {
+            const relatedVerticals = INDUSTRY_VERTICALS.filter(v =>
+              v.primaryServices.includes(service.slug)
+            );
+            if (relatedVerticals.length === 0) return null;
+            return (
+              <div className="mt-8 pt-6 border-t border-gray-100" data-testid="industry-vertical-links">
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">Industry Deep Dives</p>
+                <div className="flex flex-wrap gap-3">
+                  {relatedVerticals.map(v => (
+                    <Link key={v.slug} href={`/${v.slug}`}>
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50 transition-colors cursor-pointer text-sm font-medium text-gray-700 hover:text-blue-700" data-testid={`link-industry-${v.slug}`}>
+                        <Building2 className="w-3.5 h-3.5" />
+                        {v.name}
+                        <ArrowRight className="w-3 h-3" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
 

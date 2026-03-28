@@ -2820,3 +2820,237 @@ export const SERVICE_VISUAL_THEMES: Record<string, ServiceVisualTheme> = {
     problemSolutionLayout: "C", featuresLayout: "C", workflowLayout: "C", faqLayout: "C",
   },
 };
+
+export interface IndustryVertical {
+  slug: string;
+  name: string;
+  tagline: string;
+  headline: string;
+  subheadline: string;
+  problemStatement: string;
+  painPoints: string[];
+  primaryServices: string[];
+  outcomes: { metric: string; label: string }[];
+  caseStudySlug: string;
+  caseStudyTitle: string;
+  caseStudyBusiness: string;
+  caseStudyMetric: string;
+  faqs: { q: string; a: string }[];
+  ctaHeadline: string;
+  icon: string;
+  accentFrom: string;
+  accentTo: string;
+}
+
+export const INDUSTRY_VERTICALS: IndustryVertical[] = [
+  {
+    slug: "ai-marketing-for-dental-practices",
+    name: "Dental Practices",
+    tagline: "AI Growth System for Dentists",
+    headline: "Turn Your Dental Practice Into a Patient-Generating Machine",
+    subheadline: "Dental practices using our AI systems fill 15–30 new patient slots every month — without cold calls, referral dependency, or bloated staff costs.",
+    problemStatement: "Most dental practices lose 40–60% of new patient inquiries because calls go unanswered, web forms go unresponded, and follow-up is manual. AI changes that permanently.",
+    painPoints: [
+      "Front desk misses calls during treatment hours — patients call competitors instead",
+      "New patient inquiries from web forms wait hours or days for a response",
+      "Recall and reactivation campaigns are manual, inconsistent, and time-consuming",
+      "Google Ads spend is wasted on broad terms that attract price shoppers, not quality patients",
+      "No system to automatically follow up with leads who didn't book after initial contact",
+    ],
+    primaryServices: ["ai-calling-agent", "google-ads", "ai-appointment-booking"],
+    outcomes: [
+      { metric: "148%", label: "Increase in new patient bookings" },
+      { metric: "3.9x", label: "Return on Google Ads spend" },
+      { metric: "60%", label: "Reduction in missed calls" },
+      { metric: "24/7", label: "AI receptionist coverage" },
+    ],
+    caseStudySlug: "case-study-dental-practice-revenue-transformation",
+    caseStudyTitle: "Local Dental Practice Revenue Transformation",
+    caseStudyBusiness: "Premier Dental Care — Multi-location dental group",
+    caseStudyMetric: "148% increase in new patients in 90 days",
+    faqs: [
+      { q: "Is AI calling HIPAA-compliant for dental practices?", a: "Yes. Our AI calling and appointment booking systems are configured to meet HIPAA standards — no PHI is stored in non-compliant systems and all patient interactions follow privacy protocols." },
+      { q: "How fast can a dental practice go live with AI?", a: "Most dental practices are fully live — AI receptionist, appointment booking, and Google Ads optimized — within 2–3 weeks of kickoff." },
+      { q: "Will AI replace my front desk staff?", a: "No. AI handles overflow calls, after-hours inquiries, and follow-up sequences — freeing your team to deliver better in-practice service rather than replacing them." },
+    ],
+    ctaHeadline: "See How Many New Patients Your Practice Is Missing",
+    icon: "Stethoscope",
+    accentFrom: "from-blue-600",
+    accentTo: "to-cyan-500",
+  },
+  {
+    slug: "ai-marketing-for-hvac-plumbing",
+    name: "HVAC & Plumbing",
+    tagline: "AI Lead Machine for Home Services",
+    headline: "Dominate Your Local Market and Fill Your HVAC Schedule Year-Round",
+    subheadline: "Home services companies using our AI + Google Ads system generate 50–120 qualified service calls per month — even in off-season — without relying on slow referrals.",
+    problemStatement: "HVAC and plumbing companies bleed revenue in two places: missed calls during busy seasons and silent phones during slow ones. AI and precision ad targeting fix both permanently.",
+    painPoints: [
+      "Technicians are on-site all day — calls go to voicemail and leads choose a competitor",
+      "Google Ads spend is wasted on unqualified emergency callers outside your service area",
+      "Seasonal demand swings create feast-or-famine cash flow with no predictability",
+      "Dispatch and scheduling rely on manual processes that slow response time",
+      "No follow-up system for estimates given that never converted to booked jobs",
+    ],
+    primaryServices: ["google-ads", "ai-calling-agent", "local-seo"],
+    outcomes: [
+      { metric: "190%", label: "Lead volume increase in 6 months" },
+      { metric: "3.9x", label: "Google Ads ROAS" },
+      { metric: "4 min", label: "Average AI call response time" },
+      { metric: "82%", label: "Estimate-to-job conversion rate" },
+    ],
+    caseStudySlug: "case-study-home-services-plumbing-hvac-lead-machine",
+    caseStudyTitle: "Home Services Lead Machine",
+    caseStudyBusiness: "TrueFlow Plumbing & HVAC — 3-truck operation",
+    caseStudyMetric: "190% lead volume increase and 3.9x ROAS",
+    faqs: [
+      { q: "How do you target homeowners in our service area specifically?", a: "We use geo-targeted Google Ads combined with local SEO optimizations for your specific zip codes — ensuring spend is concentrated in areas your technicians actually serve." },
+      { q: "Can AI handle after-hours emergency calls?", a: "Yes. The AI calling agent answers 24/7, captures job details, and can dispatch an emergency callback or book next-morning service automatically." },
+      { q: "How do you generate leads during the off-season?", a: "We build preventive maintenance and tune-up campaigns that generate consistent bookings in slow months — smoothing your revenue curve year-round." },
+    ],
+    ctaHeadline: "Get a Free Local Market Analysis for Your Service Area",
+    icon: "Hammer",
+    accentFrom: "from-orange-500",
+    accentTo: "to-amber-400",
+  },
+  {
+    slug: "ai-marketing-for-law-firms",
+    name: "Law Firms",
+    tagline: "Client Acquisition System for Attorneys",
+    headline: "Fill Your Law Firm's Consultation Calendar on Autopilot",
+    subheadline: "Law firms using our AI intake and SEO system generate 3–8x more qualified consultations per month — without paralegals fielding unqualified calls all day.",
+    problemStatement: "Legal intake is broken at most firms: calls go to voicemail, web leads wait days for follow-up, and paralegals spend hours qualifying prospects who aren't a fit. AI fixes intake at the source.",
+    painPoints: [
+      "Potential clients calling after hours hit voicemail and call another firm before morning",
+      "Web inquiry forms are slow — a 5-minute response window captures 78% more consultations",
+      "Intake staff qualify leads inconsistently, passing under-qualified prospects to attorneys",
+      "No SEO strategy means competing firms capture your potential clients at the search stage",
+      "Referral dependency makes revenue unpredictable and growth impossible to plan",
+    ],
+    primaryServices: ["ai-receptionist", "seo-authority", "ai-lead-qualification"],
+    outcomes: [
+      { metric: "175%", label: "Increase in qualified consultations" },
+      { metric: "92%", label: "Leads qualified before attorney review" },
+      { metric: "Page 1", label: "Google rankings for primary keywords" },
+      { metric: "4.8x", label: "ROI within 6 months" },
+    ],
+    caseStudySlug: "case-study-law-firm-client-intake-automation",
+    caseStudyTitle: "Law Firm Client Acquisition System",
+    caseStudyBusiness: "Sterling Legal Partners — Personal injury & family law",
+    caseStudyMetric: "175% more qualified consultations with automated intake",
+    faqs: [
+      { q: "Is AI intake compliant with legal ethics rules?", a: "Yes. Our AI intake system is configured to avoid creating attorney-client relationships, uses compliant disclaimers, and routes to licensed staff for all substantive legal discussion." },
+      { q: "Can the AI qualify leads by practice area?", a: "Absolutely. We configure qualification logic for your specific practice areas — PI, family, criminal, immigration — routing leads to the right attorney or intake specialist." },
+      { q: "How do you handle multilingual potential clients?", a: "Our AI systems support Spanish and other languages depending on your market, enabling you to capture leads your competitors miss." },
+    ],
+    ctaHeadline: "See How Many Consultations Your Firm Is Missing Every Month",
+    icon: "Scale",
+    accentFrom: "from-indigo-600",
+    accentTo: "to-blue-500",
+  },
+  {
+    slug: "ai-marketing-for-real-estate",
+    name: "Real Estate",
+    tagline: "AI Lead Generation for Agents & Brokerages",
+    headline: "Generate 45+ Qualified Buyer & Seller Leads Per Month with AI",
+    subheadline: "Real estate agents and brokerages using our AI lead qualification system spend more time closing and less time chasing tire-kickers — with a guaranteed pipeline of motivated buyers and sellers.",
+    problemStatement: "Real estate lead generation is expensive and inefficient: most leads are unqualified, agents waste hours on cold follow-up, and no system separates motivated buyers from casual browsers. AI qualification changes the math.",
+    painPoints: [
+      "Paying for Zillow or Realtor.com leads that are 12 months from buying — if ever",
+      "No qualification system — agents call every lead equally and burn out on unqualified contacts",
+      "Slow follow-up loses leads to agents who respond in minutes instead of hours",
+      "No automated nurture system for leads who are 60–180 days from transacting",
+      "Google Ads clicks go to a generic site that doesn't capture or qualify visitors",
+    ],
+    primaryServices: ["ai-lead-qualification", "google-ads", "ai-follow-up"],
+    outcomes: [
+      { metric: "45+", label: "Qualified leads per month" },
+      { metric: "68%", label: "Lead-to-appointment conversion" },
+      { metric: "3.1x", label: "Google Ads ROAS" },
+      { metric: "87%", label: "Automated follow-up open rate" },
+    ],
+    caseStudySlug: "case-study-real-estate-ai-lead-generation",
+    caseStudyTitle: "Real Estate Lead Machine",
+    caseStudyBusiness: "Metro Realty Group — 12-agent residential brokerage",
+    caseStudyMetric: "45+ qualified buyer leads per month with AI qualification",
+    faqs: [
+      { q: "How do you separate motivated buyers from casual browsers?", a: "Our AI qualification system scores leads across 14 behavioral and demographic signals — timeline, pre-approval status, search depth, engagement — and only routes leads meeting your threshold to agents." },
+      { q: "Can you integrate with our CRM like Follow Up Boss or LionDesk?", a: "Yes. We integrate with Follow Up Boss, LionDesk, BoomTown, kvCORE, and most major real estate CRMs to ensure leads flow directly into your existing system." },
+      { q: "Do you generate buyer leads, seller leads, or both?", a: "Both. We build separate campaigns targeting buyers at different funnel stages and seller leads through home valuation landing pages — each with tailored qualification flows." },
+    ],
+    ctaHeadline: "Get a Free Real Estate Lead Generation Audit",
+    icon: "Building2",
+    accentFrom: "from-emerald-600",
+    accentTo: "to-teal-500",
+  },
+  {
+    slug: "ai-marketing-for-medical-clinics",
+    name: "Medical Clinics",
+    tagline: "Patient Acquisition System for Healthcare",
+    headline: "Grow Your Clinic's Patient Volume by 125% Without Increasing Marketing Spend",
+    subheadline: "Medical clinics using our AI receptionist and targeted Google Ads system fill their schedules with high-value new patients — while maintaining full HIPAA compliance at every touchpoint.",
+    problemStatement: "Medical clinics leave growth on the table every day: missed calls convert to missed appointments, web inquiries wait hours for a response, and Google Ads target the wrong patient demographics. AI and precision targeting fix each gap.",
+    painPoints: [
+      "Front desk staff miss 30–40% of new patient calls during patient care hours",
+      "Web form inquiries for high-value services like elective procedures sit uncontacted for hours",
+      "Google Ads are poorly targeted — attracting patients outside your insurance network or geography",
+      "No recall system reactivates existing patients for preventive care, follow-ups, or elective services",
+      "Competitor clinics answer faster, book online more easily, and capture the patient first",
+    ],
+    primaryServices: ["ai-receptionist", "google-ads", "ai-appointment-booking"],
+    outcomes: [
+      { metric: "125%", label: "New patient volume growth" },
+      { metric: "4.2x", label: "Google Ads return on spend" },
+      { metric: "Zero", label: "Missed new patient calls" },
+      { metric: "91%", label: "Appointment show rate with AI reminders" },
+    ],
+    caseStudySlug: "case-study-medical-clinic-patient-acquisition",
+    caseStudyTitle: "Multi-Specialty Clinic Patient Growth Engine",
+    caseStudyBusiness: "Meridian Health Partners — Multi-specialty outpatient clinic",
+    caseStudyMetric: "125% new patient volume growth with AI receptionist and Google Ads",
+    faqs: [
+      { q: "How does AI handle HIPAA compliance for patient inquiries?", a: "Our AI systems are configured to meet HIPAA standards — no PHI is transmitted through non-compliant channels, consent flows are built in, and all data handling follows healthcare privacy requirements." },
+      { q: "Can AI handle insurance verification questions?", a: "Yes. The AI can answer common insurance network questions, collect insurance information for staff review, and route complex coverage questions to your billing team." },
+      { q: "Will this work for specialty clinics like dermatology or orthopedics?", a: "Absolutely. We configure the AI and ad campaigns specifically for your specialty — targeting procedures, patient demographics, and search intent relevant to your services." },
+    ],
+    ctaHeadline: "Find Out How Many New Patients Your Clinic Is Missing",
+    icon: "Heart",
+    accentFrom: "from-rose-600",
+    accentTo: "to-pink-500",
+  },
+  {
+    slug: "ai-marketing-for-ecommerce",
+    name: "E-Commerce Brands",
+    tagline: "AI Revenue System for Online Stores",
+    headline: "Recover Abandoned Carts and Scale E-Commerce Revenue with AI",
+    subheadline: "E-commerce brands using our AI automation and Meta Ads system recover 60%+ of abandoned carts and achieve 80–180% revenue growth — without increasing their ad budget linearly.",
+    problemStatement: "E-commerce brands lose 70–80% of potential revenue to cart abandonment, poor retargeting, and manual follow-up sequences that fire too late or not at all. AI automation and intelligent ad systems close the gap.",
+    painPoints: [
+      "Shopping cart abandonment averages 70% — most stores recover less than 5% of it",
+      "Meta Ads campaigns target broad audiences instead of high-intent purchase signals",
+      "Email sequences fire on fixed schedules instead of responding to individual buyer behavior",
+      "No CRM integration means marketing data is siloed from sales data and customer LTV is invisible",
+      "Retargeting burns budget on cold audiences instead of prioritizing warm, high-intent visitors",
+    ],
+    primaryServices: ["meta-ads", "crm-automation", "ai-email-automation"],
+    outcomes: [
+      { metric: "62%", label: "Cart recovery rate" },
+      { metric: "3.2x", label: "Meta Ads ROAS" },
+      { metric: "180%", label: "Revenue growth in 6 months" },
+      { metric: "5x", label: "Higher email response vs manual campaigns" },
+    ],
+    caseStudySlug: "case-study-ecommerce-cart-recovery-scaling",
+    caseStudyTitle: "E-Commerce Brand Scaling System",
+    caseStudyBusiness: "LuxeHome Essentials — Direct-to-consumer home goods brand",
+    caseStudyMetric: "62% cart recovery rate and 3.2x ROAS",
+    faqs: [
+      { q: "Which e-commerce platforms do you work with?", a: "We integrate with Shopify, WooCommerce, BigCommerce, Magento, and custom platforms — connecting your store data to Meta Ads, email automation, and CRM for unified attribution." },
+      { q: "How does AI improve cart abandonment recovery?", a: "Instead of fixed-timer emails, our AI triggers recovery sequences based on individual abandonment behavior — adjusting timing, offer, and channel (email vs SMS) dynamically to maximize conversion." },
+      { q: "Can you help with Amazon or just our direct store?", a: "We focus on direct-to-consumer growth — driving traffic and revenue to your owned store — though we can advise on cross-channel strategy including Amazon brand presence." },
+    ],
+    ctaHeadline: "Get a Free E-Commerce Revenue Audit",
+    icon: "ShoppingCart",
+    accentFrom: "from-violet-600",
+    accentTo: "to-purple-500",
+  },
+];
