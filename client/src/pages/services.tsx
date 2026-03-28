@@ -14,8 +14,7 @@ import {
   Monitor, Layout, Settings, Plug, PieChart, Code, Share2,
 } from "lucide-react";
 
-type IconComponent = (props: { className?: string }) => JSX.Element;
-const iconMap: Record<string, IconComponent> = {
+const iconMap: Record<string, any> = {
   Bot, Target, Globe, Zap, Phone, Headphones, UserCheck, CalendarCheck,
   MailCheck, TrendingUp, MessageSquare, Mail, Smartphone, Database,
   Workflow, Search, Megaphone, BarChart3, MapPin, Filter, MousePointer,
@@ -24,10 +23,7 @@ const iconMap: Record<string, IconComponent> = {
 };
 
 const POPULAR_SLUGS = new Set([
-  "ai-calling-agent", "ai-chatbot", "crm-automation",
-  "google-ads", "seo-authority", "local-seo",
-  "social-media-marketing", "content-writing",
-  "website-development", "marketing-automation-setup",
+  "ai-calling-agent", "google-ads", "seo-authority",
 ]);
 
 const SERVICE_CLUSTERS = [
@@ -205,7 +201,7 @@ export default function Services() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {clusterServices.map((service, i) => {
-                  const Icon = (iconMap[service.icon] as IconComponent) || Zap;
+                  const Icon = iconMap[service.icon] || Zap;
                   const isPopular = POPULAR_SLUGS.has(service.slug);
                   return (
                     <Link key={service.slug} href={`/${service.slug}`}>

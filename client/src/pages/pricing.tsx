@@ -281,58 +281,111 @@ export default function Pricing() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-20 lg:py-24">
+      <section className="py-16 sm:py-20 lg:py-24" data-testid="pricing-comparison-table">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
-            {PRICING_TIERS.map((tier, i) => (
-              <motion.div
-                key={tier.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="h-full"
-              >
-                <Card className={`p-6 sm:p-8 h-full relative flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${tier.popular ? "border-primary ring-1 ring-primary/20" : ""}`} data-testid={`pricing-card-${tier.name.toLowerCase()}`}>
-                  {tier.discount && (
-                    <div className="absolute -top-3 right-4">
-                      <Badge data-testid={`badge-discount-${tier.name.toLowerCase()}`}>{tier.discount}</Badge>
-                    </div>
-                  )}
-                  {tier.popular && (
-                    <div className="absolute -top-3 left-4">
-                      <Badge variant="secondary">Most Popular</Badge>
-                    </div>
-                  )}
-                  <div className="text-center mb-6">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-1">{tier.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{tier.description}</p>
-                    <div className="flex items-baseline justify-center gap-1 mb-1">
-                      <span className="text-3xl sm:text-4xl font-bold text-foreground">{tier.price}</span>
-                      <span className="text-sm text-muted-foreground">{tier.period}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Month-to-month, cancel anytime</p>
-                  </div>
-                  <ul className="space-y-3 flex-1">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span className="text-muted-foreground">{f}</span>
-                      </li>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px]">
+              <thead>
+                <tr>
+                  <th className="w-1/4 p-4 text-left align-bottom">
+                    <span className="text-sm font-medium text-muted-foreground">Features Included</span>
+                  </th>
+                  {PRICING_TIERS.map((tier) => (
+                    <th key={tier.name} className="w-1/4 p-4 text-center align-bottom" data-testid={`pricing-col-${tier.name.toLowerCase()}`}>
+                      <div className={`rounded-xl p-5 sm:p-6 relative ${tier.popular ? "bg-gradient-to-b from-blue-600 to-purple-700 text-white shadow-lg" : "bg-gray-50/80 border border-border"}`}>
+                        {tier.popular && (
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                            <Badge className="bg-white text-blue-700 border-0 shadow-sm text-xs font-semibold px-3">Most Popular</Badge>
+                          </div>
+                        )}
+                        {tier.discount && (
+                          <div className={`text-xs font-semibold mb-1 ${tier.popular ? "text-white/80" : "text-blue-600"}`}>{tier.discount}</div>
+                        )}
+                        <div className={`text-base font-bold mb-1 ${tier.popular ? "text-white" : "text-foreground"}`}>{tier.name}</div>
+                        <div className={`text-xs mb-3 leading-relaxed ${tier.popular ? "text-white/75" : "text-muted-foreground"}`}>{tier.description}</div>
+                        <div className={`text-3xl font-extrabold mb-0.5 ${tier.popular ? "text-white" : "text-foreground"}`}>{tier.price}</div>
+                        <div className={`text-xs mb-4 ${tier.popular ? "text-white/70" : "text-muted-foreground"}`}>{tier.period} · no lock-in</div>
+                        <Link href="/book-demo">
+                          <Button
+                            size="sm"
+                            className={`w-full text-xs ${tier.popular ? "bg-white text-blue-700 hover:bg-white/90" : ""}`}
+                            variant={tier.popular ? "secondary" : "outline"}
+                            data-testid={`button-pricing-${tier.name.toLowerCase()}`}
+                          >
+                            {tier.cta} <ArrowRight className="w-3 h-3 ml-1" />
+                          </Button>
+                        </Link>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { label: "AI Chatbot", values: [true, true, true] },
+                  { label: "CRM Setup & Automation", values: [true, true, true] },
+                  { label: "Email Automation", values: ["1,000 contacts", "Unlimited", "Unlimited"] },
+                  { label: "SMS Automation", values: ["500 contacts", "Unlimited", "Unlimited"] },
+                  { label: "Landing Pages", values: ["1 page", "3 funnels", "Unlimited"] },
+                  { label: "AI Calling Agent", values: [false, true, true] },
+                  { label: "AI Lead Qualification", values: [false, true, true] },
+                  { label: "AI Appointment Booking", values: [false, true, true] },
+                  { label: "Google Ads Management", values: [false, true, true] },
+                  { label: "Meta Ads Management", values: [false, true, true] },
+                  { label: "SEO Growth System", values: ["Audit only", "Full system", "Authority system"] },
+                  { label: "Social Media Management", values: [false, "2 platforms", "All platforms"] },
+                  { label: "Content Writing", values: [false, true, true] },
+                  { label: "AI Receptionist 24/7", values: [false, false, true] },
+                  { label: "AI Sales Assistant", values: [false, false, true] },
+                  { label: "Advanced Analytics Dashboard", values: [false, false, true] },
+                  { label: "SaaS Integrations", values: [false, false, true] },
+                  { label: "Dedicated Account Manager", values: [false, "Shared", "Dedicated"] },
+                  { label: "Strategy Calls", values: ["Monthly", "Weekly", "Weekly"] },
+                  { label: "Reporting", values: ["Monthly", "Weekly", "Daily"] },
+                  { label: "Support Level", values: ["Email", "Priority", "Dedicated"] },
+                ].map((row, ri) => (
+                  <tr key={row.label} className={`border-t border-border/40 ${ri % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`} data-testid={`comparison-row-${ri}`}>
+                    <td className="p-3 sm:p-4 text-sm font-medium text-foreground">{row.label}</td>
+                    {row.values.map((val, vi) => (
+                      <td key={vi} className={`p-3 sm:p-4 text-center text-sm ${PRICING_TIERS[vi].popular ? "bg-blue-50/40" : ""}`}>
+                        {val === true ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
+                        ) : val === false ? (
+                          <span className="text-gray-300 text-lg">—</span>
+                        ) : (
+                          <span className="text-muted-foreground text-xs">{val as string}</span>
+                        )}
+                      </td>
                     ))}
-                  </ul>
-                  <Link href="/book-demo" className="block mt-6">
-                    <Button
-                      className="w-full"
-                      variant={tier.popular ? "default" : "outline"}
-                      data-testid={`button-pricing-${tier.name.toLowerCase()}`}
-                    >
-                      {tier.cta} <ArrowRight className="w-4 h-4 ml-1" />
-                    </Button>
-                  </Link>
-                </Card>
-              </motion.div>
-            ))}
+                  </tr>
+                ))}
+                <tr className="border-t border-border">
+                  <td className="p-4" />
+                  {PRICING_TIERS.map((tier) => (
+                    <td key={tier.name} className={`p-4 text-center ${tier.popular ? "bg-blue-50/40" : ""}`}>
+                      <Link href="/book-demo">
+                        <Button
+                          size="sm"
+                          className="w-full text-xs"
+                          variant={tier.popular ? "default" : "outline"}
+                          data-testid={`button-pricing-bottom-${tier.name.toLowerCase()}`}
+                        >
+                          {tier.cta} <ArrowRight className="w-3 h-3 ml-1" />
+                        </Button>
+                      </Link>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mt-10 text-xs sm:text-sm text-muted-foreground">
+            <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
+            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
+            <span className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-primary" /> No Setup Fees</span>
+            <GooglePartnerBadge variant="inline" />
           </div>
         </div>
       </section>

@@ -22,30 +22,49 @@ const CATEGORY_SERVICE_LINK: Record<string, { slug: string; label: string }> = {
   "Real Estate": { slug: "ai-lead-qualification", label: "AI Lead Qualification" },
 };
 
-const TOPIC_CLUSTERS = [
-  { label: "All Topics", value: "all" },
-  { label: "AI Automation", value: "AI Automation" },
-  { label: "Lead Generation", value: "Lead Generation" },
-  { label: "Sales Automation", value: "Sales Automation" },
-  { label: "Local Marketing", value: "Local Marketing" },
-  { label: "Strategy", value: "Strategy" },
-  { label: "Social Media", value: "Social Media" },
-  { label: "Web Development", value: "Web Development" },
-  { label: "Content Marketing", value: "Content Marketing" },
-  { label: "E-Commerce", value: "E-Commerce" },
+const BLOG_CLUSTERS = [
+  {
+    label: "AI & Automation",
+    value: "AI Automation",
+    desc: "How AI-powered systems capture, qualify, and convert leads automatically.",
+    serviceSlug: "ai-calling-agent",
+    serviceLabel: "AI Calling Agent",
+    categories: ["AI Automation", "Sales Automation"],
+  },
+  {
+    label: "SEO & Content",
+    value: "SEO & Content",
+    desc: "Authority-building SEO and content strategies that generate organic traffic and trust.",
+    serviceSlug: "seo-authority",
+    serviceLabel: "SEO Authority",
+    categories: ["Content Marketing", "Local Marketing"],
+  },
+  {
+    label: "Paid Ads & Growth",
+    value: "Paid Ads & Growth",
+    desc: "Data-driven advertising and lead generation tactics to scale faster.",
+    serviceSlug: "google-ads",
+    serviceLabel: "Google Ads",
+    categories: ["Lead Generation", "E-Commerce"],
+  },
+  {
+    label: "Growth Strategy",
+    value: "Growth Strategy",
+    desc: "Agency frameworks and blueprints used by our top-performing clients.",
+    serviceSlug: "conversion-funnels",
+    serviceLabel: "Conversion Funnels",
+    categories: ["Strategy", "Social Media", "Web Development"],
+  },
 ];
 
-const CLUSTER_DESCRIPTIONS: Record<string, string> = {
-  "AI Automation": "How AI-powered systems capture, qualify, and convert leads automatically.",
-  "Lead Generation": "Proven tactics to generate high-intent, ready-to-buy inquiries at scale.",
-  "Sales Automation": "Close more deals faster with automated follow-up and pipeline management.",
-  "Local Marketing": "Dominate your local market with SEO, Google Business, and geo-targeted ads.",
-  "Strategy": "Agency frameworks and growth blueprints used by our top-performing clients.",
-  "Social Media": "Platform-specific tactics that build brand authority and drive inbound leads.",
-  "Web Development": "High-converting websites and landing pages designed for maximum revenue.",
-  "Content Marketing": "Authority-building content strategies that generate organic traffic and trust.",
-  "E-Commerce": "AI and marketing systems built specifically for online retail growth.",
-};
+const TOPIC_CLUSTERS = [
+  { label: "All Topics", value: "all" },
+  ...BLOG_CLUSTERS.map(({ label, value }) => ({ label, value })),
+];
+
+const CLUSTER_DESCRIPTIONS: Record<string, string> = Object.fromEntries(
+  BLOG_CLUSTERS.map((c) => [c.value, c.desc])
+);
 
 export default function Blog() {
   const [activeCluster, setActiveCluster] = useState("all");
@@ -53,10 +72,19 @@ export default function Blog() {
 
   const filteredPosts = activeCluster === "all"
     ? BLOG_POSTS_FULL
-    : BLOG_POSTS_FULL.filter((p) => p.category === activeCluster);
+    : BLOG_POSTS_FULL.filter((p) =>
+        BLOG_CLUSTERS.find((c) => c.value === activeCluster)?.categories.includes(p.category) ?? false
+      );
 
   const featuredPost = filteredPosts[0];
   const remainingPosts = filteredPosts.slice(1);
+
+  const clusterGroups = activeCluster === "all"
+    ? BLOG_CLUSTERS.map((cluster) => ({
+        cluster,
+        posts: BLOG_POSTS_FULL.filter((p) => cluster.categories.includes(p.category)),
+      })).filter((g) => g.posts.length > 0)
+    : null;
 
   return (
     <div className="overflow-x-hidden">
@@ -121,133 +149,149 @@ export default function Blog() {
             )}
           </div>
 
-          {featuredPost && (
-            <Link href={`/${featuredPost.slug}`}>
-              <motion.div
-                key={featuredPost.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-12 cursor-pointer"
-              >
-                <Card className="overflow-hidden hover-elevate" data-testid="card-featured-post">
-                  <div className="grid grid-cols-1 lg:grid-cols-2">
-                    <img
-                      src={featuredPost.image}
-                      alt={featuredPost.imageAlt}
-                      className="w-full h-[200px] sm:h-[250px] lg:h-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
-                      <div className="flex items-center gap-2 mb-3 flex-wrap">
-                        <Badge variant="secondary" className="self-start">{featuredPost.category}</Badge>
-                        {CATEGORY_SERVICE_LINK[featuredPost.category] && (
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              navigate(`/${CATEGORY_SERVICE_LINK[featuredPost.category].slug}`);
-                            }}
-                            className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
-                            data-testid="badge-service-featured"
-                          >
-                            <Zap className="w-2.5 h-2.5 text-blue-500" />
-                            {CATEGORY_SERVICE_LINK[featuredPost.category].label}
-                          </button>
-                        )}
-                      </div>
-                      <h2 className="font-bold text-foreground mb-4 leading-tight" style={{ fontSize: "clamp(1.125rem, 3vw, 1.875rem)" }}>
-                        {featuredPost.title}
-                      </h2>
-                      <p className="text-sm sm:text-base text-muted-foreground mb-5 leading-relaxed">
-                        {featuredPost.excerpt}
-                      </p>
-                      <div className="flex items-center gap-4 text-xs sm:text-sm text-muted-foreground mb-5">
-                        <span className="flex items-center gap-1.5">
-                          <Calendar className="w-4 h-4" /> {featuredPost.date}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Clock className="w-4 h-4" /> {featuredPost.readTime}
-                        </span>
-                      </div>
-                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600">
-                        Read Article <ArrowRight className="w-4 h-4" />
-                      </span>
+          {clusterGroups ? (
+            <div className="space-y-16" data-testid="cluster-grouped-sections">
+              {clusterGroups.map(({ cluster, posts }) => (
+                <div key={cluster.value} data-testid={`cluster-section-${cluster.value.toLowerCase().replace(/\s+/g, "-")}`}>
+                  <div className="flex items-center justify-between gap-4 mb-6">
+                    <div>
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground">{cluster.label}</h2>
+                      <p className="text-sm text-muted-foreground mt-0.5">{cluster.desc}</p>
                     </div>
+                    <button
+                      onClick={() => setActiveCluster(cluster.value)}
+                      className="flex items-center gap-1 text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 whitespace-nowrap shrink-0"
+                      data-testid={`link-view-cluster-${cluster.value.toLowerCase().replace(/\s+/g, "-")}`}
+                    >
+                      View all <ArrowRight className="w-3 h-3" />
+                    </button>
                   </div>
-                </Card>
-              </motion.div>
-            </Link>
-          )}
-
-          {remainingPosts.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {posts.slice(0, 3).map((post, i) => (
+                      <Link key={post.id} href={`/${post.slug}`}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.06 }}
+                          className="h-full"
+                        >
+                          <Card className="overflow-hidden h-full flex flex-col hover-elevate cursor-pointer" data-testid={`card-blog-${post.id}`}>
+                            <img src={post.image} alt={post.imageAlt} className="w-full h-44 object-cover" loading="lazy" />
+                            <div className="p-4 sm:p-5 flex flex-col flex-1">
+                              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                                <Badge variant="secondary" className="text-xs">{post.category}</Badge>
+                                <button
+                                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/${cluster.serviceSlug}`); }}
+                                  className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
+                                  data-testid={`badge-service-${post.id}`}
+                                >
+                                  <Zap className="w-2.5 h-2.5 text-blue-500" />
+                                  {cluster.serviceLabel}
+                                </button>
+                              </div>
+                              <h3 className="text-sm sm:text-base font-semibold text-foreground mb-2 leading-snug line-clamp-2 flex-1">{post.title}</h3>
+                              <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">{post.excerpt}</p>
+                              <div className="flex items-center justify-between gap-2 mt-auto pt-4 border-t border-border/50">
+                                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {post.date}</span>
+                                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
+                                </div>
+                                <span className="text-xs font-medium text-blue-600 flex items-center gap-1">Read <ArrowRight className="w-3 h-3" /></span>
+                              </div>
+                            </div>
+                          </Card>
+                        </motion.div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
             <motion.div
               key={activeCluster}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.25 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {remainingPosts.map((post, i) => (
-                <Link key={post.id} href={`/${post.slug}`}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    className="h-full"
-                  >
-                    <Card className="overflow-hidden h-full flex flex-col hover-elevate cursor-pointer" data-testid={`card-blog-${post.id}`}>
-                      <img
-                        src={post.image}
-                        alt={post.imageAlt}
-                        className="w-full h-48 object-cover"
-                        loading="lazy"
-                      />
-                      <div className="p-4 sm:p-5 flex flex-col flex-1">
-                        <div className="flex items-center gap-2 mb-3 flex-wrap">
-                          <Badge variant="secondary" className="text-xs">{post.category}</Badge>
-                          {CATEGORY_SERVICE_LINK[post.category] && (
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                navigate(`/${CATEGORY_SERVICE_LINK[post.category].slug}`);
-                              }}
-                              className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
-                              data-testid={`badge-service-${post.id}`}
-                            >
-                              <Zap className="w-2.5 h-2.5 text-blue-500" />
-                              {CATEGORY_SERVICE_LINK[post.category].label}
-                            </button>
-                          )}
-                        </div>
-                        <h3 className="text-sm sm:text-base font-semibold text-foreground mb-2 leading-snug line-clamp-2 flex-1">{post.title}</h3>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">{post.excerpt}</p>
-                        <div className="flex items-center justify-between gap-2 mt-auto pt-4 border-t border-border/50">
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-3 h-3" /> {post.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" /> {post.readTime}
-                            </span>
+              {featuredPost && (
+                <Link href={`/${featuredPost.slug}`}>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10 cursor-pointer">
+                    <Card className="overflow-hidden hover-elevate" data-testid="card-featured-post">
+                      <div className="grid grid-cols-1 lg:grid-cols-2">
+                        <img src={featuredPost.image} alt={featuredPost.imageAlt} className="w-full h-[200px] sm:h-[250px] lg:h-full object-cover" loading="lazy" />
+                        <div className="p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
+                          <div className="flex items-center gap-2 mb-3 flex-wrap">
+                            <Badge variant="secondary" className="self-start">{featuredPost.category}</Badge>
+                            {CATEGORY_SERVICE_LINK[featuredPost.category] && (
+                              <button
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/${CATEGORY_SERVICE_LINK[featuredPost.category].slug}`); }}
+                                className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
+                                data-testid="badge-service-featured"
+                              >
+                                <Zap className="w-2.5 h-2.5 text-blue-500" />
+                                {CATEGORY_SERVICE_LINK[featuredPost.category].label}
+                              </button>
+                            )}
                           </div>
-                          <span className="text-xs sm:text-sm font-medium text-blue-600 flex items-center gap-1">
-                            Read <ArrowRight className="w-3 h-3" />
-                          </span>
+                          <h2 className="font-bold text-foreground mb-4 leading-tight" style={{ fontSize: "clamp(1.125rem, 3vw, 1.875rem)" }}>{featuredPost.title}</h2>
+                          <p className="text-sm sm:text-base text-muted-foreground mb-5 leading-relaxed">{featuredPost.excerpt}</p>
+                          <div className="flex items-center gap-4 text-xs sm:text-sm text-muted-foreground mb-5">
+                            <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {featuredPost.date}</span>
+                            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {featuredPost.readTime}</span>
+                          </div>
+                          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600">Read Article <ArrowRight className="w-4 h-4" /></span>
                         </div>
                       </div>
                     </Card>
                   </motion.div>
                 </Link>
-              ))}
+              )}
+              {remainingPosts.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {remainingPosts.map((post, i) => (
+                    <Link key={post.id} href={`/${post.slug}`}>
+                      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="h-full">
+                        <Card className="overflow-hidden h-full flex flex-col hover-elevate cursor-pointer" data-testid={`card-blog-${post.id}`}>
+                          <img src={post.image} alt={post.imageAlt} className="w-full h-48 object-cover" loading="lazy" />
+                          <div className="p-4 sm:p-5 flex flex-col flex-1">
+                            <div className="flex items-center gap-2 mb-3 flex-wrap">
+                              <Badge variant="secondary" className="text-xs">{post.category}</Badge>
+                              {CATEGORY_SERVICE_LINK[post.category] && (
+                                <button
+                                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/${CATEGORY_SERVICE_LINK[post.category].slug}`); }}
+                                  className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
+                                  data-testid={`badge-service-${post.id}`}
+                                >
+                                  <Zap className="w-2.5 h-2.5 text-blue-500" />
+                                  {CATEGORY_SERVICE_LINK[post.category].label}
+                                </button>
+                              )}
+                            </div>
+                            <h3 className="text-sm sm:text-base font-semibold text-foreground mb-2 leading-snug line-clamp-2 flex-1">{post.title}</h3>
+                            <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">{post.excerpt}</p>
+                            <div className="flex items-center justify-between gap-2 mt-auto pt-4 border-t border-border/50">
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {post.date}</span>
+                                <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
+                              </div>
+                              <span className="text-xs sm:text-sm font-medium text-blue-600 flex items-center gap-1">Read <ArrowRight className="w-3 h-3" /></span>
+                            </div>
+                          </div>
+                        </Card>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 text-muted-foreground" data-testid="empty-cluster">
+                  <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-30" />
+                  <p className="text-sm">No articles in this topic yet. Check back soon.</p>
+                </div>
+              )}
             </motion.div>
-          ) : filteredPosts.length === 0 ? (
-            <div className="text-center py-16 text-muted-foreground" data-testid="empty-cluster">
-              <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-30" />
-              <p className="text-sm">No articles in this topic yet. Check back soon.</p>
-            </div>
-          ) : null}
+          )}
         </div>
       </section>
 
