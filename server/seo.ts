@@ -157,41 +157,6 @@ const STATIC_PAGES: Record<string, SEOMeta> = {
   "/analytics-dashboard": { title: "Marketing Analytics Dashboard | Real-Time Reporting | Infinite Rankers", description: "Custom marketing analytics dashboards showing real-time performance across all channels. Data-driven decisions.", canonical: `${BASE}/analytics-dashboard` },
   "/branding-design": { title: "Branding & Design Services | Visual Identity | Infinite Rankers", description: "Complete branding and design services. Logo design, brand guidelines, marketing materials for USA businesses.", canonical: `${BASE}/branding-design` },
 
-  // Landing pages with explicit SEO
-  "/digital-marketing-services": { title: "Digital Marketing Services USA | Complete Growth Package | Infinite Rankers", description: "Complete digital marketing services: SEO, Google Ads, AI automation, social media. 100+ services for USA businesses. Free consultation.", canonical: `${BASE}/digital-marketing-services` },
-  "/digital-marketing-company": { title: "Top Digital Marketing Company USA | Infinite Rankers", description: "Award-winning digital marketing company delivering measurable revenue growth. AI-powered strategies for USA businesses.", canonical: `${BASE}/digital-marketing-company` },
-  "/digital-marketing-seo": { title: "Digital Marketing & SEO Services USA | Infinite Rankers", description: "Combined digital marketing and SEO services that drive organic traffic and qualified leads. AI-enhanced strategies.", canonical: `${BASE}/digital-marketing-seo` },
-  "/seo-services": { title: "SEO Services USA | Rank #1 on Google | Infinite Rankers", description: "Professional SEO services delivering page 1 Google rankings. Technical SEO, content, link building. Free SEO audit.", canonical: `${BASE}/seo-services` },
-  "/seo-agency-near-me": { title: "SEO Agency Near Me | Local SEO Experts | Infinite Rankers", description: "Find a trusted SEO agency near you. Infinite Rankers serves businesses across all USA cities. Free local SEO audit.", canonical: `${BASE}/seo-agency-near-me` },
-  "/seo-specialist": { title: "SEO Specialist USA | Expert SEO Consultant | Infinite Rankers", description: "Certified SEO specialists delivering measurable rankings and traffic growth. 500+ businesses ranked on page 1.", canonical: `${BASE}/seo-specialist` },
-  "/seo-keywords": { title: "SEO Keyword Research Services | High-Value Keywords | Infinite Rankers", description: "Professional keyword research finding high-volume, low-competition opportunities. AI-powered keyword strategy.", canonical: `${BASE}/seo-keywords` },
-  "/google-seo": { title: "Google SEO Services USA | Rank Higher on Google | Infinite Rankers", description: "Expert Google SEO services delivering page 1 rankings. Technical optimization, content strategy, link building.", canonical: `${BASE}/google-seo` },
-  "/search-engine-marketing": { title: "Search Engine Marketing (SEM) Services USA | Infinite Rankers", description: "Complete SEM services combining SEO and Google Ads for maximum search visibility and qualified leads.", canonical: `${BASE}/search-engine-marketing` },
-  "/email-marketing-services": { title: "Email Marketing Services USA | 40% Open Rates | Infinite Rankers", description: "AI-powered email marketing delivering 40%+ open rates. Automated sequences, list building, campaign management.", canonical: `${BASE}/email-marketing-services` },
-  "/content-marketing-services": { title: "Content Marketing Services USA | Rank & Convert | Infinite Rankers", description: "Strategic content marketing that ranks on Google and converts visitors into leads. Blog posts, guides, case studies.", canonical: `${BASE}/content-marketing-services` },
-  "/ppc-management-services": { title: "PPC Management Services USA | Google & Meta Ads | Infinite Rankers", description: "Expert PPC management delivering 4-6x ROAS. Google Ads, Meta Ads, display advertising. Free PPC audit.", canonical: `${BASE}/ppc-management-services` },
-  "/online-marketing-company": { title: "Online Marketing Company USA | Infinite Rankers", description: "Full-service online marketing company delivering measurable growth. SEO, PPC, social media, AI automation.", canonical: `${BASE}/online-marketing-company` },
-  "/marketing-agency-near-me": { title: "Marketing Agency Near Me | Top Rated USA Agency | Infinite Rankers", description: "Find a top-rated marketing agency near you. Infinite Rankers serves all USA cities with proven digital marketing.", canonical: `${BASE}/marketing-agency-near-me` },
-  "/digital-marketing-firms": { title: "Top Digital Marketing Firms USA | Infinite Rankers", description: "One of America's top digital marketing firms. AI-powered strategies, transparent reporting, measurable results.", canonical: `${BASE}/digital-marketing-firms` },
-  "/website-ranking": { title: "Website Ranking Services | Rank #1 on Google | Infinite Rankers", description: "Professional website ranking services using AI-enhanced SEO. Technical optimization, content, backlinks.", canonical: `${BASE}/website-ranking` },
-  "/google-ads-roi-local-business": { title: "Google Ads ROI for Local Business | 4-6x ROAS | Infinite Rankers", description: "Data-driven Google Ads for local businesses. Average 4-6x ROAS. Certified Google Partner. Free audit.", canonical: `${BASE}/google-ads-roi-local-business` },
-  "/crm-automation-sales-pipeline": { title: "CRM Automation & Sales Pipeline | Infinite Rankers", description: "Automate your entire sales pipeline. CRM setup, lead routing, follow-up sequences. GoHighLevel, HubSpot experts.", canonical: `${BASE}/crm-automation-sales-pipeline` },
-  "/b2b-lead-generation": { title: "B2B Lead Generation Services USA | Infinite Rankers", description: "AI-powered B2B lead generation delivering qualified decision-maker leads. Multi-channel outreach and automation.", canonical: `${BASE}/b2b-lead-generation` },
-  "/ppc-agency": { title: "PPC Agency USA | Google & Meta Ads Experts | Infinite Rankers", description: "Top-rated PPC agency delivering measurable ROI. Certified Google Partner. Average 4-6x ROAS for clients.", canonical: `${BASE}/ppc-agency` },
-  "/branding-agency": { title: "Branding Agency USA | Brand Identity & Design | Infinite Rankers", description: "Professional branding services for USA businesses. Logo, brand identity, guidelines, and digital presence.", canonical: `${BASE}/branding-agency` },
-  "/ai-marketing-automation-usa": { title: "AI Marketing Automation USA | Save 20hrs/Week | Infinite Rankers", description: "Complete AI marketing automation for USA businesses. Email, social, ads, CRM on autopilot.", canonical: `${BASE}/ai-marketing-automation-usa` },
-  "/paid-media-agency": { title: "Paid Media Agency USA | Google, Meta & More | Infinite Rankers", description: "Full-service paid media agency managing Google Ads, Meta Ads, LinkedIn, TikTok for USA businesses.", canonical: `${BASE}/paid-media-agency` },
-
-  // Blog posts as explicit static pages
-  "/content-marketing-seo-guide": { title: "Content Marketing SEO Guide 2026 | Infinite Rankers", description: "Complete guide to content marketing and SEO strategy for USA businesses. Rank higher and convert more visitors.", canonical: `${BASE}/content-marketing-seo-guide` },
-  "/ecommerce-growth-strategies": { title: "E-Commerce Growth Strategies | 3x Revenue | Infinite Rankers", description: "Proven e-commerce growth strategies: SEO, Google Shopping, email automation, CRO. Average 3x revenue growth.", canonical: `${BASE}/ecommerce-growth-strategies` },
-  "/ai-follow-up-sequences": { title: "AI Follow-Up Sequences | Never Lose a Lead | Infinite Rankers", description: "Automated AI follow-up sequences that convert cold leads into paying clients via email, SMS, and voice.", canonical: `${BASE}/ai-follow-up-sequences` },
-  "/ai-revenue-growth-ecommerce": { title: "AI Revenue Growth for E-Commerce | 3x Sales | Infinite Rankers", description: "AI-powered e-commerce growth: automated email sequences, Google Shopping optimization, cart recovery.", canonical: `${BASE}/ai-revenue-growth-ecommerce` },
-  "/lead-generation-strategies-2025": { title: "Lead Generation Strategies 2025 | AI-Powered Growth | Infinite Rankers", description: "Complete lead generation strategies for 2025. AI chatbots, calling agents, SEO, PPC, social media.", canonical: `${BASE}/lead-generation-strategies-2025` },
-  "/ai-automation-revenue-growth-2025": { title: "AI Automation Revenue Growth 2025 | 10x Results | Infinite Rankers", description: "How AI automation is driving 10x revenue growth for USA businesses in 2025. Case studies and strategies.", canonical: `${BASE}/ai-automation-revenue-growth-2025` },
-  "/brand-identity-business-growth": { title: "Brand Identity for Business Growth | Infinite Rankers", description: "How strong brand identity drives business growth. Complete branding and digital marketing for USA businesses.", canonical: `${BASE}/brand-identity-business-growth` },
-  "/social-media-marketing-strategy-2025": { title: "Social Media Marketing Strategy 2025 | Infinite Rankers", description: "Complete social media strategy for 2025. Platform selection, content planning, paid social, ROI measurement.", canonical: `${BASE}/social-media-marketing-strategy-2025` },
-  "/ai-chatbot-lead-conversion": { title: "AI Chatbot Lead Conversion | 4x Better Than Forms | Infinite Rankers", description: "AI chatbots that convert website visitors into leads 4x better than contact forms. 24/7 lead capture.", canonical: `${BASE}/ai-chatbot-lead-conversion` },
 };
 
 export function getSEOForRoute(url: string): SEOMeta | null {
@@ -606,7 +571,17 @@ export function injectSEO(html: string, url: string): string {
     extraTags.push(ogUrlTag);
   }
 
-  const noindexPaths = ["/crawl-hub"];
+  const noindexPaths = [
+    "/crawl-hub",
+    "/ai-automation-new-york",
+    "/ai-automation-los-angeles",
+    "/ai-automation-chicago",
+    "/ai-revenue-growth-real-estate",
+    "/ai-revenue-growth-healthcare",
+    "/ai-revenue-growth-law-firms",
+    "/ai-revenue-growth-ecommerce",
+    "/ai-revenue-growth-restaurants",
+  ];
   const urlPath = url.split("?")[0];
   const isAdminPath = urlPath.startsWith("/admin");
   if (noindexPaths.includes(urlPath) || isAdminPath) {

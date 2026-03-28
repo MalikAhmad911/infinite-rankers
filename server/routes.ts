@@ -9,6 +9,49 @@ import { registerIndexingRoutes } from "./google-indexing";
 import { registerAIDiscoveryRoutes } from "./ai-discovery";
 import { registerIndexNowRoutes } from "./indexnow";
 
+const URL_CONSOLIDATION_MAP: Record<string, string> = {
+  // SEO cannibals → /seo-authority (canonical hub)
+  "seo-agency": "/seo-authority",
+  "seo-consultant": "/seo-authority",
+  "seo-services": "/seo-authority",
+  "google-seo": "/seo-authority",
+  "seo-specialist": "/seo-authority",
+  "best-seo-companies": "/seo-authority",
+  "search-engine-marketing": "/seo-authority",
+  "website-ranking": "/seo-authority",
+  "seo-agency-near-me": "/seo-authority",
+  "seo-keywords": "/seo-authority",
+  "digital-marketing-seo": "/seo-authority",
+  // PPC/Ads cannibals → /google-ads (canonical hub)
+  "ppc-agency": "/google-ads",
+  "ppc-management-services": "/google-ads",
+  "paid-media-agency": "/google-ads",
+  // Social & content cannibals → specific service pages
+  "social-media-marketing-agency": "/social-media-marketing",
+  "social-media-marketing-agency-near-me": "/social-media-marketing",
+  "content-marketing-services": "/content-writing",
+  "email-marketing-services": "/ai-email-automation",
+  "branding-agency": "/branding-design",
+  "automation-agency": "/services",
+  // Agency/marketing cannibals → /services (canonical hub)
+  "digital-marketing-agency": "/services",
+  "digital-marketing-company": "/services",
+  "digital-marketing-services": "/services",
+  "digital-marketing-firms": "/services",
+  "online-marketing-company": "/services",
+  "marketing-agency-near-me": "/services",
+  "best-digital-marketing-agencies": "/services",
+  // AI & automation cannibals → specific service pages
+  "ai-lead-generation-usa": "/ai-calling-agent",
+  "ai-marketing-automation-usa": "/workflow-automation",
+  "b2b-lead-generation": "/ai-lead-qualification",
+  // Branded partner pages → primary service pages
+  "infinite-rankers-agency": "/services",
+  "infinite-rankers-seo-services": "/seo-authority",
+  "infinite-rankers-paid-advertising": "/google-ads",
+  "infinite-rankers-ai-automation": "/ai-calling-agent",
+};
+
 const CASE_STUDY_REDIRECT_MAP: Record<string, string> = {
   "1": "case-study-dental-practice-revenue-transformation",
   "2": "case-study-ecommerce-cart-recovery-scaling",
@@ -37,6 +80,12 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  for (const [slug, target] of Object.entries(URL_CONSOLIDATION_MAP)) {
+    app.get(`/${slug}`, (_req, res) => {
+      res.redirect(301, target);
+    });
+  }
+
   for (const [numId, slug] of Object.entries(CASE_STUDY_REDIRECT_MAP)) {
     app.get(`/${numId}`, (_req, res) => {
       res.redirect(301, `/${slug}`);

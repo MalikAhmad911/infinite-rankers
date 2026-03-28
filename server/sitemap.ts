@@ -41,28 +41,6 @@ const SERVICE_SLUGS = [
   "crm-setup", "saas-integrations", "marketing-automation-setup", "analytics-dashboard",
 ];
 
-const LANDING_PAGE_SLUGS = [
-  "ai-automation-new-york", "ai-automation-los-angeles", "ai-automation-chicago",
-  "ai-revenue-growth-real-estate", "ai-revenue-growth-healthcare", "ai-revenue-growth-law-firms",
-  "ai-revenue-growth-ecommerce", "ai-revenue-growth-restaurants",
-  "ai-lead-generation-usa", "ai-marketing-automation-usa",
-  "seo-agency", "seo-consultant", "ppc-agency", "digital-marketing-agency",
-  "social-media-marketing-agency", "content-marketing-services",
-  "email-marketing-services", "branding-agency", "b2b-lead-generation",
-  "seo-services", "google-seo", "seo-specialist", "best-seo-companies",
-  "search-engine-marketing", "website-ranking", "seo-agency-near-me",
-  "seo-keywords", "digital-marketing-company", "digital-marketing-services",
-  "marketing-agency-near-me", "best-digital-marketing-agencies",
-  "paid-media-agency", "ppc-management-services", "digital-marketing-seo",
-  "online-marketing-company", "digital-marketing-firms",
-  "social-media-marketing-agency-near-me", "automation-agency",
-];
-
-const PARTNER_PAGE_SLUGS = [
-  "infinite-rankers-agency", "infinite-rankers-seo-services",
-  "infinite-rankers-paid-advertising", "infinite-rankers-ai-automation",
-];
-
 const BLOG_POST_SLUGS = [
   "ai-automation-revenue-growth-2025", "ai-chatbot-lead-conversion", "ai-follow-up-sequences",
   "brand-identity-business-growth", "content-marketing-seo-guide", "crm-automation-sales-pipeline",
@@ -138,16 +116,6 @@ function getSitemapChildren(): SitemapChild[] {
       name: "cases",
       path: "/sitemap-cases.xml",
       entries: createCaseStudyEntries(),
-    },
-    {
-      name: "landing",
-      path: "/sitemap-landing.xml",
-      entries: createEntriesFromSlugs(LANDING_PAGE_SLUGS, "monthly", "0.8"),
-    },
-    {
-      name: "partner",
-      path: "/sitemap-partner.xml",
-      entries: createEntriesFromSlugs(PARTNER_PAGE_SLUGS, "monthly", "0.8"),
     },
     {
       name: "blog",

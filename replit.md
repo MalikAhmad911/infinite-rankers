@@ -62,7 +62,7 @@ script/
 7. Contact - Contact form, Google Maps, business info
 8. Blog - 6 blog post previews
 9. Book Demo - Calendar date picker, time slots, qualification form
-10. Landing Pages (38 pages) - High-converting funnel pages at /:slug with 10 sections each (10 location/industry + 28 keyword-targeted SEO pages)
+10. Landing Pages (8 noindex pages) - City/industry pages (NYC, LA, Chicago; real-estate, healthcare, law firms, e-commerce, restaurants) — noindexed, not in sitemap
 11. Terms of Service (/terms) - 14-section legal page
 12. Privacy Policy (/privacy) - 14-section privacy page
 
@@ -74,6 +74,14 @@ script/
 - **Target**: Autoscale
 - **Build**: `npm run build`
 - **Run**: `npm run start`
+
+## SEO Architecture (Task #3 — URL Consolidation)
+- **Canonical service hubs**: `/seo-authority` (all SEO), `/google-ads` (all PPC), `/services` (all agency/marketing)
+- **301 redirects**: 33 cannibal URLs redirect to their canonical hub (see `server/routes.ts` → `URL_CONSOLIDATION_MAP`)
+- **Noindex pages**: 8 city/industry landing pages noindexed via `noindexPaths` in `server/seo.ts`
+- **Sitemap**: 4 child sitemaps only (main, services, cases, blog) — landing and partner sitemaps removed
+- **Partner pages** (`/infinite-rankers-*`): all 4 redirect to primary service pages (kept as React routes for backward compat)
+- **Blog post SEO**: resolved via BLOG_POSTS lookup (not STATIC_PAGES duplicates, which were cleaned up)
 
 ## User Preferences
 - Premium dark luxury AI SaaS design style
