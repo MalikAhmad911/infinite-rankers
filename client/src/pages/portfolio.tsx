@@ -101,6 +101,16 @@ export default function Portfolio() {
   const [industryFilter, setIndustryFilter] = useState(initialIndustry);
   const [serviceFilter, setServiceFilter] = useState(initialService);
 
+  useEffect(() => {
+    const syncFromUrl = () => {
+      const sp = new URLSearchParams(window.location.search);
+      setIndustryFilter(sp.get("industry") || "All");
+      setServiceFilter(sp.get("service") || "All");
+    };
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, []);
+
   const updateFilters = (industry: string, service: string) => {
     setIndustryFilter(industry);
     setServiceFilter(service);

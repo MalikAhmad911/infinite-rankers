@@ -91,7 +91,7 @@ export default function ServiceDetail() {
   const relatedServiceData = content.relatedServices
     .map((slug) => ALL_SERVICES.find((s) => s.slug === slug))
     .filter((s): s is (typeof ALL_SERVICES)[number] => s !== undefined)
-    .slice(0, 4);
+    .slice(0, 3);
 
   const relatedCaseStudies = CASE_STUDIES.filter((cs) =>
     cs.tags.some((tag) => {

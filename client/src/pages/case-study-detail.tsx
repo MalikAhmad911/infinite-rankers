@@ -212,7 +212,7 @@ export default function CaseStudyDetail() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h3 className="text-xl font-bold text-foreground mb-6">Services Deployed</h3>
             <div className="flex flex-wrap gap-2">
-              {cs.services.map((svc) => {
+              {cs.services.slice(0, 3).map((svc) => {
                 const svcSlug = resolveServiceSlug(svc);
                 const badge = (
                   <Badge key={svc} variant="secondary" className="text-sm px-3 py-1.5 cursor-pointer hover:bg-blue-50 transition-colors" data-testid={`badge-svc-${svc.toLowerCase().replace(/\s+/g, "-")}`}>
