@@ -7,15 +7,15 @@ import GlassCard from "@/components/glass-card";
 import { COMPANY, ACHIEVEMENTS } from "@/lib/constants";
 import {
   ArrowRight, Target, Eye, Cpu, Globe, Shield, Users,
-  Lightbulb, Rocket, CheckCircle2, Zap,
+  Lightbulb, Rocket, CheckCircle2, Zap, Building2, Phone, Mail, MapPin, Award,
 } from "lucide-react";
 
 export default function About() {
   return (
     <div className="overflow-x-hidden">
       <SEOHead
-        title="About Us - Infinite Rankers | AI Revenue Growth Agency"
-        description="We're not a marketing agency. We're a revenue growth engine powered by AI automation. Learn about our mission, vision, and approach."
+        title="About Infinite Rankers LLC | AI Revenue Growth Agency"
+        description="Infinite Rankers LLC is a Delaware-registered AI Revenue Growth Agency helping service businesses automate lead capture, follow-up, and conversion. Google Partner. Est. 2020."
       />
       <section className="relative pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
@@ -58,6 +58,37 @@ export default function About() {
                 <div className="text-xs sm:text-sm text-white/80">{a.label}</div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 overflow-hidden bg-gradient-to-b from-gray-50/60 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-blue-600 mb-3">
+              Company Information
+            </span>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6">About the Agency</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { icon: Building2, label: "Legal Name", value: "Infinite Rankers LLC" },
+                { icon: MapPin, label: "Registered Address", value: "203 N Caroline Pl, Dover, DE 19904, USA" },
+                { icon: Phone, label: "Phone", value: "(703) 415-9373" },
+                { icon: Mail, label: "Email", value: "contact@infiniterankers.io" },
+                { icon: Award, label: "Certification", value: "Certified Google Partner" },
+                { icon: Globe, label: "Website", value: "infiniterankers.io" },
+              ].map((item) => (
+                <div key={item.label} className="flex items-start gap-3 p-4 rounded-lg border border-gray-200 bg-white/70">
+                  <div className="w-8 h-8 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5">{item.label}</div>
+                    <div className="text-sm font-medium text-foreground">{item.value}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

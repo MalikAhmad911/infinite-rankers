@@ -89,12 +89,37 @@ function createEntriesFromSlugs(slugs: string[], changefreq: string, priority: s
   }));
 }
 
+const CASE_STUDY_SLUGS = [
+  "case-study-dental-practice-revenue-transformation",
+  "case-study-ecommerce-cart-recovery-scaling",
+  "case-study-real-estate-ai-lead-generation",
+  "case-study-saas-growth-acceleration",
+  "case-study-law-firm-client-intake-automation",
+  "case-study-fitness-studio-membership-growth",
+  "case-study-restaurant-chain-local-seo-transformation",
+  "case-study-medical-clinic-patient-acquisition",
+  "case-study-wealth-management-digital-lead-generation",
+  "case-study-home-services-plumbing-hvac-lead-machine",
+  "case-study-auto-dealership-ai-sales-acceleration",
+  "case-study-online-coaching-enrollment-automation",
+  "case-study-boutique-hotel-direct-booking-engine",
+  "case-study-insurance-agency-renewal-automation",
+  "case-study-commercial-contractor-brand-lead-growth",
+  "case-study-cpa-firm-onboarding-automation",
+  "case-study-luxury-salon-ai-booking-instagram-growth",
+  "case-study-immigration-law-multilingual-lead-generation",
+  "case-study-freight-brokerage-workflow-automation",
+  "case-study-cnc-manufacturer-digital-lead-generation",
+  "case-study-veterinary-clinic-ai-appointment-growth",
+];
+
 function createCaseStudyEntries(): SitemapURL[] {
-  const entries: SitemapURL[] = [];
-  for (let i = 1; i <= 21; i++) {
-    entries.push({ loc: `${BASE}/${i}`, lastmod: TODAY, changefreq: "monthly", priority: "0.6" });
-  }
-  return entries;
+  return CASE_STUDY_SLUGS.map((slug) => ({
+    loc: `${BASE}/${slug}`,
+    lastmod: TODAY,
+    changefreq: "monthly",
+    priority: "0.6",
+  }));
 }
 
 function getSitemapChildren(): SitemapChild[] {

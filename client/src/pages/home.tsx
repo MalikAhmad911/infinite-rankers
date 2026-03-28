@@ -228,7 +228,7 @@ function HeroSection() {
               </span>
             </h1>
             <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-xl" style={{ fontSize: "clamp(0.938rem, 2vw, 1.25rem)" }}>
-              We build automated systems that generate customers and revenue. Stop chasing leads manually — let AI do the heavy lifting.
+              Infinite Rankers LLC is an AI Revenue Growth Agency — we help service businesses capture, follow up, and convert more leads automatically, without adding headcount.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/book-demo">

@@ -12,7 +12,7 @@ interface RelatedLinksProps {
 export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
   const relatedServices = ALL_SERVICES.filter(s => `/${s.slug}` !== currentPath).slice(0, 6);
   const relatedBlogs = BLOG_POSTS.filter(b => `/${b.slug}` !== currentPath).slice(0, 4);
-  const relatedCases = CASE_STUDIES.filter(c => `/${c.id}` !== currentPath).slice(0, 4);
+  const relatedCases = CASE_STUDIES.filter(c => `/${c.slug}` !== currentPath).slice(0, 4);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14" data-testid="related-links">
@@ -91,11 +91,11 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
           </div>
           <ul className="space-y-1.5 mb-4">
             {relatedCases.map(c => (
-              <li key={c.id}>
+              <li key={c.slug}>
                 <Link
-                  href={`/${c.id}`}
+                  href={`/${c.slug}`}
                   className="group flex items-start gap-2 py-1.5 px-2 rounded-lg hover:bg-cyan-100/60 transition-colors"
-                  data-testid={`related-case-${c.id}`}
+                  data-testid={`related-case-${c.slug}`}
                 >
                   <ArrowRight className="w-3.5 h-3.5 text-cyan-500 flex-shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" />
                   <span className="text-sm text-gray-700 group-hover:text-cyan-700 transition-colors line-clamp-2">{c.title}</span>

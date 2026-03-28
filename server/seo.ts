@@ -60,27 +60,27 @@ const BLOG_POSTS = [
 ];
 
 const CASE_STUDIES: Record<string, { title: string; desc: string }> = {
-  "1": { title: "Local Dental Practice Revenue Transformation", desc: "How Premier Dental Care achieved 148% increase in new patients using AI Calling Agent and Google Ads." },
-  "2": { title: "E-Commerce Brand Scaling System", desc: "How LuxeHome Essentials achieved 62% cart recovery rate and 3.2x ROAS with AI Email Automation." },
-  "3": { title: "Real Estate Lead Machine", desc: "How Metro Realty Group generated 45+ qualified buyer leads per month with AI Lead Qualification." },
-  "4": { title: "B2B SaaS Growth Engine", desc: "How CloudFlow Solutions achieved 145% increase in qualified demos with AI Sales Assistant." },
-  "5": { title: "Restaurant Chain Digital Transformation", desc: "How Sakura Dining Group boosted online orders by 165% with integrated AI marketing systems." },
-  "6": { title: "Healthcare Practice Scaling", desc: "How Advanced Wellness Centers grew patient acquisition by 125% with HIPAA-compliant AI automation." },
-  "7": { title: "Law Firm Client Acquisition System", desc: "How Sterling Legal Partners increased qualified consultations by 175% with AI intake automation." },
-  "8": { title: "Insurance Agency Growth System", desc: "How SecureLife Insurance grew policy sales by 135% with AI-powered lead nurturing and follow-up." },
-  "9": { title: "Home Services Lead Generation", desc: "How ProElite Contractors achieved 145% increase in booked estimates with AI scheduling and follow-up." },
-  "10": { title: "Financial Advisory Client Acquisition", desc: "How Pinnacle Financial Advisors generated 28 qualified high-net-worth leads monthly with AI systems." },
-  "11": { title: "Fitness Studio Membership Growth", desc: "How Elite Performance Studios increased membership signups by 142% with AI lead capture and nurturing." },
-  "12": { title: "Auto Dealership Lead System", desc: "How Premier Auto Group boosted qualified test drive appointments by 118% with AI calling and SMS." },
-  "13": { title: "Property Management Growth Engine", desc: "How Urban Living Properties increased tenant applications by 155% with automated marketing systems." },
-  "14": { title: "Veterinary Practice Patient Acquisition", desc: "How PawCare Veterinary grew new patient appointments by 148% with AI receptionist and follow-up." },
-  "15": { title: "Accounting Firm Client Growth", desc: "How Summit Accounting Partners increased qualified consultations by 195% with AI intake systems." },
-  "16": { title: "Spa & Wellness Booking System", desc: "How Serenity Wellness Spa boosted appointment bookings by 152% with AI chatbot and SMS automation." },
-  "17": { title: "Education Center Enrollment Growth", desc: "How BrightMinds Learning increased student enrollments by 128% with AI-powered parent engagement." },
-  "18": { title: "Roofing Company Lead Engine", desc: "How StormShield Roofing generated 42 qualified estimates monthly with AI calling and Google Ads." },
-  "19": { title: "Wedding Venue Booking System", desc: "How GrandView Estates increased venue tour bookings by 138% with AI follow-up and social media." },
-  "20": { title: "Pest Control Service Growth", desc: "How SafeGuard Pest Control grew service appointments by 142% with AI scheduling and local SEO." },
-  "21": { title: "Mortgage Broker Lead System", desc: "How Premier Mortgage Solutions increased qualified applications by 125% with AI pre-qualification." },
+  "case-study-dental-practice-revenue-transformation": { title: "Local Dental Practice Revenue Transformation", desc: "How Premier Dental Care achieved 148% increase in new patients using AI Calling Agent and Google Ads." },
+  "case-study-ecommerce-cart-recovery-scaling": { title: "E-Commerce Brand Scaling System", desc: "How LuxeHome Essentials achieved 62% cart recovery rate and 3.2x ROAS with AI Email Automation." },
+  "case-study-real-estate-ai-lead-generation": { title: "Real Estate Lead Machine", desc: "How Metro Realty Group generated 45+ qualified buyer leads per month with AI Lead Qualification." },
+  "case-study-saas-growth-acceleration": { title: "B2B SaaS Growth Engine", desc: "How CloudFlow Solutions achieved 145% increase in qualified demos with AI Sales Assistant." },
+  "case-study-law-firm-client-intake-automation": { title: "Law Firm Client Acquisition System", desc: "How Sterling Legal Partners increased qualified consultations by 175% with AI intake automation." },
+  "case-study-fitness-studio-membership-growth": { title: "Fitness Studio Membership Growth", desc: "How Elite Performance Studios increased membership signups by 142% with AI lead capture and nurturing." },
+  "case-study-restaurant-chain-local-seo-transformation": { title: "Restaurant Chain Digital Transformation", desc: "How Sakura Dining Group boosted online orders by 165% with integrated AI marketing systems." },
+  "case-study-medical-clinic-patient-acquisition": { title: "Multi-Specialty Clinic Patient Growth Engine", desc: "How Meridian Health Partners achieved 125% new patient volume growth using AI Receptionist and Google Ads." },
+  "case-study-wealth-management-digital-lead-generation": { title: "Wealth Management Firm Digital Presence", desc: "How Crestview Capital Advisors generated 165% website lead increase with SEO and AI Lead Qualification." },
+  "case-study-home-services-plumbing-hvac-lead-machine": { title: "Home Services Lead Machine", desc: "How TrueFlow Plumbing & HVAC achieved 190% lead volume increase and 3.9x return on ad spend." },
+  "case-study-auto-dealership-ai-sales-acceleration": { title: "Auto Dealership Sales Acceleration", desc: "How Pinnacle Motors achieved 148% internet lead conversion increase with AI Chatbot and SMS Automation." },
+  "case-study-online-coaching-enrollment-automation": { title: "Online Coaching Business Revenue System", desc: "How Apex Performance Academy achieved 175% enrollment growth with AI appointment booking automation." },
+  "case-study-boutique-hotel-direct-booking-engine": { title: "Boutique Hotel Direct Booking Engine", desc: "How Shoreline Retreats grew direct bookings from 15% to 58% and achieved 4.1x Google Ads ROAS." },
+  "case-study-insurance-agency-renewal-automation": { title: "Insurance Agency Lead & Retention System", desc: "How Guardian Shield Insurance raised policy renewal rate to 91% and grew new applications by 148%." },
+  "case-study-commercial-contractor-brand-lead-growth": { title: "Commercial Contractor Brand & Lead System", desc: "How Ironclad Builders generated 14 inbound RFPs per month and 185% website traffic growth." },
+  "case-study-cpa-firm-onboarding-automation": { title: "CPA Firm Client Growth & Automation", desc: "How Clearpath Accounting Group achieved 180% new client growth and reduced onboarding from 3 weeks to 3 days." },
+  "case-study-luxury-salon-ai-booking-instagram-growth": { title: "Luxury Salon Booking & Brand Expansion", desc: "How Velour Beauty Lounge raised capacity utilization to 87% and gained 22K Instagram followers." },
+  "case-study-immigration-law-multilingual-lead-generation": { title: "Immigration Law Firm Digital Acquisition", desc: "How Bridgepoint Immigration Law achieved 185% monthly lead increase with multilingual digital presence." },
+  "case-study-freight-brokerage-workflow-automation": { title: "Freight Brokerage Efficiency & Growth", desc: "How Nexus Freight Solutions grew load volume by 135% and achieved 68% faster load matching." },
+  "case-study-cnc-manufacturer-digital-lead-generation": { title: "Precision Parts Manufacturer Digital Transformation", desc: "How Apex Machining Works achieved 185% website RFQ submissions increase and ranked #1 for CNC keywords." },
+  "case-study-veterinary-clinic-ai-appointment-growth": { title: "Veterinary Clinic Growth & Automation", desc: "How PawsCare Animal Hospital achieved 142% new client growth and 94% appointment show rate." },
 };
 
 const LANDING_PAGES: Record<string, { title: string; desc: string; faqs?: { q: string; a: string }[] }> = {
@@ -133,7 +133,7 @@ const PARTNER_PAGES: Record<string, { title: string; desc: string }> = {
 
 const STATIC_PAGES: Record<string, SEOMeta> = {
   "/": { title: "Infinite Rankers | AI Revenue Growth & Digital Marketing Agency USA", description: "We don't just rank you — we grow your revenue. AI automation, SEO, Google Ads, social media marketing for USA businesses. Google Partner. Free strategy call.", canonical: `${BASE}/` },
-  "/about": { title: `About ${BRAND} | AI Revenue Growth Experts Since 2020`, description: "Meet the AI marketing team behind 4,000+ business transformations. We build revenue-generating automation systems so you can focus on what you do best.", canonical: `${BASE}/about` },
+  "/about": { title: `About Infinite Rankers LLC | AI Revenue Growth Agency`, description: "Infinite Rankers LLC is a Delaware-registered AI Revenue Growth Agency helping service businesses automate lead capture, follow-up, and conversion. Google Partner.", canonical: `${BASE}/about` },
   "/services": { title: "All Digital Marketing Services | 30+ AI-Powered Solutions | Infinite Rankers", description: "Browse all 30+ digital marketing and AI automation services. SEO, Google Ads, social media, AI agents, CRM.", canonical: `${BASE}/services` },
   "/portfolio": { title: `21 Client Case Studies — Real Proven Results | ${BRAND}`, description: "Real results from real businesses. 21 case studies showing 100-195% revenue growth across healthcare, real estate, law firms & e-commerce. See proof.", canonical: `${BASE}/portfolio` },
   "/pricing": { title: `Pricing Plans from $1,599/mo | No Hidden Fees | ${BRAND}`, description: "Transparent pricing with no contracts or hidden fees. Growth, Scale & Enterprise plans. Calculate your ROI before you buy. Book a free consultation.", canonical: `${BASE}/pricing` },
@@ -145,29 +145,6 @@ const STATIC_PAGES: Record<string, SEOMeta> = {
   "/terms": { title: `Terms of Service - ${BRAND}`, description: "Terms of Service for Infinite Rankers AI Revenue Growth Agency. Read our terms governing use of infiniterankers.io.", canonical: `${BASE}/terms` },
   "/privacy": { title: `Privacy Policy - ${BRAND}`, description: "Privacy Policy for Infinite Rankers. Learn how we collect, use, and protect your data.", canonical: `${BASE}/privacy` },
   "/google-partner": { title: "Google Partner Agency USA | Certified Google Ads Expert | Infinite Rankers", description: "Infinite Rankers is a certified Google Partner agency. Expert Google Ads management with exclusive tools access.", canonical: `${BASE}/google-partner` },
-
-  // Portfolio / Case Study pages
-  "/1": { title: "Digital Marketing Case Study #1 | Real Results | Infinite Rankers", description: "See how Infinite Rankers delivered measurable revenue growth for a real business using AI automation and digital marketing.", canonical: `${BASE}/1` },
-  "/2": { title: "AI Automation Case Study #2 | Client Success | Infinite Rankers", description: "Real results from AI marketing automation. See traffic growth, lead generation and revenue impact for our client.", canonical: `${BASE}/2` },
-  "/3": { title: "Google Ads Case Study #3 | 4x ROAS | Infinite Rankers", description: "How we delivered 4x ROAS for a USA business using AI-optimized Google Ads campaigns.", canonical: `${BASE}/3` },
-  "/4": { title: "Local SEO Case Study #4 | Google Maps Rankings | Infinite Rankers", description: "How we ranked a local business #1 on Google Maps in 60 days using our proven local SEO system.", canonical: `${BASE}/4` },
-  "/5": { title: "Social Media Marketing Case Study #5 | Infinite Rankers", description: "340% increase in qualified leads using AI-powered social media marketing for a USA business.", canonical: `${BASE}/5` },
-  "/6": { title: "AI Lead Generation Case Study #6 | Infinite Rankers", description: "How AI calling agents and chatbots generated 200+ qualified leads per month for our client.", canonical: `${BASE}/6` },
-  "/7": { title: "E-Commerce Growth Case Study #7 | Infinite Rankers", description: "From $12K to $47K monthly revenue using AI email automation and Google Ads optimization.", canonical: `${BASE}/7` },
-  "/8": { title: "Real Estate Lead Generation Case Study #8 | Infinite Rankers", description: "135% increase in real estate leads using AI qualification bots and targeted advertising.", canonical: `${BASE}/8` },
-  "/9": { title: "Healthcare Marketing Case Study #9 | Infinite Rankers", description: "190% increase in patient appointments using AI marketing automation for a dental practice.", canonical: `${BASE}/9` },
-  "/10": { title: "Law Firm Marketing Case Study #10 | Infinite Rankers", description: "How we helped a law firm go from page 3 to #1 on Google and increase leads by 340%.", canonical: `${BASE}/10` },
-  "/11": { title: "HVAC Business Growth Case Study #11 | Infinite Rankers", description: "Local HVAC company tripled revenue using Google Maps SEO and AI calling agents.", canonical: `${BASE}/11` },
-  "/12": { title: "Restaurant Marketing Case Study #12 | Infinite Rankers", description: "How AI marketing automation doubled foot traffic and online orders for a restaurant chain.", canonical: `${BASE}/12` },
-  "/13": { title: "SaaS Lead Generation Case Study #13 | Infinite Rankers", description: "190% increase in qualified SaaS leads using multi-channel AI marketing automation.", canonical: `${BASE}/13` },
-  "/14": { title: "Fitness Studio Growth Case Study #14 | Infinite Rankers", description: "From 200 to 340 active members in 6 months using social media and AI booking automation.", canonical: `${BASE}/14` },
-  "/15": { title: "Auto Dealer Marketing Case Study #15 | Infinite Rankers", description: "50+ qualified leads per week from organic search for an auto dealership using our SEO system.", canonical: `${BASE}/15` },
-  "/16": { title: "Hotel Marketing Case Study #16 | Infinite Rankers", description: "180% increase in direct bookings using AI-optimized marketing campaigns for a hotel.", canonical: `${BASE}/16` },
-  "/17": { title: "Financial Services Case Study #17 | Infinite Rankers", description: "45 high-net-worth client leads generated in first quarter using compliant financial marketing.", canonical: `${BASE}/17` },
-  "/18": { title: "Salon & Beauty Case Study #18 | Infinite Rankers", description: "Online bookings went from 10% to 65% using website redesign and social media marketing.", canonical: `${BASE}/18` },
-  "/19": { title: "Construction Company Case Study #19 | Infinite Rankers", description: "From struggling for projects to 6-month waitlist using AI lead generation and PPC.", canonical: `${BASE}/19` },
-  "/20": { title: "Plumbing Business Case Study #20 | Infinite Rankers", description: "Emergency calls increased 240% for a plumbing company using Google Maps SEO.", canonical: `${BASE}/20` },
-  "/21": { title: "Boutique E-Commerce Case Study #21 | Infinite Rankers", description: "E-commerce store grew from $8K to $47K per month using email marketing and Google Ads.", canonical: `${BASE}/21` },
 
   // Service pages
   "/workflow-automation": { title: "Workflow Automation Services | Save 20hrs/Week | Infinite Rankers", description: "Complete workflow automation using n8n, Make.com, Zapier. Automate repetitive tasks and save 20+ hours per week.", canonical: `${BASE}/workflow-automation` },
@@ -281,7 +258,7 @@ function getBreadcrumbs(path: string, seo: SEOMeta): object {
   const slug = path.replace(/^\//, "");
   const isService = SERVICES.some(s => s.slug === slug);
   const isBlog = BLOG_POSTS.some(b => b.slug === slug);
-  const isCase = !!CASE_STUDIES[slug];
+  const isCase = !!CASE_STUDIES[slug] || slug.startsWith("case-study-");
 
   if (isService) {
     items.push({ name: "Services", url: `${BASE_URL}/services` });
@@ -318,25 +295,28 @@ function getBreadcrumbs(path: string, seo: SEOMeta): object {
 function getStructuredData(url: string, seo: SEOMeta): object[] {
   const path = url.split("?")[0].split("#")[0];
   const BASE_URL = "https://infiniterankers.io";
-  const FOUNDER_SCHEMA = {
-    "@type": "Person",
-    "name": "Malik Ahmad",
-    "jobTitle": "CEO & Founder",
-    "description": "AI automation and revenue growth strategist helping USA businesses scale through data-driven digital systems.",
-    "url": BASE_URL,
-    "sameAs": ["https://www.linkedin.com/company/infinite-rankers"]
-  };
   const ORG_SCHEMA = {
-    "@type": "Organization",
+    "@type": ["Organization", "LocalBusiness"],
     "name": "Infinite Rankers",
+    "legalName": "Infinite Rankers LLC",
     "url": BASE_URL,
     "logo": `${BASE_URL}/logo.png`,
     "description": "AI Revenue Growth Agency providing 30+ AI-powered marketing and automation services for businesses across the USA and worldwide.",
-    "sameAs": ["https://infiniterankers.com", "https://infiniterankers.com/blog", "https://infiniterankers.com/about"],
+    "sameAs": [
+      "https://www.linkedin.com/company/infinite-rankers",
+      "https://www.facebook.com/infiniterankers"
+    ],
     "address": { "@type": "PostalAddress", "streetAddress": "203 N Caroline Pl", "addressLocality": "Dover", "addressRegion": "DE", "postalCode": "19904", "addressCountry": "US" },
+    "telephone": "(703) 415-9373",
+    "email": "contact@infiniterankers.io",
     "contactPoint": { "@type": "ContactPoint", "telephone": "(703) 415-9373", "contactType": "sales", "email": "contact@infiniterankers.io", "availableLanguage": ["English"], "areaServed": "US" },
-    "founder": FOUNDER_SCHEMA,
     "areaServed": "US",
+    "hasCredential": {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "Professional Certification",
+      "name": "Google Partner",
+      "recognizedBy": { "@type": "Organization", "name": "Google" }
+    },
     "knowsAbout": ["AI Automation", "Lead Generation", "Google Ads", "SEO", "CRM Automation", "AI Chatbot", "Digital Marketing", "Social Media Marketing", "Website Development"]
   };
 
@@ -400,7 +380,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Lead Qualification" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "CRM Automation" } }
       ]},
-      "sameAs": ["https://infiniterankers.com", "https://www.linkedin.com/company/infinite-rankers", "https://www.facebook.com/infiniterankers"],
+      "sameAs": ["https://www.linkedin.com/company/infinite-rankers", "https://www.facebook.com/infiniterankers"],
       "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "87", "bestRating": "5" }
     };
     const SPEAKABLE_SCHEMA = {
@@ -466,7 +446,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "inLanguage": "en-US",
       "image": `${BASE_URL}/images/logo-full.png`,
       "publisher": { ...ORG_SCHEMA, "@context": undefined },
-      "author": FOUNDER_SCHEMA,
+      "author": { "@type": "Organization", "name": "Infinite Rankers", "legalName": "Infinite Rankers LLC", "url": BASE_URL },
       "about": [
         "AI automation for business growth",
         "SEO and paid media strategy",
