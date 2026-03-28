@@ -8,6 +8,30 @@ import SEOHead from "@/components/seo-head";
 import { CASE_STUDIES, ALL_SERVICES } from "@/lib/constants";
 import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star, Lightbulb } from "lucide-react";
 
+const CASE_STUDY_PRIMARY_SERVICE: Record<string, string[]> = {
+  "case-study-dental-practice-revenue-transformation": ["ai-calling-agent", "google-ads"],
+  "case-study-ecommerce-cart-recovery-scaling": ["meta-ads", "crm-automation"],
+  "case-study-real-estate-ai-lead-generation": ["ai-lead-qualification", "google-ads"],
+  "case-study-saas-growth-acceleration": ["ai-sales-assistant", "crm-automation"],
+  "case-study-law-firm-client-intake-automation": ["ai-receptionist", "seo-authority"],
+  "case-study-fitness-studio-membership-growth": ["ai-appointment-booking", "meta-ads"],
+  "case-study-restaurant-chain-local-seo-transformation": ["local-seo", "ai-sms-automation"],
+  "case-study-medical-clinic-patient-acquisition": ["ai-receptionist", "google-ads"],
+  "case-study-wealth-management-digital-lead-generation": ["seo-authority", "ai-lead-qualification"],
+  "case-study-home-services-plumbing-hvac-lead-machine": ["google-ads", "ai-calling-agent"],
+  "case-study-auto-dealership-ai-sales-acceleration": ["ai-chatbot", "ai-sms-automation"],
+  "case-study-online-coaching-enrollment-automation": ["ai-appointment-booking", "meta-ads"],
+  "case-study-boutique-hotel-direct-booking-engine": ["google-ads", "crm-automation"],
+  "case-study-insurance-agency-renewal-automation": ["ai-follow-up", "crm-automation"],
+  "case-study-commercial-contractor-brand-lead-growth": ["seo-authority", "google-ads"],
+  "case-study-cpa-firm-onboarding-automation": ["ai-email-automation", "workflow-automation"],
+  "case-study-luxury-salon-ai-booking-instagram-growth": ["ai-appointment-booking", "instagram-growth"],
+  "case-study-immigration-law-multilingual-lead-generation": ["ai-chatbot", "google-ads"],
+  "case-study-freight-brokerage-workflow-automation": ["crm-automation", "workflow-automation"],
+  "case-study-cnc-manufacturer-digital-lead-generation": ["seo-authority", "ai-lead-qualification"],
+  "case-study-veterinary-clinic-ai-appointment-growth": ["ai-appointment-booking", "local-seo"],
+};
+
 const INDUSTRY_SERVICE_MAP: Record<string, string[]> = {
   "Dental": ["ai-calling-agent", "google-ads"],
   "E-Commerce": ["meta-ads", "crm-automation"],
@@ -458,7 +482,7 @@ export default function CaseStudyDetail() {
       )}
 
       {(() => {
-        const industrySlugs = INDUSTRY_SERVICE_MAP[cs.industry] || [];
+        const industrySlugs = CASE_STUDY_PRIMARY_SERVICE[cs.slug] || INDUSTRY_SERVICE_MAP[cs.industry] || [];
         const industrySvcs = industrySlugs
           .map((s) => ALL_SERVICES.find((svc) => svc.slug === s))
           .filter(Boolean) as typeof ALL_SERVICES;

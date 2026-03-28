@@ -1123,6 +1123,7 @@ export interface ServiceContent {
   problems: string[];
   solutions: string[];
   features: string[];
+  deliverables?: { item: string; timeline: string }[];
   workflowSteps: { step: string; desc: string }[];
   industries: { name: string; icon: string }[];
   faqs: { q: string; a: string }[];
@@ -1154,6 +1155,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Smart call routing based on lead score and intent",
       "Voicemail detection and automated follow-up triggers",
       "Live call transfer to human agents when needed"
+    ],
+    deliverables: [
+      { item: "AI call script and conversation flows built to your offer", timeline: "Days 1–3" },
+      { item: "CRM integration and calendar sync configured", timeline: "Days 3–5" },
+      { item: "Test calls approved and agent live on your number", timeline: "Days 5–7" },
+      { item: "Performance dashboard showing call volume, bookings, and outcomes", timeline: "Day 7+" },
+      { item: "30-day optimization report with booking rate benchmarks", timeline: "Day 30" },
     ],
     workflowSteps: [
       { step: "Discovery & Script Design", desc: "We analyze your sales process and build custom AI call scripts tailored to your offer and audience." },
@@ -1203,6 +1211,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "After-hours coverage with full functionality",
       "Caller identification and CRM lookup"
     ],
+    deliverables: [
+      { item: "AI receptionist script configured with your FAQs and routing rules", timeline: "Days 1–3" },
+      { item: "Phone number provisioned or existing number ported", timeline: "Days 2–4" },
+      { item: "Live call testing and tone approval", timeline: "Days 4–5" },
+      { item: "24/7 go-live with full after-hours coverage", timeline: "Day 5–7" },
+      { item: "Weekly call summary reports with missed-lead tracking", timeline: "Ongoing" },
+    ],
     workflowSteps: [
       { step: "Business Analysis", desc: "Map your call flow, common inquiries, team structure, and routing rules for optimal setup." },
       { step: "Voice & Script Setup", desc: "Design your AI receptionist's greeting, FAQ responses, and routing logic to match your brand." },
@@ -1250,6 +1265,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "CRM enrichment with qualification data",
       "Lead nurture triggers for unqualified prospects",
       "Conversion analytics and scoring model optimization"
+    ],
+    deliverables: [
+      { item: "Lead scoring model built around your ICP and pipeline stages", timeline: "Days 1–4" },
+      { item: "All lead sources connected and scoring in real-time", timeline: "Days 4–7" },
+      { item: "CRM enriched with qualification flags and segment tags", timeline: "Day 7" },
+      { item: "Unqualified lead nurture sequences activated", timeline: "Day 7–10" },
+      { item: "Bi-weekly scoring accuracy report with conversion tracking", timeline: "Ongoing" },
     ],
     workflowSteps: [
       { step: "Qualification Criteria Design", desc: "Define your ideal customer profile and scoring criteria based on your sales history and conversion data." },
@@ -1299,6 +1321,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Time zone detection and automatic adjustment",
       "Integration with Google Calendar, Outlook, and Calendly"
     ],
+    deliverables: [
+      { item: "Booking flow configured across chat, phone, or SMS (your choice)", timeline: "Days 1–3" },
+      { item: "Calendar integration and round-robin assignment live", timeline: "Days 3–4" },
+      { item: "Automated confirmation and reminder sequences enabled", timeline: "Days 4–5" },
+      { item: "Go-live with full no-show protection", timeline: "Day 5" },
+      { item: "Monthly show-rate and booking volume report", timeline: "Monthly" },
+    ],
     workflowSteps: [
       { step: "Calendar & Team Setup", desc: "Configure team calendars, availability windows, meeting types, and assignment rules." },
       { step: "Booking Flow Design", desc: "Design the conversational booking experience including qualification questions and confirmation messaging." },
@@ -1346,6 +1375,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Drip campaign management with A/B testing",
       "Engagement tracking and response monitoring",
       "CRM status updates and pipeline progression triggers"
+    ],
+    deliverables: [
+      { item: "Multi-channel follow-up sequences built from your sales playbook", timeline: "Days 1–5" },
+      { item: "Behavior triggers and sequence branches live across email, SMS, phone", timeline: "Days 5–7" },
+      { item: "CRM pipeline stage automation and hot-lead alerts active", timeline: "Day 7–10" },
+      { item: "A/B test setup on subject lines and send times", timeline: "Day 10" },
+      { item: "Monthly response rate and conversion report", timeline: "Monthly" },
     ],
     workflowSteps: [
       { step: "Sequence Strategy", desc: "Map your follow-up sequences based on lead source, qualification level, and sales cycle stage." },
@@ -1584,6 +1620,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Revenue forecasting and pipeline reports",
       "Multi-platform data sync and deduplication"
     ],
+    deliverables: [
+      { item: "CRM audit report with automation opportunity map", timeline: "Days 1–3" },
+      { item: "Core workflows built (lead routing, deal progression, task triggers)", timeline: "Days 3–10" },
+      { item: "All tools integrated and data syncing cleanly", timeline: "Days 10–14" },
+      { item: "Team training session and workflow documentation", timeline: "Day 14" },
+      { item: "Monthly pipeline health and time-savings report", timeline: "Monthly" },
+    ],
     workflowSteps: [
       { step: "CRM Audit & Strategy", desc: "Evaluate your current CRM setup, data quality, and sales process to identify automation opportunities." },
       { step: "Workflow Design", desc: "Map and build automated workflows for lead routing, deal progression, task assignment, and reporting." },
@@ -1679,6 +1722,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Remarketing and audience segmentation",
       "Monthly ROI reporting with actionable insights"
     ],
+    deliverables: [
+      { item: "Keyword strategy and campaign architecture document", timeline: "Days 1–5" },
+      { item: "Ad copy variants and landing page recommendations", timeline: "Days 5–7" },
+      { item: "Campaigns live with conversion tracking verified", timeline: "Day 7–10" },
+      { item: "30-day performance benchmark report (ROAS, CPL, CTR)", timeline: "Day 30" },
+      { item: "Monthly optimization report with scaling recommendations", timeline: "Monthly" },
+    ],
     workflowSteps: [
       { step: "Market & Keyword Research", desc: "Deep-dive into your market, competitors, and high-value keyword opportunities with search volume and cost analysis." },
       { step: "Campaign Architecture", desc: "Build campaign structure with ad groups, targeting, bidding strategy, and conversion tracking." },
@@ -1727,6 +1777,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Budget allocation across campaign objectives",
       "Detailed performance reporting and insights"
     ],
+    deliverables: [
+      { item: "Audience research report and creative strategy brief", timeline: "Days 1–4" },
+      { item: "3–5 initial ad concepts produced (static, video, or carousel)", timeline: "Days 4–7" },
+      { item: "Full-funnel campaigns live with pixel and Conversion API verified", timeline: "Day 7–10" },
+      { item: "Creative performance report with winning ad identification", timeline: "Day 21" },
+      { item: "Monthly ROAS, CPA, and scale-readiness report", timeline: "Monthly" },
+    ],
     workflowSteps: [
       { step: "Audience & Creative Strategy", desc: "Research your ideal audience segments and develop a creative strategy with multiple ad concepts for testing." },
       { step: "Campaign Build", desc: "Build full-funnel campaign structure with audience targeting, placement optimization, and conversion tracking." },
@@ -1774,6 +1831,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Schema markup and structured data",
       "Core Web Vitals optimization",
       "Monthly ranking and traffic reporting"
+    ],
+    deliverables: [
+      { item: "Full technical SEO audit with prioritized fix list", timeline: "Days 1–7" },
+      { item: "Keyword strategy and content map (primary + supporting terms)", timeline: "Days 7–14" },
+      { item: "Technical fixes implemented (Core Web Vitals, schema, crawl)", timeline: "Days 14–21" },
+      { item: "First 2 authority content pieces published and indexed", timeline: "Month 1" },
+      { item: "Monthly rank tracking report (keyword positions + traffic growth)", timeline: "Monthly" },
     ],
     workflowSteps: [
       { step: "SEO Audit & Strategy", desc: "Comprehensive audit of your site's technical health, content gaps, backlink profile, and competitive landscape." },

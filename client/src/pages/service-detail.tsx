@@ -330,6 +330,37 @@ export default function ServiceDetail() {
         variant={theme.workflowLayout}
       />
 
+      {/* Section 4b: Deliverables & Timeline */}
+      {content.deliverables && content.deliverables.length > 0 && (
+        <section className="py-14 sm:py-18 bg-white" data-testid="section-deliverables">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <span className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-2 block">What You Get & When</span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Deliverables & Timeline</h2>
+              <p className="mt-3 text-base text-muted-foreground max-w-2xl mx-auto">Exact milestones you can hold us to — from kickoff to ongoing optimization.</p>
+            </div>
+            <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+              <table className="w-full text-sm" data-testid="table-deliverables">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="text-left px-6 py-3 font-semibold text-gray-700 w-3/4">Deliverable</th>
+                    <th className="text-left px-6 py-3 font-semibold text-gray-700 w-1/4">Timeline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {content.deliverables.map((d, i) => (
+                    <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"} data-testid={`row-deliverable-${i}`}>
+                      <td className="px-6 py-4 text-gray-800 leading-snug">{d.item}</td>
+                      <td className="px-6 py-4 font-medium text-blue-700 whitespace-nowrap">{d.timeline}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Section 5: Proof — Case study with results + link */}
       {relatedCaseStudies.length > 0 && (
         <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-proof">
