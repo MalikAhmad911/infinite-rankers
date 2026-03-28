@@ -380,7 +380,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Lead Qualification" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "CRM Automation" } }
       ]},
-      "sameAs": ["https://infiniterankers.com", "https://www.linkedin.com/company/infinite-rankers", "https://www.facebook.com/infiniterankers"],
+      "sameAs": ["https://www.linkedin.com/company/infinite-rankers", "https://www.facebook.com/infiniterankers"],
       "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "87", "bestRating": "5" }
     };
     const SPEAKABLE_SCHEMA = {
@@ -446,7 +446,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "inLanguage": "en-US",
       "image": `${BASE_URL}/images/logo-full.png`,
       "publisher": { ...ORG_SCHEMA, "@context": undefined },
-      "author": FOUNDER_SCHEMA,
+      "author": { "@type": "Organization", "name": "Infinite Rankers", "legalName": "Infinite Rankers LLC", "url": BASE_URL },
       "about": [
         "AI automation for business growth",
         "SEO and paid media strategy",
