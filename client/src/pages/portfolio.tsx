@@ -298,8 +298,8 @@ export default function Portfolio() {
                       <p className="text-xs sm:text-sm text-muted-foreground mb-3" data-testid={`card-business-${cs.id}`}>
                         {cs.business}
                       </p>
-                      <p className="text-xs sm:text-sm text-muted-foreground mb-4 line-clamp-2" data-testid={`card-challenge-${cs.id}`}>
-                        {cs.challenge}
+                      <p className="text-xs sm:text-sm font-medium text-emerald-700 bg-emerald-50 rounded-md px-2 py-1.5 mb-4 line-clamp-2" data-testid={`card-outcome-${cs.id}`}>
+                        {cs.results.metric1} {cs.results.label1} — achieved in under 90 days.
                       </p>
                       <div className="grid grid-cols-2 gap-2 mb-4">
                         {[

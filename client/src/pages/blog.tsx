@@ -150,7 +150,41 @@ export default function Blog() {
           </div>
 
           {clusterGroups ? (
-            <div className="space-y-16" data-testid="cluster-grouped-sections">
+            <div data-testid="cluster-grouped-sections">
+              {BLOG_POSTS_FULL[0] && (
+                <Link href={`/${BLOG_POSTS_FULL[0].slug}`}>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-14 cursor-pointer">
+                    <Card className="overflow-hidden hover-elevate" data-testid="card-featured-post">
+                      <div className="grid grid-cols-1 lg:grid-cols-2">
+                        <img src={BLOG_POSTS_FULL[0].image} alt={BLOG_POSTS_FULL[0].imageAlt} className="w-full h-[200px] sm:h-[260px] lg:h-full object-cover" loading="lazy" />
+                        <div className="p-5 sm:p-8 lg:p-10 flex flex-col justify-center">
+                          <div className="flex items-center gap-2 mb-3 flex-wrap">
+                            <Badge variant="secondary" className="self-start">{BLOG_POSTS_FULL[0].category}</Badge>
+                            {CATEGORY_SERVICE_LINK[BLOG_POSTS_FULL[0].category] && (
+                              <button
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/${CATEGORY_SERVICE_LINK[BLOG_POSTS_FULL[0].category].slug}`); }}
+                                className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
+                                data-testid="badge-service-featured"
+                              >
+                                <Zap className="w-2.5 h-2.5 text-blue-500" />
+                                {CATEGORY_SERVICE_LINK[BLOG_POSTS_FULL[0].category].label}
+                              </button>
+                            )}
+                          </div>
+                          <h2 className="font-bold text-foreground mb-4 leading-tight" style={{ fontSize: "clamp(1.125rem, 3vw, 1.875rem)" }}>{BLOG_POSTS_FULL[0].title}</h2>
+                          <p className="text-sm sm:text-base text-muted-foreground mb-5 leading-relaxed">{BLOG_POSTS_FULL[0].excerpt}</p>
+                          <div className="flex items-center gap-4 text-xs sm:text-sm text-muted-foreground mb-5">
+                            <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {BLOG_POSTS_FULL[0].date}</span>
+                            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {BLOG_POSTS_FULL[0].readTime}</span>
+                          </div>
+                          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600">Read Article <ArrowRight className="w-4 h-4" /></span>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                </Link>
+              )}
+              <div className="space-y-16">
               {clusterGroups.map(({ cluster, posts }) => (
                 <div key={cluster.value} data-testid={`cluster-section-${cluster.value.toLowerCase().replace(/\s+/g, "-")}`}>
                   <div className="flex items-center justify-between gap-4 mb-6">
@@ -207,6 +241,7 @@ export default function Blog() {
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           ) : (
             <motion.div
