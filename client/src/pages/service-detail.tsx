@@ -93,42 +93,6 @@ const defaultTheme: ServiceVisualTheme = {
   faqLayout: "A",
 };
 
-function buildServiceNarrative(service: { slug: string; title: string; category: string }, content: ServiceContent) {
-  const featureLine = content.features.slice(0, 4).join(", ");
-  const problemLine = content.problems.slice(0, 3).join("; ");
-  const solutionLine = content.solutions.slice(0, 3).join("; ");
-  const industriesLine = content.industries.slice(0, 4).map((i) => i.name).join(", ");
-  const workflowLine = content.workflowSteps.map((s) => s.step).join(" -> ");
-  const hash = Array.from(service.slug).reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-
-  const positioningAngles = [
-    "revenue operations and speed-to-lead optimization",
-    "demand generation with stronger qualification and conversion control",
-    "pipeline stability through automation-first execution",
-    "commercial intent capture with full-funnel attribution",
-  ];
-
-  const operatingModelAngles = [
-    "centralized standards with local execution flexibility",
-    "high-intent segmentation and lifecycle orchestration",
-    "always-on response infrastructure with clear escalation paths",
-    "automation plus human handoff for close-ready opportunities",
-  ];
-
-  const angleA = positioningAngles[hash % positioningAngles.length];
-  const angleB = operatingModelAngles[(hash + 1) % operatingModelAngles.length];
-
-  return [
-    `${service.title} is structured around ${angleA}. Instead of treating growth as separate channel tasks, we design one operating layer that connects acquisition, qualification, conversion, and retention. For teams competing in crowded USA markets, this model creates consistency in execution and helps reduce the revenue volatility that happens when campaigns are managed as disconnected experiments.`,
-    `During discovery, we focus on core revenue constraints: ${problemLine}. These issues often appear across both enterprise and local operators, even when budget levels differ. The difference is in scale, not in logic. If response times are slow and follow-up is inconsistent, paid and organic traffic both underperform. That is why implementation starts with conversion mechanics before volume expansion.`,
-    `The deployment sequence follows a practical workflow: ${workflowLine}. This sequence keeps performance stable while new automation is introduced. It prevents the common pattern where teams launch tools quickly but lose operational control. In our system, each stage has clear ownership, measurable outcomes, and weekly optimization checkpoints tied to business goals rather than vanity dashboards.`,
-    `Execution quality is driven by specific capabilities such as ${featureLine}. These are not presented as standalone features. They are configured as one coordinated engine that improves lead handling, qualification quality, and close velocity. For larger organizations, this supports multi-team consistency. For local businesses, it removes missed opportunities and makes daily pipeline more predictable.`,
-    `This service is especially effective for industries including ${industriesLine}. In each vertical, buyer behavior, trust signals, and sales cycles are different, so we adapt scripts, routing rules, and follow-up pacing accordingly. The objective is not only to increase inquiry counts but to improve qualified opportunity flow so sales teams spend more time on deals likely to close.`,
-    `Our strategic response to those constraints is clear: ${solutionLine}. When these systems are aligned, the business sees faster first response, lower cost per qualified lead, and better visibility from first touch to booked revenue. Over time, this creates a compounding advantage because decisions are based on clean performance data rather than assumptions.`,
-    `For most accounts, ${service.title} also becomes the foundation for adjacent systems such as CRM automation, paid acquisition, and retention workflows. That layered approach strengthens attribution and shortens learning cycles. As a result, leadership can scale budgets with confidence, knowing that operational infrastructure can absorb more demand without sacrificing customer experience.`
-  ];
-}
-
 export default function ServiceDetail() {
   const params = useParams<{ slug: string }>();
   const service = ALL_SERVICES.find((s) => s.slug === params.slug);
@@ -160,9 +124,8 @@ export default function ServiceDetail() {
 
   const relatedServiceData = content.relatedServices
     .map((slug) => ALL_SERVICES.find((s) => s.slug === slug))
-    .filter(Boolean)
+    .filter((s): s is (typeof ALL_SERVICES)[number] => s !== undefined)
     .slice(0, 4);
-  const serviceNarrative = buildServiceNarrative(service, content);
 
   const relatedCaseStudies = CASE_STUDIES.filter((cs) =>
     cs.tags.some((tag) => {
@@ -279,14 +242,31 @@ export default function ServiceDetail() {
           </Link>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <Badge variant="secondary" className="mb-4" data-testid="badge-service-category">{service.category}</Badge>
-              <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight" data-testid="text-service-title">{service.title}</h1>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-4">{service.shortDesc}</p>
-              <p className="text-base text-muted-foreground leading-relaxed mb-8">{content.longDesc}</p>
+              <div className="flex items-center gap-2 mb-4 flex-wrap">
+                <Badge variant="secondary" data-testid="badge-service-category">{service.category}</Badge>
+                <Badge variant="outline" className="text-xs text-muted-foreground">For USA Businesses</Badge>
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 leading-tight" data-testid="text-service-title">{service.title}</h1>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-3">{service.shortDesc}</p>
+              <p className="text-base text-muted-foreground leading-relaxed mb-6">{content.longDesc}</p>
+              <div className="flex flex-wrap gap-4 mb-8">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span>Live in 2-4 weeks</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span>Month-to-month, no lock-in</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span>Results tracked daily</span>
+                </div>
+              </div>
               <div className="flex flex-wrap gap-3">
                 <Link href={`/book-demo?service=${encodeURIComponent(service.title)}`}>
                   <Button data-testid="button-service-book-demo">
-                    Book Demo <ArrowRight className="w-4 h-4 ml-1" />
+                    Book Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
                 <a href="#service-pricing">
@@ -307,25 +287,62 @@ export default function ServiceDetail() {
               />
             </motion.div>
           </div>
+          {relatedCaseStudies.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mt-10 pt-8 border-t border-border/50 grid grid-cols-2 sm:grid-cols-4 gap-6"
+              data-testid="hero-outcome-stats"
+            >
+              <div>
+                <p className={`text-2xl font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{relatedCaseStudies[0].results.metric1}</p>
+                <p className="text-xs text-muted-foreground mt-1">{relatedCaseStudies[0].results.label1}</p>
+              </div>
+              <div>
+                <p className={`text-2xl font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{relatedCaseStudies[0].results.metric2}</p>
+                <p className="text-xs text-muted-foreground mt-1">{relatedCaseStudies[0].results.label2}</p>
+              </div>
+              <div>
+                <p className={`text-2xl font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{relatedCaseStudies[0].results.metric3}</p>
+                <p className="text-xs text-muted-foreground mt-1">{relatedCaseStudies[0].results.label3}</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-foreground">4,000+</p>
+                <p className="text-xs text-muted-foreground mt-1">Clients Served</p>
+              </div>
+            </motion.div>
+          )}
         </div>
       </section>
 
-      <ProblemSolutionSection
-        problems={content.problems}
-        solutions={content.solutions}
-        serviceTitle={service.title}
-        accentFrom={theme.accentFrom}
-        accentTo={theme.accentTo}
-        variant={theme.problemSolutionLayout}
-      />
+      {/* Section 2: Problem — Who this is for + pain points */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-problem">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            label="The Problem"
+            title={`What ${service.category} Teams Get Wrong`}
+            description={`If your ${service.category.toLowerCase()} is underperforming, these are the patterns we see most often.`}
+          />
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+            {content.problems.map((problem, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Card className="p-5 border-l-4 border-l-red-200 bg-red-50/30" data-testid={`problem-item-${i}`}>
+                  <p className="text-sm font-medium text-foreground leading-relaxed">{problem}</p>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <WorkflowSection
-        steps={content.workflowSteps}
-        accentFrom={theme.accentFrom}
-        accentTo={theme.accentTo}
-        variant={theme.workflowLayout}
-      />
-
+      {/* Section 3: AI System — How it works / features */}
       <FeaturesSection
         features={content.features}
         accentFrom={theme.accentFrom}
@@ -333,87 +350,87 @@ export default function ServiceDetail() {
         variant={theme.featuresLayout}
       />
 
-      <section className="py-14 sm:py-16 bg-gradient-to-b from-white to-gray-50/70" data-testid="section-usa-service-intent">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            label="USA Strategy"
-            title={`${service.title} for Enterprise and Local Business Growth`}
-            description={`This system is designed for USA companies that need predictable pipeline growth, operational efficiency, and clear revenue attribution from marketing.`}
-          />
+      {/* Section 4: Process — Implementation steps */}
+      <WorkflowSection
+        steps={content.workflowSteps}
+        accentFrom={theme.accentFrom}
+        accentTo={theme.accentTo}
+        variant={theme.workflowLayout}
+      />
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            <GlassCard className="h-full">
-              <h3 className="text-lg font-semibold text-foreground mb-3">Enterprise Use Case</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Enterprise teams use {service.title} to unify demand generation, qualification, and follow-up across multiple teams and locations.
-                This reduces response lag, improves lead quality, and gives leadership a clearer path from spend to revenue.
-              </p>
-            </GlassCard>
-
-            <GlassCard className="h-full">
-              <h3 className="text-lg font-semibold text-foreground mb-3">Local Business Use Case</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Local businesses use {service.title} to capture demand quickly, reduce missed opportunities, and convert more calls,
-                form submissions, and chats into booked appointments and paying customers.
-              </p>
-            </GlassCard>
-          </div>
-
-          {relatedServiceData.length > 0 && (
-            <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
-              To improve ROI further, most clients combine this service with
-              {relatedServiceData.slice(0, 3).map((rs, idx) => (
-                <span key={rs!.slug}>
-                  {idx === 0 ? " " : idx === relatedServiceData.slice(0, 3).length - 1 ? " and " : ", "}
-                  <Link href={`/${rs!.slug}`}>
-                    <span className="text-blue-600 hover:underline cursor-pointer">{rs!.title}</span>
+      {/* Section 5: Proof — Case study with results + link */}
+      {relatedCaseStudies.length > 0 && (
+        <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-proof">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              label="Client Results"
+              title={`Proof: Real Businesses Using ${service.title}`}
+              description="These results come from real client campaigns managed by our team."
+            />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedCaseStudies.slice(0, 3).map((cs, i) => (
+                <motion.div
+                  key={cs.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Link href={`/${cs.slug}`}>
+                    <Card className="p-5 h-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-testid={`proof-case-study-${cs.id}`}>
+                      <Badge variant="secondary" className="mb-3 text-xs">{cs.industry}</Badge>
+                      <h3 className="text-sm font-semibold text-foreground mb-2 leading-snug">{cs.title}</h3>
+                      <p className="text-xs text-muted-foreground mb-4">{cs.business}</p>
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        <div className="p-2 rounded-md bg-blue-50/80 text-center">
+                          <p className={`text-base font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric1}</p>
+                          <p className="text-xs text-muted-foreground leading-tight">{cs.results.label1}</p>
+                        </div>
+                        <div className="p-2 rounded-md bg-blue-50/80 text-center">
+                          <p className={`text-base font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric2}</p>
+                          <p className="text-xs text-muted-foreground leading-tight">{cs.results.label2}</p>
+                        </div>
+                      </div>
+                      <span className="text-xs text-blue-600 font-medium flex items-center gap-1">
+                        Read full case study <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </Card>
                   </Link>
-                </span>
+                </motion.div>
               ))}
-              . This connected system typically improves conversion quality and shortens sales cycles.
-            </p>
-          )}
-        </div>
-      </section>
+            </div>
+          </div>
+        </section>
+      )}
 
-      <section className="py-14 sm:py-16" data-testid="section-seo-expanded-content">
+      {/* Section 5b: Industries */}
+      <section className="py-14 sm:py-16" data-testid="section-industries">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            label="Implementation Depth"
-            title={`How ${service.title} Drives Measurable Revenue Outcomes`}
-            description="This section provides page-specific strategy, operating model, and commercial execution detail for stronger indexing quality."
-          />
-
-          <div className="grid lg:grid-cols-3 gap-6">
-            <GlassCard className="lg:col-span-2">
-              <h3 className="text-lg font-semibold text-foreground mb-3">Execution Framework</h3>
-              <div className="space-y-3">
-                {serviceNarrative.map((paragraph, index) => (
-                  <p key={index} className="text-sm text-muted-foreground leading-relaxed">{paragraph}</p>
-                ))}
-              </div>
-            </GlassCard>
-
-            <GlassCard>
-              <h3 className="text-lg font-semibold text-foreground mb-3">ROI Benchmarks</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Faster response times and better lead conversion efficiency.</span></li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Lower cost per qualified lead through tighter funnel control.</span></li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Clear attribution from channel spend to booked opportunities.</span></li>
-                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5" /><span>Scalable systems for both local service teams and enterprise operations.</span></li>
-              </ul>
-            </GlassCard>
+          <SectionHeader label="Industries" title="Who Uses This System" description="Configured for your industry's specific sales cycle, qualification criteria, and compliance requirements." />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {content.industries.map((ind, i) => {
+              const IndIcon = iconMap[ind.icon] || Building2;
+              return (
+                <GlassCard key={ind.name} delay={i * 0.05} className="text-center">
+                  <div className={`w-10 h-10 mx-auto rounded-md bg-gradient-to-br ${theme.accentFrom} ${theme.accentTo} flex items-center justify-center mb-3 opacity-80`}>
+                    <IndIcon className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-sm font-medium text-foreground">{ind.name}</span>
+                </GlassCard>
+              );
+            })}
           </div>
         </div>
       </section>
 
+      {/* Section 5c: Pricing */}
       {pricing && (
         <section id="service-pricing" className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-service-pricing">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
               label="Pricing"
               title={`${service.title} Pricing`}
-              description={`Choose the plan that fits your needs. All plans are month-to-month with no long-term contracts.${pricing.combinedNote ? ` ${pricing.combinedNote}` : ""}`}
+              description={`Month-to-month, no long-term contracts.${pricing.combinedNote ? ` ${pricing.combinedNote}` : ""}`}
             />
             <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
               {pricing.tiers.map((tier, i) => (
@@ -461,65 +478,7 @@ export default function ServiceDetail() {
         </section>
       )}
 
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader label="Industries" title="Industry Use Cases" description="Our systems are trusted across industries with tailored configurations for each." />
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {content.industries.map((ind, i) => {
-              const IndIcon = iconMap[ind.icon] || Building2;
-              return (
-                <GlassCard key={ind.name} delay={i * 0.05} className="text-center">
-                  <div className={`w-10 h-10 mx-auto rounded-md bg-gradient-to-br ${theme.accentFrom} ${theme.accentTo} flex items-center justify-center mb-3 opacity-80`}>
-                    <IndIcon className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-sm font-medium text-foreground">{ind.name}</span>
-                </GlassCard>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {relatedCaseStudies.length > 0 && (
-        <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader label="Results" title="Related Case Studies" description="See how businesses like yours have achieved real results with our systems." />
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedCaseStudies.map((cs, i) => (
-                <GlassCard key={cs.id} delay={i * 0.1} glow>
-                  <Badge variant="secondary" className="mb-3">{cs.label}</Badge>
-                  <h3 className="text-lg font-semibold text-foreground mb-2" data-testid={`text-case-study-title-${cs.id}`}>{cs.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{cs.business}</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
-                      <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric1}</p>
-                      <p className="text-xs text-muted-foreground">{cs.results.label1}</p>
-                    </div>
-                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
-                      <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric2}</p>
-                      <p className="text-xs text-muted-foreground">{cs.results.label2}</p>
-                    </div>
-                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
-                      <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric3}</p>
-                      <p className="text-xs text-muted-foreground">{cs.results.label3}</p>
-                    </div>
-                    <div className="p-2 rounded-md bg-blue-50/80 text-center">
-                      <p className={`text-lg font-bold bg-gradient-to-r ${theme.accentFrom} ${theme.accentTo} bg-clip-text text-transparent`}>{cs.results.metric4}</p>
-                      <p className="text-xs text-muted-foreground">{cs.results.label4}</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mt-4">
-                    {cs.tags.map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
-                    ))}
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
+      {/* Section 6: FAQs */}
       <FAQSection
         faqs={content.faqs}
         accentFrom={theme.accentFrom}
@@ -527,10 +486,11 @@ export default function ServiceDetail() {
         variant={theme.faqLayout}
       />
 
+      {/* Section 7: Related Services + CTA */}
       {relatedServiceData.length > 0 && (
-        <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50/60 to-white">
+        <section className="py-16 sm:py-20 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-related-services">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader label="Explore More" title="Related Services" description="Complement your growth strategy with these related systems." />
+            <SectionHeader label="Build Your Stack" title="Services That Work Well With This" description="Most clients combine 2-3 systems for compounding results." />
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedServiceData.map((rs, i) => {
                 if (!rs) return null;
@@ -538,7 +498,7 @@ export default function ServiceDetail() {
                 return (
                   <Link key={rs.slug} href={`/${rs.slug}`}>
                     <GlassCard delay={i * 0.1} glow className="cursor-pointer h-full">
-                      <div className={`w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4`}>
+                      <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4">
                         <RsIcon className="w-5 h-5 text-blue-600" />
                       </div>
                       <h3 className="text-sm font-semibold text-foreground mb-2" data-testid={`text-related-service-${rs.slug}`}>{rs.title}</h3>
@@ -558,7 +518,7 @@ export default function ServiceDetail() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">Ready to Implement {service.title}?</h2>
             <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
-              Book a free strategy session and see how this system can be customized for your business.
+              Book a free strategy session and we'll show you exactly how this system works for your specific business and goals.
             </p>
             <Link href={`/book-demo?service=${encodeURIComponent(service.title)}`}>
               <Button variant="secondary" data-testid="button-cta-book-demo">

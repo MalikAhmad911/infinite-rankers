@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/seo-head";
 import SectionHeader from "@/components/section-header";
 import GlassCard from "@/components/glass-card";
-import { SERVICE_CATEGORIES } from "@/lib/constants";
+import { ALL_SERVICES } from "@/lib/constants";
 import {
   ArrowRight, Bot, Target, Globe, Zap, Phone, Headphones, UserCheck,
   CalendarCheck, MailCheck, TrendingUp, MessageSquare, Mail, Smartphone,
@@ -14,19 +14,13 @@ import {
   Monitor, Layout, Settings, Plug, PieChart, Code, Share2,
 } from "lucide-react";
 
-const iconMap: Record<string, any> = {
+type IconComponent = (props: { className?: string }) => JSX.Element;
+const iconMap: Record<string, IconComponent> = {
   Bot, Target, Globe, Zap, Phone, Headphones, UserCheck, CalendarCheck,
   MailCheck, TrendingUp, MessageSquare, Mail, Smartphone, Database,
   Workflow, Search, Megaphone, BarChart3, MapPin, Filter, MousePointer,
   Percent, Camera, ThumbsUp, FileText, Palette, Video, Monitor, Layout,
   Settings, Plug, PieChart, Code, Share2,
-};
-
-const catIcons: Record<string, any> = {
-  "ai-automation": Bot,
-  "lead-generation": Target,
-  "social-content": Share2,
-  "development": Code,
 };
 
 const POPULAR_SLUGS = new Set([
@@ -36,12 +30,42 @@ const POPULAR_SLUGS = new Set([
   "website-development", "marketing-automation-setup",
 ]);
 
-const CLUSTER_NAV = [
-  { id: "ai-automation", label: "AI & Automation", icon: Bot },
-  { id: "lead-generation", label: "Lead Generation", icon: Target },
-  { id: "social-content", label: "Social & Content", icon: Share2 },
-  { id: "development", label: "Development", icon: Code },
+const SERVICE_CLUSTERS = [
+  {
+    id: "ai-automation",
+    label: "AI & Automation",
+    displayTitle: "AI & Automation Systems",
+    displayDesc: "Intelligent automation that captures, qualifies, and converts leads 24/7 — without adding headcount.",
+    icon: Bot,
+    slugs: ["ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "ai-appointment-booking", "ai-follow-up", "ai-chatbot", "crm-automation"],
+  },
+  {
+    id: "search-seo",
+    label: "Search & SEO",
+    displayTitle: "Search & SEO Growth",
+    displayDesc: "Dominate search results and build sustainable organic traffic that compounds over time.",
+    icon: Search,
+    slugs: ["seo-authority", "local-seo", "content-writing", "conversion-rate-optimization", "landing-page-optimization", "conversion-funnels"],
+  },
+  {
+    id: "paid-ads",
+    label: "Paid Ads",
+    displayTitle: "Paid Advertising Systems",
+    displayDesc: "Data-driven ad campaigns on Google and Meta that generate predictable, qualified leads at scale.",
+    icon: Target,
+    slugs: ["google-ads", "meta-ads", "social-media-marketing", "instagram-growth", "facebook-growth", "video-marketing"],
+  },
+  {
+    id: "web-creative",
+    label: "Web & Creative",
+    displayTitle: "Web Development & Creative",
+    displayDesc: "High-performance websites, landing pages, and brand assets built to convert visitors into customers.",
+    icon: Monitor,
+    slugs: ["website-development", "landing-page-development", "branding-design", "crm-setup", "marketing-automation-setup", "analytics-dashboard"],
+  },
 ];
+
+const CLUSTER_NAV = SERVICE_CLUSTERS.map(({ id, label, icon }) => ({ id, label, icon }));
 
 export default function Services() {
   const enterpriseUseCases = [
@@ -151,14 +175,17 @@ export default function Services() {
         </div>
       </nav>
 
-      {SERVICE_CATEGORIES.map((cat, catIndex) => {
-        const CatIcon = catIcons[cat.id] || Zap;
+      {SERVICE_CLUSTERS.map((cluster, clusterIndex) => {
+        const CatIcon = cluster.icon;
+        const clusterServices = cluster.slugs
+          .map((slug) => ALL_SERVICES.find((s) => s.slug === slug))
+          .filter((s): s is (typeof ALL_SERVICES)[number] => s !== undefined);
         return (
           <section
-            key={cat.id}
-            id={cat.id}
-            className={`py-16 sm:py-20 lg:py-24 overflow-hidden scroll-mt-28 ${catIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`}
-            data-testid={`section-${cat.id}`}
+            key={cluster.id}
+            id={cluster.id}
+            className={`py-16 sm:py-20 lg:py-24 overflow-hidden scroll-mt-28 ${clusterIndex % 2 === 1 ? "bg-gradient-to-b from-gray-50/60 to-white" : ""}`}
+            data-testid={`section-${cluster.id}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
@@ -171,14 +198,14 @@ export default function Services() {
                   <CatIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-foreground" style={{ fontSize: "clamp(1.25rem, 3vw, 1.875rem)" }}>{cat.title}</h2>
-                  <p className="text-sm sm:text-base text-muted-foreground">{cat.description}</p>
+                  <h2 className="font-bold text-foreground" style={{ fontSize: "clamp(1.25rem, 3vw, 1.875rem)" }}>{cluster.displayTitle}</h2>
+                  <p className="text-sm sm:text-base text-muted-foreground">{cluster.displayDesc}</p>
                 </div>
               </motion.div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {cat.services.map((service, i) => {
-                  const Icon = iconMap[service.icon] || Zap;
+                {clusterServices.map((service, i) => {
+                  const Icon = (iconMap[service.icon] as IconComponent) || Zap;
                   const isPopular = POPULAR_SLUGS.has(service.slug);
                   return (
                     <Link key={service.slug} href={`/${service.slug}`}>
@@ -191,7 +218,7 @@ export default function Services() {
                         <div className="w-10 h-10 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-4">
                           <Icon className="w-5 h-5 text-blue-600" />
                         </div>
-                        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 pr-24">{service.title}</h3>
+                        <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 pr-24" data-testid={`service-title-${service.slug}`}>{service.title}</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">{service.shortDesc}</p>
                         <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-auto">
                           Explore Service <ArrowRight className="w-3 h-3" />
