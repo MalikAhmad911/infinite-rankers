@@ -8,6 +8,8 @@ import { getBlogPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
 import { ArrowLeft, ArrowRight, Clock, Calendar, User, Share2, Zap, BarChart3 } from "lucide-react";
 
+type ServiceItem = (typeof ALL_SERVICES)[number];
+
 const PORTFOLIO_IMAGES: Record<string, string> = {
   "1": "/images/portfolio/project-1-dental.jpg",
   "2": "/images/portfolio/project-2-ecommerce.jpg",
@@ -60,9 +62,9 @@ export default function BlogPost() {
   const related = getRelatedPosts(post.relatedPosts);
 
   const relatedServiceSlugs = CATEGORY_SERVICE_MAP[post.category] || ["ai-chatbot", "seo-authority"];
-  const relatedServices = relatedServiceSlugs
+  const relatedServices: ServiceItem[] = relatedServiceSlugs
     .map((s) => ALL_SERVICES.find((svc) => svc.slug === s))
-    .filter(Boolean)
+    .filter((s): s is ServiceItem => s !== undefined)
     .slice(0, 2);
 
   const relatedCaseStudy = CASE_STUDIES.find((cs) =>
@@ -225,7 +227,7 @@ export default function BlogPost() {
               Related Services
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
-              {relatedServices.map((svc: any) => (
+              {relatedServices.map((svc) => (
                 <Link key={svc.slug} href={`/${svc.slug}`}>
                   <Card className="p-5 hover-elevate cursor-pointer" data-testid={`related-service-${svc.slug}`}>
                     <div className="flex items-start gap-3">

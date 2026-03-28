@@ -1,12 +1,26 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { BLOG_POSTS_FULL } from "@/lib/blog-data";
-import { ArrowRight, Clock, Calendar, BookOpen } from "lucide-react";
+import { ArrowRight, Clock, Calendar, BookOpen, Zap } from "lucide-react";
+
+const CATEGORY_SERVICE_LINK: Record<string, { slug: string; label: string }> = {
+  "AI Automation": { slug: "ai-calling-agent", label: "AI Calling Agent" },
+  "Lead Generation": { slug: "google-ads", label: "Google Ads" },
+  "Sales Automation": { slug: "ai-follow-up", label: "AI Follow-Up" },
+  "Local Marketing": { slug: "local-seo", label: "Local SEO" },
+  "Strategy": { slug: "conversion-funnels", label: "Conversion Funnels" },
+  "Social Media": { slug: "social-media-marketing", label: "Social Media Marketing" },
+  "Web Development": { slug: "website-development", label: "Website Development" },
+  "Content Marketing": { slug: "content-writing", label: "Content Writing" },
+  "E-Commerce": { slug: "conversion-rate-optimization", label: "CRO" },
+  "Healthcare": { slug: "ai-receptionist", label: "AI Receptionist" },
+  "Real Estate": { slug: "ai-lead-qualification", label: "AI Lead Qualification" },
+};
 
 const TOPIC_CLUSTERS = [
   { label: "All Topics", value: "all" },
@@ -35,6 +49,7 @@ const CLUSTER_DESCRIPTIONS: Record<string, string> = {
 
 export default function Blog() {
   const [activeCluster, setActiveCluster] = useState("all");
+  const [, navigate] = useLocation();
 
   const filteredPosts = activeCluster === "all"
     ? BLOG_POSTS_FULL
@@ -173,7 +188,23 @@ export default function Blog() {
                         loading="lazy"
                       />
                       <div className="p-4 sm:p-5 flex flex-col flex-1">
-                        <Badge variant="secondary" className="self-start mb-3 text-xs">{post.category}</Badge>
+                        <div className="flex items-center gap-2 mb-3 flex-wrap">
+                          <Badge variant="secondary" className="text-xs">{post.category}</Badge>
+                          {CATEGORY_SERVICE_LINK[post.category] && (
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                navigate(`/${CATEGORY_SERVICE_LINK[post.category].slug}`);
+                              }}
+                              className="flex items-center gap-1 text-xs border border-border rounded-full px-2 py-0.5 text-muted-foreground hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors"
+                              data-testid={`badge-service-${post.id}`}
+                            >
+                              <Zap className="w-2.5 h-2.5 text-blue-500" />
+                              {CATEGORY_SERVICE_LINK[post.category].label}
+                            </button>
+                          )}
+                        </div>
                         <h3 className="text-sm sm:text-base font-semibold text-foreground mb-2 leading-snug line-clamp-2 flex-1">{post.title}</h3>
                         <p className="text-xs sm:text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">{post.excerpt}</p>
                         <div className="flex items-center justify-between gap-2 mt-auto pt-4 border-t border-border/50">

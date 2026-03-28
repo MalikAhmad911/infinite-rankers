@@ -13,8 +13,31 @@ import { PRICING_TIERS, SERVICE_PRICING } from "@/lib/constants";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
 import {
   ArrowRight, CheckCircle2, Shield, Clock, DollarSign,
-  ChevronDown, ChevronUp,
+  ChevronDown, ChevronUp, Users, BarChart3, Headphones, Zap,
 } from "lucide-react";
+
+const PLAN_DELIVERABLES = [
+  {
+    icon: Zap,
+    title: "AI System Setup",
+    description: "Full configuration of your AI calling agent, chatbot, or automation workflows — ready to take calls and book appointments in week one.",
+  },
+  {
+    icon: BarChart3,
+    title: "Performance Dashboard",
+    description: "Real-time KPI dashboard showing leads captured, calls made, appointments booked, and revenue attributed — updated daily.",
+  },
+  {
+    icon: Headphones,
+    title: "Dedicated Account Manager",
+    description: "A single point of contact who knows your business, your goals, and your numbers. Available by phone, email, and Slack.",
+  },
+  {
+    icon: Users,
+    title: "Monthly Strategy Calls",
+    description: "Structured 60-minute review of what's working, what's not, and what we're doing next — with a written action plan to follow.",
+  },
+];
 
 function ROICalculator() {
   const [monthlyLeads, setMonthlyLeads] = useState([100]);
@@ -307,6 +330,35 @@ export default function Pricing() {
                       {tier.cta} <ArrowRight className="w-4 h-4 ml-1" />
                     </Button>
                   </Link>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="plan-deliverables">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            label="What's Included"
+            title="Every Plan Includes These Core Deliverables"
+            description="Regardless of the tier you choose, you get a dedicated team, live performance data, and a structured engagement — not just a software subscription."
+          />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PLAN_DELIVERABLES.map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Card className="p-6 h-full" data-testid={`deliverable-${item.title.toLowerCase().replace(/\s+/g, "-")}`}>
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
+                    <item.icon className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                 </Card>
               </motion.div>
             ))}
