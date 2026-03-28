@@ -7,7 +7,7 @@ import GlassCard from "@/components/glass-card";
 import SectionHeader from "@/components/section-header";
 import ServiceHeroMockup from "@/components/service-mockups";
 import { ProblemSolutionSection, FeaturesSection, WorkflowSection, FAQSection } from "@/components/service-sections";
-import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, type ServiceVisualTheme, getServicePricing } from "@/lib/constants";
+import { ALL_SERVICES, CASE_STUDIES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, type ServiceVisualTheme, type ServiceContent, getServicePricing } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
 import {
@@ -31,53 +31,55 @@ const iconMap: Record<string, any> = {
   Car, Hammer, Scale, Heart, Landmark, Dumbbell,
 };
 
-const defaultContent = {
-  longDesc: "Our AI-powered system is designed to automate and optimize your business processes, delivering measurable results from day one.",
-  problems: [
-    "Leads slip through the cracks due to slow or no response",
-    "Manual processes waste time and limit scalability",
-    "Inconsistent follow-up leads to lost revenue opportunities",
-    "No visibility into what's working and what's not",
-  ],
-  solutions: [
-    "Instant AI-powered response to every lead, 24/7/365",
-    "Fully automated workflows that scale without added headcount",
-    "Intelligent follow-up sequences that nurture every prospect",
-    "Real-time analytics and reporting for complete visibility",
-  ],
-  features: [
-    "24/7 automated operation",
-    "Real-time analytics dashboard",
-    "CRM integration ready",
-    "Custom AI model training",
-    "Multi-channel deployment",
-    "A/B testing built-in",
-    "Automated reporting",
-    "Dedicated support team",
-  ],
-  workflowSteps: [
-    { step: "Setup & Configuration", desc: "We configure the system to match your business processes and goals." },
-    { step: "Integration & Testing", desc: "Connect with your existing tools and run comprehensive tests." },
-    { step: "Launch & Optimization", desc: "Go live with ongoing monitoring and continuous improvement." },
-    { step: "Scale & Grow", desc: "Expand capabilities and channels as your results compound." },
-  ],
-  industries: [
-    { name: "Real Estate", icon: "Building2" },
-    { name: "Healthcare", icon: "Stethoscope" },
-    { name: "Professional Services", icon: "Briefcase" },
-    { name: "E-Commerce", icon: "ShoppingCart" },
-    { name: "Education", icon: "GraduationCap" },
-    { name: "Restaurants", icon: "Utensils" },
-  ],
-  faqs: [
-    { q: "How quickly can this be implemented?", a: "Most implementations are completed within 2-4 weeks, including custom configuration, testing, and optimization for your specific business needs." },
-    { q: "Do I need technical knowledge to use this?", a: "No. We handle all the technical setup and provide a user-friendly dashboard. Our team manages ongoing optimization and you receive clear performance reports." },
-    { q: "Can this integrate with my existing tools?", a: "Yes. Our systems integrate with all major CRMs, email platforms, scheduling tools, and business software." },
-    { q: "What kind of results can I expect?", a: "Most clients see measurable improvements within the first 30 days, with significant ROI within 90 days." },
-    { q: "Is there a minimum contract period?", a: "No long-term contracts required. We operate on a month-to-month basis because we're confident our results speak for themselves." },
-  ],
-  relatedServices: [] as string[],
-};
+function buildServiceContent(service: { slug: string; title: string; shortDesc: string; category: string }): ServiceContent {
+  return {
+    longDesc: `${service.title} is a purpose-built revenue system designed to automate and optimize your ${service.category.toLowerCase()} operations. ${service.shortDesc} Every system is configured specifically for your business model, integrated with your existing tools, and managed by a dedicated team of specialists — so you see results without the complexity.`,
+    problems: [
+      `Inconsistent results from your current ${service.category.toLowerCase()} approach`,
+      "Leads and opportunities slipping through the cracks without proper follow-up",
+      "Manual processes creating bottlenecks and limiting scalability",
+      "No clear attribution between marketing spend and actual revenue generated",
+    ],
+    solutions: [
+      `A purpose-built ${service.title} system configured specifically for your industry`,
+      "Automated workflows that capture, qualify, and convert every opportunity",
+      "Seamless integration with your existing CRM, tools, and processes",
+      "Clear performance dashboards linking system activity to booked revenue",
+    ],
+    features: [
+      "Custom configuration for your business model and goals",
+      "Full integration with existing CRM and marketing stack",
+      "Real-time performance dashboard and KPI tracking",
+      "Dedicated account manager and monthly strategy calls",
+      "Month-to-month, no lock-in contracts",
+      "Ongoing optimization and system improvements",
+      "Multi-channel deployment and support",
+      "Transparent reporting with revenue attribution",
+    ],
+    workflowSteps: [
+      { step: "Strategy & Discovery", desc: `We audit your current ${service.category.toLowerCase()} setup and identify the highest-impact opportunities for ${service.title}.` },
+      { step: "System Configuration", desc: "Custom build and configure the system to match your business processes, tone, and goals." },
+      { step: "Integration & Testing", desc: "Connect with your CRM, calendar, and existing tools with comprehensive testing before launch." },
+      { step: "Launch & Optimize", desc: "Go live with real data, monitor performance daily, and continuously improve results over time." },
+    ],
+    industries: [
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Professional Services", icon: "Briefcase" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Education", icon: "GraduationCap" },
+      { name: "Restaurants", icon: "Utensils" },
+    ],
+    faqs: [
+      { q: `How quickly can ${service.title} be implemented?`, a: "Most implementations are completed within 2-4 weeks, including custom configuration, testing, and optimization for your specific business needs and goals." },
+      { q: "Do I need technical knowledge to manage this?", a: "No. We handle all the technical setup and provide a clear, user-friendly dashboard. Our team manages ongoing optimization and you receive regular performance reports." },
+      { q: "Can this integrate with my existing tools?", a: "Yes. Our systems integrate with all major CRMs, email platforms, scheduling tools, and business software — including GoHighLevel, HubSpot, Salesforce, and more." },
+      { q: "What kind of results can I expect?", a: "Most clients see measurable improvements within the first 30 days, with significant ROI within 90 days depending on implementation quality and traffic volume." },
+      { q: "Is there a minimum contract period?", a: "No long-term contracts required. We operate month-to-month because our results speak for themselves and we earn your continued investment every month." },
+    ],
+    relatedServices: [] as string[],
+  };
+}
 
 const defaultTheme: ServiceVisualTheme = {
   heroMockup: "analytics-dashboard",
@@ -91,7 +93,7 @@ const defaultTheme: ServiceVisualTheme = {
   faqLayout: "A",
 };
 
-function buildServiceNarrative(service: { slug: string; title: string; category: string }, content: typeof defaultContent) {
+function buildServiceNarrative(service: { slug: string; title: string; category: string }, content: ServiceContent) {
   const featureLine = content.features.slice(0, 4).join(", ");
   const problemLine = content.problems.slice(0, 3).join("; ");
   const solutionLine = content.solutions.slice(0, 3).join("; ");
@@ -147,7 +149,7 @@ export default function ServiceDetail() {
   }
 
   const Icon = iconMap[service.icon] || Zap;
-  const content = SERVICE_CONTENT[params.slug] || defaultContent;
+  const content = SERVICE_CONTENT[params.slug] ?? buildServiceContent(service);
   const theme = SERVICE_VISUAL_THEMES[params.slug] || defaultTheme;
   const categoryId = service.categoryId;
   const pricing = getServicePricing(params.slug);
