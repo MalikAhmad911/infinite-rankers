@@ -468,8 +468,8 @@ function buildIndexingChecklist(): string {
 <p><span class="check">✅</span> sitemap.xml - Backward-compatible consolidated sitemap</p>
 <p><span class="check">✅</span> RSS feed - 25 items for crawl frequency boost</p>
 <p><span class="check">✅</span> Canonical tags - Every page has unique canonical</p>
-<p><span class="check">✅</span> Meta robots - All pages set to "index, follow"</p>
-<p><span class="check">✅</span> No noindex tags - Verified clean</p>
+<p><span class="check">✅</span> Meta robots - Canonical pages set to "index, follow"; 8 thin pages suppressed with "noindex, follow"</p>
+<p><span class="check">✅</span> 301 redirects - 33 cannibal URLs permanently redirect to canonical hub pages</p>
 <p><span class="check">✅</span> SSR - Full HTML rendered server-side for all pages</p>
 <p><span class="check">✅</span> Structured data - Organization, Service, Article, BreadcrumbList, FAQPage schemas</p>
 <p><span class="check">✅</span> OG tags + Twitter cards - Every page</p>
