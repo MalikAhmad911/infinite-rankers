@@ -1118,6 +1118,7 @@ export const ACHIEVEMENTS = [
 ];
 
 export interface ServiceContent {
+  icp?: string;
   longDesc: string;
   problems: string[];
   solutions: string[];
@@ -1130,6 +1131,7 @@ export interface ServiceContent {
 
 export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   "ai-calling-agent": {
+    icp: "Best for service businesses with high call volume — healthcare practices, legal firms, home services, real estate brokerages, and auto dealerships — where a missed call means a lost client.",
     longDesc: "Our AI Calling Agent handles inbound and outbound calls with human-like conversation, qualifying leads and booking appointments 24/7. It integrates directly with your CRM and calendar to ensure every opportunity is captured and acted upon instantly, eliminating missed calls and slow response times that cost you revenue.",
     problems: [
       "Missing 40%+ of inbound calls during off-hours and peak periods",
@@ -1177,6 +1179,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["ai-receptionist", "ai-appointment-booking", "ai-lead-qualification", "crm-automation"]
   },
   "ai-receptionist": {
+    icp: "Ideal for appointment-driven businesses — law firms, medical clinics, dental practices, and home services — where every unanswered call represents a lost consultation or service booking.",
     longDesc: "Our AI Receptionist ensures every inbound call is answered instantly with a professional, friendly voice that qualifies callers, answers FAQs, and routes inquiries to the right team member. Never lose a potential client to voicemail again, even outside business hours or during peak call times.",
     problems: [
       "Potential clients hanging up when reaching voicemail or long hold times",
@@ -1224,6 +1227,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["ai-calling-agent", "ai-appointment-booking", "ai-follow-up", "workflow-automation"]
   },
   "ai-lead-qualification": {
+    icp: "Built for sales teams handling 50+ inbound leads per month across real estate, financial services, e-commerce, and B2B — where separating serious buyers from browsers is the difference between a profitable pipeline and a burned-out team.",
     longDesc: "Our AI Lead Qualification Bot automatically scores, segments, and qualifies every lead the moment they enter your pipeline. Using behavioral data, demographic signals, and engagement patterns, it ensures your sales team only spends time on prospects most likely to convert, dramatically increasing close rates and revenue per rep.",
     problems: [
       "Sales reps wasting 60%+ of their time on unqualified prospects",
@@ -1271,6 +1275,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["ai-calling-agent", "ai-follow-up", "crm-automation", "ai-chatbot"]
   },
   "ai-appointment-booking": {
+    icp: "Perfect for service professionals who sell via discovery calls, demos, or consultations — dentists, HVAC companies, coaches, agencies, and SaaS teams — where booked calendar slots equal revenue.",
     longDesc: "Our AI Appointment Booking System eliminates scheduling friction by letting prospects book qualified meetings directly into your calendar through AI-driven conversations. Whether via phone, chat, or SMS, the system handles availability, confirmations, reminders, and rescheduling automatically, filling your calendar with ready-to-buy prospects.",
     problems: [
       "Manual scheduling creating delays that cause prospects to lose interest",
@@ -1318,6 +1323,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["ai-calling-agent", "ai-receptionist", "ai-follow-up", "crm-automation"]
   },
   "ai-follow-up": {
+    icp: "Designed for any business generating inbound leads that require multiple touchpoints to close — especially B2B services, consultancies, home improvement, and healthcare practices where the average prospect needs 5–8 follow-ups before committing.",
     longDesc: "Our AI Follow-Up Automation ensures no lead ever slips through the cracks by deploying intelligent, multi-channel follow-up sequences that adapt to prospect behavior. From email to SMS to phone, the system nurtures every lead with the right message at the right time, turning cold prospects into booked appointments and closed deals.",
     problems: [
       "80% of deals require 5+ follow-ups but reps stop after 1-2 attempts",
@@ -1412,6 +1418,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["crm-automation", "ai-lead-qualification", "ai-follow-up", "ai-calling-agent"]
   },
   "ai-chatbot": {
+    icp: "Best for businesses with high website traffic and repetitive inquiry patterns — e-commerce stores, SaaS companies, dental practices, law firms, and any brand with a 24/7 audience — where speed of first response is the primary conversion driver.",
     longDesc: "Our AI Chatbot engages every website visitor, WhatsApp contact, and Messenger user with intelligent, personalized conversations that capture leads, answer questions, and book meetings 24/7. It learns your business inside and out to provide accurate, helpful responses that build trust and drive conversions from every digital touchpoint.",
     problems: [
       "Website visitors leaving without engaging or providing contact information",
@@ -1553,6 +1560,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["ai-email-automation", "ai-follow-up", "ai-appointment-booking", "workflow-automation"]
   },
   "crm-automation": {
+    icp: "Ideal for growing companies with an existing CRM (HubSpot, Salesforce, GoHighLevel, Pipedrive) generating 20+ leads per month — where the bottleneck is pipeline visibility, data hygiene, and manual task overhead rather than lead volume.",
     longDesc: "Our CRM Automation transforms your customer relationship management from a manual data entry tool into an intelligent revenue engine. We automate lead capture, deal progression, task assignment, follow-up triggers, and reporting so your team spends zero time on admin and 100% of their effort on closing deals and growing accounts.",
     problems: [
       "Sales reps entering data manually, leading to incomplete and inaccurate CRM records",
@@ -1647,6 +1655,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["crm-automation", "ai-email-automation", "ai-sms-automation", "marketing-automation-setup"]
   },
   "google-ads": {
+    icp: "Best for local and regional service businesses spending at least $2,000/month on ads — particularly home services, healthcare, legal, and insurance — where Google's high-intent search traffic converts at 3–5x the rate of social platforms.",
     longDesc: "Our Google Ads Revenue Engine builds and manages data-driven campaigns that put your business in front of high-intent buyers at the exact moment they're searching for your services. We combine AI-powered bidding, precision targeting, and continuous optimization to maximize every dollar of ad spend and deliver measurable ROI.",
     problems: [
       "Wasting ad budget on irrelevant clicks and unqualified traffic",
@@ -1694,6 +1703,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["meta-ads", "landing-page-optimization", "conversion-rate-optimization", "conversion-funnels"]
   },
   "meta-ads": {
+    icp: "Ideal for B2C brands, e-commerce stores, local services, and coaching businesses where visual storytelling and audience targeting — not keyword intent — are the primary levers for customer acquisition at scale.",
     longDesc: "Our Meta Ads Growth Engine leverages Facebook and Instagram's powerful targeting to reach your ideal customers with scroll-stopping creative and precision audience building. We deploy AI-driven campaigns across the entire funnel — from awareness to conversion — generating qualified leads at scale while maintaining profitable cost-per-acquisition.",
     problems: [
       "Ad fatigue causing declining performance on Facebook and Instagram",
@@ -1741,6 +1751,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     relatedServices: ["google-ads", "conversion-funnels", "landing-page-optimization", "social-media-marketing"]
   },
   "seo-authority": {
+    icp: "Built for established businesses (12+ months old) with existing websites who want to own their category in Google search — professional services, healthcare groups, SaaS companies, and agencies where organic traffic compounds into durable competitive advantage.",
     longDesc: "Our SEO Authority Growth System builds your organic search dominance through technical optimization, authority-building content, and strategic link acquisition. We position your business to rank for high-value keywords that drive consistent, qualified traffic without ongoing ad spend, creating a compounding asset that generates leads and revenue month after month.",
     problems: [
       "Invisible on Google for your most valuable service and product keywords",

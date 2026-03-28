@@ -40,6 +40,69 @@ const CATEGORY_SERVICE_MAP: Record<string, string[]> = {
   "Branding": ["branding-design", "content-writing"],
 };
 
+const POST_SERVICE_MAP: Record<string, { services: string[]; caseStudySlug: string }> = {
+  "ai-automation-revenue-growth-2025": {
+    services: ["ai-calling-agent", "ai-chatbot"],
+    caseStudySlug: "case-study-dental-practice-revenue-transformation",
+  },
+  "google-ads-roi-local-business": {
+    services: ["google-ads", "local-seo"],
+    caseStudySlug: "case-study-home-services-plumbing-hvac-lead-machine",
+  },
+  "ai-chatbot-lead-conversion": {
+    services: ["ai-chatbot", "ai-lead-qualification"],
+    caseStudySlug: "case-study-auto-dealership-ai-sales-acceleration",
+  },
+  "crm-automation-sales-pipeline": {
+    services: ["crm-automation", "ai-follow-up"],
+    caseStudySlug: "case-study-saas-growth-acceleration",
+  },
+  "seo-vs-paid-ads-strategy": {
+    services: ["seo-authority", "google-ads"],
+    caseStudySlug: "case-study-cnc-manufacturer-digital-lead-generation",
+  },
+  "ai-follow-up-sequences": {
+    services: ["ai-follow-up", "ai-email-automation"],
+    caseStudySlug: "case-study-saas-growth-acceleration",
+  },
+  "social-media-marketing-strategy-2025": {
+    services: ["social-media-marketing", "meta-ads"],
+    caseStudySlug: "case-study-luxury-salon-ai-booking-instagram-growth",
+  },
+  "local-business-digital-marketing": {
+    services: ["local-seo", "google-ads"],
+    caseStudySlug: "case-study-restaurant-chain-local-seo-transformation",
+  },
+  "lead-generation-strategies-2025": {
+    services: ["ai-lead-qualification", "google-ads"],
+    caseStudySlug: "case-study-real-estate-ai-lead-generation",
+  },
+  "website-conversion-optimization": {
+    services: ["conversion-rate-optimization", "landing-page-optimization"],
+    caseStudySlug: "case-study-ecommerce-cart-recovery-scaling",
+  },
+  "content-marketing-seo-guide": {
+    services: ["content-writing", "seo-authority"],
+    caseStudySlug: "case-study-commercial-contractor-brand-lead-growth",
+  },
+  "ecommerce-growth-strategies": {
+    services: ["meta-ads", "crm-automation"],
+    caseStudySlug: "case-study-ecommerce-cart-recovery-scaling",
+  },
+  "brand-identity-business-growth": {
+    services: ["branding-design", "content-writing"],
+    caseStudySlug: "case-study-luxury-salon-ai-booking-instagram-growth",
+  },
+  "healthcare-marketing-patient-acquisition": {
+    services: ["ai-receptionist", "google-ads"],
+    caseStudySlug: "case-study-medical-clinic-patient-acquisition",
+  },
+  "real-estate-lead-generation-ai": {
+    services: ["ai-lead-qualification", "ai-calling-agent"],
+    caseStudySlug: "case-study-real-estate-ai-lead-generation",
+  },
+};
+
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post = getBlogPostBySlug(slug || "");
@@ -62,15 +125,18 @@ export default function BlogPost() {
 
   const related = getRelatedPosts(post.relatedPosts);
 
-  const relatedServiceSlugs = CATEGORY_SERVICE_MAP[post.category] || ["ai-chatbot", "seo-authority"];
+  const postMap = POST_SERVICE_MAP[post.slug];
+  const relatedServiceSlugs = postMap?.services || CATEGORY_SERVICE_MAP[post.category] || ["ai-chatbot", "seo-authority"];
   const relatedServices: ServiceItem[] = relatedServiceSlugs
     .map((s) => ALL_SERVICES.find((svc) => svc.slug === s))
     .filter((s): s is ServiceItem => s !== undefined)
     .slice(0, 2);
 
-  const relatedCaseStudy = CASE_STUDIES.find((cs) =>
-    cs.tags.some((t) => t.toLowerCase().includes(post.category.toLowerCase().split(" ")[0]))
-  ) || CASE_STUDIES[0];
+  const relatedCaseStudy = postMap?.caseStudySlug
+    ? CASE_STUDIES.find((cs) => cs.slug === postMap.caseStudySlug) || CASE_STUDIES[0]
+    : CASE_STUDIES.find((cs) =>
+        cs.tags.some((t) => t.toLowerCase().includes(post.category.toLowerCase().split(" ")[0]))
+      ) || CASE_STUDIES[0];
 
   const handleShare = () => {
     if (navigator.share) {

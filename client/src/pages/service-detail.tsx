@@ -214,7 +214,13 @@ export default function ServiceDetail() {
               </div>
               <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4 leading-tight" data-testid="text-service-title">{service.title}</h1>
               <p className="text-lg text-muted-foreground leading-relaxed mb-3">{service.shortDesc}</p>
-              <p className="text-base text-muted-foreground leading-relaxed mb-6">{content.longDesc}</p>
+              <p className="text-base text-muted-foreground leading-relaxed mb-4">{content.longDesc}</p>
+              {content.icp && (
+                <div className="bg-blue-50 border border-blue-100 rounded-lg px-4 py-3 mb-5" data-testid="text-service-icp">
+                  <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-1">Ideal For</p>
+                  <p className="text-sm text-gray-700 leading-relaxed">{content.icp}</p>
+                </div>
+              )}
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />

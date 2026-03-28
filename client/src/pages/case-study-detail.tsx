@@ -31,6 +31,12 @@ const INDUSTRY_SERVICE_MAP: Record<string, string[]> = {
   "Logistics & Shipping": ["crm-automation", "workflow-automation"],
   "Manufacturing": ["seo-authority", "ai-lead-qualification"],
   "Veterinary": ["ai-appointment-booking", "local-seo"],
+  "Technology": ["ai-sales-assistant", "crm-automation"],
+  "B2B Technology": ["ai-sales-assistant", "crm-automation"],
+  "Food & Beverage": ["local-seo", "ai-sms-automation"],
+  "Auto Dealership": ["ai-chatbot", "ai-sms-automation"],
+  "Education & Coaching": ["ai-appointment-booking", "meta-ads"],
+  "Travel & Hospitality": ["google-ads", "crm-automation"],
 };
 
 function resolveServiceSlug(svcName: string): string | null {
