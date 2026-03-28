@@ -149,7 +149,7 @@ export default function SitemapPage() {
               {CASE_STUDIES.map((cs) => (
                 <SitemapLink
                   key={cs.id}
-                  href={`/${cs.id}`}
+                  href={`/${cs.slug}`}
                   title={cs.title}
                   testId={`link-case-study-${cs.id}`}
                 />

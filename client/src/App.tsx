@@ -35,7 +35,7 @@ function SmartPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
   if (ALL_SERVICES.some(s => s.slug === slug)) return <ServiceDetail />;
   if (getBlogPostBySlug(slug)) return <BlogPost />;
-  if (CASE_STUDIES.some(cs => cs.id === slug)) return <CaseStudyDetail />;
+  if (CASE_STUDIES.some(cs => cs.slug === slug || cs.id === slug)) return <CaseStudyDetail />;
   return <LandingPage slug={slug} />;
 }
 

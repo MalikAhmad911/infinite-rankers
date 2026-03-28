@@ -267,7 +267,7 @@ export default function Portfolio() {
                       </div>
 
                       <div className="mt-auto">
-                        <Link href={`/${cs.id}`}>
+                        <Link href={`/${cs.slug}`}>
                           <Button variant="outline" className="w-full" data-testid={`button-view-case-${cs.id}`}>
                             View Case Study <ArrowRight className="w-4 h-4 ml-1" />
                           </Button>

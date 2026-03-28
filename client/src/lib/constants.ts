@@ -89,6 +89,7 @@ export const ALL_SERVICES = SERVICE_CATEGORIES.flatMap(cat =>
 export const CASE_STUDIES = [
   {
     id: "1",
+    slug: "case-study-dental-practice-revenue-transformation",
     title: "Local Dental Practice Revenue Transformation",
     business: "Premier Dental Care — Multi-location dental practice",
     challenge: "Struggling with inconsistent patient flow and relying on word-of-mouth referrals. Monthly new patient count had plateaued at 15-20.",
@@ -115,6 +116,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "2",
+    slug: "case-study-ecommerce-cart-recovery-scaling",
     title: "E-Commerce Brand Scaling System",
     business: "LuxeHome Essentials — Premium home goods e-commerce",
     challenge: "High cart abandonment rate of 78%, low repeat customer rate, and inefficient ad spend across Meta and Google platforms.",
@@ -141,6 +143,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "3",
+    slug: "case-study-real-estate-ai-lead-generation",
     title: "Real Estate Agency Lead Generation",
     business: "Skyline Realty Group — Luxury real estate brokerage",
     challenge: "Generating only 30 leads per month with a 5% conversion rate. Sales team spent 60% of time on unqualified prospects.",
@@ -167,6 +170,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "4",
+    slug: "case-study-saas-growth-acceleration",
     title: "SaaS Company Growth Acceleration",
     business: "CloudSync Pro — B2B SaaS platform",
     challenge: "High churn rate of 8% monthly, lengthy sales cycle of 45 days, and inefficient demo booking process losing 40% of interested prospects.",
@@ -193,6 +197,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "5",
+    slug: "case-study-law-firm-client-intake-automation",
     title: "Law Firm Client Acquisition System",
     business: "Sterling & Associates — Personal injury law firm",
     challenge: "Inconsistent case intake process, missed calls during off-hours, and no systematic follow-up resulting in lost potential clients.",
@@ -219,6 +224,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "6",
+    slug: "case-study-fitness-studio-membership-growth",
     title: "Fitness Studio Membership Growth",
     business: "FitCore Studios — Boutique fitness chain",
     challenge: "Membership growth stagnated at 200 active members. Social media presence was minimal and paid advertising had low ROI.",
@@ -245,6 +251,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "7",
+    slug: "case-study-restaurant-chain-local-seo-transformation",
     title: "Restaurant Chain Digital Transformation",
     business: "Harvest Kitchen — Farm-to-table restaurant group",
     challenge: "No online ordering system, poor local visibility, and zero automated marketing. Each location managed marketing independently with inconsistent results.",
@@ -271,6 +278,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "8",
+    slug: "case-study-medical-clinic-patient-acquisition",
     title: "Multi-Specialty Clinic Patient Growth Engine",
     business: "Meridian Health Partners — Multi-specialty medical clinic",
     challenge: "Patient acquisition cost was $280 per new patient. Website generated minimal traffic, and the front desk missed 35% of calls during peak hours.",
@@ -297,6 +305,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "9",
+    slug: "case-study-wealth-management-digital-lead-generation",
     title: "Wealth Management Firm Digital Presence",
     business: "Crestview Capital Advisors — Independent wealth management firm",
     challenge: "Relied entirely on referrals for new clients. Had no digital marketing, outdated website, and zero online lead generation pipeline.",
@@ -323,6 +332,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "10",
+    slug: "case-study-home-services-plumbing-hvac-lead-machine",
     title: "Home Services Lead Machine",
     business: "TrueFlow Plumbing & HVAC — Residential plumbing and HVAC services",
     challenge: "Seasonal revenue swings of 40%, no recurring customer base, and spending $6,000/month on underperforming ads with no tracking in place.",
@@ -349,6 +359,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "11",
+    slug: "case-study-auto-dealership-ai-sales-acceleration",
     title: "Auto Dealership Sales Acceleration",
     business: "Pinnacle Motors — Pre-owned vehicle dealership",
     challenge: "Internet leads had a 6% close rate, response times averaged 4 hours, and the BDC team could not keep up with inbound inquiries during peak hours.",
@@ -375,6 +386,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "12",
+    slug: "case-study-online-coaching-enrollment-automation",
     title: "Online Coaching Business Revenue System",
     business: "Apex Performance Academy — Executive coaching & leadership training",
     challenge: "Inconsistent enrollment with feast-or-famine cycles. No automated funnel, manual onboarding, and course completion rates below 40%.",
@@ -401,6 +413,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "13",
+    slug: "case-study-boutique-hotel-direct-booking-engine",
     title: "Boutique Hotel Direct Booking Engine",
     business: "Shoreline Retreats — Boutique coastal hotel collection",
     challenge: "85% of bookings came through OTAs (Booking.com, Expedia) with 18-22% commission fees. Direct website bookings were nearly nonexistent.",
@@ -427,6 +440,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "14",
+    slug: "case-study-insurance-agency-renewal-automation",
     title: "Insurance Agency Lead & Retention System",
     business: "Guardian Shield Insurance — Independent insurance agency",
     challenge: "Policy renewal rate dropping to 72%, no digital lead generation, and agents spent most of their time on manual quoting and follow-ups.",
@@ -453,6 +467,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "15",
+    slug: "case-study-commercial-contractor-brand-lead-growth",
     title: "Commercial Contractor Brand & Lead System",
     business: "Ironclad Builders — Commercial construction & renovation",
     challenge: "Zero online presence beyond a basic one-page website. All leads came from networking and referrals, limiting growth to $1.8M annually.",
@@ -479,6 +494,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "16",
+    slug: "case-study-cpa-firm-onboarding-automation",
     title: "CPA Firm Client Growth & Automation",
     business: "Clearpath Accounting Group — Full-service CPA firm",
     challenge: "Client onboarding took 3 weeks on average, tax season overwhelmed the team, and the firm had no marketing beyond word-of-mouth referrals.",
@@ -505,6 +521,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "17",
+    slug: "case-study-luxury-salon-ai-booking-instagram-growth",
     title: "Luxury Salon Booking & Brand Expansion",
     business: "Velour Beauty Lounge — High-end hair and beauty salon",
     challenge: "No-show rate of 28%, inconsistent social media presence, and the booking system was manual (phone and walk-in only), limiting capacity utilization to 55%.",
@@ -531,6 +548,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "18",
+    slug: "case-study-immigration-law-multilingual-lead-generation",
     title: "Immigration Law Firm Digital Acquisition",
     business: "Bridgepoint Immigration Law — Immigration and visa law firm",
     challenge: "Competing with large national firms for visibility. Website was not multilingual, had no online consultation booking, and generated fewer than 5 leads per month.",
@@ -557,6 +575,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "19",
+    slug: "case-study-freight-brokerage-workflow-automation",
     title: "Freight Brokerage Efficiency & Growth",
     business: "Nexus Freight Solutions — Third-party logistics and freight brokerage",
     challenge: "Manual carrier matching taking 45 minutes per load, no CRM in place, and client communication relied on scattered emails and phone calls.",
@@ -583,6 +602,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "20",
+    slug: "case-study-cnc-manufacturer-digital-lead-generation",
     title: "Precision Parts Manufacturer Digital Transformation",
     business: "Apex Machining Works — CNC precision parts manufacturer",
     challenge: "No digital marketing presence, 100% reliance on trade shows and existing relationships. RFQ pipeline was feast-or-famine with long gaps between contracts.",
@@ -609,6 +629,7 @@ export const CASE_STUDIES = [
   },
   {
     id: "21",
+    slug: "case-study-veterinary-clinic-ai-appointment-growth",
     title: "Veterinary Clinic Growth & Automation",
     business: "PawsCare Animal Hospital — Multi-vet companion animal clinic",
     challenge: "Appointment scheduling was entirely phone-based causing 40% of calls to go unanswered during peak hours. No online presence beyond a basic Facebook page, and client retention dropped to 60%.",

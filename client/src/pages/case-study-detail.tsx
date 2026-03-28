@@ -64,7 +64,7 @@ function buildCaseStudyNarrative(cs: any) {
 export default function CaseStudyDetail() {
   const params = useParams<{ slug: string }>();
   const id = params.slug;
-  const csIndex = CASE_STUDIES.findIndex((cs) => cs.id === id);
+  const csIndex = CASE_STUDIES.findIndex((cs) => cs.slug === id || cs.id === id);
   const cs = CASE_STUDIES[csIndex];
 
   if (!cs) {
@@ -100,7 +100,7 @@ export default function CaseStudyDetail() {
         title={`${cs.title} - Case Study | Infinite Rankers`}
         description={`${cs.business}: ${cs.challenge.slice(0, 150)}`}
         keywords={cs.tags.join(", ")}
-        canonical={`https://infiniterankers.io/${cs.id}`}
+        canonical={`https://infiniterankers.io/${cs.slug}`}
       />
 
       <section className="relative pt-28 pb-16 overflow-hidden" data-testid="case-hero">
@@ -393,7 +393,7 @@ export default function CaseStudyDetail() {
                       <div className="p-4">
                         <h4 className="font-semibold text-foreground mb-1 line-clamp-1">{related.title}</h4>
                         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{related.business}</p>
-                        <Link href={`/${related.id}`}>
+                        <Link href={`/${related.slug}`}>
                           <Button variant="outline" size="sm" className="w-full" data-testid={`button-related-${related.id}`}>
                             View Case Study <ArrowRight className="w-3.5 h-3.5 ml-1" />
                           </Button>

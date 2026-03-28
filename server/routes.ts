@@ -9,10 +9,40 @@ import { registerIndexingRoutes } from "./google-indexing";
 import { registerAIDiscoveryRoutes } from "./ai-discovery";
 import { registerIndexNowRoutes } from "./indexnow";
 
+const CASE_STUDY_REDIRECT_MAP: Record<string, string> = {
+  "1": "case-study-dental-practice-revenue-transformation",
+  "2": "case-study-ecommerce-cart-recovery-scaling",
+  "3": "case-study-real-estate-ai-lead-generation",
+  "4": "case-study-saas-growth-acceleration",
+  "5": "case-study-law-firm-client-intake-automation",
+  "6": "case-study-fitness-studio-membership-growth",
+  "7": "case-study-restaurant-chain-local-seo-transformation",
+  "8": "case-study-medical-clinic-patient-acquisition",
+  "9": "case-study-wealth-management-digital-lead-generation",
+  "10": "case-study-home-services-plumbing-hvac-lead-machine",
+  "11": "case-study-auto-dealership-ai-sales-acceleration",
+  "12": "case-study-online-coaching-enrollment-automation",
+  "13": "case-study-boutique-hotel-direct-booking-engine",
+  "14": "case-study-insurance-agency-renewal-automation",
+  "15": "case-study-commercial-contractor-brand-lead-growth",
+  "16": "case-study-cpa-firm-onboarding-automation",
+  "17": "case-study-luxury-salon-ai-booking-instagram-growth",
+  "18": "case-study-immigration-law-multilingual-lead-generation",
+  "19": "case-study-freight-brokerage-workflow-automation",
+  "20": "case-study-cnc-manufacturer-digital-lead-generation",
+  "21": "case-study-veterinary-clinic-ai-appointment-growth",
+};
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  for (const [numId, slug] of Object.entries(CASE_STUDY_REDIRECT_MAP)) {
+    app.get(`/${numId}`, (_req, res) => {
+      res.redirect(301, `/${slug}`);
+    });
+  }
+
   registerChatbotRoutes(app);
   registerSitemapRoutes(app);
   registerIndexingRoutes(app);
