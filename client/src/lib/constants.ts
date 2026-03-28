@@ -2844,7 +2844,7 @@ export interface IndustryVertical {
 
 export const INDUSTRY_VERTICALS: IndustryVertical[] = [
   {
-    slug: "ai-marketing-for-dental-practices",
+    slug: "dental-ai",
     name: "Dental Practices",
     tagline: "AI Growth System for Dentists",
     headline: "Turn Your Dental Practice Into a Patient-Generating Machine",
@@ -2879,7 +2879,7 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     accentTo: "to-cyan-500",
   },
   {
-    slug: "ai-marketing-for-hvac-plumbing",
+    slug: "hvac-ai",
     name: "HVAC & Plumbing",
     tagline: "AI Lead Machine for Home Services",
     headline: "Dominate Your Local Market and Fill Your HVAC Schedule Year-Round",
@@ -2914,7 +2914,7 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     accentTo: "to-amber-400",
   },
   {
-    slug: "ai-marketing-for-law-firms",
+    slug: "law-firm-ai",
     name: "Law Firms",
     tagline: "Client Acquisition System for Attorneys",
     headline: "Fill Your Law Firm's Consultation Calendar on Autopilot",
@@ -2949,7 +2949,7 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     accentTo: "to-blue-500",
   },
   {
-    slug: "ai-marketing-for-real-estate",
+    slug: "real-estate-ai",
     name: "Real Estate",
     tagline: "AI Lead Generation for Agents & Brokerages",
     headline: "Generate 45+ Qualified Buyer & Seller Leads Per Month with AI",
@@ -2984,7 +2984,7 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     accentTo: "to-teal-500",
   },
   {
-    slug: "ai-marketing-for-medical-clinics",
+    slug: "medical-ai",
     name: "Medical Clinics",
     tagline: "Patient Acquisition System for Healthcare",
     headline: "Grow Your Clinic's Patient Volume by 125% Without Increasing Marketing Spend",
@@ -3019,7 +3019,7 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     accentTo: "to-pink-500",
   },
   {
-    slug: "ai-marketing-for-ecommerce",
+    slug: "ecommerce-ai",
     name: "E-Commerce Brands",
     tagline: "AI Revenue System for Online Stores",
     headline: "Recover Abandoned Carts and Scale E-Commerce Revenue with AI",

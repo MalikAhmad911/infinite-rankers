@@ -101,12 +101,12 @@ function createCaseStudyEntries(): SitemapURL[] {
 }
 
 const INDUSTRY_VERTICAL_SLUGS = [
-  "ai-marketing-for-dental-practices",
-  "ai-marketing-for-hvac-plumbing",
-  "ai-marketing-for-law-firms",
-  "ai-marketing-for-real-estate",
-  "ai-marketing-for-medical-clinics",
-  "ai-marketing-for-ecommerce",
+  "dental-ai",
+  "hvac-ai",
+  "law-firm-ai",
+  "real-estate-ai",
+  "medical-ai",
+  "ecommerce-ai",
 ];
 
 function getSitemapChildren(): SitemapChild[] {

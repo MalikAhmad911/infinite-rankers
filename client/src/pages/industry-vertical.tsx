@@ -9,11 +9,11 @@ import { INDUSTRY_VERTICALS, ALL_SERVICES } from "@/lib/constants";
 import {
   ArrowRight, ArrowLeft, CheckCircle2, XCircle, TrendingUp, Zap,
   Stethoscope, Hammer, Scale, Building2, Heart, ShoppingCart, Star,
-  ChevronDown, ChevronUp,
+  ChevronDown, ChevronUp, type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Stethoscope, Hammer, Scale, Building2, Heart, ShoppingCart, Zap, TrendingUp,
 };
 

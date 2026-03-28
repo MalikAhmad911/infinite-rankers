@@ -9,14 +9,14 @@ import { CASE_STUDIES, ALL_SERVICES } from "@/lib/constants";
 import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star, Lightbulb, Building2 } from "lucide-react";
 
 const CASE_STUDY_INDUSTRY_VERTICAL: Record<string, { slug: string; name: string }> = {
-  "case-study-dental-practice-revenue-transformation": { slug: "ai-marketing-for-dental-practices", name: "Dental Practices" },
-  "case-study-home-services-plumbing-hvac-lead-machine": { slug: "ai-marketing-for-hvac-plumbing", name: "HVAC & Plumbing" },
-  "case-study-law-firm-client-intake-automation": { slug: "ai-marketing-for-law-firms", name: "Law Firms" },
-  "case-study-immigration-law-multilingual-lead-generation": { slug: "ai-marketing-for-law-firms", name: "Law Firms" },
-  "case-study-real-estate-ai-lead-generation": { slug: "ai-marketing-for-real-estate", name: "Real Estate" },
-  "case-study-medical-clinic-patient-acquisition": { slug: "ai-marketing-for-medical-clinics", name: "Medical Clinics" },
-  "case-study-veterinary-clinic-ai-appointment-growth": { slug: "ai-marketing-for-medical-clinics", name: "Medical & Veterinary Clinics" },
-  "case-study-ecommerce-cart-recovery-scaling": { slug: "ai-marketing-for-ecommerce", name: "E-Commerce Brands" },
+  "case-study-dental-practice-revenue-transformation": { slug: "dental-ai", name: "Dental Practices" },
+  "case-study-home-services-plumbing-hvac-lead-machine": { slug: "hvac-ai", name: "HVAC & Plumbing" },
+  "case-study-law-firm-client-intake-automation": { slug: "law-firm-ai", name: "Law Firms" },
+  "case-study-immigration-law-multilingual-lead-generation": { slug: "law-firm-ai", name: "Law Firms" },
+  "case-study-real-estate-ai-lead-generation": { slug: "real-estate-ai", name: "Real Estate" },
+  "case-study-medical-clinic-patient-acquisition": { slug: "medical-ai", name: "Medical Clinics" },
+  "case-study-veterinary-clinic-ai-appointment-growth": { slug: "medical-ai", name: "Medical & Veterinary Clinics" },
+  "case-study-ecommerce-cart-recovery-scaling": { slug: "ecommerce-ai", name: "E-Commerce Brands" },
 };
 
 const CASE_STUDY_PRIMARY_SERVICE: Record<string, string[]> = {
