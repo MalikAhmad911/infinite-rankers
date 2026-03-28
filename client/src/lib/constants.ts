@@ -1478,6 +1478,13 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Custom knowledge base training",
       "Analytics dashboard with conversation insights"
     ],
+    deliverables: [
+      { item: "Knowledge base built from your FAQs, services, and pricing", timeline: "Days 1–3" },
+      { item: "Conversation flows designed for lead capture, booking, and support", timeline: "Days 3–5" },
+      { item: "Chatbot live on website (+ WhatsApp / Messenger if needed)", timeline: "Days 5–7" },
+      { item: "CRM integration and lead notification system active", timeline: "Day 7" },
+      { item: "Monthly conversation analytics report with conversion tracking", timeline: "Monthly" },
+    ],
     workflowSteps: [
       { step: "Knowledge Base Building", desc: "Train the chatbot on your products, services, FAQs, pricing, and brand voice." },
       { step: "Conversation Flow Design", desc: "Design chat flows for lead capture, FAQ handling, booking, and support scenarios." },
