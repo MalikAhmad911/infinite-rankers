@@ -12,6 +12,7 @@ import Home from "@/pages/home";
 import About from "@/pages/about";
 import Services from "@/pages/services";
 import ServiceDetail from "@/pages/service-detail";
+import ServicePillarPage from "@/pages/service-pillar-page";
 import Portfolio from "@/pages/portfolio";
 import CaseStudyDetail from "@/pages/case-study-detail";
 import Pricing from "@/pages/pricing";
@@ -35,7 +36,7 @@ import { getBlogPostBySlug } from "@/lib/blog-data";
 
 function SmartPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
-  if (ALL_SERVICES.some(s => s.slug === slug)) return <ServiceDetail />;
+  if (ALL_SERVICES.some(s => s.slug === slug)) return <ServicePillarPage />;
   if (getBlogPostBySlug(slug)) return <BlogPost />;
   if (CASE_STUDIES.some(cs => cs.slug === slug || cs.id === slug)) return <CaseStudyDetail />;
   if (INDUSTRY_VERTICALS.some(v => v.slug === slug)) return <IndustryVertical />;
