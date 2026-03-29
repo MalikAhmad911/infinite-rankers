@@ -1,0 +1,265 @@
+Got it.
+
+You want one strong Replit prompt that tells them:
+
+keep the current design
+shift the site fully into AI automation
+include your real service list
+create around 50 service pages
+make them SEO-ready
+target AEO, AIO, GEO, and SEO
+keep SSR working
+and structure the pages properly so there is no issue
+
+Here’s the prompt you can give Replit:
+
+Refactor this website into a pure AI Automation Agency website.
+
+Important:
+Keep the current design, layout quality, spacing, colors, and visual style.
+Do not redesign the site unless needed for small layout adjustments.
+The main goal is to change the content structure, service architecture, routing, SEO setup, and page system.
+
+Business direction:
+This website is no longer an SEO agency site.
+It must now position the company as an AI Automation Agency and AI Revenue Systems company.
+
+Core positioning:
+We build AI systems, automation workflows, agent-based systems, and custom software that help businesses capture leads, automate follow-up, improve customer communication, and generate more revenue.
+
+Main services to include:
+1. AI Automation & All AI Agents
+2. AI Receptionist
+3. AI Booking Agent
+4. ChatGPT Ads
+5. Google Ads
+6. Meta Ads
+7. Podium-style business communication and automation services
+8. SaaS Project Development
+9. AI Agent Development
+10. Custom AI Automation Systems
+
+Important note on positioning:
+Even if paid ads services are included, the site should still feel like an AI automation company first, not a generic ad agency.
+Ads should be presented as part of revenue systems and customer acquisition, not as traditional agency services.
+
+Main task:
+Create a scalable 50-service-page architecture for SEO.
+
+Requirements:
+1. Build around 50 dedicated service pages
+2. Each page must target a specific service keyword or service + industry keyword
+3. Pages must be unique enough to avoid duplication issues
+4. Pages must be structured for SEO, AEO, AIO, and GEO
+5. SSR must continue working correctly
+6. Routing must be clean and scalable
+7. Internal linking must support crawlability and keyword relevance
+8. Keep performance solid
+9. No spammy thin pages
+10. Use reusable templates where needed, but each page should still have unique headline, intro, positioning, and keyword angle
+
+Page goals:
+These pages should rank for commercial-intent keywords related to:
+AI automation
+AI agents
+AI receptionist
+AI booking systems
+CRM automation
+lead capture automation
+customer support AI
+review automation
+revenue automation
+SaaS development
+AI development
+and service-business automation keywords
+
+Page types to include:
+1. Core service pages
+2. Service + industry pages
+3. Service + business-use-case pages
+4. Service + GEO pages where relevant
+5. Podium-style alternative / business communication automation pages where relevant
+
+Suggested core service page examples:
+- /ai-automation-agency
+- /ai-agents-development
+- /ai-receptionist
+- /ai-booking-agent
+- /ai-customer-support-agent
+- /ai-sales-agent
+- /lead-capture-automation
+- /crm-automation
+- /follow-up-automation
+- /missed-call-text-back
+- /review-automation
+- /customer-reactivation-systems
+- /chatgpt-ads
+- /google-ads-for-service-businesses
+- /meta-ads-for-service-businesses
+- /saas-project-development
+- /custom-saas-development
+- /ai-agent-development
+- /custom-ai-automation
+- /revenue-automation-systems
+
+Then expand these into industry/use-case pages.
+
+Target industries:
+- Home Services
+- HVAC
+- Plumbing
+- Roofing
+- Electricians
+- Dental Clinics
+- Med Spas
+- Law Firms
+- Auto Businesses
+- Real Estate
+- Mortgage
+- Other local service businesses
+
+Suggested 50-page SEO structure:
+Create a mix of:
+- 10 core service pages
+- 15 service + industry pages
+- 10 service + use-case pages
+- 10 GEO or local-intent pages
+- 5 comparison / alternative / Podium-style pages
+
+Examples of service + industry pages:
+- /ai-receptionist-for-dentists
+- /ai-receptionist-for-law-firms
+- /ai-booking-agent-for-med-spas
+- /ai-automation-for-hvac-companies
+- /crm-automation-for-home-services
+- /lead-capture-automation-for-plumbers
+- /follow-up-automation-for-roofers
+- /customer-support-ai-for-auto-shops
+- /review-automation-for-dental-clinics
+- /customer-reactivation-for-med-spas
+
+Examples of use-case pages:
+- /stop-missing-leads-after-hours
+- /automate-appointment-booking
+- /missed-call-to-booking-system
+- /automate-customer-follow-up
+- /reactivate-old-leads
+- /ai-intake-system-for-law-firms
+- /automate-review-requests
+- /book-more-estimates-with-ai
+- /automate-front-desk-workflows
+- /improve-lead-response-time
+
+Examples of GEO pages:
+- /ai-automation-agency-usa
+- /ai-automation-agency-texas
+- /ai-automation-agency-california
+- /ai-automation-agency-florida
+- /ai-receptionist-service-usa
+- /crm-automation-agency-usa
+- /lead-capture-automation-usa
+- /ai-booking-agent-usa
+- /custom-ai-agency-usa
+- /revenue-automation-agency-usa
+
+Examples of comparison pages:
+- /podium-alternative
+- /podium-alternative-for-home-services
+- /podium-vs-custom-ai-system
+- /best-ai-receptionist-for-service-businesses
+- /best-ai-automation-agency-for-local-businesses
+
+SEO requirements for every page:
+- unique title tag
+- unique meta description
+- one clear primary keyword
+- supporting related keywords naturally included
+- strong H1
+- useful H2 structure
+- FAQ section for AEO
+- answer-style copy for AI search and featured snippets
+- clear business outcome language
+- internal links to related services and industries
+- CTA section
+- schema-ready structure where possible
+- location intent where relevant
+- no keyword stuffing
+- no thin content
+
+AEO and AIO requirements:
+Every page should be written to answer direct user questions clearly.
+Content should be structured so AI search engines and answer engines can easily understand:
+- what the service is
+- who it is for
+- how it works
+- what business outcome it creates
+- when a business needs it
+- why this company is a strong choice
+
+GEO requirements:
+Where relevant, create location-intent pages for the USA and major states/cities.
+These pages should not be thin duplicates.
+They should include localized intro copy, market relevance, and service angle.
+
+SSR requirements:
+- all pages must work correctly with SSR
+- routing must not break server-rendering
+- metadata should render properly
+- page content should be crawlable in source
+- avoid client-only SEO content rendering
+- make sure there is no issue with indexing because of rendering
+
+Page template structure:
+Each page should include:
+1. Hero with clear outcome-driven headline
+2. Short supporting intro
+3. What this service includes
+4. Who it is for
+5. Common problems it solves
+6. How it works
+7. FAQ
+8. Related services
+9. CTA
+
+Copy direction:
+Do not write like a generic SEO agency.
+Do not write like a cheap chatbot service.
+Write like a premium AI automation company.
+Focus on:
+- more leads
+- faster follow-up
+- more bookings
+- better conversion
+- improved communication
+- less lost revenue
+- custom implementation
+- business outcomes, not just features
+
+Technical/dev requirements:
+- use reusable data-driven architecture for service pages
+- make content scalable
+- keep routing clean
+- keep existing design system
+- improve internal linking
+- maintain performance
+- maintain SSR compatibility
+- keep the codebase easy to expand beyond 50 pages later
+
+Files likely involved:
+- App.tsx
+- route config
+- constants/data files
+- services page
+- service detail page template
+- SEO/meta helpers
+- page components
+
+Expected result:
+A clean AI Automation Agency site with 50 SEO-ready service pages that target commercial keywords, support SEO/AEO/AIO/GEO, maintain SSR, and keep the current premium design.
+
+One important note:
+Don’t just generate 50 low-quality pages.
+Build a proper scalable page system with strong unique content angles.
+
+If you want, next I can do one more useful thing:
+I can make the actual 50-page list with exact page slugs and target keywords so Replit doesn’t have to guess.

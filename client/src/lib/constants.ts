@@ -92,6 +92,39 @@ export const ALL_SERVICES = SERVICE_PILLARS.map(p => ({
   categoryId: p.id,
 }));
 
+export const OLD_SERVICE_REDIRECT_MAP: Record<string, string> = {
+  "ai-calling-agent": "/ai-lead-capture",
+  "ai-receptionist": "/customer-support-ai",
+  "ai-lead-qualification": "/ai-lead-capture",
+  "ai-appointment-booking": "/ai-appointment-agents",
+  "ai-follow-up": "/ai-appointment-agents",
+  "ai-sales-assistant": "/ai-appointment-agents",
+  "ai-chatbot": "/ai-lead-capture",
+  "ai-email-automation": "/ai-appointment-agents",
+  "ai-sms-automation": "/ai-lead-capture",
+  "crm-automation": "/crm-pipeline-automation",
+  "workflow-automation": "/crm-pipeline-automation",
+  "google-ads": "/revenue-automation-consulting",
+  "meta-ads": "/revenue-automation-consulting",
+  "seo-authority": "/revenue-automation-consulting",
+  "local-seo": "/revenue-automation-consulting",
+  "conversion-funnels": "/ai-lead-capture",
+  "landing-page-optimization": "/ai-lead-capture",
+  "conversion-rate-optimization": "/ai-lead-capture",
+  "social-media-marketing": "/revenue-automation-consulting",
+  "instagram-growth": "/reviews-reactivation-retention",
+  "facebook-growth": "/reviews-reactivation-retention",
+  "content-writing": "/revenue-automation-consulting",
+  "branding-design": "/custom-saas-tools",
+  "video-marketing": "/revenue-automation-consulting",
+  "website-development": "/custom-saas-tools",
+  "landing-page-development": "/custom-saas-tools",
+  "crm-setup": "/crm-pipeline-automation",
+  "saas-integrations": "/custom-saas-tools",
+  "marketing-automation-setup": "/crm-pipeline-automation",
+  "analytics-dashboard": "/crm-pipeline-automation",
+};
+
 export const CASE_STUDIES = [
   {
     id: "1",

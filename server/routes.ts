@@ -9,6 +9,8 @@ import { registerIndexingRoutes } from "./google-indexing";
 import { registerAIDiscoveryRoutes } from "./ai-discovery";
 import { registerIndexNowRoutes } from "./indexnow";
 
+// Canonical source of truth is also exported as OLD_SERVICE_REDIRECT_MAP in client/src/lib/constants.ts
+// Keep both in sync when adding or removing legacy service slugs.
 const OLD_SERVICE_REDIRECT_MAP: Record<string, string> = {
   "ai-calling-agent": "/ai-lead-capture",
   "ai-receptionist": "/customer-support-ai",
