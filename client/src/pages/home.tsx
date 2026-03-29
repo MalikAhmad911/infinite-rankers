@@ -474,6 +474,13 @@ const PRIORITY_SERVICES = [
     pitch: "Purpose-built dashboards, internal portals, and mini SaaS products designed for your exact workflow — no off-the-shelf compromises, no wasted seats.",
     icon: Code,
   },
+  {
+    slug: "revenue-automation-consulting",
+    label: "Consulting",
+    title: "Revenue Automation Consulting",
+    pitch: "We audit your entire revenue flow — from lead entry to closed deal — find where you're losing money, and deliver a prioritized AI implementation roadmap.",
+    icon: TrendingUp,
+  },
 ];
 
 function ServicesSection() {
@@ -490,7 +497,7 @@ function ServicesSection() {
             Priority Services
           </span>
           <h2 className="font-bold text-gray-900 mb-3 sm:mb-4" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
-            The 6 Systems That Drive the Most Revenue
+            The 7 AI Revenue Systems We Build
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }}>
             Each one is purpose-built to fix a specific growth bottleneck — from lead capture to closed deals.
@@ -539,6 +546,64 @@ function ServicesSection() {
               Explore All 7 AI Revenue Systems <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const WHO_WE_SERVE = [
+  { label: "Healthcare & Dental", desc: "AI booking agents, patient follow-up, and reputation automation for clinics and practices.", icon: "🏥", href: "/who-we-serve/healthcare" },
+  { label: "Real Estate", desc: "24/7 lead capture, AI showing schedulers, and CRM automation for agents and brokerages.", icon: "🏠", href: "/who-we-serve/real-estate" },
+  { label: "Law Firms", desc: "Automated intake, consultation booking, and client follow-up for legal practices.", icon: "⚖️", href: "/who-we-serve/law-firms" },
+  { label: "Home Services", desc: "Missed-call text-back, estimate follow-up, and review generation for contractors.", icon: "🔧", href: "/who-we-serve/home-services" },
+  { label: "SaaS & Tech", desc: "Trial-to-paid workflows, churn prevention automations, and onboarding AI for software companies.", icon: "💻", href: "/who-we-serve/saas" },
+  { label: "E-Commerce & Retail", desc: "Cart recovery, repeat purchase campaigns, and support AI for online stores.", icon: "🛒", href: "/who-we-serve/ecommerce" },
+];
+
+function WhoWeServeSection() {
+  return (
+    <section className="py-14 sm:py-20 bg-gradient-to-b from-white to-indigo-50/30" data-testid="who-we-serve-section">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-8 sm:mb-12"
+        >
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
+            Who We Serve
+          </span>
+          <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
+            AI Revenue Systems for 6 Core Industries
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.05rem)" }}>
+            We specialize in high-growth service businesses and digital companies where automation creates the most leverage.
+          </p>
+        </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {WHO_WE_SERVE.map((item, i) => (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.06 }}
+            >
+              <Link href={item.href}>
+                <div
+                  className="group bg-white rounded-xl p-5 sm:p-6 border border-gray-200/60 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex gap-4 items-start h-full"
+                  data-testid={`industry-card-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
+                >
+                  <span className="text-2xl flex-shrink-0 mt-0.5" aria-hidden="true">{item.icon}</span>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 group-hover:text-indigo-700 transition-colors">{item.label}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 leading-snug">{item.desc}</p>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -1209,6 +1274,7 @@ export default function Home() {
       <AchievementsSection />
       <PipelineSection />
       <ServicesSection />
+      <WhoWeServeSection />
       <HowItWorksSection />
       <MidCTASection />
       <PortfolioSection />

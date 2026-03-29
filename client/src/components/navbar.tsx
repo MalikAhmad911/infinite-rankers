@@ -239,7 +239,7 @@ export default function Navbar() {
                             {pillar.title}
                           </div>
                           <div className="text-xs text-gray-500 mt-0.5 leading-relaxed line-clamp-1">
-                            {pillar.shortDesc.split(" — ")[0]}
+                            {pillar.tagline}
                           </div>
                         </div>
                         <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-blue-500 transition-colors flex-shrink-0 mt-1" />

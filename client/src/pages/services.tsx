@@ -93,32 +93,6 @@ export default function Services() {
                 </motion.div>
               );
             })}
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: SERVICE_PILLARS.length * 0.07 }}
-            >
-              <Link href="/revenue-automation-consulting">
-                <GlassCard className="cursor-pointer h-full flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-gradient-to-br from-blue-50/60 to-indigo-50/40 border-blue-200/60 group"
-                  data-testid="pillar-card-consulting-cta"
-                >
-                  <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-4 flex-shrink-0 shadow-md shadow-indigo-200/50">
-                    <TrendingUp className="w-5 h-5 text-white" />
-                  </div>
-                  <h2 className="text-base sm:text-lg font-bold text-foreground mb-2 leading-snug">
-                    Not Sure Where to Start?
-                  </h2>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
-                    Book a free Revenue Automation Audit. We'll map your current revenue flow, find where you're losing leads, and recommend the 1–3 systems that will generate the fastest ROI.
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 mt-auto group-hover:gap-2 transition-all">
-                    Book Free Audit <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </GlassCard>
-              </Link>
-            </motion.div>
           </div>
         </div>
       </section>
