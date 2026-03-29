@@ -55,3 +55,7 @@ build = ["npm", "run", "build"]
 
 [userenv.shared]
 NEON_DATABASE_URL = "postgresql://neondb_owner:npg_YDBZ3fdS9rvG@ep-frosty-voice-ai7rjq52-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require"
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
