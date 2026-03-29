@@ -553,12 +553,12 @@ function ServicesSection() {
 }
 
 const WHO_WE_SERVE = [
-  { label: "Healthcare & Dental", desc: "AI booking agents, patient follow-up, and reputation automation for clinics and practices.", icon: "🏥", href: "/who-we-serve/healthcare" },
-  { label: "Real Estate", desc: "24/7 lead capture, AI showing schedulers, and CRM automation for agents and brokerages.", icon: "🏠", href: "/who-we-serve/real-estate" },
-  { label: "Law Firms", desc: "Automated intake, consultation booking, and client follow-up for legal practices.", icon: "⚖️", href: "/who-we-serve/law-firms" },
-  { label: "Home Services", desc: "Missed-call text-back, estimate follow-up, and review generation for contractors.", icon: "🔧", href: "/who-we-serve/home-services" },
-  { label: "SaaS & Tech", desc: "Trial-to-paid workflows, churn prevention automations, and onboarding AI for software companies.", icon: "💻", href: "/who-we-serve/saas" },
-  { label: "E-Commerce & Retail", desc: "Cart recovery, repeat purchase campaigns, and support AI for online stores.", icon: "🛒", href: "/who-we-serve/ecommerce" },
+  { label: "Healthcare & Dental", desc: "AI booking agents, patient follow-up, and reputation automation for clinics and practices.", icon: "🏥", href: "/dental-ai" },
+  { label: "Real Estate", desc: "24/7 lead capture, AI showing schedulers, and CRM automation for agents and brokerages.", icon: "🏠", href: "/real-estate-ai" },
+  { label: "Law Firms", desc: "Automated intake, consultation booking, and client follow-up for legal practices.", icon: "⚖️", href: "/law-firm-ai" },
+  { label: "Home Services", desc: "Missed-call text-back, estimate follow-up, and review generation for contractors.", icon: "🔧", href: "/hvac-ai" },
+  { label: "Medical Clinics", desc: "Patient acquisition, recall automation, and AI scheduling for medical practices.", icon: "💊", href: "/medical-ai" },
+  { label: "E-Commerce & Retail", desc: "Cart recovery, repeat purchase campaigns, and support AI for online stores.", icon: "🛒", href: "/ecommerce-ai" },
 ];
 
 function WhoWeServeSection() {

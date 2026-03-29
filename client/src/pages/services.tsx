@@ -7,10 +7,10 @@ import GlassCard from "@/components/glass-card";
 import { SERVICE_PILLARS } from "@/lib/constants";
 import {
   ArrowRight, Bot, CalendarCheck, Database, Headphones, Star,
-  Code, TrendingUp, CheckCircle2,
+  Code, TrendingUp, CheckCircle2, type LucideIcon,
 } from "lucide-react";
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Bot, CalendarCheck, Database, Headphones, Star, Code, TrendingUp,
 };
 
