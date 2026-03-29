@@ -251,72 +251,66 @@ const PRIORITY_SERVICES = [
     slug: "ai-lead-capture", label: "AI Systems", title: "AI Lead Capture Systems",
     pitch: "Capture every inbound lead automatically — website chat, missed-call text-back, SMS, and WhatsApp — routed to your CRM before they contact a competitor.",
     icon: Bot,
-    gradient: "from-blue-500 to-cyan-400",
-    bg: "from-blue-50 to-cyan-50",
-    border: "border-blue-100",
-    iconBg: "bg-blue-500",
-    tag: "bg-blue-100 text-blue-700",
-    statColor: "text-blue-600",
+    iconColor: "#3b82f6",
+    cardBg: "linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%)",
+    borderColor: "#bfdbfe",
+    tagBg: "#dbeafe", tagText: "#1d4ed8",
+    statColor: "#2563eb",
     stat: "100% leads captured",
   },
   {
     slug: "ai-appointment-agents", label: "AI Systems", title: "AI Appointment & Sales Agents",
     pitch: "AI agents that qualify prospects, book meetings, and follow up until they respond — without your team lifting a finger. Average client books 3x more appointments in 60 days.",
     icon: CalendarCheck,
-    gradient: "from-violet-500 to-purple-400",
-    bg: "from-violet-50 to-purple-50",
-    border: "border-violet-100",
-    iconBg: "bg-violet-500",
-    tag: "bg-violet-100 text-violet-700",
-    statColor: "text-violet-600",
+    iconColor: "#7c3aed",
+    cardBg: "linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%)",
+    borderColor: "#ddd6fe",
+    tagBg: "#ede9fe", tagText: "#5b21b6",
+    statColor: "#6d28d9",
     stat: "3x more bookings",
   },
   {
     slug: "crm-pipeline-automation", label: "Automation", title: "CRM & Pipeline Automation",
     pitch: "Turn your CRM into a self-managing revenue machine. Automatic lead entry, deal-stage movement, and reporting — no more manual data entry or missed follow-ups.",
     icon: Database,
-    gradient: "from-emerald-500 to-teal-400",
-    bg: "from-emerald-50 to-teal-50",
-    border: "border-emerald-100",
-    iconBg: "bg-emerald-500",
-    tag: "bg-emerald-100 text-emerald-700",
-    statColor: "text-emerald-600",
+    iconColor: "#059669",
+    cardBg: "linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%)",
+    borderColor: "#a7f3d0",
+    tagBg: "#d1fae5", tagText: "#065f46",
+    statColor: "#047857",
     stat: "Zero manual entry",
   },
   {
     slug: "customer-support-ai", label: "AI Systems", title: "Customer Support & Operations AI",
     pitch: "AI agents that handle customer questions, route tickets, and resolve issues 24/7 — freeing your team for high-value conversations and complex work.",
     icon: Headphones,
-    gradient: "from-orange-500 to-amber-400",
-    bg: "from-orange-50 to-amber-50",
-    border: "border-orange-100",
-    iconBg: "bg-orange-500",
-    tag: "bg-orange-100 text-orange-700",
-    statColor: "text-orange-600",
+    iconColor: "#ea580c",
+    cardBg: "linear-gradient(135deg, #fff7ed 0%, #fffbeb 100%)",
+    borderColor: "#fed7aa",
+    tagBg: "#ffedd5", tagText: "#9a3412",
+    statColor: "#c2410c",
     stat: "24/7 always on",
   },
   {
     slug: "reviews-reactivation-retention", label: "Retention", title: "Reviews, Reactivation & Retention",
     pitch: "Automate review requests to protect your reputation, reactivate old leads with proven sequences, and bring past customers back before they forget you.",
     icon: Star,
-    gradient: "from-pink-500 to-rose-400",
-    bg: "from-pink-50 to-rose-50",
-    border: "border-pink-100",
-    iconBg: "bg-pink-500",
-    tag: "bg-pink-100 text-pink-700",
-    statColor: "text-pink-600",
+    iconColor: "#db2777",
+    cardBg: "linear-gradient(135deg, #fdf2f8 0%, #fff1f2 100%)",
+    borderColor: "#fbcfe8",
+    tagBg: "#fce7f3", tagText: "#9d174d",
+    statColor: "#be185d",
     stat: "4.8★ avg rating",
   },
   {
     slug: "custom-saas-tools", label: "Development", title: "Custom SaaS & Internal Tools",
     pitch: "Purpose-built dashboards, internal portals, and mini SaaS products designed for your exact workflow — no off-the-shelf compromises, no wasted seats.",
     icon: Code,
-    gradient: "from-indigo-500 to-blue-400",
-    bg: "from-indigo-50 to-blue-50",
-    border: "border-indigo-100",
-    iconBg: "bg-indigo-500",
-    tag: "bg-indigo-100 text-indigo-700",
-    statColor: "text-indigo-600",
+    iconColor: "#4f46e5",
+    cardBg: "linear-gradient(135deg, #eef2ff 0%, #eff6ff 100%)",
+    borderColor: "#c7d2fe",
+    tagBg: "#e0e7ff", tagText: "#3730a3",
+    statColor: "#4338ca",
     stat: "Built for your stack",
   },
 ];
@@ -351,16 +345,26 @@ function ServicesSection() {
               >
                 <Link href={`/${service.slug}`} className="block h-full">
                   <div
-                    className={`group relative bg-gradient-to-br ${service.bg} rounded-2xl p-5 sm:p-6 border ${service.border} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer h-full flex flex-col overflow-hidden`}
+                    className="group relative rounded-2xl p-5 sm:p-6 border hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer h-full flex flex-col overflow-hidden"
+                    style={{ background: service.cardBg, borderColor: service.borderColor }}
                     data-testid={`service-card-${service.slug}`}
                   >
-                    <div className={`absolute top-0 right-0 w-28 h-28 rounded-full bg-gradient-to-br ${service.gradient} opacity-[0.07] -translate-y-8 translate-x-8`} />
+                    <div
+                      className="absolute top-0 right-0 w-28 h-28 rounded-full -translate-y-8 translate-x-8 opacity-[0.12]"
+                      style={{ backgroundColor: service.iconColor }}
+                    />
 
                     <div className="flex items-center gap-3 mb-4">
-                      <div className={`w-11 h-11 rounded-xl ${service.iconBg} flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                        style={{ backgroundColor: service.iconColor }}
+                      >
                         <Icon className="w-5 h-5 text-white" />
                       </div>
-                      <span className={`text-[10px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full ${service.tag}`}>
+                      <span
+                        className="text-[10px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full"
+                        style={{ backgroundColor: service.tagBg, color: service.tagText }}
+                      >
                         {service.label}
                       </span>
                     </div>
@@ -369,7 +373,10 @@ function ServicesSection() {
                     <p className="text-xs sm:text-sm text-gray-500 leading-relaxed flex-1">{service.pitch}</p>
 
                     <div className="mt-4 flex items-center justify-between">
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full bg-white/70 ${service.statColor}`}>
+                      <span
+                        className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/80"
+                        style={{ color: service.statColor }}
+                      >
                         {service.stat}
                       </span>
                       <span className="inline-flex items-center gap-1 text-xs font-semibold text-gray-700 group-hover:gap-2 transition-all">
