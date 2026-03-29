@@ -83,10 +83,11 @@ Key data structures in `client/src/lib/constants.ts`:
 7. Contact - Contact form, Google Maps, business info
 8. Blog - 15 blog post articles
 9. Book Demo - Calendar date picker, time slots, qualification form
-10. Landing Pages (8 noindex pages) - City/industry pages (NYC, LA, Chicago; real-estate, healthcare, law firms, e-commerce, restaurants) — noindexed, not in sitemap
-11. Terms of Service (`/terms`) - 14-section legal page
-12. Privacy Policy (`/privacy`) - 14-section privacy page
-13. Sitemap (`/sitemap`) - Visual sitemap page
+10. Industry Vertical Pages (7 pages) — `/dental-ai`, `/hvac-ai`, `/law-firm-ai`, `/real-estate-ai`, `/medical-ai`, `/ecommerce-ai`, `/home-services-ai` — fully routed via SmartPage in App.tsx using INDUSTRY_VERTICALS from constants.ts; includes AI-positioned hero, outcomes, problem/solution, pillar highlights (4 service cards with industry-specific outcomes), case study, FAQs, CTA, and related industries sections; registered in the "Who We Serve" nav mega-menu automatically
+11. Landing Pages (8 noindex pages) - City/industry pages (NYC, LA, Chicago; real-estate, healthcare, law firms, e-commerce, restaurants) — noindexed, not in sitemap
+12. Terms of Service (`/terms`) - 14-section legal page
+13. Privacy Policy (`/privacy`) - 14-section privacy page
+14. Sitemap (`/sitemap`) - Visual sitemap page
 
 ## Database Tables
 - `contacts` - name, email, phone, company, message

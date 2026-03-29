@@ -13,10 +13,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-const iconMap: Record<string, LucideIcon> = {
-  Stethoscope, Hammer, Scale, Building2, Heart, ShoppingCart, Zap, TrendingUp,
-};
-
 const PORTFOLIO_IMAGES: Record<string, string> = {
   "case-study-dental-practice-revenue-transformation": "/images/portfolio/project-1-dental.jpg",
   "case-study-home-services-plumbing-hvac-lead-machine": "/images/portfolio/project-10-homeservices.jpg",
@@ -24,6 +20,10 @@ const PORTFOLIO_IMAGES: Record<string, string> = {
   "case-study-real-estate-ai-lead-generation": "/images/portfolio/project-3-realestate.jpg",
   "case-study-medical-clinic-patient-acquisition": "/images/portfolio/project-8-clinic.jpg",
   "case-study-ecommerce-cart-recovery-scaling": "/images/portfolio/project-2-ecommerce.jpg",
+};
+
+const iconMap: Record<string, LucideIcon> = {
+  Stethoscope, Hammer, Scale, Building2, Heart, ShoppingCart, Zap, TrendingUp,
 };
 
 function FAQItem({ q, a }: { q: string; a: string }) {
@@ -73,18 +73,14 @@ export default function IndustryVertical() {
 
   const Icon = iconMap[vertical.icon] || Zap;
   const heroImage = PORTFOLIO_IMAGES[vertical.caseStudySlug];
-  const primaryServices = vertical.primaryServices
-    .map((slug) => ALL_SERVICES.find((s) => s.slug === slug))
-    .filter(Boolean) as typeof ALL_SERVICES;
-
   const otherVerticals = INDUSTRY_VERTICALS.filter((v) => v.slug !== vertical.slug).slice(0, 3);
 
   return (
     <div>
       <SEOHead
-        title={`${vertical.name} AI Marketing & Lead Generation | Infinite Rankers`}
+        title={`AI Revenue Systems for ${vertical.name} | Infinite Rankers`}
         description={`${vertical.subheadline} See proven results: ${vertical.caseStudyMetric}. Book a free strategy call.`}
-        keywords={`AI marketing for ${vertical.name}, ${vertical.name} lead generation, ${vertical.name} digital marketing, AI ${vertical.name}`}
+        keywords={`AI revenue system for ${vertical.name}, ${vertical.name} AI automation, ${vertical.name} lead generation, AI ${vertical.name} growth`}
         canonical={`https://infiniterankers.io/${vertical.slug}`}
       />
 
@@ -189,14 +185,14 @@ export default function IndustryVertical() {
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${vertical.accentFrom} ${vertical.accentTo} flex items-center justify-center mb-5`}>
                   <Icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">The AI Growth System for {vertical.name}</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">The AI Revenue System for {vertical.name}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-                  We build end-to-end revenue systems purpose-configured for {vertical.name} — combining AI automation, precision paid advertising, and organic growth to create predictable patient and client pipelines.
+                  We build end-to-end AI revenue systems purpose-configured for {vertical.name} — capturing every lead, booking more appointments, and building automated pipelines that compound over time.
                 </p>
                 <div className="space-y-2.5">
                   {[
-                    "Never miss a lead — AI answers and follows up instantly",
-                    "Only pay for ad clicks from your ideal customer profile",
+                    "Every lead captured and followed up — zero manual chasing",
+                    "AI that books, qualifies, and nurtures — without headcount",
                     "Full pipeline visibility from first touch to closed deal",
                     "Live in 2–3 weeks with zero disruption to your operations",
                   ].map((point, i) => (
@@ -221,32 +217,37 @@ export default function IndustryVertical() {
               What We Build for {vertical.name}
             </h2>
             <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Each system is purpose-configured for the specific sales cycle, compliance requirements, and growth bottlenecks of {vertical.name}.
+              Each AI system is purpose-configured for the specific sales cycle, compliance requirements, and growth bottlenecks of {vertical.name}.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {primaryServices.map((svc, i) => (
-              <motion.div
-                key={svc.slug}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link href={`/${svc.slug}`}>
-                  <Card className="p-6 h-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer border-gray-200" data-testid={`service-card-${svc.slug}`}>
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${vertical.accentFrom} ${vertical.accentTo} flex items-center justify-center mb-4`}>
-                      <Zap className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-2">{svc.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">{svc.shortDesc}</p>
-                    <span className="text-xs text-blue-600 font-medium flex items-center gap-1">
-                      Learn more <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
+          <div className="grid sm:grid-cols-2 gap-6">
+            {vertical.pillarHighlights.map((highlight, i) => {
+              const svc = ALL_SERVICES.find((s) => s.slug === highlight.slug);
+              if (!svc) return null;
+              return (
+                <motion.div
+                  key={svc.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Link href={`/${svc.slug}`}>
+                    <Card className="p-6 h-full hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer border-gray-200" data-testid={`service-card-${svc.slug}`}>
+                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${vertical.accentFrom} ${vertical.accentTo} flex items-center justify-center mb-4`}>
+                        <Zap className="w-5 h-5 text-white" />
+                      </div>
+                      <h3 className="text-base font-semibold text-gray-900 mb-1">{svc.title}</h3>
+                      <p className="text-xs font-medium text-blue-600 mb-3 leading-snug">{highlight.outcome}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">{svc.shortDesc}</p>
+                      <span className="text-xs text-blue-600 font-medium flex items-center gap-1">
+                        Learn more <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </Card>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
