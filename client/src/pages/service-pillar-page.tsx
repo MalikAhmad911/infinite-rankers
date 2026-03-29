@@ -13,10 +13,11 @@ import {
   type ServiceVisualTheme,
 } from "@/lib/constants";
 import {
-  ArrowRight, CheckCircle2, ArrowLeft, Zap,
+  ArrowRight, CheckCircle2, ArrowLeft, Zap, ChevronDown,
   Bot, CalendarCheck, Database, Headphones, Star, Code, TrendingUp,
   type LucideIcon,
 } from "lucide-react";
+import { useState } from "react";
 
 const iconMap: Record<string, LucideIcon> = {
   Bot, CalendarCheck, Database, Headphones, Star, Code, TrendingUp, Zap,
@@ -126,6 +127,35 @@ const defaultTheme: ServiceVisualTheme = {
   workflowLayout: "A",
   faqLayout: "A",
 };
+
+function FAQAccordionItem({ q, a, index }: { q: string; a: string; index: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.05 }}
+      className="border border-gray-200/60 rounded-xl bg-white overflow-hidden"
+      data-testid={`faq-item-${index}`}
+    >
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between gap-4 text-left px-5 py-4 hover:bg-gray-50/60 transition-colors"
+        aria-expanded={open}
+        data-testid={`faq-toggle-${index}`}
+      >
+        <span className="font-medium text-gray-900 text-sm sm:text-base leading-snug">{q}</span>
+        <ChevronDown className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="px-5 pb-4 text-sm text-gray-600 leading-relaxed border-t border-gray-100/60 pt-3" data-testid={`faq-answer-${index}`}>
+          {a}
+        </div>
+      )}
+    </motion.div>
+  );
+}
 
 export default function ServicePillarPage() {
   const params = useParams<{ slug: string }>();
@@ -455,7 +485,45 @@ export default function ServicePillarPage() {
         </section>
       )}
 
-      {/* ── Section 6: CTA ──────────────────────────────────────────── */}
+      {/* ── Section 6: FAQ ──────────────────────────────────────────── */}
+      {content.faqs && content.faqs.length > 0 && (
+        <section className="py-16 sm:py-20 lg:py-24 bg-white" data-testid="section-faq">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              label="FAQ"
+              title="Frequently Asked Questions"
+              description="Common questions about how this AI system works and what to expect."
+            />
+            <div className="space-y-3">
+              {content.faqs.map((faq, i) => (
+                <FAQAccordionItem key={i} q={faq.q} a={faq.a} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Section 7: Related Systems ───────────────────────────────── */}
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-gray-50/60 to-white border-t border-gray-100" data-testid="section-related">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-5">Also in the AI Revenue System Stack</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {SERVICE_PILLARS.filter(p => p.slug !== slug).slice(0, 6).map((p) => {
+              const PIcon = iconMap[p.icon] ?? Zap;
+              return (
+                <Link key={p.slug} href={`/${p.slug}`}>
+                  <div className="group flex items-start gap-2 p-3 rounded-lg border border-gray-200/60 bg-white hover:border-blue-300 hover:bg-blue-50/30 transition-colors cursor-pointer" data-testid={`related-pillar-${p.slug}`}>
+                    <PIcon className="w-3.5 h-3.5 text-blue-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-xs text-gray-700 group-hover:text-blue-700 font-medium leading-snug">{p.title}</span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section 8: CTA ──────────────────────────────────────────── */}
       <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden" data-testid="section-cta">
         <div className={`absolute inset-0 ${accentGradient}`} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

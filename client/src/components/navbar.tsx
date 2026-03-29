@@ -6,11 +6,9 @@ import { Button } from "@/components/ui/button";
 import { SERVICE_PILLARS, COMPANY, INDUSTRY_VERTICALS } from "@/lib/constants";
 
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
   { label: "Services", href: "/services", hasMegaMenu: true },
   { label: "Who We Serve", href: "/services", hasIndustryMenu: true },
-  { label: "Portfolio", href: "/portfolio" },
+  { label: "Results", href: "/portfolio" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
@@ -182,7 +180,7 @@ export default function Navbar() {
                   className="hidden sm:inline-flex bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0"
                   data-testid="button-book-demo-nav"
                 >
-                  Book Demo
+                  Book Free Call
                 </Button>
               </Link>
               <Button
@@ -415,7 +413,7 @@ export default function Navbar() {
                   className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0"
                   data-testid="button-book-demo-mobile"
                 >
-                  Book Demo
+                  Book Free Strategy Call
                 </Button>
               </Link>
             </div>

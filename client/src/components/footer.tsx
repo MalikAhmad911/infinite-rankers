@@ -1,52 +1,51 @@
 import { Link } from "wouter";
 import { COMPANY } from "@/lib/constants";
 import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
-// Icons used decoratively alongside text - aria-hidden added inline
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
 
 const QUICK_LINKS = [
-  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/portfolio", label: "Portfolio" },
+  { href: "/services", label: "All AI Systems" },
+  { href: "/portfolio", label: "Case Studies" },
   { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
 const RESOURCES = [
-  { href: "/blog", label: "Blog" },
+  { href: "/roi-calculator", label: "ROI Calculator" },
+  { href: "/book-demo", label: "Book Free Strategy Call" },
+  { href: "/blog", label: "AI Automation Blog" },
+  { href: "/pricing", label: "Transparent Pricing" },
   { href: "/content-methodology", label: "Content Methodology" },
-  { href: "/book-demo", label: "Book Demo" },
-  { href: "/contact", label: "Contact" },
+  { href: "/sitemap", label: "Sitemap" },
 ];
 
-const KEY_SERVICES = [
-  { slug: "ai-calling-agent", title: "AI Calling Agent" },
-  { slug: "ai-receptionist", title: "AI Receptionist" },
-  { slug: "google-ads", title: "Google Ads Revenue Engine" },
-  { slug: "meta-ads", title: "Meta Ads Growth Engine" },
-  { slug: "social-media-marketing", title: "Social Media Marketing" },
-  { slug: "instagram-growth", title: "Instagram Growth & Posting" },
-  { slug: "website-development", title: "Website Development" },
-  { slug: "landing-page-development", title: "Landing Page Development" },
+const AI_SYSTEMS = [
+  { slug: "ai-lead-capture", title: "AI Lead Capture" },
+  { slug: "ai-appointment-agents", title: "AI Appointment Agents" },
+  { slug: "crm-pipeline-automation", title: "CRM & Pipeline Automation" },
+  { slug: "customer-support-ai", title: "Customer Support AI" },
+  { slug: "reviews-reactivation-retention", title: "Reviews & Retention" },
+  { slug: "custom-saas-tools", title: "Custom SaaS & Tools" },
+  { slug: "revenue-automation-consulting", title: "Revenue Consulting" },
 ];
 
-const PARTNER_LINKS = [
-  { href: "/infinite-rankers-agency", label: "About Us", external: false },
-  { href: "/infinite-rankers-seo-services", label: "SEO Services", external: false },
-  { href: "/infinite-rankers-paid-advertising", label: "Paid Ads", external: false },
-  { href: "/infinite-rankers-ai-automation", label: "AI Automation", external: false },
-  { href: "https://infiniterankers.com", label: "infiniterankers.com", external: true },
-  { href: "https://infiniterankers.com/blog", label: "Marketing Blog", external: true },
-  { href: "https://infiniterankers.com/resources", label: "Content Hub", external: true },
+const INDUSTRIES = [
+  { slug: "dental-ai", label: "Dental & Healthcare" },
+  { slug: "hvac-ai", label: "HVAC & Home Services" },
+  { slug: "law-firm-ai", label: "Law Firms" },
+  { slug: "real-estate-ai", label: "Real Estate" },
+  { slug: "medical-ai", label: "Medical Practices" },
+  { slug: "ecommerce-ai", label: "E-Commerce" },
+  { slug: "home-services-ai", label: "Home Services" },
 ];
 
 export default function Footer() {
   return (
     <footer className="bg-[#0B1120] text-gray-300" data-testid="footer">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10 mb-10 sm:mb-12">
 
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <div className="flex items-center gap-1.5 mb-3">
@@ -54,7 +53,7 @@ export default function Footer() {
               <span className="font-bold text-sm sm:text-base text-white">{COMPANY.name}</span>
             </div>
             <p className="text-xs sm:text-sm text-gray-400 mb-4 leading-relaxed max-w-xs">
-              AI Revenue Growth Agency. Automated systems that generate customers and revenue for businesses worldwide.
+              AI Revenue Systems Agency. We design, build, and run the AI systems that capture every lead, automate follow-up, and close more sales — without adding headcount.
             </p>
             <div className="space-y-2 mb-5">
               <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" aria-label={`Email us at ${COMPANY.email}`} data-testid="link-footer-email">
@@ -78,12 +77,12 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-3 text-sm">Quick Links</h4>
-            <ul className="space-y-1.5">
+            <h4 className="font-semibold text-white mb-4 text-sm tracking-wide">Company</h4>
+            <ul className="space-y-2">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href}>
-                    <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-${link.label.toLowerCase()}`}>
+                    <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
                       {link.label}
                     </span>
                   </Link>
@@ -93,24 +92,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-3 text-sm">Resources</h4>
-            <ul className="space-y-1.5">
-              {RESOURCES.map((link) => (
-                <li key={link.href + link.label}>
-                  <Link href={link.href}>
-                    <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-res-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
-                      {link.label}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-white mb-3 text-sm">Services</h4>
-            <ul className="space-y-1.5">
-              {KEY_SERVICES.map((service) => (
+            <h4 className="font-semibold text-white mb-4 text-sm tracking-wide">AI Systems</h4>
+            <ul className="space-y-2">
+              {AI_SYSTEMS.map((service) => (
                 <li key={service.slug}>
                   <Link href={`/${service.slug}`}>
                     <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-service-${service.slug}`}>
@@ -123,34 +107,50 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-3 text-sm">Partner Platform</h4>
-            <ul className="space-y-1.5">
-              {PARTNER_LINKS.map((link) => (
-                <li key={link.href}>
-                  {link.external ? (
-                    <a href={link.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" aria-label={`${link.label} (opens in new tab)`} data-testid={`link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
-                      {link.label} <ExternalLink className="w-3 h-3" aria-hidden="true" />
-                    </a>
-                  ) : (
-                    <Link href={link.href}>
-                      <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-partner-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
-                        {link.label}
-                      </span>
-                    </Link>
-                  )}
+            <h4 className="font-semibold text-white mb-4 text-sm tracking-wide">Industries</h4>
+            <ul className="space-y-2">
+              {INDUSTRIES.map((item) => (
+                <li key={item.slug}>
+                  <Link href={`/${item.slug}`}>
+                    <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-industry-${item.slug}`}>
+                      {item.label}
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
+
+          <div>
+            <h4 className="font-semibold text-white mb-4 text-sm tracking-wide">Resources</h4>
+            <ul className="space-y-2">
+              {RESOURCES.map((link) => (
+                <li key={link.href + link.label}>
+                  <Link href={link.href}>
+                    <span className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" data-testid={`link-footer-res-${link.label.toLowerCase().replace(/\s/g, "-")}`}>
+                      {link.label}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a href="https://infiniterankers.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-400 hover:text-white transition-colors" data-testid="link-footer-partner-site">
+                  infiniterankers.com <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                </a>
+              </li>
+            </ul>
+          </div>
+
         </div>
 
-        <div className="border-t border-white/10 mt-8 sm:mt-10 pt-5 sm:pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-500">
-            &copy; {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-gray-500 text-center sm:text-left">
+            &copy; {new Date().getFullYear()} {COMPANY.name}. All rights reserved. AI Revenue Systems Agency.
           </p>
           <div className="flex items-center gap-4 flex-wrap justify-center">
             <Link href="/privacy" className="text-xs text-gray-500 hover:text-white transition-colors" data-testid="link-footer-privacy">Privacy Policy</Link>
             <Link href="/terms" className="text-xs text-gray-500 hover:text-white transition-colors" data-testid="link-footer-terms">Terms of Service</Link>
+            <Link href="/sitemap" className="text-xs text-gray-500 hover:text-white transition-colors" data-testid="link-footer-sitemap">Sitemap</Link>
           </div>
         </div>
       </div>
