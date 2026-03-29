@@ -244,11 +244,11 @@ function ROICalculator() {
                 <div className="text-xs text-gray-500 mt-1">{capturedLeads} recovered leads × ${avgDealValue[0].toLocaleString()} avg deal</div>
               </div>
               <div className="p-5 rounded-xl bg-emerald-50 border border-emerald-200/60">
-                <div className="text-xs font-medium text-emerald-600 uppercase tracking-wide mb-1.5">Annual Revenue Uplift</div>
+                <div className="text-xs font-medium text-emerald-600 uppercase tracking-wide mb-1.5">Estimated Annual Revenue Uplift</div>
                 <div className="text-3xl font-extrabold text-emerald-600">
                   +${annualUplift.toLocaleString()}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">Conservative estimate. Does not include review/reactivation lift.</div>
+                <div className="text-xs text-gray-500 mt-1">Directional estimate. Actual results vary by industry, deal size, and current close rate.</div>
               </div>
               <Link href="/book-demo">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" data-testid="button-roi-cta">
