@@ -247,57 +247,159 @@ function AchievementsSection() {
 }
 
 const PRIORITY_SERVICES = [
-  { slug: "ai-lead-capture", label: "AI Systems", title: "AI Lead Capture Systems", pitch: "Capture every inbound lead automatically — website chat, missed-call text-back, SMS, and WhatsApp — routed to your CRM before they contact a competitor.", icon: Bot },
-  { slug: "ai-appointment-agents", label: "AI Systems", title: "AI Appointment & Sales Agents", pitch: "AI agents that qualify prospects, book meetings, and follow up until they respond — without your team lifting a finger. Average client books 3x more appointments in 60 days.", icon: CalendarCheck },
-  { slug: "crm-pipeline-automation", label: "Automation", title: "CRM & Pipeline Automation", pitch: "Turn your CRM into a self-managing revenue machine. Automatic lead entry, deal-stage movement, and reporting — no more manual data entry or missed follow-ups.", icon: Database },
-  { slug: "customer-support-ai", label: "AI Systems", title: "Customer Support & Operations AI", pitch: "AI agents that handle customer questions, route tickets, and resolve issues 24/7 — freeing your team for high-value conversations and complex work.", icon: Headphones },
-  { slug: "reviews-reactivation-retention", label: "Retention", title: "Reviews, Reactivation & Retention", pitch: "Automate review requests to protect your reputation, reactivate old leads with proven sequences, and bring past customers back before they forget you.", icon: Star },
-  { slug: "custom-saas-tools", label: "Development", title: "Custom SaaS & Internal Tools", pitch: "Purpose-built dashboards, internal portals, and mini SaaS products designed for your exact workflow — no off-the-shelf compromises, no wasted seats.", icon: Code },
-  { slug: "revenue-automation-consulting", label: "Consulting", title: "Revenue Automation Consulting", pitch: "We audit your entire revenue flow — from lead entry to closed deal — find where you're losing money, and deliver a prioritized AI implementation roadmap.", icon: TrendingUp },
+  {
+    slug: "ai-lead-capture", label: "AI Systems", title: "AI Lead Capture Systems",
+    pitch: "Capture every inbound lead automatically — website chat, missed-call text-back, SMS, and WhatsApp — routed to your CRM before they contact a competitor.",
+    icon: Bot,
+    gradient: "from-blue-500 to-cyan-400",
+    bg: "from-blue-50 to-cyan-50",
+    border: "border-blue-100",
+    iconBg: "bg-blue-500",
+    tag: "bg-blue-100 text-blue-700",
+    statColor: "text-blue-600",
+    stat: "100% leads captured",
+  },
+  {
+    slug: "ai-appointment-agents", label: "AI Systems", title: "AI Appointment & Sales Agents",
+    pitch: "AI agents that qualify prospects, book meetings, and follow up until they respond — without your team lifting a finger. Average client books 3x more appointments in 60 days.",
+    icon: CalendarCheck,
+    gradient: "from-violet-500 to-purple-400",
+    bg: "from-violet-50 to-purple-50",
+    border: "border-violet-100",
+    iconBg: "bg-violet-500",
+    tag: "bg-violet-100 text-violet-700",
+    statColor: "text-violet-600",
+    stat: "3x more bookings",
+  },
+  {
+    slug: "crm-pipeline-automation", label: "Automation", title: "CRM & Pipeline Automation",
+    pitch: "Turn your CRM into a self-managing revenue machine. Automatic lead entry, deal-stage movement, and reporting — no more manual data entry or missed follow-ups.",
+    icon: Database,
+    gradient: "from-emerald-500 to-teal-400",
+    bg: "from-emerald-50 to-teal-50",
+    border: "border-emerald-100",
+    iconBg: "bg-emerald-500",
+    tag: "bg-emerald-100 text-emerald-700",
+    statColor: "text-emerald-600",
+    stat: "Zero manual entry",
+  },
+  {
+    slug: "customer-support-ai", label: "AI Systems", title: "Customer Support & Operations AI",
+    pitch: "AI agents that handle customer questions, route tickets, and resolve issues 24/7 — freeing your team for high-value conversations and complex work.",
+    icon: Headphones,
+    gradient: "from-orange-500 to-amber-400",
+    bg: "from-orange-50 to-amber-50",
+    border: "border-orange-100",
+    iconBg: "bg-orange-500",
+    tag: "bg-orange-100 text-orange-700",
+    statColor: "text-orange-600",
+    stat: "24/7 always on",
+  },
+  {
+    slug: "reviews-reactivation-retention", label: "Retention", title: "Reviews, Reactivation & Retention",
+    pitch: "Automate review requests to protect your reputation, reactivate old leads with proven sequences, and bring past customers back before they forget you.",
+    icon: Star,
+    gradient: "from-pink-500 to-rose-400",
+    bg: "from-pink-50 to-rose-50",
+    border: "border-pink-100",
+    iconBg: "bg-pink-500",
+    tag: "bg-pink-100 text-pink-700",
+    statColor: "text-pink-600",
+    stat: "4.8★ avg rating",
+  },
+  {
+    slug: "custom-saas-tools", label: "Development", title: "Custom SaaS & Internal Tools",
+    pitch: "Purpose-built dashboards, internal portals, and mini SaaS products designed for your exact workflow — no off-the-shelf compromises, no wasted seats.",
+    icon: Code,
+    gradient: "from-indigo-500 to-blue-400",
+    bg: "from-indigo-50 to-blue-50",
+    border: "border-indigo-100",
+    iconBg: "bg-indigo-500",
+    tag: "bg-indigo-100 text-indigo-700",
+    statColor: "text-indigo-600",
+    stat: "Built for your stack",
+  },
 ];
 
 function ServicesSection() {
   return (
-    <section className="py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/80 to-white" data-testid="services-section">
+    <section className="py-14 sm:py-20 lg:py-24 bg-white" data-testid="services-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-16">
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">7 AI Revenue Systems</span>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-16">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent mb-3">
+            <Zap className="w-3.5 h-3.5 text-blue-600" /> 6 Core AI Revenue Systems
+          </span>
           <h2 className="font-bold text-gray-900 mb-3 sm:mb-4" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
             Each System Fixes a Specific Revenue Gap
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.125rem)" }}>
-            We don't sell software subscriptions. We build and run complete AI systems — from workflow design to go-live to weekly optimization.
+          <p className="text-gray-500 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.0625rem)" }}>
+            We build and run complete AI systems — from workflow design to go-live. No software subscriptions, no DIY.
           </p>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {PRIORITY_SERVICES.map((service, i) => {
             const Icon = service.icon;
             return (
-              <motion.div key={service.slug} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
-                <Link href={`/${service.slug}`}>
-                  <div className="group bg-white rounded-xl p-5 sm:p-6 border border-gray-200/60 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer h-full flex flex-col" data-testid={`service-card-${service.slug}`}>
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center border border-blue-100/40 flex-shrink-0">
-                        <Icon className="w-4 h-4 text-blue-600" />
+              <motion.div
+                key={service.slug}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.4 }}
+                className="h-full"
+              >
+                <Link href={`/${service.slug}`} className="block h-full">
+                  <div
+                    className={`group relative bg-gradient-to-br ${service.bg} rounded-2xl p-5 sm:p-6 border ${service.border} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer h-full flex flex-col overflow-hidden`}
+                    data-testid={`service-card-${service.slug}`}
+                  >
+                    <div className={`absolute top-0 right-0 w-28 h-28 rounded-full bg-gradient-to-br ${service.gradient} opacity-[0.07] -translate-y-8 translate-x-8`} />
+
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-11 h-11 rounded-xl ${service.iconBg} flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                        <Icon className="w-5 h-5 text-white" />
                       </div>
-                      <div>
-                        <div className="text-[10px] sm:text-xs font-medium text-blue-600 mb-0.5">{service.label}</div>
-                        <h3 className="text-sm sm:text-base font-semibold text-gray-900 leading-snug">{service.title}</h3>
-                      </div>
+                      <span className={`text-[10px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full ${service.tag}`}>
+                        {service.label}
+                      </span>
                     </div>
+
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-snug mb-2">{service.title}</h3>
                     <p className="text-xs sm:text-sm text-gray-500 leading-relaxed flex-1">{service.pitch}</p>
-                    <span className="inline-flex items-center text-xs font-medium text-blue-600 group-hover:gap-2 gap-1 transition-all mt-4">See How It Works <ArrowUpRight className="w-3 h-3" /></span>
+
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full bg-white/70 ${service.statColor}`}>
+                        {service.stat}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-gray-700 group-hover:gap-2 transition-all">
+                        See How It Works <ArrowUpRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
                   </div>
                 </Link>
               </motion.div>
             );
           })}
         </div>
-        <div className="text-center mt-8 sm:mt-10">
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3"
+        >
           <Link href="/services">
-            <Button variant="outline" className="border-gray-300 text-gray-700 w-full sm:w-auto" data-testid="button-view-all-services">Explore All 7 AI Revenue Systems <ArrowRight className="w-4 h-4 ml-1" /></Button>
+            <Button variant="outline" className="border-gray-300 text-gray-700 w-full sm:w-auto" data-testid="button-view-all-services">
+              Explore All 7 AI Revenue Systems <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
           </Link>
-        </div>
+          <Link href="/revenue-automation-consulting">
+            <Button variant="ghost" className="text-gray-500 hover:text-gray-900 w-full sm:w-auto text-sm" data-testid="button-consulting">
+              <TrendingUp className="w-4 h-4 mr-1.5" /> Revenue Automation Consulting
+            </Button>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
