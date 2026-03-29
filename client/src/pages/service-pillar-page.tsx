@@ -18,6 +18,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { LiveServiceWidget } from "@/components/live-service-widget";
 
 const iconMap: Record<string, LucideIcon> = {
   Bot, CalendarCheck, Database, Headphones, Star, Code, TrendingUp, Zap,
@@ -267,40 +268,10 @@ export default function ServicePillarPage() {
               </div>
             </motion.div>
 
-            {/* Outcome stats panel */}
-            {caseStudy && (
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="hidden lg:block"
-              >
-                <GlassCard className="p-8">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Sample Client Result</p>
-                  <p className="text-sm font-medium text-foreground mb-6">{caseStudy.business}</p>
-                  <div className="grid grid-cols-2 gap-5 mb-6">
-                    {[
-                      { value: caseStudy.results.metric1, label: caseStudy.results.label1 },
-                      { value: caseStudy.results.metric2, label: caseStudy.results.label2 },
-                      { value: caseStudy.results.metric3, label: caseStudy.results.label3 },
-                      { value: caseStudy.results.metric4, label: caseStudy.results.label4 },
-                    ].map((stat) => (
-                      <div key={stat.label}>
-                        <p className={`text-2xl font-bold ${accentGradient} bg-clip-text text-transparent`} data-testid={`stat-${stat.label}`}>
-                          {stat.value}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{stat.label}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <blockquote className="border-l-2 border-blue-200 pl-4">
-                    <p className="text-sm text-muted-foreground italic leading-relaxed">&ldquo;{caseStudy.testimonial.quote}&rdquo;</p>
-                    <footer className="mt-2 text-xs font-medium text-foreground">{caseStudy.testimonial.author}</footer>
-                    <footer className="text-xs text-muted-foreground">{caseStudy.testimonial.role}</footer>
-                  </blockquote>
-                </GlassCard>
-              </motion.div>
-            )}
+            {/* Live animated service widget */}
+            <div className="hidden lg:block">
+              <LiveServiceWidget slug={slug} accentGradient={accentGradient} />
+            </div>
           </div>
         </div>
       </section>

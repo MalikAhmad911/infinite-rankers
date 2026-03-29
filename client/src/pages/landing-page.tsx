@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import NotFound from "@/pages/not-found";
+import { LiveServiceWidget } from "@/components/live-service-widget";
 
 const iconMap: Record<string, any> = {
   Bot, Target, Globe, Zap, Phone, TrendingUp, BarChart3, Search,
@@ -165,6 +166,47 @@ export default function LandingPage({ slug }: { slug?: string }) {
               ))}
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Section 1.5: Live Widget — See the AI System in Action */}
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-white to-gray-50/40" data-testid="section-live-widget">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <span className="inline-block text-xs font-semibold tracking-widest uppercase text-blue-600 mb-3">See It Work — Live</span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+                Your AI Revenue System,<br />Running Right Now
+              </h2>
+              <p className="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">
+                While you're reading this, AI systems like the one we build for you are capturing leads, booking appointments, and following up — without a single person lifting a finger.
+              </p>
+              <ul className="space-y-2.5 mb-6">
+                {[
+                  "Every lead captured — even at 2 AM",
+                  "Follow-ups sent automatically until they respond",
+                  "Appointments booked without human involvement",
+                  "Revenue tracked, reported, and optimized weekly",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2.5 text-sm text-gray-700">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/book-demo">
+                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-0" data-testid="button-live-widget-cta">
+                  Get This Built for Your Business <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+              </Link>
+            </motion.div>
+            <div>
+              <LiveServiceWidget
+                slug={page.relatedServices?.[0] ?? "ai-lead-capture"}
+                accentGradient="bg-gradient-to-r from-blue-600 to-indigo-600"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
