@@ -223,7 +223,7 @@ function AchievementsSection() {
   const icons = [Building2, DollarSign, Users, Shield];
   return (
     <section className="py-8 sm:py-10 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 relative overflow-hidden" data-testid="achievements-section">
-      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+      <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full blur-[80px] pointer-events-none" />
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {ACHIEVEMENTS.map((a, i) => {
@@ -407,9 +407,9 @@ const IMPLEMENTATION_POINTS = [
 
 function ImplementationSection() {
   return (
-    <section className="py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-900 to-gray-800 relative overflow-hidden" data-testid="implementation-section">
-      <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle, rgba(99,102,241,0.5) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
+    <section className="py-14 sm:py-20 lg:py-24 relative overflow-hidden" style={{ background: "#0B1120" }} data-testid="implementation-section">
+      <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute -bottom-40 -left-20 w-[500px] h-[500px] bg-indigo-700/8 rounded-full blur-[100px] pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
@@ -757,7 +757,6 @@ function FinalCTASection() {
         <div className="absolute top-0 left-1/4 w-48 sm:w-96 h-48 sm:h-96 bg-blue-600/10 rounded-full blur-[80px] sm:blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-48 sm:w-96 h-48 sm:h-96 bg-indigo-600/10 rounded-full blur-[80px] sm:blur-[120px]" />
       </div>
-      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "30px 30px" }} />
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 mb-6 sm:mb-8 border border-white/10">
