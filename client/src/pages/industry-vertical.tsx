@@ -282,12 +282,21 @@ export default function IndustryVertical() {
                     <TrendingUp className="w-4 h-4 text-white" />
                     <span className="text-sm font-semibold text-white">{vertical.caseStudyMetric}</span>
                   </div>
-                  <div className="flex flex-wrap gap-2 mb-5">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
-                    <span className="text-xs text-white/60 ml-1 mt-0.5">Verified Client Result</span>
-                  </div>
+                  <blockquote className="border-l-2 border-blue-400/50 pl-4 mb-5" data-testid="text-case-study-quote">
+                    <p className="text-sm text-white/85 leading-relaxed italic mb-3">
+                      "{vertical.caseStudyQuote}"
+                    </p>
+                    <footer className="flex items-center gap-2">
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                      <span className="text-xs text-white/60">
+                        — {vertical.caseStudyQuoteAuthor}, {vertical.caseStudyQuoteRole}
+                      </span>
+                    </footer>
+                  </blockquote>
                   <Link href={`/${vertical.caseStudySlug}`}>
                     <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 text-sm" data-testid="button-read-case-study">
                       Read Full Case Study <ArrowRight className="w-3.5 h-3.5 ml-1" />

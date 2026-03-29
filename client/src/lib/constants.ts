@@ -3302,6 +3302,9 @@ export interface IndustryVertical {
   caseStudyTitle: string;
   caseStudyBusiness: string;
   caseStudyMetric: string;
+  caseStudyQuote: string;
+  caseStudyQuoteAuthor: string;
+  caseStudyQuoteRole: string;
   faqs: { q: string; a: string }[];
   ctaHeadline: string;
   icon: string;
@@ -3341,6 +3344,9 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     caseStudyTitle: "Local Dental Practice Revenue Transformation",
     caseStudyBusiness: "Premier Dental Care — Multi-location dental group",
     caseStudyMetric: "148% increase in new patients in 90 days",
+    caseStudyQuote: "We went from struggling to fill chairs to having a 3-week waitlist. The AI calling system alone doubled our bookings in the first 60 days.",
+    caseStudyQuoteAuthor: "Dr. Sarah Mitchell",
+    caseStudyQuoteRole: "Owner, Premier Dental Care",
     faqs: [
       { q: "Is the AI lead capture system HIPAA-compliant for dental practices?", a: "Yes. Our AI systems are configured to meet HIPAA standards — no PHI is stored in non-compliant systems, consent flows are built in, and all patient interactions follow privacy protocols." },
       { q: "How quickly can a dental practice go live?", a: "Most practices are fully live — AI capture, booking, and review automation configured — within 2–3 weeks of kickoff, with zero disruption to daily operations." },
@@ -3383,6 +3389,9 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     caseStudyTitle: "Home Services Lead Machine",
     caseStudyBusiness: "TrueFlow Plumbing & HVAC — 3-truck operation",
     caseStudyMetric: "190% lead volume increase and 3.9x return on ad spend",
+    caseStudyQuote: "We used to dread the slow season. Now we have a waiting list in January. The maintenance plan upsell alone added $8K in predictable monthly revenue.",
+    caseStudyQuoteAuthor: "Greg Paulson",
+    caseStudyQuoteRole: "Owner, TrueFlow Plumbing & HVAC",
     faqs: [
       { q: "Can the AI capture leads when my techs are on a job and can't answer the phone?", a: "Yes. That's the core use case. Our AI answers every call, captures the job details, and either books the appointment or dispatches a callback — so you never lose a lead to voicemail again." },
       { q: "How do you keep the pipeline full during the off-season?", a: "We build preventive maintenance and seasonal tune-up campaigns that reactivate past customers and generate consistent bookings in slow months — smoothing your revenue curve year-round." },
@@ -3425,6 +3434,9 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     caseStudyTitle: "Law Firm Client Acquisition System",
     caseStudyBusiness: "Sterling & Associates — Personal injury law firm",
     caseStudyMetric: "175% more qualified consultations with automated AI intake",
+    caseStudyQuote: "We used to miss 30% of after-hours calls. Now every single inquiry gets an immediate, professional response. Our caseload has grown significantly.",
+    caseStudyQuoteAuthor: "David Sterling",
+    caseStudyQuoteRole: "Managing Partner, Sterling & Associates",
     faqs: [
       { q: "Is AI intake compliant with legal ethics rules and bar regulations?", a: "Yes. Our AI intake system is configured to avoid creating attorney-client relationships, uses required disclaimers, and routes to licensed staff for all substantive legal discussion — compliant by design." },
       { q: "Can the AI qualify leads by practice area and case type?", a: "Absolutely. We configure qualification logic for your specific practice areas — PI, family, criminal, immigration — routing leads to the right attorney or intake specialist with full case context." },
@@ -3467,6 +3479,9 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     caseStudyTitle: "Real Estate Agency Lead Generation",
     caseStudyBusiness: "Skyline Realty Group — Luxury real estate brokerage",
     caseStudyMetric: "135% lead volume increase with 12-minute average AI response time",
+    caseStudyQuote: "Our agents now only talk to serious buyers. The AI qualification system filters out tire-kickers before they ever reach our team.",
+    caseStudyQuoteAuthor: "Michael Reeves",
+    caseStudyQuoteRole: "Managing Broker, Skyline Realty Group",
     faqs: [
       { q: "How does the AI separate motivated buyers from casual browsers?", a: "The AI qualification system engages every lead via SMS and chat, scoring intent based on timeline, pre-approval status, search depth, and behavioral signals — routing only motivated buyers to your agents." },
       { q: "Can this integrate with our CRM like Follow Up Boss, LionDesk, or kvCORE?", a: "Yes. We integrate with Follow Up Boss, LionDesk, BoomTown, kvCORE, and most major real estate CRMs to ensure leads flow directly into your existing system with full context." },
@@ -3509,6 +3524,9 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     caseStudyTitle: "Multi-Specialty Clinic Patient Growth Engine",
     caseStudyBusiness: "Meridian Health Partners — Multi-specialty outpatient clinic",
     caseStudyMetric: "125% new patient volume growth with AI receptionist system",
+    caseStudyQuote: "The AI receptionist paid for itself in the first week. We stopped losing patients to voicemail, and our cost per new patient dropped from $280 to $82.",
+    caseStudyQuoteAuthor: "Dr. Alan Whitfield",
+    caseStudyQuoteRole: "Medical Director, Meridian Health Partners",
     faqs: [
       { q: "How does AI handle HIPAA compliance for patient inquiries?", a: "Our AI systems are configured to HIPAA standards — no PHI transmitted through non-compliant channels, BAAs in place, consent flows built in, and all data handling follows healthcare privacy requirements." },
       { q: "Can the AI handle insurance network questions and verification?", a: "Yes. The AI answers common insurance network questions, collects insurance information for staff review, and routes complex coverage questions to your billing team — reducing front desk burden significantly." },
@@ -3551,6 +3569,9 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     caseStudyTitle: "E-Commerce Brand Scaling System",
     caseStudyBusiness: "LuxeHome Essentials — Direct-to-consumer home goods brand",
     caseStudyMetric: "62% cart recovery rate and 3.4x ROAS improvement",
+    caseStudyQuote: "Our abandoned cart recovery alone is generating an extra $12K per month. The AI sequences they built are so much smarter than what we had before — they respond to what customers actually do, not a fixed timer.",
+    caseStudyQuoteAuthor: "James Thornton",
+    caseStudyQuoteRole: "CEO, LuxeHome Essentials",
     faqs: [
       { q: "Which e-commerce platforms do you integrate with?", a: "We integrate with Shopify, WooCommerce, BigCommerce, Magento, and custom platforms — connecting your store data to email automation, SMS, and CRM for fully unified attribution and revenue tracking." },
       { q: "How is your cart recovery different from Klaviyo or standard email flows?", a: "Instead of fixed-timer emails, our AI triggers recovery sequences based on individual abandonment behavior — dynamically adjusting timing, offer, and channel (email vs SMS) to maximize conversion for each buyer." },
@@ -3593,6 +3614,9 @@ export const INDUSTRY_VERTICALS: IndustryVertical[] = [
     caseStudyTitle: "Home Services Lead Machine",
     caseStudyBusiness: "TrueFlow Plumbing & HVAC — 3-truck operation, 6 employees",
     caseStudyMetric: "190% lead volume increase and 3.9x return on ad spend in 6 months",
+    caseStudyQuote: "We used to dread the slow season. Now we have a waiting list in January. The AI picks up every call my crew misses on-site and books the job on the spot. It's completely changed how we grow.",
+    caseStudyQuoteAuthor: "Greg Paulson",
+    caseStudyQuoteRole: "Owner, TrueFlow Plumbing & HVAC",
     faqs: [
       { q: "How does AI handle calls when my whole crew is on-site?", a: "The AI answers every incoming call, collects the job details, and either books the appointment directly or sends an immediate callback notification to your dispatcher — so no lead goes to voicemail." },
       { q: "Can this integrate with our job management software like ServiceTitan or Housecall Pro?", a: "Yes. We connect the AI systems with ServiceTitan, Housecall Pro, Jobber, and similar platforms so bookings and lead data flow directly into your existing workflow." },
