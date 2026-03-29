@@ -27,6 +27,7 @@ import ContentMethodology from "@/pages/content-methodology";
 import SitemapPage from "@/pages/sitemap-page";
 import AdminDashboard from "@/pages/admin-dashboard";
 import CompetitorAnalysis from "@/pages/competitor-analysis";
+import ROICalculator from "@/pages/roi-calculator";
 import NotFound from "@/pages/not-found";
 import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import GooglePartnerPage from "@/pages/google-partner-page";
@@ -64,6 +65,7 @@ function AppRouter() {
       <Route path="/sitemap" component={SitemapPage} />
       <Route path="/admin/indexing" component={AdminDashboard} />
       <Route path="/competitor-analysis" component={CompetitorAnalysis} />
+      <Route path="/roi-calculator" component={ROICalculator} />
       <Route path="/:slug">{(params) => <SmartPage params={params} />}</Route>
       <Route component={NotFound} />
     </Switch>

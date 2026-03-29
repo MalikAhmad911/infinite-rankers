@@ -1092,33 +1092,39 @@ export function getServicePricing(slug: string): ServicePricing | undefined {
 
 export const TESTIMONIALS = [
   {
-    name: "Michael Chen",
-    role: "CEO, Premier Dental Care",
-    text: "Infinite Rankers transformed our patient acquisition. The AI calling agent alone books 25+ appointments per week without any human involvement. Our revenue has grown significantly.",
+    name: "Dr. Sarah Mitchell",
+    role: "Owner, Premier Dental Care",
+    text: "148% more new patients in 6 months. The AI calling agent books 25+ appointments per week without any front desk involvement. We went from struggling to fill chairs to a 3-week waitlist.",
     rating: 5,
   },
   {
-    name: "Sarah Williams",
-    role: "Founder, LuxeHome Essentials",
-    text: "The AI email automation and retargeting system they built recovered over $65K in abandoned carts in just 3 months. The ROI is incredible.",
+    name: "James Thornton",
+    role: "CEO, LuxeHome Essentials",
+    text: "Our abandoned cart recovery alone generates an extra $12K per month. The AI follow-up system recovered $65K in the first 90 days. Best ROI of any marketing spend we've ever done.",
     rating: 5,
   },
   {
-    name: "David Rodriguez",
+    name: "David Sterling",
     role: "Managing Partner, Sterling & Associates",
-    text: "We never miss a potential client call now. The AI receptionist handles intake 24/7 and the follow-up automation has increased our case conversion by 145%.",
+    text: "We used to miss 30% of after-hours calls. Now every inquiry gets an immediate response. Case intake went from 22 to 64 per month — a 145% increase — without adding staff.",
     rating: 5,
   },
   {
-    name: "Jennifer Park",
-    role: "Owner, FitCore Studios",
-    text: "From 200 to 340 active members in 6 months. The combination of social media marketing and AI booking automation changed everything for our studios.",
+    name: "Michael Reeves",
+    role: "Managing Broker, Skyline Realty Group",
+    text: "Our agents now only talk to serious buyers. Lead-to-client rate went from 5% to 28% because the AI qualifies and routes before anyone picks up the phone. Changed how we run the business.",
     rating: 5,
   },
   {
-    name: "Robert Thompson",
-    role: "VP Sales, CloudSync Pro",
-    text: "Our sales cycle went from 45 days to 18 days. The AI sales assistant and automated demo booking system have completely revolutionized our pipeline.",
+    name: "Dr. Alan Whitfield",
+    role: "Medical Director, Meridian Health Partners",
+    text: "The AI receptionist paid for itself in the first week. Call answer rate went from 65% to 96%, patient acquisition cost dropped from $280 to $82, and new patients grew 125%.",
+    rating: 5,
+  },
+  {
+    name: "Priya Kapoor",
+    role: "VP of Sales, CloudSync Pro",
+    text: "Demo-to-close rate jumped from 15% to 32%. Sales cycle shortened from 45 days to 18. The AI qualifies every prospect before they reach a rep, so every demo counts.",
     rating: 5,
   },
 ];
@@ -1142,11 +1148,9 @@ export const BLOG_POSTS = [
 ];
 
 export const HOW_IT_WORKS_STEPS = [
-  { step: 1, title: "Traffic Generation", description: "We drive qualified traffic through AI-optimized ads, SEO, and content strategies.", icon: "Globe" },
-  { step: 2, title: "AI Qualification", description: "Our AI systems instantly engage, qualify, and score every lead automatically.", icon: "Bot" },
-  { step: 3, title: "Smart Routing", description: "Qualified leads are routed to your CRM with full context and priority scoring.", icon: "ArrowRight" },
-  { step: 4, title: "Automated Booking", description: "AI books appointments directly into your calendar — no manual scheduling.", icon: "CalendarCheck" },
-  { step: 5, title: "Revenue Growth", description: "Close more deals with AI-assisted sales and automated follow-up sequences.", icon: "DollarSign" },
+  { step: 1, title: "Audit", description: "We map your full lead flow end-to-end — finding exactly where calls go unanswered, where follow-up breaks down, and where revenue is leaking. You get a prioritized implementation roadmap before we build anything.", icon: "Target" },
+  { step: 2, title: "Build", description: "Our team designs and deploys your AI systems — lead capture, follow-up sequences, appointment booking, CRM pipelines — fully integrated with your existing tools and live within 2–6 weeks.", icon: "Cpu" },
+  { step: 3, title: "Optimize", description: "We monitor performance weekly, run improvement cycles based on real revenue data, and report on outcomes — calls captured, appointments booked, deals closed — not just activity metrics.", icon: "TrendingUp" },
 ];
 
 export const ACHIEVEMENTS = [
