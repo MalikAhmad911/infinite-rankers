@@ -79,7 +79,7 @@ Key data structures in `client/src/lib/constants.ts`:
 3. Services Overview (`/services`) - 7 pillar cards with highlights and CTAs
 4. Service Detail (dynamic) - Per-pillar pages at `/{slug}` with problems/solutions, workflow, features, FAQs, related services, case studies
 5. Portfolio - Case studies with category filtering tabs
-6. Pricing - 3-tier SaaS pricing + ROI calculator
+6. Pricing - 3-tier AI Revenue Systems pricing (Starter $997/mo, Growth $2,497/mo, Revenue OS $4,997/mo) with setup fees, pillar inclusions, add-ons, ROI calculator (23% conversion improvement model), pricing FAQ, and Custom Build option
 7. Contact - Contact form, Google Maps, business info
 8. Blog - 15 blog post articles
 9. Book Demo - Calendar date picker, time slots, qualification form

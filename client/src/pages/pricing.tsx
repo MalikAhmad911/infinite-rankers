@@ -7,249 +7,257 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import SEOHead from "@/components/seo-head";
-import SectionHeader from "@/components/section-header";
-import GlassCard from "@/components/glass-card";
-import { PRICING_TIERS, SERVICE_PRICING } from "@/lib/constants";
-import { GooglePartnerBadge } from "@/components/google-partner-badge";
 import {
   ArrowRight, CheckCircle2, Shield, Clock, DollarSign,
-  ChevronDown, ChevronUp, Users, BarChart3, Headphones, Zap,
+  ChevronDown, ChevronUp, Zap, TrendingUp, Bot, CalendarCheck,
+  Database, Headphones, Star, Code, Plus,
 } from "lucide-react";
+import { SERVICE_PILLARS } from "@/lib/constants";
 
-const PLAN_DELIVERABLES = [
+const PRICING_TIERS = [
   {
-    icon: Zap,
-    title: "AI System Setup",
-    description: "Full configuration of your AI calling agent, chatbot, or automation workflows — ready to take calls and book appointments in week one.",
+    id: "starter",
+    name: "Starter System",
+    tagline: "Your first AI system, installed and running",
+    setupFee: 1500,
+    monthlyPrice: 997,
+    pillarsIncluded: 2,
+    pillars: ["ai-lead-capture", "reviews-reactivation-retention"],
+    pillarsNote: "Choose any 2 of the 7 AI Revenue Pillars",
+    whoItsFor: "Solo operators and small service businesses taking their first step into AI revenue systems.",
+    features: [
+      "2 AI Revenue Pillars (your choice)",
+      "Initial strategy & audit session",
+      "Full AI system setup & configuration",
+      "2–3 week go-live timeline",
+      "Monthly performance report",
+      "Email support",
+    ],
+    cta: "Start Your First System",
+    popular: false,
   },
   {
-    icon: BarChart3,
-    title: "Performance Dashboard",
-    description: "Real-time KPI dashboard showing leads captured, calls made, appointments booked, and revenue attributed — updated daily.",
+    id: "growth",
+    name: "Growth System",
+    tagline: "Full AI revenue stack for growing teams",
+    setupFee: 2500,
+    monthlyPrice: 2497,
+    pillarsIncluded: 4,
+    pillars: ["ai-lead-capture", "ai-appointment-agents", "crm-pipeline-automation", "reviews-reactivation-retention"],
+    pillarsNote: "Choose any 4 of the 7 AI Revenue Pillars",
+    whoItsFor: "Businesses at $500K–$5M generating leads but leaking revenue from slow follow-up and manual processes.",
+    features: [
+      "4 AI Revenue Pillars (your choice)",
+      "Full revenue audit & strategy sprint",
+      "All systems setup, integrated & tested",
+      "2–4 week go-live timeline",
+      "Weekly performance dashboard",
+      "Bi-weekly strategy calls",
+      "Priority support (< 4hr response)",
+    ],
+    cta: "Get the Growth System",
+    popular: true,
   },
   {
-    icon: Headphones,
-    title: "Dedicated Account Manager",
-    description: "A single point of contact who knows your business, your goals, and your numbers. Available by phone, email, and Slack.",
-  },
-  {
-    icon: Users,
-    title: "Monthly Strategy Calls",
-    description: "Structured 60-minute review of what's working, what's not, and what we're doing next — with a written action plan to follow.",
+    id: "revenue-os",
+    name: "Revenue OS",
+    tagline: "End-to-end AI revenue operating system",
+    setupFee: 4500,
+    monthlyPrice: 4997,
+    pillarsIncluded: 7,
+    pillars: ["ai-lead-capture", "ai-appointment-agents", "crm-pipeline-automation", "customer-support-ai", "reviews-reactivation-retention", "custom-saas-tools", "revenue-automation-consulting"],
+    pillarsNote: "All 7 AI Revenue Pillars, fully deployed",
+    whoItsFor: "Established businesses wanting a fully automated revenue engine — capture, close, retain — without adding headcount.",
+    features: [
+      "All 7 AI Revenue Pillars deployed",
+      "Full tech stack audit & roadmap",
+      "Custom integrations with your existing tools",
+      "4–6 week phased go-live",
+      "Live revenue attribution dashboard",
+      "Weekly 1:1 strategy calls",
+      "Dedicated account manager",
+      "Slack channel access",
+      "48-hr emergency escalation line",
+    ],
+    cta: "Build Your Revenue OS",
+    popular: false,
   },
 ];
 
-function ROICalculator() {
-  const [monthlyLeads, setMonthlyLeads] = useState([100]);
-  const [avgDealValue, setAvgDealValue] = useState([500]);
-  const [closeRate, setCloseRate] = useState([10]);
+const ADDONS = [
+  {
+    name: "Additional Industry Vertical",
+    description: "Add a second or third industry targeting system (e.g., HVAC + dental).",
+    price: "+$497/mo",
+  },
+  {
+    name: "Priority Implementation",
+    description: "Compress go-live from 2–3 weeks to 1 week with dedicated sprint team.",
+    price: "+$1,000 setup",
+  },
+  {
+    name: "Custom Software / SaaS Build",
+    description: "Fully custom dashboard, internal tool, or white-label SaaS product for your exact workflow.",
+    price: "From $8,000 project",
+  },
+  {
+    name: "Performance Bonus Tier",
+    description: "Commission-based component on AI-attributed revenue — we only win when you do.",
+    price: "Custom",
+  },
+  {
+    name: "White-Label Partner Program",
+    description: "Resell our AI systems under your own brand to your clients.",
+    price: "Contact us",
+  },
+];
 
-  const currentRevenue = monthlyLeads[0] * avgDealValue[0] * (closeRate[0] / 100);
-  const projectedLeads = monthlyLeads[0] * 2.5;
-  const projectedCloseRate = Math.min(closeRate[0] * 1.8, 60);
-  const projectedRevenue = projectedLeads * avgDealValue[0] * (projectedCloseRate / 100);
-  const revenueIncrease = projectedRevenue - currentRevenue;
+const PRICING_FAQS = [
+  {
+    q: "Do I have to sign a long-term contract?",
+    a: "No. The monthly retainer is month-to-month — cancel with 30 days notice. The setup fee covers your AI system build, which you own regardless of whether you continue the retainer. There are no lock-in clauses, no annual commitments, and no cancellation penalties.",
+  },
+  {
+    q: "How long until my AI systems are live and generating leads?",
+    a: "Starter and Growth systems go live in 2–3 weeks. Revenue OS is phased over 4–6 weeks to avoid disrupting your existing operations. Within the first week of go-live, you'll already have AI answering calls and capturing leads. Most clients see measurable impact by the end of week two.",
+  },
+  {
+    q: "How quickly will I see ROI?",
+    a: "Most clients see measurable revenue impact within 2–4 weeks of go-live — primarily from captured leads that would previously have gone unanswered. The ROI calculator below gives you a conservative estimate based on industry averages: businesses that respond to leads within 5 minutes convert 23% more of them than those that respond within 30 minutes or more.",
+  },
+];
 
+const PILLAR_ICON_MAP: Record<string, typeof Zap> = {
+  "ai-lead-capture": Bot,
+  "ai-appointment-agents": CalendarCheck,
+  "crm-pipeline-automation": Database,
+  "customer-support-ai": Headphones,
+  "reviews-reactivation-retention": Star,
+  "custom-saas-tools": Code,
+  "revenue-automation-consulting": TrendingUp,
+};
+
+function FAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="roi-calculator">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          label="ROI Calculator"
-          title="Calculate Your Revenue Growth Potential"
-          description="See how AI automation can impact your bottom line based on your current numbers."
-        />
-        <div className="max-w-4xl mx-auto">
-          <GlassCard>
-            <div className="grid md:grid-cols-2 gap-10">
-              <div className="space-y-8">
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <Label className="text-sm font-medium">Monthly Leads</Label>
-                    <span className="text-sm font-semibold text-blue-600">{monthlyLeads[0]}</span>
-                  </div>
-                  <Slider value={monthlyLeads} onValueChange={setMonthlyLeads} min={10} max={1000} step={10} data-testid="slider-leads" />
-                </div>
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <Label className="text-sm font-medium">Average Deal Value ($)</Label>
-                    <span className="text-sm font-semibold text-blue-600">${avgDealValue[0]}</span>
-                  </div>
-                  <Slider value={avgDealValue} onValueChange={setAvgDealValue} min={100} max={10000} step={100} data-testid="slider-deal-value" />
-                </div>
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <Label className="text-sm font-medium">Current Close Rate (%)</Label>
-                    <span className="text-sm font-semibold text-blue-600">{closeRate[0]}%</span>
-                  </div>
-                  <Slider value={closeRate} onValueChange={setCloseRate} min={1} max={50} step={1} data-testid="slider-close-rate" />
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="p-4 rounded-md bg-muted/50">
-                  <div className="text-xs text-muted-foreground mb-1">Current Monthly Revenue</div>
-                  <div className="text-2xl font-bold text-foreground">${currentRevenue.toLocaleString()}</div>
-                </div>
-                <div className="p-4 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50">
-                  <div className="text-xs text-muted-foreground mb-1">Projected Monthly Revenue with AI</div>
-                  <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    ${Math.round(projectedRevenue).toLocaleString()}
-                  </div>
-                </div>
-                <div className="p-4 rounded-md bg-emerald-50 border border-emerald-200/60">
-                  <div className="text-xs text-muted-foreground mb-1">Potential Revenue Increase</div>
-                  <div className="text-2xl font-bold text-emerald-600">
-                    +${Math.round(revenueIncrease).toLocaleString()}/mo
-                  </div>
-                </div>
-                <Link href="/book-demo">
-                  <Button className="w-full mt-2" data-testid="button-roi-cta">
-                    Get Your Custom Growth Plan <ArrowRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </GlassCard>
+    <div className="border border-gray-200 rounded-lg overflow-hidden">
+      <button
+        type="button"
+        className="flex items-start justify-between w-full px-6 py-5 text-left bg-white hover:bg-gray-50 transition-colors"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        data-testid={`faq-pricing-${q.slice(0, 20).toLowerCase().replace(/\s+/g, "-")}`}
+      >
+        <span className="text-sm font-semibold text-gray-900 pr-4">{q}</span>
+        {open ? (
+          <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+        ) : (
+          <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+        )}
+      </button>
+      {open && (
+        <div className="px-6 pb-5 bg-white">
+          <p className="text-sm text-muted-foreground leading-relaxed">{a}</p>
         </div>
-      </div>
-    </section>
+      )}
+    </div>
   );
 }
 
-const SERVICE_CATEGORIES_PRICING = [
-  {
-    title: "AI & Automation Systems",
-    slugs: ["ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "ai-appointment-booking", "ai-follow-up", "ai-sales-assistant", "ai-chatbot", "ai-email-automation", "ai-sms-automation", "crm-automation", "workflow-automation"],
-  },
-  {
-    title: "Lead Generation Systems",
-    slugs: ["google-ads", "meta-ads", "seo-authority", "local-seo", "conversion-funnels", "landing-page-optimization", "conversion-rate-optimization"],
-  },
-  {
-    title: "Social Media & Content",
-    slugs: ["social-media-marketing", "content-writing"],
-  },
-  {
-    title: "Development & Technology",
-    slugs: ["website-development", "landing-page-development", "saas-integrations", "crm-setup", "analytics-dashboard", "marketing-automation-setup"],
-  },
-];
+function ROICalculator() {
+  const [monthlyLeads, setMonthlyLeads] = useState([80]);
+  const [avgDealValue, setAvgDealValue] = useState([1500]);
 
-function ServicePricingBreakdown() {
-  const [expandedCategory, setExpandedCategory] = useState<string | null>("AI & Automation Systems");
+  const capturedLeads = Math.round(monthlyLeads[0] * 0.23);
+  const additionalRevenue = capturedLeads * avgDealValue[0];
+  const annualUplift = additionalRevenue * 12;
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24" data-testid="service-pricing-breakdown">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          label="Service Pricing"
-          title="Individual Service Pricing"
-          description="All services available month-to-month. Mix and match to build your perfect growth stack."
-        />
-
-        <div className="space-y-4">
-          {SERVICE_CATEGORIES_PRICING.map((cat) => {
-            const services = cat.slugs
-              .map(slug => SERVICE_PRICING.find(sp => sp.slug === slug))
-              .filter(Boolean);
-            const isExpanded = expandedCategory === cat.title;
-
-            return (
-              <motion.div
-                key={cat.title}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <Card className="overflow-hidden">
-                  <button
-                    onClick={() => setExpandedCategory(isExpanded ? null : cat.title)}
-                    className="w-full flex items-center justify-between gap-4 p-4 sm:p-5 text-left"
-                    data-testid={`toggle-category-${cat.title.toLowerCase().replace(/\s+/g, "-")}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="w-1.5 h-6 bg-primary rounded-full shrink-0" />
-                      <h3 className="font-semibold text-foreground text-sm sm:text-base">{cat.title}</h3>
-                      <Badge variant="secondary" className="text-xs">{services.length} services</Badge>
-                    </div>
-                    {isExpanded ? (
-                      <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
-                    )}
-                  </button>
-
-                  <div
-                    className="transition-all duration-300"
-                    style={{
-                      maxHeight: isExpanded ? `${services.length * 200 + 100}px` : "0px",
-                      opacity: isExpanded ? 1 : 0,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm" data-testid={`table-${cat.title.toLowerCase().replace(/\s+/g, "-")}`}>
-                        <thead>
-                          <tr className="border-t border-b bg-muted/30">
-                            <th className="text-left p-3 sm:p-4 font-medium text-muted-foreground min-w-[200px]">Service</th>
-                            <th className="text-center p-3 sm:p-4 font-medium text-muted-foreground min-w-[120px]">
-                              <div>Growth</div>
-                              <div className="text-xs font-normal">Starter</div>
-                            </th>
-                            <th className="text-center p-3 sm:p-4 font-medium text-muted-foreground min-w-[120px]">
-                              <div>Scale</div>
-                              <div className="text-xs font-normal">Most Popular</div>
-                            </th>
-                            <th className="text-center p-3 sm:p-4 font-medium text-muted-foreground min-w-[120px]">
-                              <div>Enterprise</div>
-                              <div className="text-xs font-normal">Full Power</div>
-                            </th>
-                            <th className="p-3 sm:p-4 min-w-[100px]"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {services.map((service, si) => service && (
-                            <tr key={service.slug} className={si < services.length - 1 ? "border-b border-border/50" : ""}>
-                              <td className="p-3 sm:p-4">
-                                <div className="font-medium text-foreground text-xs sm:text-sm">{service.title}</div>
-                                {service.combinedNote && (
-                                  <p className="text-xs text-muted-foreground mt-0.5 italic">{service.combinedNote}</p>
-                                )}
-                              </td>
-                              {service.tiers.map((tier) => (
-                                <td key={tier.name} className="text-center p-3 sm:p-4">
-                                  <div className="font-semibold text-foreground text-sm sm:text-base">
-                                    ${tier.price.toLocaleString()}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">{service.unit}</div>
-                                </td>
-                              ))}
-                              <td className="p-3 sm:p-4 text-right">
-                                <Link href={`/${service.slug}`}>
-                                  <Button variant="ghost" size="sm" data-testid={`button-view-${service.slug}`}>
-                                    Details <ArrowRight className="w-3 h-3 ml-1" />
-                                  </Button>
-                                </Link>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            );
-          })}
+    <section className="py-16 sm:py-20 bg-gradient-to-b from-gray-50/60 to-white" data-testid="roi-calculator">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <span className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-2 block">ROI Estimator</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+            How Much Revenue Are You Leaving on the Table?
+          </h2>
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Industry data shows businesses that respond within 5 minutes convert <strong>23% more leads</strong> than those responding in 30+ minutes. AI responds instantly, every time.
+          </p>
         </div>
+        <Card className="p-7 sm:p-10" data-testid="roi-calculator-card">
+          <div className="grid md:grid-cols-2 gap-10">
+            <div className="space-y-8">
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <Label className="text-sm font-medium text-gray-700">Monthly Leads Received</Label>
+                  <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">{monthlyLeads[0]} leads</span>
+                </div>
+                <Slider
+                  value={monthlyLeads}
+                  onValueChange={setMonthlyLeads}
+                  min={10}
+                  max={500}
+                  step={5}
+                  data-testid="slider-monthly-leads"
+                  className="mt-2"
+                />
+                <div className="flex justify-between text-xs text-gray-400 mt-1.5">
+                  <span>10</span><span>500</span>
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <Label className="text-sm font-medium text-gray-700">Average Deal / Job Value</Label>
+                  <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">${avgDealValue[0].toLocaleString()}</span>
+                </div>
+                <Slider
+                  value={avgDealValue}
+                  onValueChange={setAvgDealValue}
+                  min={100}
+                  max={25000}
+                  step={100}
+                  data-testid="slider-deal-value"
+                  className="mt-2"
+                />
+                <div className="flex justify-between text-xs text-gray-400 mt-1.5">
+                  <span>$100</span><span>$25K</span>
+                </div>
+              </div>
+              <div className="p-4 bg-amber-50 border border-amber-200/60 rounded-lg">
+                <p className="text-xs text-amber-700 leading-relaxed">
+                  <strong>Assumption:</strong> 23% of your leads are currently lost to slow or no follow-up — industry average from a 2023 Harvard Business Review lead-response study.
+                </p>
+              </div>
+            </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mt-10 text-xs sm:text-sm text-muted-foreground">
-          <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
-          <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
-          <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
-          <span className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-primary" /> No Setup Fees</span>
-          <GooglePartnerBadge variant="inline" />
-        </div>
+            <div className="space-y-4">
+              <div className="p-5 rounded-xl bg-gray-50 border border-gray-200">
+                <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1.5">Leads Lost Monthly (No AI)</div>
+                <div className="text-3xl font-extrabold text-gray-700">{capturedLeads}</div>
+                <div className="text-xs text-gray-500 mt-1">out of {monthlyLeads[0]} leads — lost to voicemail or slow response</div>
+              </div>
+              <div className="p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
+                <div className="text-xs font-medium text-blue-600 uppercase tracking-wide mb-1.5">Additional Revenue Per Month</div>
+                <div className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  +${additionalRevenue.toLocaleString()}
+                </div>
+                <div className="text-xs text-gray-500 mt-1">{capturedLeads} recovered leads × ${avgDealValue[0].toLocaleString()} avg deal</div>
+              </div>
+              <div className="p-5 rounded-xl bg-emerald-50 border border-emerald-200/60">
+                <div className="text-xs font-medium text-emerald-600 uppercase tracking-wide mb-1.5">Annual Revenue Uplift</div>
+                <div className="text-3xl font-extrabold text-emerald-600">
+                  +${annualUplift.toLocaleString()}
+                </div>
+                <div className="text-xs text-gray-500 mt-1">Conservative estimate. Does not include review/reactivation lift.</div>
+              </div>
+              <Link href="/book-demo">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" data-testid="button-roi-cta">
+                  Get Your Custom Revenue Plan <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </Card>
       </div>
     </section>
   );
@@ -259,159 +267,207 @@ export default function Pricing() {
   return (
     <div>
       <SEOHead
-        title="Pricing - Infinite Rankers | AI Revenue Growth Plans"
-        description="Transparent, results-driven pricing for AI automation and revenue growth systems. Choose the plan that matches your growth stage."
+        title="Pricing — AI Revenue Systems | Infinite Rankers"
+        description="Transparent, outcome-driven pricing for AI revenue systems. Setup fee + monthly retainer. 3 tiers: Starter ($997/mo), Growth ($2,497/mo), Revenue OS ($4,997/mo). No contracts."
+        keywords="AI revenue system pricing, AI automation pricing, Infinite Rankers pricing, AI agency cost"
+        canonical="https://infiniterankers.io/pricing"
       />
+
+      {/* Hero */}
       <section className="relative pt-28 sm:pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
         <div className="absolute top-10 left-10 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
-            <Badge variant="secondary" className="mb-4">
+            <Badge variant="secondary" className="mb-4 text-xs" data-testid="badge-pricing-hero">
               <DollarSign className="w-3 h-3 mr-1" /> Transparent Pricing
             </Badge>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-tight">
-              Transparent, Results-Driven{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Pricing</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight" data-testid="text-pricing-headline">
+              Pricing That Shows You{" "}
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Exactly What You Get</span>
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Choose the AI revenue system that matches your growth stage. No hidden fees, no long-term contracts.
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 max-w-2xl mx-auto">
+              Most AI agencies hide their pricing behind a sales call. We don't. Every tier shows the setup fee, monthly retainer, and which AI Revenue Pillars are included — so you know your investment before we ever speak.
             </p>
+            <div className="flex flex-wrap gap-4 justify-center text-xs sm:text-sm text-muted-foreground">
+              <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-blue-500" /> No Long-Term Contracts</span>
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-blue-500" /> Live in 2–6 Weeks</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-blue-500" /> You Own What We Build</span>
+              <span className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-blue-500" /> Month-to-Month Retainer</span>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-16 sm:py-20 lg:py-24" data-testid="pricing-comparison-table">
+      {/* Pricing Tiers */}
+      <section className="pb-16 sm:pb-20" data-testid="section-pricing-tiers">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px]">
-              <thead>
-                <tr>
-                  <th className="w-1/4 p-4 text-left align-bottom">
-                    <span className="text-sm font-medium text-muted-foreground">Features Included</span>
-                  </th>
-                  {PRICING_TIERS.map((tier) => (
-                    <th key={tier.name} className="w-1/4 p-4 text-center align-bottom" data-testid={`pricing-col-${tier.name.toLowerCase()}`}>
-                      <div className={`rounded-xl p-5 sm:p-6 relative ${tier.popular ? "bg-gradient-to-b from-blue-600 to-purple-700 text-white shadow-lg" : "bg-gray-50/80 border border-border"}`}>
-                        {tier.popular && (
-                          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                            <Badge className="bg-white text-blue-700 border-0 shadow-sm text-xs font-semibold px-3">Most Popular</Badge>
-                          </div>
-                        )}
-                        {tier.discount && (
-                          <div className={`text-xs font-semibold mb-1 ${tier.popular ? "text-white/80" : "text-blue-600"}`}>{tier.discount}</div>
-                        )}
-                        <div className={`text-base font-bold mb-1 ${tier.popular ? "text-white" : "text-foreground"}`}>{tier.name}</div>
-                        <div className={`text-xs mb-3 leading-relaxed ${tier.popular ? "text-white/75" : "text-muted-foreground"}`}>{tier.description}</div>
-                        <div className={`text-3xl font-extrabold mb-0.5 ${tier.popular ? "text-white" : "text-foreground"}`}>{tier.price}</div>
-                        <div className={`text-xs mb-4 ${tier.popular ? "text-white/70" : "text-muted-foreground"}`}>{tier.period} · no lock-in</div>
-                        <Link href="/book-demo">
-                          <Button
-                            size="sm"
-                            className={`w-full text-xs ${tier.popular ? "bg-white text-blue-700 hover:bg-white/90" : ""}`}
-                            variant={tier.popular ? "secondary" : "outline"}
-                            data-testid={`button-pricing-${tier.name.toLowerCase()}`}
-                          >
-                            {tier.cta} <ArrowRight className="w-3 h-3 ml-1" />
-                          </Button>
-                        </Link>
+          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+            {PRICING_TIERS.map((tier, i) => (
+              <motion.div
+                key={tier.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="flex"
+                data-testid={`pricing-tier-${tier.id}`}
+              >
+                <div className={`relative flex flex-col w-full rounded-2xl border ${
+                  tier.popular
+                    ? "bg-gradient-to-b from-blue-600 to-indigo-700 border-blue-500 shadow-xl shadow-blue-200/50"
+                    : "bg-white border-gray-200 shadow-sm"
+                }`}>
+                  {tier.popular && (
+                    <div className="absolute -top-4 left-0 right-0 flex justify-center">
+                      <Badge className="bg-white text-blue-700 border border-blue-200 shadow-sm text-xs font-semibold px-4 py-1">
+                        Most Popular
+                      </Badge>
+                    </div>
+                  )}
+
+                  <div className="p-6 sm:p-8 flex-1">
+                    <div className={`text-xs font-semibold uppercase tracking-widest mb-2 ${tier.popular ? "text-blue-200" : "text-blue-600"}`}>
+                      {tier.tagline}
+                    </div>
+                    <h2 className={`text-xl font-bold mb-4 ${tier.popular ? "text-white" : "text-gray-900"}`} data-testid={`tier-name-${tier.id}`}>
+                      {tier.name}
+                    </h2>
+
+                    <div className={`mb-1 ${tier.popular ? "text-white/70" : "text-gray-500"}`}>
+                      <span className="text-xs">One-time setup fee</span>
+                    </div>
+                    <div className={`text-2xl font-bold mb-1 ${tier.popular ? "text-white" : "text-gray-900"}`} data-testid={`tier-setup-${tier.id}`}>
+                      ${tier.setupFee.toLocaleString()}
+                    </div>
+
+                    <div className={`mt-4 mb-1 ${tier.popular ? "text-white/70" : "text-gray-500"}`}>
+                      <span className="text-xs">Monthly retainer</span>
+                    </div>
+                    <div className={`text-4xl font-extrabold leading-none mb-1 ${tier.popular ? "text-white" : "text-gray-900"}`} data-testid={`tier-price-${tier.id}`}>
+                      ${tier.monthlyPrice.toLocaleString()}
+                      <span className={`text-base font-normal ml-1 ${tier.popular ? "text-white/70" : "text-gray-500"}`}>/mo</span>
+                    </div>
+                    <div className={`text-xs mb-6 ${tier.popular ? "text-white/60" : "text-gray-400"}`}>No lock-in · cancel with 30-day notice</div>
+
+                    <Link href="/book-demo">
+                      <Button
+                        className={`w-full font-semibold ${
+                          tier.popular
+                            ? "bg-white text-blue-700 hover:bg-blue-50"
+                            : "bg-blue-600 hover:bg-blue-700 text-white"
+                        }`}
+                        data-testid={`button-pricing-${tier.id}`}
+                      >
+                        {tier.cta} <ArrowRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </Link>
+
+                    <div className={`mt-6 pt-6 border-t ${tier.popular ? "border-white/20" : "border-gray-100"}`}>
+                      <div className={`text-xs font-semibold uppercase tracking-wide mb-3 ${tier.popular ? "text-blue-200" : "text-gray-500"}`}>
+                        AI Revenue Pillars Included
                       </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { label: "AI Chatbot", values: [true, true, true] },
-                  { label: "CRM Setup & Automation", values: [true, true, true] },
-                  { label: "Email Automation", values: ["1,000 contacts", "Unlimited", "Unlimited"] },
-                  { label: "SMS Automation", values: ["500 contacts", "Unlimited", "Unlimited"] },
-                  { label: "Landing Pages", values: ["1 page", "3 funnels", "Unlimited"] },
-                  { label: "AI Calling Agent", values: [false, true, true] },
-                  { label: "AI Lead Qualification", values: [false, true, true] },
-                  { label: "AI Appointment Booking", values: [false, true, true] },
-                  { label: "Google Ads Management", values: [false, true, true] },
-                  { label: "Meta Ads Management", values: [false, true, true] },
-                  { label: "SEO Growth System", values: ["Audit only", "Full system", "Authority system"] },
-                  { label: "Social Media Management", values: [false, "2 platforms", "All platforms"] },
-                  { label: "Content Writing", values: [false, true, true] },
-                  { label: "AI Receptionist 24/7", values: [false, false, true] },
-                  { label: "AI Sales Assistant", values: [false, false, true] },
-                  { label: "Advanced Analytics Dashboard", values: [false, false, true] },
-                  { label: "SaaS Integrations", values: [false, false, true] },
-                  { label: "Dedicated Account Manager", values: [false, "Shared", "Dedicated"] },
-                  { label: "Strategy Calls", values: ["Monthly", "Weekly", "Weekly"] },
-                  { label: "Reporting", values: ["Monthly", "Weekly", "Daily"] },
-                  { label: "Support Level", values: ["Email", "Priority", "Dedicated"] },
-                ].map((row, ri) => (
-                  <tr key={row.label} className={`border-t border-border/40 ${ri % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`} data-testid={`comparison-row-${ri}`}>
-                    <td className="p-3 sm:p-4 text-sm font-medium text-foreground">{row.label}</td>
-                    {row.values.map((val, vi) => (
-                      <td key={vi} className={`p-3 sm:p-4 text-center text-sm ${PRICING_TIERS[vi].popular ? "bg-blue-50/40" : ""}`}>
-                        {val === true ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
-                        ) : val === false ? (
-                          <span className="text-gray-300 text-lg">—</span>
-                        ) : (
-                          <span className="text-muted-foreground text-xs">{val as string}</span>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-                <tr className="border-t border-border">
-                  <td className="p-4" />
-                  {PRICING_TIERS.map((tier) => (
-                    <td key={tier.name} className={`p-4 text-center ${tier.popular ? "bg-blue-50/40" : ""}`}>
-                      <Link href="/book-demo">
-                        <Button
-                          size="sm"
-                          className="w-full text-xs"
-                          variant={tier.popular ? "default" : "outline"}
-                          data-testid={`button-pricing-bottom-${tier.name.toLowerCase()}`}
-                        >
-                          {tier.cta} <ArrowRight className="w-3 h-3 ml-1" />
-                        </Button>
-                      </Link>
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
+                      <div className={`text-xs mb-3 ${tier.popular ? "text-white/70" : "text-gray-500"}`}>{tier.pillarsNote}</div>
+                      <div className="space-y-2 mb-5">
+                        {SERVICE_PILLARS.map((pillar) => {
+                          const PillarIcon = PILLAR_ICON_MAP[pillar.slug] || Zap;
+                          const isIncluded = tier.pillarsIncluded === 7 || tier.pillars.includes(pillar.slug);
+                          return (
+                            <div key={pillar.slug} className={`flex items-center gap-2 text-xs ${
+                              isIncluded
+                                ? tier.popular ? "text-white" : "text-gray-700"
+                                : tier.popular ? "text-white/30" : "text-gray-300"
+                            }`}>
+                              <PillarIcon className={`w-3.5 h-3.5 flex-shrink-0 ${isIncluded ? "" : "opacity-30"}`} />
+                              <span className={isIncluded ? "" : "line-through"}>{pillar.title}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className={`text-xs font-semibold uppercase tracking-wide mb-3 ${tier.popular ? "text-blue-200" : "text-gray-500"}`}>
+                        What's Included
+                      </div>
+                      <div className="space-y-2">
+                        {tier.features.map((feature, fi) => (
+                          <div key={fi} className={`flex items-start gap-2 text-xs ${tier.popular ? "text-white/90" : "text-gray-700"}`}>
+                            <CheckCircle2 className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${tier.popular ? "text-blue-200" : "text-emerald-500"}`} />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className={`mt-5 pt-5 border-t ${tier.popular ? "border-white/20" : "border-gray-100"}`}>
+                      <div className={`text-xs font-semibold mb-1 ${tier.popular ? "text-blue-200" : "text-gray-500"}`}>Best for:</div>
+                      <p className={`text-xs leading-relaxed ${tier.popular ? "text-white/80" : "text-gray-600"}`}>{tier.whoItsFor}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mt-10 text-xs sm:text-sm text-muted-foreground">
-            <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Hidden Fees</span>
-            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> Cancel Anytime</span>
-            <span className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-primary" /> No Setup Fees</span>
-            <GooglePartnerBadge variant="inline" />
-          </div>
+          {/* Custom Build Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="mt-6"
+            data-testid="pricing-custom-build"
+          >
+            <Card className="p-6 sm:p-8 bg-gray-900 border-gray-800 text-white flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <div className="flex-1">
+                <div className="text-xs font-semibold uppercase tracking-widest text-blue-400 mb-1">Enterprise / Custom</div>
+                <h3 className="text-lg font-bold text-white mb-2">Custom Build</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  Building a custom SaaS product, white-label AI platform, or a fully bespoke revenue system for a unique workflow? We scope and price custom builds as fixed-fee projects starting at $8,000.
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 flex-shrink-0">
+                <div className="text-2xl font-extrabold text-white">Custom</div>
+                <div className="text-xs text-gray-500">Project-based pricing</div>
+                <Link href="/book-demo">
+                  <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-800 mt-1" data-testid="button-custom-build">
+                    Let's Talk <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </Link>
+              </div>
+            </Card>
+          </motion.div>
         </div>
       </section>
 
-      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="plan-deliverables">
+      {/* Add-Ons */}
+      <section className="py-14 sm:py-18 bg-gray-50 border-t border-gray-100" data-testid="section-addons">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            label="What's Included"
-            title="Every Plan Includes These Core Deliverables"
-            description="Regardless of the tier you choose, you get a dedicated team, live performance data, and a structured engagement — not just a software subscription."
-          />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PLAN_DELIVERABLES.map((item, i) => (
+          <div className="text-center mb-10">
+            <span className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-2 block">Optional Add-Ons</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Extend Any Plan</h2>
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+              Add-ons can be layered onto any tier. Mix and match based on where your biggest revenue gaps are.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {ADDONS.map((addon, i) => (
               <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
+                key={addon.name}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.08 }}
               >
-                <Card className="p-6 h-full" data-testid={`deliverable-${item.title.toLowerCase().replace(/\s+/g, "-")}`}>
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-                    <item.icon className="w-5 h-5 text-blue-600" />
+                <Card className="p-5 h-full bg-white border-gray-200 hover:shadow-sm transition-shadow" data-testid={`addon-card-${i}`}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Plus className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between gap-2 mb-1.5">
+                        <h3 className="text-sm font-semibold text-gray-900">{addon.name}</h3>
+                        <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded flex-shrink-0">{addon.price}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{addon.description}</p>
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2 text-sm sm:text-base">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                 </Card>
               </motion.div>
             ))}
@@ -419,22 +475,48 @@ export default function Pricing() {
         </div>
       </section>
 
-      <ServicePricingBreakdown />
+      {/* ROI Calculator */}
       <ROICalculator />
 
-      <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700" />
+      {/* FAQ */}
+      <section className="py-14 sm:py-18 bg-white" data-testid="section-pricing-faq">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <span className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-2 block">Pricing Questions</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Common Pricing Objections — Answered</h2>
+          </div>
+          <div className="space-y-3">
+            {PRICING_FAQS.map((faq, i) => (
+              <FAQItem key={i} q={faq.q} a={faq.a} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16 sm:py-20 relative overflow-hidden" data-testid="section-pricing-cta">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-700" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">Need a Custom Solution?</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">
+              Not Sure Which System Is Right for You?
+            </h2>
             <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto">
-              Every business is unique. Book a strategy session and we'll build a custom AI revenue system tailored to your specific needs and budget.
+              Book a 30-minute strategy call. We'll audit your current revenue gaps, show you which AI pillars have the highest ROI for your specific business, and give you a custom implementation plan — no commitment required.
             </p>
-            <Link href="/book-demo">
-              <Button variant="secondary" data-testid="button-pricing-cta">
-                Book Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
-            </Link>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link href="/book-demo">
+                <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold" data-testid="button-pricing-final-cta">
+                  Book Free Strategy Call <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+              </Link>
+              <Link href="/services">
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" data-testid="button-pricing-explore-services">
+                  Explore All 7 AI Systems
+                </Button>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
