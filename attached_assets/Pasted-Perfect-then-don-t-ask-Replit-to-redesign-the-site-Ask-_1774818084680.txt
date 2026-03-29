@@ -1,0 +1,168 @@
+Perfect — then don’t ask Replit to redesign the site.
+
+Ask them to <strong>keep the current design, layout style, spacing, colors, and overall UI</strong>, and only change:
+- content
+- messaging
+- service structure
+- page sections
+- headings
+- copy
+- CTA wording
+- service cards
+- industry positioning
+
+Use this prompt:
+
+<hr>
+
+Keep the <strong>existing website design exactly as it is</strong>.
+
+Do <strong>not</strong> redesign the UI.
+Do <strong>not</strong> change the visual style unless needed for small content adjustments.
+Keep the same:
+- design style
+- layout feel
+- spacing
+- section styling
+- colors
+- visual direction
+- premium SaaS look
+- responsiveness
+
+I only want to change the <strong>content, messaging, services, structure, and positioning</strong>.
+
+This website is for <strong>InfiniteRankers.io</strong>.
+
+The company should no longer be positioned as a generic SEO agency or random automation service.
+
+New positioning:
+
+<strong>InfiniteRankers.io is an AI Automation & Revenue Systems Agency.</strong>
+
+We help businesses:
+- capture more leads
+- respond faster
+- automate follow-up
+- book more appointments
+- close more sales
+- improve customer communication
+- reduce missed opportunities
+- build custom AI systems, CRM workflows, and internal business tools
+
+The site should clearly communicate that we do <strong>business growth through AI systems</strong>, not just bots.
+
+<hr>
+
+<strong>Main headline direction:</strong>
+We build AI systems that help businesses capture leads, automate follow-up, and close more sales.
+
+You can improve the wording, but keep the message strong, simple, and professional.
+
+<hr>
+
+<strong>Replace the current services/content with these core services:</strong>
+
+1. AI Lead Capture Systems
+- website AI chat
+- missed call text-back
+- lead capture from forms, WhatsApp, SMS, and social DMs
+- lead qualification workflows
+
+2. AI Sales & Appointment Systems
+- AI appointment setters
+- follow-up automation
+- booking systems
+- no-show reminders
+- lead routing
+
+3. CRM & Pipeline Automation
+- custom CRM setup
+- pipeline automation
+- tagging, segmentation, and lead stages
+- reporting dashboards
+- sales workflow systems
+
+4. Customer Support AI Systems
+- FAQ agents
+- support automation
+- ticket routing
+- knowledge assistants
+- phone/voice AI agents
+
+5. Review & Reactivation Systems
+- review request automation
+- reputation workflows
+- old lead reactivation
+- repeat customer campaigns
+
+6. Custom SaaS & Internal Tools
+- custom dashboards
+- internal business tools
+- white-label systems
+- custom CRM and admin systems
+
+<hr>
+
+<strong>Target industries to mention:</strong>
+- Home Services
+- Dental & Med Spa
+- Auto Businesses
+- Law Firms
+- Real Estate / Mortgage
+- Other service-based businesses
+
+<hr>
+
+<strong>What to update on the website:</strong>
+- hero headline and subheadline
+- section copy
+- service cards
+- buttons / CTA text
+- industry section
+- process section
+- about-style messaging
+- proof/case-study placeholders if needed
+- contact / strategy call messaging
+
+<hr>
+
+<strong>Important:</strong>
+Keep the design the same, but make the site feel like a serious AI revenue systems company.
+
+Do not make it sound like:
+- a cheap chatbot agency
+- a generic SEO agency
+- a random freelancer service page
+
+Make it sound like:
+- premium
+- clear
+- business-focused
+- outcome-driven
+- high trust
+
+<hr>
+
+<strong>Key message throughout the site:</strong>
+We help businesses turn more leads into revenue using AI systems, automation, CRM workflows, and conversion infrastructure.
+
+<hr>
+
+<strong>CTA direction:</strong>
+Use CTA language like:
+- Book a Strategy Call
+- Get an Automation Audit
+- See How It Works
+- Build My AI System
+
+<hr>
+
+<strong>Output requirement:</strong>
+Keep the same design, but rewrite and restructure the site content to match this new business direction.
+
+<hr>
+
+If you want, I can now give you:
+1. a <strong>shorter Replit prompt version</strong>
+2. a <strong>more premium/founder-style version</strong>
+3. the <strong>exact homepage copy</strong> you can make Replit paste in directly
