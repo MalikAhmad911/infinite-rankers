@@ -347,32 +347,39 @@ export default function ServicePillarPage() {
       </section>
 
       {/* ── Section 4: How It Works ──────────────────────────────────── */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-white" data-testid="section-how-it-works">
+      <section className="py-16 sm:py-20 lg:py-24 bg-gray-50/50" data-testid="section-how-it-works">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             label="How It Works"
             title="From Kickoff to Revenue in Weeks, Not Months"
             description="Every engagement follows a proven deployment process — built to get you live fast and optimized continuously."
           />
-          <div className="grid sm:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid sm:grid-cols-3 gap-6 lg:gap-8 relative">
+            {/* connector lines on desktop */}
+            <div className="hidden sm:block absolute top-10 left-[calc(33.33%+12px)] right-[calc(33.33%+12px)] h-0.5 bg-gradient-to-r from-transparent via-gray-200 to-transparent z-0" />
             {processSteps.map((step, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.12, duration: 0.4 }}
+                className="relative z-10"
               >
-                <GlassCard className="h-full relative overflow-hidden" data-testid={`process-step-${i}`}>
-                  <div
-                    className="text-7xl font-black leading-none mb-4 select-none"
-                    style={{ WebkitTextFillColor: "transparent", WebkitTextStroke: "1px rgba(99,102,241,0.15)" }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
+                <div
+                  className="bg-white rounded-2xl p-6 border border-gray-200/70 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col"
+                  data-testid={`process-step-${i}`}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-12 h-12 rounded-xl ${accentGradient} flex items-center justify-center shadow-md flex-shrink-0`}>
+                      <span className="text-white font-black text-lg leading-none">{String(i + 1).padStart(2, "0")}</span>
+                    </div>
+                    <div className="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent" />
                   </div>
                   <h3 className="text-base font-bold text-foreground mb-2">{step.step}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-                </GlassCard>
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">{step.desc}</p>
+                  <div className={`mt-4 h-1 rounded-full ${accentGradient} opacity-40`} />
+                </div>
               </motion.div>
             ))}
           </div>
