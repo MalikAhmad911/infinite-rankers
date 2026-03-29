@@ -11,7 +11,6 @@ import Breadcrumbs from "@/components/breadcrumbs";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Services from "@/pages/services";
-import ServiceDetail from "@/pages/service-detail";
 import ServicePillarPage from "@/pages/service-pillar-page";
 import Portfolio from "@/pages/portfolio";
 import CaseStudyDetail from "@/pages/case-study-detail";
