@@ -1,0 +1,242 @@
+Yes — I checked the live deployment, and I can already see why you’re saying the 50 pages are not visible.
+
+Short version:
+The pages are in the sitemap.
+But from the live homepage/services experience, they are not clearly surfaced to users.
+And there are still some old-positioning leftovers.
+
+Main findings:
+
+1. Homepage is improved, but title is still wrong
+The homepage title is still showing:
+AI Revenue Growth & Digital Marketing Agency USA
+
+That is a problem.
+
+Because your new direction is AI Automation / AI Revenue Systems.
+But the title is still pulling the brand back into digital marketing agency mode.
+
+This should be fixed first.
+
+Better examples:
+AI Automation Agency for Service Businesses
+AI Revenue Systems Agency
+AI Automation & Revenue Systems for Local Businesses
+
+2. Services page still has old SEO-era title
+The services page title is still:
+All Digital Marketing Services | 30+ AI-Powered Solutions
+
+This is a clear mismatch.
+
+This is probably one of the biggest remaining issues.
+
+Because even if the page body changed, the title is still old.
+And that means:
+SEO signal is mixed
+brand signal is mixed
+users get confused
+Google gets mixed context too
+
+This should be changed immediately.
+
+3. The 50 pages do exist in sitemap
+I checked the sitemap and yes, a lot of the new architecture is there.
+
+I can see:
+service pillar pages
+case study pages
+AI pages
+industry pages
+legacy pages
+other landing pages
+
+So technically the pages are there.
+
+But your complaint is valid:
+they are not visibly discoverable enough from the site structure.
+
+That means the issue is not:
+pages don’t exist
+
+The issue is:
+pages are not surfaced properly in navigation, services, internal linking, and page hubs
+
+4. The 50-page library is hidden from UX
+This is the real issue.
+
+If the pages are only in sitemap and fallback routing, but not clearly linked from:
+services page
+industry pages
+related pages blocks
+footer hubs
+resource hubs
+service clusters
+
+then they will feel invisible.
+
+So yes, your concern is correct.
+
+5. There are still legacy / mixed pages in sitemap
+I can still see pages like:
+content-marketing-seo-guide
+local-business-digital-marketing
+seo-vs-paid-ads-strategy
+social-media-marketing-strategy-2025
+healthcare-marketing-patient-acquisition
+ecommerce-growth-strategies
+
+This means the site is cleaner than before, but not fully clean yet.
+
+These pages may still be useful SEO assets, but they need a decision:
+keep and rewrite
+merge
+redirect
+or noindex
+
+Because right now they can still dilute the AI automation positioning.
+
+6. Case study library is large, but may also need surfacing
+I can see many case-study URLs in the sitemap.
+That’s good.
+
+But if users can’t easily discover them from:
+homepage
+service pages
+industry pages
+proof sections
+
+then they won’t help much for conversion.
+
+7. Robots.txt looks fine
+Crawlers are allowed
+AI crawlers are allowed
+Sitemaps are declared
+No big issue there
+
+So indexing-wise, that part is okay.
+
+What needs to change now
+
+This is the exact issue list I would give them:
+
+Priority 1
+Fix wrong SEO titles/meta on key pages
+Homepage title still says digital marketing agency
+Services title still says all digital marketing services
+Audit all key page titles and descriptions for old wording
+
+Priority 2
+Make the 50 pages visible in the site structure
+Right now they feel hidden
+
+You need:
+a landing pages hub
+better related pages sections
+service cluster links
+industry cluster links
+comparison cluster links
+footer/resource links
+internal links from service pillars to relevant landing pages
+
+Priority 3
+Create visible content hubs
+Examples:
+AI Automation Pages
+Industry Solutions
+Use Cases
+Comparison Pages
+Case Studies
+Resources
+
+If pages are only in sitemap, they won’t feel real to users.
+
+Priority 4
+Audit legacy pages still in sitemap
+Anything still using:
+SEO
+digital marketing
+content marketing
+social media marketing
+generic marketing strategy
+should be reviewed again
+
+Priority 5
+Improve internal linking
+Every page cluster should link naturally to related pages.
+Right now I strongly suspect this is under-surfaced.
+
+Priority 6
+Check sitemap quality
+Sitemap is working, but the content mix still shows old and new identity together.
+That should be cleaned over time.
+
+My honest conclusion
+
+The deployment is not broken.
+The 50-page work is not fake.
+The pages are there.
+
+But from a user-facing point of view, they are not yet properly surfaced.
+And some old metadata / positioning is still live.
+
+So your feeling is correct:
+the pages exist technically
+but they are not yet visible enough strategically
+
+Best next task prompt
+
+Send this:
+
+Task: Surface the 50-page SEO library properly across the live website and fix old metadata/positioning leftovers.
+
+Problems found on live deployment:
+- Homepage title still says “AI Revenue Growth & Digital Marketing Agency USA”
+- Services page title still says “All Digital Marketing Services | 30+ AI-Powered Solutions”
+- New landing pages exist in sitemap but are not clearly discoverable from the live site
+- Some legacy SEO/digital-marketing pages are still present in sitemap and may dilute the AI Automation brand
+
+What needs to be done:
+
+1. Fix key metadata immediately
+- update homepage title/meta to match AI Automation / AI Revenue Systems positioning
+- update services title/meta to match new 7-pillar structure
+- audit other important pages for old digital marketing wording
+
+2. Surface the 50-page library in the UI/UX
+Create clear discovery paths from the live website to the new landing pages.
+
+Add or improve:
+- related pages sections
+- service cluster linking
+- industry cluster linking
+- use-case cluster linking
+- comparison page linking
+- footer/resource links where appropriate
+
+3. Build visible page hubs if needed
+Examples:
+- AI Automation Solutions
+- Industries
+- Use Cases
+- Comparisons
+- Case Studies
+These should help users and search engines discover the deeper library.
+
+4. Audit sitemap-visible legacy pages
+Review any remaining pages with old SEO/digital marketing positioning and classify them:
+- keep
+- rewrite
+- merge
+- redirect
+- noindex
+
+5. Improve internal linking across all page types
+Ensure service pillars, industry pages, case studies, and landing pages all link to each other in a structured way.
+
+Goal:
+The 50-page SEO architecture should not just exist technically.
+It should be visible, connected, crawlable, and aligned with the new AI Automation Agency positioning.
+
+If you want, I can also do one more thing now:
+I can make you the exact metadata replacements for homepage and services page.

@@ -9,11 +9,11 @@ import { registerIndexingRoutes } from "./google-indexing";
 import { registerAIDiscoveryRoutes } from "./ai-discovery";
 import { registerIndexNowRoutes } from "./indexnow";
 
-// Canonical source of truth is also exported as OLD_SERVICE_REDIRECT_MAP in client/src/lib/constants.ts
-// Keep both in sync when adding or removing legacy service slugs.
+// Legacy service slugs with no dedicated landing page → redirect to closest pillar.
+// Slugs that now have dedicated AI-positioned landing pages in client/src/lib/landing-pages.ts
+// are intentionally NOT listed here so the landing page can render.
 const OLD_SERVICE_REDIRECT_MAP: Record<string, string> = {
   "ai-calling-agent": "/ai-lead-capture",
-  "ai-receptionist": "/customer-support-ai",
   "ai-lead-qualification": "/ai-lead-capture",
   "ai-appointment-booking": "/ai-appointment-agents",
   "ai-follow-up": "/ai-appointment-agents",
@@ -21,7 +21,6 @@ const OLD_SERVICE_REDIRECT_MAP: Record<string, string> = {
   "ai-chatbot": "/ai-lead-capture",
   "ai-email-automation": "/ai-appointment-agents",
   "ai-sms-automation": "/ai-lead-capture",
-  "crm-automation": "/crm-pipeline-automation",
   "workflow-automation": "/crm-pipeline-automation",
   "google-ads": "/revenue-automation-consulting",
   "meta-ads": "/revenue-automation-consulting",
@@ -44,43 +43,10 @@ const OLD_SERVICE_REDIRECT_MAP: Record<string, string> = {
   "analytics-dashboard": "/crm-pipeline-automation",
 };
 
+// Only branded partner vanity URLs are kept here — all comparison/cannibal slugs
+// that now have dedicated landing pages in landing-pages.ts have been removed
+// so the landing pages can render and serve AI-positioned content.
 const URL_CONSOLIDATION_MAP: Record<string, string> = {
-  // SEO cannibals → /revenue-automation-consulting (canonical hub)
-  "seo-agency": "/revenue-automation-consulting",
-  "seo-consultant": "/revenue-automation-consulting",
-  "seo-services": "/revenue-automation-consulting",
-  "google-seo": "/revenue-automation-consulting",
-  "seo-specialist": "/revenue-automation-consulting",
-  "best-seo-companies": "/revenue-automation-consulting",
-  "search-engine-marketing": "/revenue-automation-consulting",
-  "website-ranking": "/revenue-automation-consulting",
-  "seo-agency-near-me": "/revenue-automation-consulting",
-  "seo-keywords": "/revenue-automation-consulting",
-  "digital-marketing-seo": "/revenue-automation-consulting",
-  // PPC/Ads cannibals → /revenue-automation-consulting
-  "ppc-agency": "/revenue-automation-consulting",
-  "ppc-management-services": "/revenue-automation-consulting",
-  "paid-media-agency": "/revenue-automation-consulting",
-  // Social & content cannibals → new pillar pages
-  "social-media-marketing-agency": "/revenue-automation-consulting",
-  "social-media-marketing-agency-near-me": "/revenue-automation-consulting",
-  "content-marketing-services": "/revenue-automation-consulting",
-  "email-marketing-services": "/ai-appointment-agents",
-  "branding-agency": "/custom-saas-tools",
-  "automation-agency": "/services",
-  // Agency/marketing cannibals → /services (canonical hub)
-  "digital-marketing-agency": "/services",
-  "digital-marketing-company": "/services",
-  "digital-marketing-services": "/services",
-  "digital-marketing-firms": "/services",
-  "online-marketing-company": "/services",
-  "marketing-agency-near-me": "/services",
-  "best-digital-marketing-agencies": "/services",
-  // AI & automation cannibals → new pillar pages
-  "ai-lead-generation-usa": "/ai-lead-capture",
-  "ai-marketing-automation-usa": "/crm-pipeline-automation",
-  "b2b-lead-generation": "/ai-lead-capture",
-  // Branded partner pages → primary pillar pages
   "infinite-rankers-agency": "/services",
   "infinite-rankers-seo-services": "/revenue-automation-consulting",
   "infinite-rankers-paid-advertising": "/revenue-automation-consulting",

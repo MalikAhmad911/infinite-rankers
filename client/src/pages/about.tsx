@@ -60,8 +60,8 @@ export default function About() {
   return (
     <div className="overflow-x-hidden">
       <SEOHead
-        title="About Infinite Rankers LLC | AI Revenue Growth Agency"
-        description="Infinite Rankers LLC is a Delaware-registered AI Revenue Growth Agency helping service businesses automate lead capture, follow-up, and conversion. Google Partner. Est. 2020."
+        title="About Infinite Rankers LLC | AI Revenue Systems Agency"
+        description="Infinite Rankers LLC is a Delaware-registered AI Revenue Systems Agency that builds AI automation systems for service businesses — lead capture, appointment booking, CRM, and more. Google Partner. Est. 2020."
       />
       <section className="relative pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />

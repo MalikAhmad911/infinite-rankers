@@ -41,12 +41,60 @@ const SERVICE_SLUGS = [
   "revenue-automation-consulting",
 ];
 
+// Only AI-positioned blog posts are indexed. Old SEO/digital-marketing era posts are excluded.
 const BLOG_POST_SLUGS = [
-  "ai-automation-revenue-growth-2025", "ai-chatbot-lead-conversion", "ai-follow-up-sequences",
-  "brand-identity-business-growth", "content-marketing-seo-guide", "crm-automation-sales-pipeline",
-  "ecommerce-growth-strategies", "google-ads-roi-local-business", "healthcare-marketing-patient-acquisition",
-  "lead-generation-strategies-2025", "local-business-digital-marketing", "real-estate-lead-generation-ai",
-  "seo-vs-paid-ads-strategy", "social-media-marketing-strategy-2025", "website-conversion-optimization",
+  "ai-automation-revenue-growth-2025",
+  "ai-chatbot-lead-conversion",
+  "ai-follow-up-sequences",
+  "crm-automation-sales-pipeline",
+  "google-ads-roi-local-business",
+  "lead-generation-strategies-2025",
+  "real-estate-lead-generation-ai",
+  "website-conversion-optimization",
+];
+
+// All 89 landing pages from the AI Revenue Systems SEO architecture.
+// These pages are AI-positioned and serve comparison, location, industry, and service search traffic.
+const LANDING_PAGE_SLUGS = [
+  // Location pages
+  "ai-automation-new-york", "ai-automation-los-angeles", "ai-automation-chicago",
+  "ai-automation-agency-usa", "ai-automation-agency-texas", "ai-automation-agency-california",
+  "ai-automation-agency-florida",
+  // Industry growth pages
+  "ai-revenue-growth-real-estate", "ai-revenue-growth-healthcare", "ai-revenue-growth-law-firms",
+  "ai-revenue-growth-ecommerce", "ai-revenue-growth-restaurants",
+  // Core AI service pages
+  "ai-lead-generation-usa", "ai-marketing-automation-usa", "ai-automation-agency",
+  "ai-agent-development", "ai-receptionist", "ai-booking-agent", "ai-customer-support-agent",
+  "ai-sales-agent", "lead-capture-automation", "crm-automation", "missed-call-text-back",
+  "revenue-automation-systems", "chatgpt-ads", "google-ads-for-service-businesses",
+  "meta-ads-for-service-businesses", "saas-project-development", "custom-saas-development",
+  "custom-ai-automation", "ai-receptionist-service-usa",
+  // Vertical-specific AI pages
+  "ai-receptionist-for-dentists", "ai-receptionist-for-law-firms", "ai-booking-agent-for-med-spas",
+  "ai-automation-for-hvac-companies", "crm-automation-for-home-services",
+  "lead-capture-automation-for-plumbers", "follow-up-automation-for-roofers",
+  "customer-support-ai-for-auto-shops", "review-automation-for-dental-clinics",
+  "customer-reactivation-for-med-spas", "ai-sales-agent-for-real-estate",
+  "ai-booking-agent-for-electricians", "ai-automation-for-law-firms",
+  "crm-automation-for-mortgage-brokers", "ai-receptionist-for-home-services",
+  // Problem-focused pages
+  "stop-missing-leads-after-hours", "automate-appointment-booking",
+  "missed-call-to-booking-system", "automate-customer-follow-up", "reactivate-old-leads",
+  "ai-intake-system-for-law-firms", "automate-review-requests", "book-more-estimates-with-ai",
+  "automate-front-desk-workflows", "improve-lead-response-time",
+  // Comparison / agency search pages (AI-positioned content for these queries)
+  "seo-agency", "seo-consultant", "ppc-agency", "digital-marketing-agency",
+  "social-media-marketing-agency", "content-marketing-services", "email-marketing-services",
+  "branding-agency", "b2b-lead-generation", "seo-services", "google-seo", "seo-specialist",
+  "best-seo-companies", "search-engine-marketing", "online-marketing-company",
+  "digital-marketing-firms", "social-media-marketing-agency-near-me", "automation-agency",
+  "website-ranking", "seo-agency-near-me", "seo-keywords", "digital-marketing-company",
+  "digital-marketing-services", "marketing-agency-near-me", "best-digital-marketing-agencies",
+  "paid-media-agency", "ppc-management-services", "digital-marketing-seo",
+  // Competitor comparison pages
+  "podium-alternative", "podium-alternative-for-home-services", "podium-vs-custom-ai-system",
+  "best-ai-automation-agency-for-local-businesses",
 ];
 
 function createEntriesFromPaths(paths: Array<{ path: string; changefreq: string; priority: string }>): SitemapURL[] {
@@ -136,6 +184,11 @@ function getSitemapChildren(): SitemapChild[] {
       path: "/sitemap-industries.xml",
       entries: createEntriesFromSlugs(INDUSTRY_VERTICAL_SLUGS, "monthly", "0.8"),
     },
+    {
+      name: "landing-pages",
+      path: "/sitemap-landing-pages.xml",
+      entries: createEntriesFromSlugs(LANDING_PAGE_SLUGS, "monthly", "0.7"),
+    },
   ];
 }
 
@@ -165,30 +218,13 @@ function buildSitemapIndexXML(children: SitemapChild[]): string {
 
 const BLOG_RSS_ITEMS = [
   { slug: "ai-automation-revenue-growth-2025", title: "How AI Automation Is Driving 10x Revenue Growth in 2025", desc: "Discover how forward-thinking businesses are leveraging AI automation systems to generate customers and revenue on autopilot." },
-  { slug: "google-ads-roi-local-business", title: "Google Ads for Local Businesses: A Data-Driven ROI Framework", desc: "Learn the exact framework we use to generate 4-6x ROAS for local businesses using AI-optimized Google Ads campaigns." },
   { slug: "ai-chatbot-lead-conversion", title: "AI Chatbots: Converting 78% More Website Visitors Into Leads", desc: "How intelligent chatbots are revolutionizing lead capture and qualification for businesses across every industry." },
   { slug: "crm-automation-sales-pipeline", title: "The Ultimate CRM Automation Playbook for Sales Teams", desc: "Stop losing deals to manual processes. Here is how to automate your entire sales pipeline from lead to close." },
-  { slug: "seo-vs-paid-ads-strategy", title: "SEO vs Paid Ads: Building a Unified Revenue Strategy", desc: "Why the best growth strategies combine organic search dominance with paid advertising for maximum market capture." },
   { slug: "ai-follow-up-sequences", title: "AI Follow-Up Sequences That Close 3x More Deals", desc: "The science behind AI-powered follow-up automation and how it is helping sales teams dramatically increase close rates." },
-  { slug: "social-media-marketing-strategy-2025", title: "Social Media Marketing Strategy: The 2025 Playbook", desc: "Build a social media strategy that actually drives revenue." },
-  { slug: "local-business-digital-marketing", title: "Digital Marketing for Local Businesses: The Complete Guide", desc: "Everything a local business needs to dominate their market online." },
   { slug: "lead-generation-strategies-2025", title: "15 Lead Generation Strategies That Actually Work in 2025", desc: "Proven lead generation tactics backed by data from campaigns generating over 100,000 leads." },
-  { slug: "website-conversion-optimization", title: "Website Conversion Optimization Guide", desc: "Data-backed strategies to increase your website conversion rate by 200% or more." },
-  { slug: "content-marketing-seo-guide", title: "Content Marketing for SEO", desc: "The complete guide to creating SEO-optimized content that ranks and converts." },
-  { slug: "ecommerce-growth-strategies", title: "E-Commerce Growth: 10 AI-Powered Strategies", desc: "How AI and automation are helping e-commerce brands achieve 200-500% growth." },
-  { slug: "brand-identity-business-growth", title: "How Strong Brand Identity Drives Revenue Growth", desc: "Why branding is not just about logos and how it directly impacts revenue." },
-  { slug: "healthcare-marketing-patient-acquisition", title: "Healthcare Marketing: Acquire More Patients with AI", desc: "HIPAA-compliant digital marketing strategies for medical practices." },
   { slug: "real-estate-lead-generation-ai", title: "Real Estate Lead Generation with AI", desc: "AI-powered strategies for real estate agents and brokerages." },
-  { slug: "ai-calling-agent", title: "AI Calling Agent - Automated Lead Qualification Calls", desc: "Automated outbound and inbound calls that qualify leads and book appointments around the clock." },
-  { slug: "google-ads", title: "Google Ads Revenue Engine - Maximize Your Ad ROI", desc: "Data-driven Google Ads campaigns that maximize ROI and revenue for your business." },
-  { slug: "ai-chatbot", title: "AI Chatbot - 24/7 Website Lead Engagement", desc: "Website, WhatsApp, and Messenger chatbot that engages visitors and captures leads 24/7." },
-  { slug: "seo-authority", title: "SEO Authority Growth System - Dominate Search Rankings", desc: "Dominate search rankings and build organic traffic that converts with our AI-powered SEO system." },
-  { slug: "crm-automation", title: "CRM Automation - Streamline Your Sales Pipeline", desc: "Automate your entire CRM workflow from lead entry to deal closure." },
-  { slug: "meta-ads", title: "Meta Ads Growth Engine - Facebook & Instagram Advertising", desc: "Facebook and Instagram advertising that generates qualified leads at scale." },
-  { slug: "conversion-funnels", title: "Conversion Funnel Building - Turn Traffic Into Customers", desc: "Multi-step funnels designed to turn cold traffic into paying customers." },
-  { slug: "local-seo", title: "Local SEO & Google Business - Own Your Local Market", desc: "Own your local market with optimized Google Business and local search presence." },
-  { slug: "workflow-automation", title: "Workflow Automation - Connect Your Entire Stack", desc: "Connect and automate every tool in your sales and marketing stack." },
-  { slug: "website-development", title: "Website Development - High-Performance Sites That Convert", desc: "High-performance websites designed for conversion and growth." },
+  { slug: "website-conversion-optimization", title: "Website Conversion Optimization Guide", desc: "Data-backed strategies to increase your website conversion rate by 200% or more." },
+  { slug: "google-ads-roi-local-business", title: "Google Ads for Local Businesses: A Data-Driven ROI Framework", desc: "Learn the exact framework we use to generate 4-6x ROAS for local businesses using AI-optimized Google Ads campaigns." },
 ];
 
 function buildRSSFeed(): string {

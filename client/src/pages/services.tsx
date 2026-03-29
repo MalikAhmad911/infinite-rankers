@@ -7,7 +7,7 @@ import GlassCard from "@/components/glass-card";
 import { SERVICE_PILLARS } from "@/lib/constants";
 import {
   ArrowRight, Bot, CalendarCheck, Database, Headphones, Star,
-  Code, TrendingUp, CheckCircle2, type LucideIcon,
+  Code, TrendingUp, CheckCircle2, MapPin, Users, Zap, type LucideIcon,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -146,6 +146,93 @@ export default function Services() {
             <Link href="/crm-pipeline-automation"><span className="text-blue-600 hover:underline cursor-pointer">CRM & Pipeline Automation</span></Link>, and{" "}
             <Link href="/reviews-reactivation-retention"><span className="text-blue-600 hover:underline cursor-pointer">Reviews & Reactivation</span></Link>.
           </p>
+        </div>
+      </section>
+
+      <section className="py-14 sm:py-16 bg-gray-50/60 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <span className="text-xs font-semibold tracking-widest uppercase text-blue-600">Explore More</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mt-2 mb-3">Find the Right AI System for Your Situation</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">Browse by industry, use case, location, or business type — every page shows exactly how AI automation applies to your specific situation.</p>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: Users,
+                label: "By Industry",
+                links: [
+                  { href: "/ai-revenue-growth-real-estate", text: "Real Estate" },
+                  { href: "/ai-revenue-growth-healthcare", text: "Healthcare" },
+                  { href: "/ai-revenue-growth-law-firms", text: "Law Firms" },
+                  { href: "/ai-revenue-growth-restaurants", text: "Restaurants" },
+                  { href: "/ai-revenue-growth-ecommerce", text: "E-Commerce" },
+                ],
+              },
+              {
+                icon: Zap,
+                label: "By AI System",
+                links: [
+                  { href: "/ai-receptionist", text: "AI Receptionist" },
+                  { href: "/ai-booking-agent", text: "AI Booking Agent" },
+                  { href: "/missed-call-text-back", text: "Missed-Call Text-Back" },
+                  { href: "/crm-automation", text: "CRM Automation" },
+                  { href: "/ai-sales-agent", text: "AI Sales Agent" },
+                ],
+              },
+              {
+                icon: MapPin,
+                label: "By Location",
+                links: [
+                  { href: "/ai-automation-new-york", text: "New York" },
+                  { href: "/ai-automation-los-angeles", text: "Los Angeles" },
+                  { href: "/ai-automation-chicago", text: "Chicago" },
+                  { href: "/ai-automation-agency-texas", text: "Texas" },
+                  { href: "/ai-automation-agency-florida", text: "Florida" },
+                ],
+              },
+              {
+                icon: Bot,
+                label: "By Problem",
+                links: [
+                  { href: "/stop-missing-leads-after-hours", text: "Missing After-Hours Leads" },
+                  { href: "/automate-appointment-booking", text: "Manual Booking Process" },
+                  { href: "/reactivate-old-leads", text: "Inactive Lead Database" },
+                  { href: "/automate-customer-follow-up", text: "Slow Follow-Up" },
+                  { href: "/improve-lead-response-time", text: "Slow Lead Response" },
+                ],
+              },
+            ].map((group, i) => {
+              const Icon = group.icon;
+              return (
+                <motion.div
+                  key={group.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07 }}
+                  className="bg-white rounded-lg border border-gray-200/70 p-5"
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-7 h-7 rounded-md bg-blue-50 flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <span className="text-sm font-semibold text-foreground">{group.label}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {group.links.map(link => (
+                      <li key={link.href}>
+                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-blue-600 hover:underline transition-colors flex items-center gap-1">
+                          <ArrowRight className="w-3 h-3 flex-shrink-0 opacity-50" />
+                          {link.text}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

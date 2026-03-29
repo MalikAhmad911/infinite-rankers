@@ -10,6 +10,16 @@ import { ArrowLeft, ArrowRight, Clock, Calendar, User, Share2, Zap, BarChart3 } 
 
 type ServiceItem = (typeof ALL_SERVICES)[number];
 
+// Old SEO/digital-marketing era posts — noindexed to keep brand positioning clean.
+const NOINDEX_BLOG_SLUGS = new Set([
+  "content-marketing-seo-guide",
+  "local-business-digital-marketing",
+  "seo-vs-paid-ads-strategy",
+  "social-media-marketing-strategy-2025",
+  "brand-identity-business-growth",
+  "healthcare-marketing-patient-acquisition",
+]);
+
 const PORTFOLIO_IMAGES: Record<string, string> = {
   "1": "/images/portfolio/project-1-dental.jpg",
   "2": "/images/portfolio/project-2-ecommerce.jpg",
@@ -154,6 +164,7 @@ export default function BlogPost() {
         keywords={post.seoKeywords}
         ogImage={post.image}
         canonical={`https://infiniterankers.io/${post.slug}`}
+        noIndex={NOINDEX_BLOG_SLUGS.has(post.slug)}
       />
 
       <section className="relative pt-32 pb-12 overflow-hidden">
