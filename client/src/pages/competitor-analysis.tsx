@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { jsPDF } from "jspdf";
+import SEOHead from "@/components/seo-head";
 
 // ─── colour palette ───────────────────────────────────────────────────────────
 const NAVY   = "#0F2B5B";
@@ -551,6 +552,11 @@ export default function CompetitorAnalysis() {
 
   return (
     <div className="min-h-screen bg-[#F4F7FB] pb-16">
+      <SEOHead
+        title="Competitor Analysis | Infinite Rankers — Internal"
+        description="Internal competitive analysis report."
+        noIndex={true}
+      />
       {/* banner */}
       <div style={{ background: "linear-gradient(135deg,#0F2B5B,#0B8F8C)" }} className="text-white px-6 py-10">
         <div className="max-w-5xl mx-auto">

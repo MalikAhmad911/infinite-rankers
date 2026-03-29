@@ -8,6 +8,7 @@ export interface SEOHeadProps {
   ogImage?: string;
   keywords?: string;
   canonical?: string;
+  noIndex?: boolean;
 }
 
 export default function SEOHead({ 
@@ -17,7 +18,8 @@ export default function SEOHead({
   ogDescription,
   ogImage,
   keywords,
-  canonical 
+  canonical,
+  noIndex,
 }: SEOHeadProps) {
   useEffect(() => {
     document.title = title;
@@ -70,7 +72,10 @@ export default function SEOHead({
     if (canonical) {
       setLink("canonical", canonical);
     }
-  }, [title, description, ogTitle, ogDescription, ogImage, keywords, canonical]);
+
+    // Robots noindex
+    setMeta("robots", noIndex ? "noindex, nofollow" : "index, follow");
+  }, [title, description, ogTitle, ogDescription, ogImage, keywords, canonical, noIndex]);
 
   return null;
 }

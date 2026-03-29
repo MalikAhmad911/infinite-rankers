@@ -29,7 +29,6 @@ import AdminDashboard from "@/pages/admin-dashboard";
 import CompetitorAnalysis from "@/pages/competitor-analysis";
 import ROICalculator from "@/pages/roi-calculator";
 import NotFound from "@/pages/not-found";
-import { InfiniteRankersAgency, InfiniteRankersSEO, InfiniteRankersAds, InfiniteRankersAutomation } from "@/pages/partner-pages";
 import GooglePartnerPage from "@/pages/google-partner-page";
 import { ALL_SERVICES, CASE_STUDIES, INDUSTRY_VERTICALS } from "@/lib/constants";
 import { getBlogPostBySlug } from "@/lib/blog-data";
@@ -54,10 +53,6 @@ function AppRouter() {
       <Route path="/contact" component={Contact} />
       <Route path="/blog" component={Blog} />
       <Route path="/book-demo" component={BookDemo} />
-      <Route path="/infinite-rankers-agency" component={InfiniteRankersAgency} />
-      <Route path="/infinite-rankers-seo-services" component={InfiniteRankersSEO} />
-      <Route path="/infinite-rankers-paid-advertising" component={InfiniteRankersAds} />
-      <Route path="/infinite-rankers-ai-automation" component={InfiniteRankersAutomation} />
       <Route path="/google-partner" component={GooglePartnerPage} />
       <Route path="/terms" component={Terms} />
       <Route path="/privacy" component={Privacy} />

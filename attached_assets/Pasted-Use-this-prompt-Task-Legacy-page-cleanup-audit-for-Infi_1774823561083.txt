@@ -1,0 +1,123 @@
+Use this prompt:
+
+Task: Legacy page cleanup audit for InfiniteRankers.io
+
+Goal:
+Audit all legacy SEO, digital marketing, and old service pages still live on InfiniteRankers.io and create a structured cleanup plan so the site fully matches the new AI Automation Agency / AI Revenue Systems positioning.
+
+Context:
+The site has already been updated with:
+- 7 service pillar pages
+- industry page rewrites
+- pricing page redesign
+- expanded SEO landing page library
+
+However, there are still legacy SEO/marketing pages live on the domain.
+These may weaken the current brand positioning if they still reflect the old SEO agency / digital marketing identity.
+
+Main objective:
+Review every legacy page and decide whether it should:
+- stay live as-is
+- be rewritten to fit the new positioning
+- be merged into a newer AI page
+- be redirected to a better page
+- be removed or noindexed
+
+Important brand rule:
+InfiniteRankers.io should read as an AI Automation Agency and AI Revenue Systems company first.
+It should not feel like a mixed SEO / digital marketing / generic agency website.
+
+Audit criteria:
+For each legacy page, evaluate:
+
+1. Brand fit
+- does this page support the new AI automation positioning?
+- does it still sound like an old SEO or digital marketing agency page?
+- does it create confusion about what the company actually does?
+
+2. Content overlap
+- does this page overlap with a newer service pillar page?
+- does it overlap with one of the 50 SEO landing pages?
+- is it duplicating a stronger or more focused page?
+
+3. Search value
+- does this page still have useful keyword targeting?
+- does it have clear search intent?
+- is it worth keeping for SEO reasons?
+- would rewriting it into the new positioning make it stronger?
+
+4. Conversion value
+- does this page help convert the right type of customer?
+- does it attract the kind of business the site wants now?
+- does it support the current offer structure?
+
+5. Technical action needed
+- keep
+- rewrite
+- merge
+- 301 redirect
+- remove
+- noindex
+
+Required output:
+Create a page-by-page audit table with these columns:
+- URL / slug
+- current page type
+- current topic
+- brand fit
+- overlap with newer pages
+- SEO value
+- recommended action
+- target page if redirecting
+- short reason
+
+Recommended action labels:
+- Keep
+- Rewrite
+- Merge
+- Redirect
+- Remove
+- Noindex
+
+Specific things to flag:
+- old SEO service pages
+- digital marketing service pages
+- broad marketing pages that conflict with AI positioning
+- weak pages with thin value
+- duplicate or near-duplicate pages
+- pages that should be consolidated into new AI service or industry pages
+
+Important:
+Do not delete or redirect blindly.
+If a legacy page has SEO value, recommend:
+- rewrite into AI-relevant positioning
+or
+- redirect to the closest stronger page
+
+If a page clearly hurts brand clarity, call that out directly.
+
+Final deliverable:
+1. Full legacy page inventory review
+2. Recommended action for each page
+3. Redirect recommendations where needed
+4. Summary of:
+- which pages help the new brand
+- which pages confuse the new brand
+- which pages should be cleaned up first
+
+Expected outcome:
+A clear cleanup roadmap that removes old SEO-agency confusion and makes InfiniteRankers.io feel like one focused AI Automation / Revenue Systems brand.
+
+If possible, prioritize cleanup into:
+Priority 1:
+pages that clearly conflict with current positioning
+
+Priority 2:
+pages that overlap with stronger new pages
+
+Priority 3:
+pages that can be rewritten later if they still have SEO value
+
+That’s the right prompt.
+
+If you want, I can also give you a shorter version you can paste fast.
