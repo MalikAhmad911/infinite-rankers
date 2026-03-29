@@ -9,29 +9,62 @@ import { registerIndexingRoutes } from "./google-indexing";
 import { registerAIDiscoveryRoutes } from "./ai-discovery";
 import { registerIndexNowRoutes } from "./indexnow";
 
+const OLD_SERVICE_REDIRECT_MAP: Record<string, string> = {
+  "ai-calling-agent": "/ai-lead-capture",
+  "ai-receptionist": "/customer-support-ai",
+  "ai-lead-qualification": "/ai-lead-capture",
+  "ai-appointment-booking": "/ai-appointment-agents",
+  "ai-follow-up": "/ai-appointment-agents",
+  "ai-sales-assistant": "/ai-appointment-agents",
+  "ai-chatbot": "/ai-lead-capture",
+  "ai-email-automation": "/ai-appointment-agents",
+  "ai-sms-automation": "/ai-lead-capture",
+  "crm-automation": "/crm-pipeline-automation",
+  "workflow-automation": "/crm-pipeline-automation",
+  "google-ads": "/revenue-automation-consulting",
+  "meta-ads": "/revenue-automation-consulting",
+  "seo-authority": "/revenue-automation-consulting",
+  "local-seo": "/revenue-automation-consulting",
+  "conversion-funnels": "/ai-lead-capture",
+  "landing-page-optimization": "/ai-lead-capture",
+  "conversion-rate-optimization": "/ai-lead-capture",
+  "social-media-marketing": "/revenue-automation-consulting",
+  "instagram-growth": "/reviews-reactivation-retention",
+  "facebook-growth": "/reviews-reactivation-retention",
+  "content-writing": "/revenue-automation-consulting",
+  "branding-design": "/custom-saas-tools",
+  "video-marketing": "/revenue-automation-consulting",
+  "website-development": "/custom-saas-tools",
+  "landing-page-development": "/custom-saas-tools",
+  "crm-setup": "/crm-pipeline-automation",
+  "saas-integrations": "/custom-saas-tools",
+  "marketing-automation-setup": "/crm-pipeline-automation",
+  "analytics-dashboard": "/crm-pipeline-automation",
+};
+
 const URL_CONSOLIDATION_MAP: Record<string, string> = {
-  // SEO cannibals → /seo-authority (canonical hub)
-  "seo-agency": "/seo-authority",
-  "seo-consultant": "/seo-authority",
-  "seo-services": "/seo-authority",
-  "google-seo": "/seo-authority",
-  "seo-specialist": "/seo-authority",
-  "best-seo-companies": "/seo-authority",
-  "search-engine-marketing": "/seo-authority",
-  "website-ranking": "/seo-authority",
-  "seo-agency-near-me": "/seo-authority",
-  "seo-keywords": "/seo-authority",
-  "digital-marketing-seo": "/seo-authority",
-  // PPC/Ads cannibals → /google-ads (canonical hub)
-  "ppc-agency": "/google-ads",
-  "ppc-management-services": "/google-ads",
-  "paid-media-agency": "/google-ads",
-  // Social & content cannibals → specific service pages
-  "social-media-marketing-agency": "/social-media-marketing",
-  "social-media-marketing-agency-near-me": "/social-media-marketing",
-  "content-marketing-services": "/content-writing",
-  "email-marketing-services": "/ai-email-automation",
-  "branding-agency": "/branding-design",
+  // SEO cannibals → /revenue-automation-consulting (canonical hub)
+  "seo-agency": "/revenue-automation-consulting",
+  "seo-consultant": "/revenue-automation-consulting",
+  "seo-services": "/revenue-automation-consulting",
+  "google-seo": "/revenue-automation-consulting",
+  "seo-specialist": "/revenue-automation-consulting",
+  "best-seo-companies": "/revenue-automation-consulting",
+  "search-engine-marketing": "/revenue-automation-consulting",
+  "website-ranking": "/revenue-automation-consulting",
+  "seo-agency-near-me": "/revenue-automation-consulting",
+  "seo-keywords": "/revenue-automation-consulting",
+  "digital-marketing-seo": "/revenue-automation-consulting",
+  // PPC/Ads cannibals → /revenue-automation-consulting
+  "ppc-agency": "/revenue-automation-consulting",
+  "ppc-management-services": "/revenue-automation-consulting",
+  "paid-media-agency": "/revenue-automation-consulting",
+  // Social & content cannibals → new pillar pages
+  "social-media-marketing-agency": "/revenue-automation-consulting",
+  "social-media-marketing-agency-near-me": "/revenue-automation-consulting",
+  "content-marketing-services": "/revenue-automation-consulting",
+  "email-marketing-services": "/ai-appointment-agents",
+  "branding-agency": "/custom-saas-tools",
   "automation-agency": "/services",
   // Agency/marketing cannibals → /services (canonical hub)
   "digital-marketing-agency": "/services",
@@ -41,15 +74,15 @@ const URL_CONSOLIDATION_MAP: Record<string, string> = {
   "online-marketing-company": "/services",
   "marketing-agency-near-me": "/services",
   "best-digital-marketing-agencies": "/services",
-  // AI & automation cannibals → specific service pages
-  "ai-lead-generation-usa": "/ai-calling-agent",
-  "ai-marketing-automation-usa": "/workflow-automation",
-  "b2b-lead-generation": "/ai-lead-qualification",
-  // Branded partner pages → primary service pages
+  // AI & automation cannibals → new pillar pages
+  "ai-lead-generation-usa": "/ai-lead-capture",
+  "ai-marketing-automation-usa": "/crm-pipeline-automation",
+  "b2b-lead-generation": "/ai-lead-capture",
+  // Branded partner pages → primary pillar pages
   "infinite-rankers-agency": "/services",
-  "infinite-rankers-seo-services": "/seo-authority",
-  "infinite-rankers-paid-advertising": "/google-ads",
-  "infinite-rankers-ai-automation": "/ai-calling-agent",
+  "infinite-rankers-seo-services": "/revenue-automation-consulting",
+  "infinite-rankers-paid-advertising": "/revenue-automation-consulting",
+  "infinite-rankers-ai-automation": "/ai-lead-capture",
 };
 
 const CASE_STUDY_REDIRECT_MAP: Record<string, string> = {
@@ -80,6 +113,12 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  for (const [slug, target] of Object.entries(OLD_SERVICE_REDIRECT_MAP)) {
+    app.get(`/${slug}`, (_req, res) => {
+      res.redirect(301, target);
+    });
+  }
+
   for (const [slug, target] of Object.entries(URL_CONSOLIDATION_MAP)) {
     app.get(`/${slug}`, (_req, res) => {
       res.redirect(301, target);

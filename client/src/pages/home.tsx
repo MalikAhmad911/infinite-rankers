@@ -9,7 +9,7 @@ import {
   Globe, Phone, BarChart3, CalendarCheck, DollarSign, Users,
   Sparkles, Shield, Clock, ChevronRight, Activity, Cpu, Database,
   MessageSquare, Mail, LineChart, Layers, ArrowUpRight, Play,
-  Network, Workflow, Brain, Rocket, Award, Building2,
+  Network, Workflow, Brain, Rocket, Award, Building2, Headphones, Code,
 } from "lucide-react";
 import {
   ACHIEVEMENTS, HOW_IT_WORKS_STEPS,
@@ -243,11 +243,11 @@ function HeroSection() {
               </Link>
             </div>
             <div className="flex flex-wrap items-center gap-2 mt-4 sm:mt-5">
-              <span className="text-xs text-gray-500 mr-1">Top services:</span>
+              <span className="text-xs text-gray-500 mr-1">Popular systems:</span>
               {[
-                { slug: "ai-calling-agent", label: "AI Calling Agent" },
-                { slug: "google-ads", label: "Google Ads" },
-                { slug: "seo-authority", label: "SEO Authority" },
+                { slug: "ai-lead-capture", label: "AI Lead Capture" },
+                { slug: "ai-appointment-agents", label: "AI Appointment Agents" },
+                { slug: "crm-pipeline-automation", label: "CRM Automation" },
               ].map((s) => (
                 <Link key={s.slug} href={`/${s.slug}`}>
                   <span
@@ -433,46 +433,46 @@ function PipelineSection() {
 
 const PRIORITY_SERVICES = [
   {
-    slug: "ai-calling-agent",
-    label: "AI & Automation",
-    title: "AI Calling Agent",
-    pitch: "Your best sales rep, automated. Qualifies inbound leads and books appointments 24/7 — no manual dialing, no missed calls. Clients average 3x booked meetings in 60 days.",
-    icon: Phone,
+    slug: "ai-lead-capture",
+    label: "AI Systems",
+    title: "AI Lead Capture Systems",
+    pitch: "Capture every inbound lead automatically — website chat, missed-call text-back, SMS, and WhatsApp — routed to your CRM before they contact a competitor.",
+    icon: Bot,
   },
   {
-    slug: "google-ads",
-    label: "Paid Advertising",
-    title: "Google Ads Revenue Engine",
-    pitch: "Intent-driven campaigns built to generate booked appointments, not vanity clicks. We manage strategy, copy, bids, and conversion tracking. Typical client ROAS: 4–6x within 90 days.",
-    icon: Target,
+    slug: "ai-appointment-agents",
+    label: "AI Systems",
+    title: "AI Appointment & Sales Agents",
+    pitch: "AI agents that qualify prospects, book meetings, and follow up until they respond — without your team lifting a finger. Average client books 3x more appointments in 60 days.",
+    icon: CalendarCheck,
   },
   {
-    slug: "seo-authority",
-    label: "Search & SEO",
-    title: "SEO Authority Growth System",
-    pitch: "Rank for the keywords that turn into revenue. We build topical authority, fix technical foundations, and develop content that earns links — 90%+ of clients hit page 1 within 6 months.",
-    icon: LineChart,
-  },
-  {
-    slug: "ai-chatbot",
-    label: "AI & Automation",
-    title: "AI Chatbot",
-    pitch: "Converts website visitors into leads at 2am when your team is asleep. Deploys on site, WhatsApp, and Messenger with pre-qualification flows built for your service type. Live in 5–7 days.",
-    icon: MessageSquare,
-  },
-  {
-    slug: "meta-ads",
-    label: "Paid Advertising",
-    title: "Meta Ads Growth Engine",
-    pitch: "Facebook and Instagram ads that go beyond impressions — every campaign is tied to lead cost and revenue. We build the creative, copy, targeting, and funnel from scratch.",
-    icon: BarChart3,
-  },
-  {
-    slug: "crm-automation",
-    label: "AI & Automation",
-    title: "CRM Automation",
-    pitch: "End the data-entry grind. We automate your entire pipeline — from lead entry to deal closure — inside Salesforce, HubSpot, GoHighLevel, or whichever CRM your team already uses.",
+    slug: "crm-pipeline-automation",
+    label: "Automation",
+    title: "CRM & Pipeline Automation",
+    pitch: "Turn your CRM into a self-managing revenue machine. Automatic lead entry, deal-stage movement, and reporting — no more manual data entry or missed follow-ups.",
     icon: Database,
+  },
+  {
+    slug: "customer-support-ai",
+    label: "AI Systems",
+    title: "Customer Support & Operations AI",
+    pitch: "AI agents that handle customer questions, route tickets, and resolve issues 24/7 — freeing your team for high-value conversations and complex work.",
+    icon: Headphones,
+  },
+  {
+    slug: "reviews-reactivation-retention",
+    label: "Retention",
+    title: "Reviews, Reactivation & Retention",
+    pitch: "Automate review requests to protect your reputation, reactivate old leads with proven sequences, and bring past customers back before they forget you.",
+    icon: Star,
+  },
+  {
+    slug: "custom-saas-tools",
+    label: "Development",
+    title: "Custom SaaS & Internal Tools",
+    pitch: "Purpose-built dashboards, internal portals, and mini SaaS products designed for your exact workflow — no off-the-shelf compromises, no wasted seats.",
+    icon: Code,
   },
 ];
 
@@ -536,7 +536,7 @@ function ServicesSection() {
         <div className="text-center mt-8 sm:mt-10">
           <Link href="/services">
             <Button variant="outline" className="border-gray-300 text-gray-700 w-full sm:w-auto" data-testid="button-view-all-services">
-              View All 30+ Services <ArrowRight className="w-4 h-4 ml-1" />
+              Explore All 7 AI Revenue Systems <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>
         </div>

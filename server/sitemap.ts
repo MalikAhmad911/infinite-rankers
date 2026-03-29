@@ -32,13 +32,13 @@ const MAIN_PAGES = [
 ];
 
 const SERVICE_SLUGS = [
-  "ai-calling-agent", "ai-receptionist", "ai-lead-qualification", "ai-appointment-booking",
-  "ai-follow-up", "ai-sales-assistant", "ai-chatbot", "ai-email-automation", "ai-sms-automation",
-  "crm-automation", "workflow-automation", "google-ads", "meta-ads", "seo-authority", "local-seo",
-  "conversion-funnels", "landing-page-optimization", "conversion-rate-optimization",
-  "social-media-marketing", "instagram-growth", "facebook-growth", "content-writing",
-  "branding-design", "video-marketing", "website-development", "landing-page-development",
-  "crm-setup", "saas-integrations", "marketing-automation-setup", "analytics-dashboard",
+  "ai-lead-capture",
+  "ai-appointment-agents",
+  "crm-pipeline-automation",
+  "customer-support-ai",
+  "reviews-reactivation-retention",
+  "custom-saas-tools",
+  "revenue-automation-consulting",
 ];
 
 const BLOG_POST_SLUGS = [

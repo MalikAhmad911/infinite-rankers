@@ -17,74 +17,73 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-export const SERVICE_CATEGORIES = [
+export const SERVICE_PILLARS = [
   {
-    id: "ai-automation",
-    title: "AI & Automation Systems",
-    description: "Intelligent automation that works 24/7 to capture, qualify, and convert leads into paying customers.",
+    id: "ai-lead-capture",
+    slug: "ai-lead-capture",
+    title: "AI Lead Capture Systems",
+    shortDesc: "Capture every lead automatically — website, phone, SMS, and WhatsApp — and route them to your pipeline before they look at a competitor.",
     icon: "Bot",
-    services: [
-      { slug: "ai-calling-agent", title: "AI Calling Agent", shortDesc: "Automated outbound and inbound calls that qualify leads and book appointments around the clock.", icon: "Phone" },
-      { slug: "ai-receptionist", title: "AI Receptionist", shortDesc: "Never miss a call again. AI answers, qualifies, and routes every inquiry instantly.", icon: "Headphones" },
-      { slug: "ai-lead-qualification", title: "AI Lead Qualification Bot", shortDesc: "Automatically score and qualify leads so your sales team only talks to buyers.", icon: "UserCheck" },
-      { slug: "ai-appointment-booking", title: "AI Appointment Booking System", shortDesc: "Let AI fill your calendar with qualified prospects while you focus on closing.", icon: "CalendarCheck" },
-      { slug: "ai-follow-up", title: "AI Follow-Up Automation", shortDesc: "Never lose a lead to poor follow-up. AI nurtures every prospect automatically.", icon: "MailCheck" },
-      { slug: "ai-sales-assistant", title: "AI Sales Assistant", shortDesc: "AI-powered sales support that helps your team close more deals faster.", icon: "TrendingUp" },
-      { slug: "ai-chatbot", title: "AI Chatbot", shortDesc: "Website, WhatsApp, and Messenger chatbot that engages visitors 24/7.", icon: "MessageSquare" },
-      { slug: "ai-email-automation", title: "AI Email Automation", shortDesc: "Smart email sequences that adapt to prospect behavior and maximize replies.", icon: "Mail" },
-      { slug: "ai-sms-automation", title: "AI SMS Automation", shortDesc: "High-response SMS campaigns powered by AI for instant engagement.", icon: "Smartphone" },
-      { slug: "crm-automation", title: "CRM Automation", shortDesc: "Automate your entire CRM workflow from lead entry to deal closure.", icon: "Database" },
-      { slug: "workflow-automation", title: "Workflow Automation", shortDesc: "Connect and automate every tool in your sales and marketing stack.", icon: "Workflow" },
-    ],
+    highlights: ["Website AI chat agents", "Missed-call text-back", "Form-to-CRM automation", "WhatsApp & SMS capture", "Lead qualification flows"],
   },
   {
-    id: "lead-generation",
-    title: "Lead Generation Systems",
-    description: "High-performance advertising and SEO systems that drive qualified traffic and revenue.",
-    icon: "Target",
-    services: [
-      { slug: "google-ads", title: "Google Ads Revenue Engine", shortDesc: "Data-driven Google Ads campaigns that maximize ROI and revenue.", icon: "Search" },
-      { slug: "meta-ads", title: "Meta Ads Growth Engine", shortDesc: "Facebook and Instagram advertising that generates qualified leads at scale.", icon: "Megaphone" },
-      { slug: "seo-authority", title: "SEO Authority Growth System", shortDesc: "Dominate search rankings and build organic traffic that converts.", icon: "BarChart3" },
-      { slug: "local-seo", title: "Local SEO & Google Business", shortDesc: "Own your local market with optimized Google Business and local search presence.", icon: "MapPin" },
-      { slug: "conversion-funnels", title: "Conversion Funnel Building", shortDesc: "Multi-step funnels designed to turn cold traffic into paying customers.", icon: "Filter" },
-      { slug: "landing-page-optimization", title: "Landing Page Optimization", shortDesc: "High-converting landing pages that turn visitors into leads and revenue.", icon: "MousePointer" },
-      { slug: "conversion-rate-optimization", title: "Conversion Rate Optimization", shortDesc: "Data-backed testing and optimization to maximize every visitor's value.", icon: "Percent" },
-    ],
+    id: "ai-appointment-agents",
+    slug: "ai-appointment-agents",
+    title: "AI Appointment & Sales Agents",
+    shortDesc: "AI agents that book appointments, follow up relentlessly, and move deals forward — without a human touching the keyboard.",
+    icon: "CalendarCheck",
+    highlights: ["AI appointment setters", "AI SDR workflows", "Booking automation", "No-show reminder systems", "Lead routing & handoff"],
   },
   {
-    id: "social-content",
-    title: "Social Media & Content",
-    description: "Strategic content and social media presence that builds authority and drives engagement.",
-    icon: "Share2",
-    services: [
-      { slug: "social-media-marketing", title: "Social Media Marketing", shortDesc: "Strategic social presence across platforms to build brand authority.", icon: "Globe" },
-      { slug: "instagram-growth", title: "Instagram Growth & Posting", shortDesc: "Consistent, engaging Instagram content that grows your audience organically.", icon: "Camera" },
-      { slug: "facebook-growth", title: "Facebook Growth & Posting", shortDesc: "Facebook content strategy that builds community and drives leads.", icon: "ThumbsUp" },
-      { slug: "content-writing", title: "Content Writing & Strategy", shortDesc: "Authority-building content that positions you as the industry leader.", icon: "FileText" },
-      { slug: "branding-design", title: "Branding & Creative Design", shortDesc: "Premium brand identity that commands trust and recognition.", icon: "Palette" },
-      { slug: "video-marketing", title: "Short Form Video Marketing", shortDesc: "Scroll-stopping video content optimized for engagement and reach.", icon: "Video" },
-    ],
+    id: "crm-pipeline-automation",
+    slug: "crm-pipeline-automation",
+    title: "CRM & Pipeline Automation",
+    shortDesc: "Turn your CRM into a self-managing revenue machine — automatic lead entry, tagging, pipeline movement, and real-time reporting.",
+    icon: "Database",
+    highlights: ["Custom CRM setup", "Sales pipeline builds", "Lead tagging & segmentation", "Deal-stage automations", "Revenue reporting dashboards"],
   },
   {
-    id: "development",
-    title: "Development & Technology",
-    description: "Custom-built technology solutions that power your growth infrastructure.",
+    id: "customer-support-ai",
+    slug: "customer-support-ai",
+    title: "Customer Support & Operations AI",
+    shortDesc: "AI agents that handle support, answer FAQs, route tickets, and free your team for higher-value work — 24/7.",
+    icon: "Headphones",
+    highlights: ["AI support agents", "FAQ & knowledgebase bots", "Voice & phone AI", "Ticket routing automation", "Internal SOP agents"],
+  },
+  {
+    id: "reviews-reactivation-retention",
+    slug: "reviews-reactivation-retention",
+    title: "Reviews, Reactivation & Retention",
+    shortDesc: "Protect your reputation, reactivate dormant leads, and turn one-time buyers into repeat revenue with automated systems.",
+    icon: "Star",
+    highlights: ["Review request automation", "Reputation workflows", "Old lead reactivation", "Repeat customer sequences", "Post-service follow-up"],
+  },
+  {
+    id: "custom-saas-tools",
+    slug: "custom-saas-tools",
+    title: "Custom SaaS & Internal Tools",
+    shortDesc: "Custom-built dashboards, mini SaaS products, and internal tools designed for your exact business workflow.",
     icon: "Code",
-    services: [
-      { slug: "website-development", title: "Website Development", shortDesc: "High-performance websites designed for conversion and growth.", icon: "Monitor" },
-      { slug: "landing-page-development", title: "Landing Page Development", shortDesc: "Fast, responsive landing pages built to convert traffic into leads.", icon: "Layout" },
-      { slug: "crm-setup", title: "CRM Setup & Integration", shortDesc: "Professional CRM implementation customized for your sales process.", icon: "Settings" },
-      { slug: "saas-integrations", title: "SaaS Integrations", shortDesc: "Seamless integration between your tools for unified data flow.", icon: "Plug" },
-      { slug: "marketing-automation-setup", title: "Marketing Automation Setup", shortDesc: "End-to-end marketing automation configured for maximum impact.", icon: "Zap" },
-      { slug: "analytics-dashboard", title: "Dashboard & Analytics Setup", shortDesc: "Real-time dashboards and analytics to track every metric that matters.", icon: "PieChart" },
-    ],
+    highlights: ["Custom admin dashboards", "White-label tools", "Industry-specific CRM builds", "Internal automation portals", "Mini SaaS products"],
+  },
+  {
+    id: "revenue-automation-consulting",
+    slug: "revenue-automation-consulting",
+    title: "Revenue Automation Consulting",
+    shortDesc: "Strategic consulting to audit your revenue gaps, prioritize high-ROI automation, and build your AI implementation roadmap.",
+    icon: "TrendingUp",
+    highlights: ["Workflow & lead leakage audits", "Automation strategy sessions", "AI implementation roadmaps", "Done-for-you deployment", "Revenue stack optimization"],
   },
 ];
 
-export const ALL_SERVICES = SERVICE_CATEGORIES.flatMap(cat =>
-  cat.services.map(s => ({ ...s, category: cat.title, categoryId: cat.id }))
-);
+export const ALL_SERVICES = SERVICE_PILLARS.map(p => ({
+  slug: p.slug,
+  title: p.title,
+  shortDesc: p.shortDesc,
+  icon: p.icon,
+  category: "AI Revenue Systems",
+  categoryId: p.id,
+}));
 
 export const CASE_STUDIES = [
   {
@@ -2621,6 +2620,391 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
     ],
     relatedServices: ["conversion-rate-optimization", "google-ads", "crm-setup", "marketing-automation-setup"]
   },
+  "ai-lead-capture": {
+    icp: "Best for service businesses, agencies, healthcare practices, real estate brokerages, and any company losing leads through missed calls, slow website response, or leaky intake forms.",
+    longDesc: "Our AI Lead Capture Systems ensure no inquiry goes unanswered — whether it comes through your website chat, a missed phone call, an SMS, WhatsApp, or a social DM. Every lead is automatically captured, qualified, and routed into your CRM pipeline within seconds, 24/7, without any manual intervention from your team.",
+    problems: [
+      "Losing 40–60% of inbound leads to missed calls, slow response, or no after-hours coverage",
+      "Website visitors leaving without converting because no one engaged them in real time",
+      "Manual lead intake processes causing delays and inconsistent data quality",
+      "Leads from WhatsApp, SMS, and social DMs falling through the cracks"
+    ],
+    solutions: [
+      "24/7 AI chat agents on your website that capture and qualify visitors instantly",
+      "Missed-call text-back that responds to every missed call within 60 seconds",
+      "Automated form-to-CRM routing that eliminates manual data entry",
+      "Unified inbox connecting WhatsApp, SMS, social DMs, and web chat into one pipeline"
+    ],
+    features: [
+      "Website AI chat agent with custom qualification flows",
+      "Missed-call text-back with AI-powered follow-up sequences",
+      "Form-to-CRM automation with instant lead notifications",
+      "WhatsApp & SMS lead capture and routing",
+      "Social media DM automation (Instagram, Facebook, LinkedIn)",
+      "Lead scoring and priority routing based on qualification criteria",
+      "Real-time alerts to your team for hot leads",
+      "24/7 coverage with zero added headcount"
+    ],
+    deliverables: [
+      { item: "AI chat agent deployed on your website with custom qualification scripts", timeline: "Days 1–4" },
+      { item: "Missed-call text-back system live on your business number", timeline: "Days 3–5" },
+      { item: "CRM connected with automated lead routing and tagging", timeline: "Days 4–7" },
+      { item: "Lead capture dashboard showing volume, source, and conversion rates", timeline: "Day 7+" },
+      { item: "30-day optimization report with lead flow benchmarks", timeline: "Day 30" },
+    ],
+    workflowSteps: [
+      { step: "Lead Flow Audit", desc: "We map every channel where leads arrive and identify where they're being lost today." },
+      { step: "System Architecture", desc: "We design the capture flows for web, phone, SMS, and social channels specific to your business." },
+      { step: "Build & Connect", desc: "We deploy the AI agents, connect your CRM, and test every capture path end-to-end." },
+      { step: "Launch & Optimize", desc: "We go live, monitor lead flow, and refine qualification scripts based on real data." }
+    ],
+    industries: [
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Dental & Medical", icon: "Heart" }
+    ],
+    faqs: [
+      { q: "What channels can the AI lead capture system cover?", a: "We deploy capture across website chat, phone (missed-call text-back), SMS, WhatsApp, Instagram DMs, Facebook Messenger, and contact forms — all routed into a single CRM pipeline." },
+      { q: "How fast does the system respond to a new lead?", a: "Within 60 seconds or less for missed calls, and within a few seconds for website and social inquiries. Speed to lead is the #1 factor in conversion rates." },
+      { q: "Does it integrate with my existing CRM?", a: "Yes. We integrate with HubSpot, Salesforce, GoHighLevel, Pipedrive, Zoho, and most other CRMs. If you don't have a CRM, we'll recommend and set one up for you." },
+      { q: "Will leads know they're talking to AI?", a: "Our chat agents are transparent about being AI assistants. Most businesses find that leads actually prefer the instant response over waiting for a human to reply hours later." },
+      { q: "How long does it take to go live?", a: "Most clients are fully live within 5–7 business days, including CRM connection, qualification script customization, and testing." }
+    ],
+    relatedServices: ["ai-appointment-agents", "crm-pipeline-automation", "reviews-reactivation-retention"]
+  },
+  "ai-appointment-agents": {
+    icp: "Ideal for businesses that live and die by their appointment calendar — medical practices, law firms, home service companies, coaching businesses, sales teams, and any organization where a booked meeting equals revenue.",
+    longDesc: "Our AI Appointment & Sales Agents handle the entire pre-sale sequence — qualification, scheduling, confirmation, reminders, and follow-up — without a human involved. They work via voice, SMS, email, and chat, reaching out to new leads immediately and pursuing cold prospects until they respond or opt out.",
+    problems: [
+      "Leads going cold because follow-up is inconsistent or delayed by more than an hour",
+      "Sales reps spending hours on admin, scheduling, and manual follow-up instead of closing",
+      "No-show rates above 15% eating into revenue and wasting team capacity",
+      "Prospects falling out of the funnel because no one followed up more than twice"
+    ],
+    solutions: [
+      "AI agents that reach out to every new lead within 60 seconds and don't stop until they respond",
+      "Automated appointment booking with calendar sync, confirmation, and reminders",
+      "No-show prevention sequences via SMS and email with smart rescheduling offers",
+      "Multi-touch follow-up sequences that run for days or weeks without manual effort"
+    ],
+    features: [
+      "AI appointment setter via SMS, email, and voice",
+      "Calendar integration (Google Calendar, Calendly, Acuity, and more)",
+      "Automated confirmation and multi-channel reminder sequences",
+      "No-show recovery with instant rescheduling flows",
+      "AI SDR workflows for outbound lead qualification",
+      "Lead routing and handoff to human reps for hot prospects",
+      "CRM sync on every interaction and outcome",
+      "Performance reporting: contact rate, booking rate, show rate"
+    ],
+    deliverables: [
+      { item: "AI outreach sequences built for your service type and offer", timeline: "Days 1–3" },
+      { item: "Calendar system integrated with automated booking confirmation", timeline: "Days 3–6" },
+      { item: "Reminder and no-show recovery flows configured and tested", timeline: "Days 5–7" },
+      { item: "CRM pipeline synced with booking stages and outcomes", timeline: "Day 7+" },
+      { item: "30-day report: contact rate, booking rate, show rate vs. baseline", timeline: "Day 30" },
+    ],
+    workflowSteps: [
+      { step: "Sales Process Mapping", desc: "We document your current lead-to-booking flow and identify where prospects are dropping out." },
+      { step: "Agent Design & Scripting", desc: "We build the AI outreach scripts, qualification questions, and objection handling for your specific offer." },
+      { step: "Integration & Testing", desc: "We connect calendar, CRM, and communication channels and run full end-to-end tests before go-live." },
+      { step: "Launch & Optimize", desc: "We monitor booking rates, show rates, and response patterns and continuously improve the sequences." }
+    ],
+    industries: [
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Coaching & Consulting", icon: "Users" },
+      { name: "Real Estate", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "How is an AI appointment agent different from a regular email drip sequence?", a: "AI agents respond dynamically based on what the lead says, handle objections, reschedule no-shows, and adapt their approach. A standard email drip just sends the same messages to everyone regardless of their behavior." },
+      { q: "Will this work for high-ticket or complex sales?", a: "Yes. We design the agent to qualify prospects and hand off hot leads to human reps at the right moment — the AI handles the volume, your team closes the deals." },
+      { q: "How many follow-up attempts does the agent make?", a: "We typically configure 5–9 touch points over 14–21 days using a mix of SMS, email, and sometimes voice — mirroring what a top-performing SDR would do manually." },
+      { q: "What if a prospect wants to talk to a human immediately?", a: "The agent detects high-intent signals and can immediately route to a live rep via text, email notification, or direct call transfer depending on your setup." },
+      { q: "Can the system handle inbound and outbound simultaneously?", a: "Yes. We often configure both — inbound agents that respond to new leads instantly, and outbound agents that re-engage cold leads in your database." }
+    ],
+    relatedServices: ["ai-lead-capture", "crm-pipeline-automation", "customer-support-ai"]
+  },
+  "crm-pipeline-automation": {
+    icp: "Best for sales teams, agencies, and service businesses using HubSpot, Salesforce, GoHighLevel, Pipedrive, or Zoho — especially those losing deals to poor data hygiene, slow pipeline movement, or manual follow-up processes.",
+    longDesc: "We transform your CRM from a data graveyard into a self-managing revenue engine. Every lead that enters your system is automatically tagged, scored, routed, and moved through pipeline stages based on real behavior — with no manual data entry, no missed handoffs, and no deals falling through the cracks.",
+    problems: [
+      "CRM data entry taking hours per week and still being inaccurate or incomplete",
+      "Deals stalling in pipeline stages for weeks because no automated follow-up exists",
+      "Sales managers unable to get accurate forecasts due to inconsistent pipeline data",
+      "Leads routed to the wrong rep or sitting unassigned for days after entering the system"
+    ],
+    solutions: [
+      "Fully automated lead-to-CRM routing with instant tagging, scoring, and assignment",
+      "Deal-stage automation that moves opportunities forward based on prospect actions",
+      "Automated reporting dashboards giving managers real-time pipeline visibility",
+      "Workflow automation connecting every tool in your stack to your CRM"
+    ],
+    features: [
+      "CRM setup or optimization (HubSpot, Salesforce, GoHighLevel, Pipedrive, Zoho)",
+      "Automated lead intake, tagging, scoring, and rep assignment",
+      "Deal-stage automation based on activity and behavior triggers",
+      "Pipeline health dashboards and forecasting reports",
+      "Email, SMS, and task automation tied to CRM stages",
+      "Multi-system integration (Zapier, Make, native APIs)",
+      "Lead source attribution and revenue tracking",
+      "Custom pipeline views and team reporting"
+    ],
+    deliverables: [
+      { item: "CRM audit and pipeline architecture plan", timeline: "Days 1–3" },
+      { item: "Automated lead routing and tagging workflows configured", timeline: "Days 3–7" },
+      { item: "Deal-stage automations and follow-up sequences live", timeline: "Days 7–12" },
+      { item: "Pipeline reporting dashboard connected to real-time data", timeline: "Days 10–14" },
+      { item: "30-day performance review with pipeline velocity metrics", timeline: "Day 30" },
+    ],
+    workflowSteps: [
+      { step: "Pipeline Audit", desc: "We analyze your current CRM setup, data quality, workflow gaps, and pipeline stage definitions." },
+      { step: "Architecture Design", desc: "We redesign your pipeline stages, automation triggers, and reporting structure for maximum clarity and speed." },
+      { step: "Build & Automate", desc: "We configure all workflows, integrations, routing rules, and reporting dashboards in your CRM." },
+      { step: "Train & Optimize", desc: "We train your team on the new system and monitor performance for the first 30 days." }
+    ],
+    industries: [
+      { name: "SaaS & Technology", icon: "Cpu" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Agency & Consulting", icon: "Users" }
+    ],
+    faqs: [
+      { q: "Which CRMs do you work with?", a: "We specialize in HubSpot, Salesforce, GoHighLevel, Pipedrive, and Zoho CRM. If you use a different platform, contact us — we have experience with most major CRM systems." },
+      { q: "Do we need to migrate to a new CRM?", a: "Not necessarily. If your current CRM is the right fit, we'll optimize and automate within it. We only recommend migration if the platform is genuinely the wrong tool for your sales process." },
+      { q: "How long does a CRM automation project take?", a: "Most projects are fully live within 2–4 weeks, depending on complexity, number of integrations, and data migration requirements." },
+      { q: "Will this break our existing data?", a: "No. We always back up your existing data before making changes and run thorough testing before touching production workflows." },
+      { q: "Can you integrate our CRM with our marketing and communication tools?", a: "Yes. We connect your CRM to email platforms, SMS tools, calendar systems, ad platforms, and any other tools in your stack using native integrations, Zapier, or Make." }
+    ],
+    relatedServices: ["ai-lead-capture", "ai-appointment-agents", "custom-saas-tools"]
+  },
+  "customer-support-ai": {
+    icp: "Ideal for businesses handling high volumes of repetitive support inquiries — SaaS companies, e-commerce brands, healthcare practices, multi-location service businesses, and any team drowning in tickets, calls, or FAQs.",
+    longDesc: "Our Customer Support & Operations AI deploys intelligent agents that handle tier-1 support, answer FAQs, route complex tickets to the right human, and operate internal SOPs — freeing your team to focus on complex, high-value work while customers get instant responses at any hour.",
+    problems: [
+      "Support team overwhelmed with repetitive questions that could be answered automatically",
+      "Customers waiting hours for replies on simple inquiries, reducing satisfaction and retention",
+      "No after-hours support coverage, causing frustration and churn from evening or weekend inquiries",
+      "Internal teams wasting time searching for SOPs, procedures, or policy documents"
+    ],
+    solutions: [
+      "AI support agents that resolve tier-1 inquiries instantly without human involvement",
+      "Smart ticket routing that assigns complex issues to the right team member automatically",
+      "24/7 after-hours coverage with escalation protocols for urgent requests",
+      "Internal SOP agents that answer team questions about procedures and policies in real time"
+    ],
+    features: [
+      "AI support agent (web, email, chat, SMS, WhatsApp)",
+      "FAQ knowledgebase bot with self-learning capabilities",
+      "Intelligent ticket routing and priority classification",
+      "Voice AI for phone support and call deflection",
+      "Internal SOP and policy assistant for your team",
+      "Escalation workflows for complex or urgent cases",
+      "Customer satisfaction (CSAT) tracking and reporting",
+      "Multi-channel support: web, SMS, WhatsApp, email, voice"
+    ],
+    deliverables: [
+      { item: "Support AI agent deployed with your FAQ library and escalation flows", timeline: "Days 1–5" },
+      { item: "Ticket routing automation configured in your helpdesk or CRM", timeline: "Days 4–8" },
+      { item: "Internal SOP agent trained on your documentation", timeline: "Days 5–10" },
+      { item: "CSAT tracking and support performance dashboard", timeline: "Day 10+" },
+      { item: "30-day review: ticket deflection rate, response time, CSAT scores", timeline: "Day 30" },
+    ],
+    workflowSteps: [
+      { step: "Support Audit", desc: "We analyze your current ticket volume, top inquiry types, response times, and escalation patterns." },
+      { step: "Knowledge Base Build", desc: "We organize your FAQs, SOPs, and policies into a structured knowledge base the AI can draw from." },
+      { step: "Agent Training & Deployment", desc: "We configure and train the AI agent on your products, policies, and escalation rules, then go live." },
+      { step: "Monitor & Improve", desc: "We track deflection rates, CSAT, and escalation accuracy and refine the agent continuously." }
+    ],
+    industries: [
+      { name: "SaaS & Technology", icon: "Cpu" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Hospitality", icon: "Building2" }
+    ],
+    faqs: [
+      { q: "What types of inquiries can the AI handle?", a: "The AI handles FAQs, order status, booking changes, policy questions, account inquiries, appointment confirmations, and most tier-1 support tasks. Complex or sensitive issues are escalated to your human team." },
+      { q: "How does it know when to escalate to a human?", a: "We define clear escalation triggers — emotional language, billing disputes, specific keywords, or any topic you designate as human-only. The AI hands off seamlessly with full conversation context." },
+      { q: "Can this work with our existing helpdesk?", a: "Yes. We integrate with Zendesk, Freshdesk, HubSpot Service Hub, Intercom, and most other helpdesk platforms. The AI works inside your existing workflow." },
+      { q: "How long does it take to build the knowledge base?", a: "We typically need 1–2 weeks to organize your existing content. The process is faster if you have existing FAQs, help articles, or SOPs already documented." },
+      { q: "What happens if the AI gives a wrong answer?", a: "We design the agent to acknowledge uncertainty and escalate rather than guess. The knowledge base is reviewed and improved continuously based on the cases the agent handles." }
+    ],
+    relatedServices: ["ai-lead-capture", "crm-pipeline-automation", "reviews-reactivation-retention"]
+  },
+  "reviews-reactivation-retention": {
+    icp: "Best for local service businesses, healthcare practices, e-commerce brands, and any business where reputation, repeat customers, and referrals are the primary growth engine.",
+    longDesc: "We deploy automated systems that request reviews at the perfect moment, reactivate leads who went cold with proven multi-touch sequences, and run retention campaigns that bring past customers back before they forget you — all without manual effort from your team.",
+    problems: [
+      "Satisfied customers who never leave reviews because no one asked at the right time",
+      "Old leads in the database who showed interest but never converted, sitting untouched",
+      "High customer acquisition costs because past buyers never come back for repeat purchases",
+      "Reputation suffering from a handful of negative reviews while hundreds of positive experiences go unshared"
+    ],
+    solutions: [
+      "Automated post-service review requests sent via SMS at the optimal time after service completion",
+      "Old lead reactivation campaigns using AI-written messages proven to re-engage cold contacts",
+      "Retention sequences that trigger rebooking reminders, birthday offers, and loyalty rewards automatically",
+      "Reputation monitoring with instant alerts for new reviews and automated response workflows"
+    ],
+    features: [
+      "Review request automation (SMS + email) with optimal timing triggers",
+      "Google, Yelp, and platform-specific review funnels",
+      "Negative review deflection and management workflow",
+      "Old lead reactivation sequences (30/60/90 day)",
+      "Repeat customer retention campaigns",
+      "Birthday, anniversary, and milestone re-engagement",
+      "Loyalty program automation",
+      "Reputation dashboard and review response tracking"
+    ],
+    deliverables: [
+      { item: "Review request automation deployed and connected to your job or CRM completion triggers", timeline: "Days 1–4" },
+      { item: "Old lead reactivation sequence built and launched to your cold database", timeline: "Days 3–7" },
+      { item: "Retention campaign workflows configured with your post-service triggers", timeline: "Days 5–10" },
+      { item: "Reputation monitoring dashboard with review alerts and response workflows", timeline: "Day 10+" },
+      { item: "30-day report: reviews generated, reactivation response rate, retention metrics", timeline: "Day 30" },
+    ],
+    workflowSteps: [
+      { step: "Reputation & Database Audit", desc: "We assess your current review volume, ratings, cold lead database size, and existing retention touchpoints." },
+      { step: "System Design", desc: "We map the triggers for review requests, reactivation, and retention based on your service timeline and customer lifecycle." },
+      { step: "Build & Launch", desc: "We deploy all automation sequences, connect your CRM or job management system, and launch campaigns." },
+      { step: "Monitor & Optimize", desc: "We track review growth, reactivation responses, and retention rates and refine the sequences continuously." }
+    ],
+    industries: [
+      { name: "Healthcare & Dental", icon: "Stethoscope" },
+      { name: "Home Services", icon: "Hammer" },
+      { name: "Legal Services", icon: "Scale" },
+      { name: "E-Commerce", icon: "ShoppingCart" },
+      { name: "Beauty & Wellness", icon: "Star" },
+      { name: "Automotive", icon: "Car" }
+    ],
+    faqs: [
+      { q: "When is the best time to send a review request?", a: "Typically 1–4 hours after service completion for local services, or immediately after a purchase confirmation for e-commerce. We A/B test timing for each client to find what generates the highest response rate." },
+      { q: "What if a customer had a bad experience?", a: "Our system includes a satisfaction filter — customers who indicate a negative experience are routed to a private feedback flow, not to a public review platform, giving you a chance to resolve the issue first." },
+      { q: "How large does my cold lead database need to be for reactivation to be worthwhile?", a: "Reactivation campaigns work well with as few as 200 cold leads. Even a 5–10% response rate on a database of 500 can generate significant revenue, especially for high-ticket services." },
+      { q: "Does this work with Google Business Profile?", a: "Yes. We connect directly to Google and generate a specific review link for your business that makes the review process as easy as possible for customers." },
+      { q: "How is this different from buying reviews?", a: "This system generates reviews from real customers who had genuine experiences — the only thing we automate is the timing and delivery of the request. Purchased reviews violate Google's policies and can result in permanent penalties." }
+    ],
+    relatedServices: ["ai-lead-capture", "ai-appointment-agents", "crm-pipeline-automation"]
+  },
+  "custom-saas-tools": {
+    icp: "Best for agencies, franchises, multi-location businesses, and any organization that has outgrown off-the-shelf software and needs a custom-built tool designed for their exact workflow and team.",
+    longDesc: "We design and build custom software — dashboards, internal portals, mini SaaS products, and white-label tools — tailored specifically to your business processes. Everything is built to integrate with your existing stack, built on modern frameworks, and handed off with full documentation.",
+    problems: [
+      "Spending thousands per month on software that covers 60% of what your team actually needs",
+      "Teams working around broken tool workflows because no off-the-shelf product fits exactly",
+      "Manual reporting processes because your systems don't talk to each other",
+      "Franchise or agency growth blocked by the inability to give clients a branded tool experience"
+    ],
+    solutions: [
+      "Custom admin dashboards that aggregate data from all your systems in one view",
+      "White-label tools your agency or franchise can deploy under your own brand",
+      "Internal automation portals that eliminate repetitive manual processes",
+      "Mini SaaS products built from your unique expertise for productized delivery"
+    ],
+    features: [
+      "Custom web application development (React, Next.js, Node.js)",
+      "Internal admin dashboards and reporting tools",
+      "White-label SaaS products for agency or franchise use",
+      "Industry-specific CRM builds on top of existing platforms",
+      "Third-party API integrations (Stripe, Twilio, OpenAI, and more)",
+      "Role-based access control and multi-user management",
+      "Mobile-responsive design and PWA capabilities",
+      "Full documentation and post-launch support"
+    ],
+    deliverables: [
+      { item: "Discovery and technical specification document", timeline: "Days 1–5" },
+      { item: "UI/UX wireframes and design mockups approved by your team", timeline: "Days 5–14" },
+      { item: "Core application built and ready for internal testing", timeline: "Weeks 3–6" },
+      { item: "QA, revisions, and final deployment", timeline: "Weeks 6–8" },
+      { item: "Documentation, training, and post-launch support", timeline: "Launch +" },
+    ],
+    workflowSteps: [
+      { step: "Discovery & Scoping", desc: "We document your requirements, map existing workflows, and define the exact features and integrations needed." },
+      { step: "Design & Architecture", desc: "We produce wireframes, UI designs, and a technical architecture plan for your approval before writing a line of code." },
+      { step: "Development & Integration", desc: "We build the application, integrate with your existing tools, and conduct thorough internal testing." },
+      { step: "Launch & Support", desc: "We deploy to production, train your team, and provide ongoing support and feature development." }
+    ],
+    industries: [
+      { name: "Agency & Consulting", icon: "Users" },
+      { name: "Franchise & Multi-Location", icon: "Building2" },
+      { name: "SaaS & Technology", icon: "Cpu" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Logistics & Operations", icon: "Workflow" }
+    ],
+    faqs: [
+      { q: "How long does it take to build a custom tool?", a: "Simple internal dashboards typically take 4–6 weeks. More complex SaaS products or multi-system integrations take 8–16 weeks depending on scope. We provide a detailed timeline after the discovery phase." },
+      { q: "What technology stack do you use?", a: "We primarily build with React, TypeScript, Node.js, and PostgreSQL — a modern, maintainable stack. We also work with Python and other frameworks when the project calls for it." },
+      { q: "Who owns the code after it's built?", a: "You do. We transfer full ownership of all source code, documentation, and deployment infrastructure at project completion." },
+      { q: "Can you integrate with our existing software?", a: "Yes. We connect to virtually any platform that has an API — CRMs, accounting tools, marketing platforms, communication tools, and more. If it has an API, we can build to it." },
+      { q: "Do you offer ongoing maintenance?", a: "Yes. We offer monthly retainer arrangements for ongoing feature development, bug fixes, and infrastructure maintenance after the initial build is complete." }
+    ],
+    relatedServices: ["crm-pipeline-automation", "revenue-automation-consulting", "customer-support-ai"]
+  },
+  "revenue-automation-consulting": {
+    icp: "Best for growth-stage businesses, agencies, and leadership teams that want strategic AI guidance before committing to implementation — or who need an expert to audit their current systems and identify where revenue is being lost.",
+    longDesc: "Our Revenue Automation Consulting engagements help businesses identify automation gaps, prioritize the highest-ROI systems, and build a phased implementation roadmap — whether we build it for you or equip your team to execute independently. We bring deep experience across AI tools, CRM systems, marketing automation, and custom development to every engagement.",
+    problems: [
+      "Leadership unsure where AI automation will actually move the revenue needle versus where it's just hype",
+      "Systems and processes that have never been audited for lead leakage, pipeline gaps, or automation opportunities",
+      "Past automation investments that didn't deliver ROI because they weren't properly scoped or implemented",
+      "Teams overwhelmed with tool options and vendor noise, unable to build a coherent AI revenue strategy"
+    ],
+    solutions: [
+      "Revenue automation audit that maps your entire customer journey and identifies every leak and bottleneck",
+      "Prioritized implementation roadmap showing which systems will generate the fastest ROI and in what order",
+      "Vendor-neutral recommendations based on your actual business needs, not sales incentives",
+      "Done-for-you implementation of the highest-priority systems immediately following strategy work"
+    ],
+    features: [
+      "Revenue flow mapping and lead leakage audit",
+      "AI readiness assessment for your business and team",
+      "Prioritized automation roadmap (30/60/90 day plan)",
+      "Tool and platform recommendations with total cost analysis",
+      "CRM and pipeline health evaluation",
+      "Implementation planning with internal team or done-for-you",
+      "Vendor selection and procurement support",
+      "Ongoing strategic advisory retainer options"
+    ],
+    deliverables: [
+      { item: "Revenue automation audit document with findings and gaps identified", timeline: "Days 1–7" },
+      { item: "Prioritized 90-day implementation roadmap with ROI projections", timeline: "Days 7–14" },
+      { item: "Tool and vendor recommendation report with total cost of ownership", timeline: "Days 10–14" },
+      { item: "Implementation kickoff for priority systems (if done-for-you)", timeline: "Day 14+" },
+      { item: "Optional: monthly strategic advisory sessions", timeline: "Ongoing" },
+    ],
+    workflowSteps: [
+      { step: "Discovery Call & Data Collection", desc: "We interview key stakeholders, review existing systems, and gather data on your current revenue processes." },
+      { step: "Audit & Analysis", desc: "We map every step of your customer journey, identify automation opportunities, and quantify the revenue impact of each gap." },
+      { step: "Roadmap Delivery", desc: "We present a prioritized action plan with clear ROI projections, implementation timeline, and technology recommendations." },
+      { step: "Implementation or Handoff", desc: "We either implement the priority systems ourselves or provide a detailed handoff document for your internal team." }
+    ],
+    industries: [
+      { name: "Agency & Consulting", icon: "Users" },
+      { name: "SaaS & Technology", icon: "Cpu" },
+      { name: "Financial Services", icon: "Landmark" },
+      { name: "Healthcare", icon: "Stethoscope" },
+      { name: "Real Estate", icon: "Building2" },
+      { name: "E-Commerce", icon: "ShoppingCart" }
+    ],
+    faqs: [
+      { q: "What does a revenue automation audit actually include?", a: "We review your lead sources, intake process, CRM setup, follow-up cadences, conversion rates at each stage, and existing automation stack. We produce a written report with specific findings and recommendations." },
+      { q: "How is this different from just hiring an automation agency?", a: "A consulting engagement gives you a strategy-first approach. We audit before we build, which means you get prioritized recommendations based on your actual situation — not a generic service package." },
+      { q: "Can we hire you to just do the audit without the implementation?", a: "Yes. The audit is a standalone deliverable. Many clients use it to guide internal teams or to evaluate whether to bring us on for implementation." },
+      { q: "How long does a consulting engagement take?", a: "A focused revenue audit and roadmap typically takes 2–3 weeks. Ongoing advisory retainers are available monthly for continued strategic support." },
+      { q: "Do you work with businesses that already have automation in place?", a: "Absolutely. Many of our consulting clients have existing automation that isn't performing well. We audit what's in place, identify why it's underperforming, and recommend targeted improvements." }
+    ],
+    relatedServices: ["ai-lead-capture", "crm-pipeline-automation", "custom-saas-tools"]
+  },
 };
 
 export type HeroMockupType = "analytics-dashboard" | "chat-interface" | "phone-ui" | "ad-performance" | "funnel-diagram" | "code-editor" | "social-feed" | "calendar-ui";
@@ -2818,6 +3202,48 @@ export const SERVICE_VISUAL_THEMES: Record<string, ServiceVisualTheme> = {
     accentFrom: "from-blue-500", accentTo: "to-purple-500", accentGlow: "blue-500",
     heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
     problemSolutionLayout: "C", featuresLayout: "C", workflowLayout: "C", faqLayout: "C",
+  },
+  "ai-lead-capture": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-blue-500", accentTo: "to-cyan-400", accentGlow: "blue-500",
+    heroGradient: "from-gray-50/80 via-blue-50/30 to-white",
+    problemSolutionLayout: "A", featuresLayout: "A", workflowLayout: "A", faqLayout: "A",
+  },
+  "ai-appointment-agents": {
+    heroMockup: "calendar-ui",
+    accentFrom: "from-indigo-500", accentTo: "to-blue-400", accentGlow: "indigo-500",
+    heroGradient: "from-gray-50/80 via-indigo-50/30 to-white",
+    problemSolutionLayout: "A", featuresLayout: "B", workflowLayout: "A", faqLayout: "A",
+  },
+  "crm-pipeline-automation": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-violet-500", accentTo: "to-indigo-500", accentGlow: "violet-500",
+    heroGradient: "from-gray-50/80 via-violet-50/20 to-white",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "A",
+  },
+  "customer-support-ai": {
+    heroMockup: "chat-interface",
+    accentFrom: "from-teal-500", accentTo: "to-cyan-400", accentGlow: "teal-500",
+    heroGradient: "from-gray-50/80 via-teal-50/20 to-white",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "B",
+  },
+  "reviews-reactivation-retention": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-amber-500", accentTo: "to-orange-400", accentGlow: "amber-500",
+    heroGradient: "from-gray-50/80 via-amber-50/20 to-white",
+    problemSolutionLayout: "C", featuresLayout: "B", workflowLayout: "A", faqLayout: "A",
+  },
+  "custom-saas-tools": {
+    heroMockup: "code-editor",
+    accentFrom: "from-purple-500", accentTo: "to-pink-500", accentGlow: "purple-500",
+    heroGradient: "from-gray-50/80 via-purple-50/20 to-white",
+    problemSolutionLayout: "B", featuresLayout: "A", workflowLayout: "B", faqLayout: "B",
+  },
+  "revenue-automation-consulting": {
+    heroMockup: "analytics-dashboard",
+    accentFrom: "from-emerald-500", accentTo: "to-teal-400", accentGlow: "emerald-500",
+    heroGradient: "from-gray-50/80 via-emerald-50/20 to-white",
+    problemSolutionLayout: "A", featuresLayout: "C", workflowLayout: "A", faqLayout: "A",
   },
 };
 

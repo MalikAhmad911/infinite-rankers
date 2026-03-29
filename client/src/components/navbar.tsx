@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SERVICE_CATEGORIES, COMPANY, INDUSTRY_VERTICALS } from "@/lib/constants";
+import { SERVICE_PILLARS, COMPANY, INDUSTRY_VERTICALS } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -220,36 +220,37 @@ export default function Navbar() {
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="bg-white/95 backdrop-blur-xl border border-gray-200/80 rounded-lg p-6 shadow-xl shadow-gray-200/40">
-                <div className="grid grid-cols-4 gap-6">
-                  {SERVICE_CATEGORIES.map((category) => (
-                    <div key={category.id}>
-                      <h3 className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">
-                        {category.title}
-                      </h3>
-                      <ul className="space-y-1.5">
-                        {category.services.map((service) => (
-                          <li key={service.slug}>
-                            <Link
-                              href={`/${service.slug}`}
-                              onClick={closeMegaMenu}
-                            >
-                              <span
-                                className="text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer block py-0.5"
-                                data-testid={`link-mega-${service.slug}`}
-                              >
-                                {service.title}
-                              </span>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                <div className="mb-4">
+                  <p className="text-xs font-semibold text-blue-600 uppercase tracking-wider">AI Revenue Systems — 7 Core Service Pillars</p>
+                </div>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                  {SERVICE_PILLARS.map((pillar) => (
+                    <Link
+                      key={pillar.id}
+                      href={`/${pillar.slug}`}
+                      onClick={closeMegaMenu}
+                    >
+                      <div
+                        className="group flex items-start gap-3 p-3 rounded-lg hover:bg-blue-50/60 transition-colors cursor-pointer"
+                        data-testid={`link-mega-${pillar.slug}`}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition-colors leading-snug">
+                            {pillar.title}
+                          </div>
+                          <div className="text-xs text-gray-500 mt-0.5 leading-relaxed line-clamp-1">
+                            {pillar.shortDesc.split(" — ")[0]}
+                          </div>
+                        </div>
+                        <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-blue-500 transition-colors flex-shrink-0 mt-1" />
+                      </div>
+                    </Link>
                   ))}
                 </div>
-                <div className="mt-6 pt-4 border-t border-gray-200/60">
+                <div className="mt-4 pt-4 border-t border-gray-200/60">
                   <Link href="/services" onClick={closeMegaMenu}>
                     <span className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors cursor-pointer" data-testid="link-mega-view-all">
-                      View All Services →
+                      Explore All 7 AI Revenue Systems →
                     </span>
                   </Link>
                 </div>
@@ -337,61 +338,20 @@ export default function Navbar() {
                           transition={{ duration: 0.2 }}
                           className="overflow-hidden"
                         >
-                          <div className="pl-4 py-2 space-y-2">
-                            {SERVICE_CATEGORIES.map((category) => (
-                              <div key={category.id}>
-                                <button
-                                  type="button"
-                                  className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-blue-600 uppercase tracking-wider"
-                                  onClick={() =>
-                                    setMobileExpandedCategory((prev) =>
-                                      prev === category.id ? null : category.id
-                                    )
-                                  }
-                                  data-testid={`button-mobile-category-${category.id}`}
+                          <div className="pl-4 py-2 space-y-0.5">
+                            {SERVICE_PILLARS.map((pillar) => (
+                              <Link key={pillar.id} href={`/${pillar.slug}`}>
+                                <span
+                                  className="block px-3 py-2 text-sm text-gray-600 hover:text-blue-700 hover:bg-blue-50/60 rounded-md transition-colors cursor-pointer font-medium"
+                                  data-testid={`link-mobile-service-${pillar.slug}`}
                                 >
-                                  <span>{category.title}</span>
-                                  <ChevronDown
-                                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                                      mobileExpandedCategory === category.id
-                                        ? "rotate-180"
-                                        : ""
-                                    }`}
-                                  />
-                                </button>
-                                <AnimatePresence>
-                                  {mobileExpandedCategory === category.id && (
-                                    <motion.div
-                                      initial={{ height: 0, opacity: 0 }}
-                                      animate={{ height: "auto", opacity: 1 }}
-                                      exit={{ height: 0, opacity: 0 }}
-                                      transition={{ duration: 0.15 }}
-                                      className="overflow-hidden"
-                                    >
-                                      <ul className="pl-3 py-1 space-y-0.5">
-                                        {category.services.map((service) => (
-                                          <li key={service.slug}>
-                                            <Link
-                                              href={`/${service.slug}`}
-                                            >
-                                              <span
-                                                className="block px-3 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
-                                                data-testid={`link-mobile-service-${service.slug}`}
-                                              >
-                                                {service.title}
-                                              </span>
-                                            </Link>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                              </div>
+                                  {pillar.title}
+                                </span>
+                              </Link>
                             ))}
                             <Link href="/services">
-                              <span className="block px-3 py-2 text-sm font-medium text-blue-600">
-                                View All Services →
+                              <span className="block px-3 py-2 text-sm font-semibold text-blue-600 mt-1">
+                                Explore All 7 AI Systems →
                               </span>
                             </Link>
                           </div>

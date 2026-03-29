@@ -1,8 +1,6 @@
 import { Link } from "wouter";
 import { ArrowRight, BookOpen, Briefcase, Layers } from "lucide-react";
-import { SERVICE_CATEGORIES, BLOG_POSTS, CASE_STUDIES } from "@/lib/constants";
-
-const ALL_SERVICES = SERVICE_CATEGORIES.flatMap(cat => cat.services);
+import { ALL_SERVICES, BLOG_POSTS, CASE_STUDIES } from "@/lib/constants";
 
 interface RelatedLinksProps {
   currentPath: string;
@@ -49,7 +47,7 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
             href="/services"
             className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
           >
-            View All 30+ Services <ArrowRight className="w-3.5 h-3.5" />
+            View All Services <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 

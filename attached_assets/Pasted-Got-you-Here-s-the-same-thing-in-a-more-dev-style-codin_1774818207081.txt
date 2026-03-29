@@ -1,0 +1,127 @@
+Got you. Here’s the same thing in a more dev-style / coding-task format you can paste into Replit:
+
+```txt
+Task: Replace old service-detail structure with 7 new service pillar pages.
+
+Context:
+The business is no longer positioned as a generic SEO or automation agency.
+It is now an AI Automation & Revenue Systems Agency.
+
+Goal:
+Create 7 outcome-focused service pillar pages.
+These pages should sell business results, not technical features.
+
+Important:
+Keep the existing design/UI/layout style.
+Do NOT redesign the website.
+Only update page structure, routes, services content, and services listing.
+
+New pillar pages required:
+- /ai-lead-capture-systems
+- /ai-appointment-sales-systems
+- /crm-pipeline-automation
+- /customer-support-ai-systems
+- /reviews-reactivation-systems
+- /custom-saas-internal-tools
+- /revenue-automation-consulting
+
+Each pillar page should follow this structure:
+1. Hero section
+- clear outcome-driven headline
+- short supporting copy
+- CTA button
+
+2. What's Included
+- sub-services list for that pillar
+
+3. Who It's For
+- short target audience section
+
+4. How It Works
+- 3-step process
+
+5. Case Study / Testimonial Placeholder
+- reusable block for proof
+
+6. CTA Section
+- final conversion block
+
+Copy direction:
+- lead with outcomes, not features
+- bad example: "our chatbot uses NLP"
+- good example: "capture every lead, even after business hours"
+- tone should be premium, simple, clear, business-focused
+
+Implementation requirements:
+
+1. Create a shared template component
+File/component:
+- create reusable ServicePillarPage component
+
+Props/data should support:
+- name
+- slug
+- headline
+- subheadline
+- outcomePromise
+- includedServices
+- whoItsFor
+- processSteps
+- testimonial
+- cta
+
+2. Create 7 pillar page instances
+- one page per pillar
+- each page should use the shared template
+- content should come from updated constants data where possible
+
+3. Register routes
+Update:
+- client/src/App.tsx
+
+Add routes for all 7 pillar slugs.
+
+4. Update Services catalog page
+Update:
+- client/src/pages/services.tsx
+
+Replace current large service grid with 7 service cards only.
+Each card should link to its matching pillar page.
+
+5. Update/remove old service-detail dependency
+Check:
+- client/src/pages/service-detail.tsx
+
+Refactor/remove old detail-page logic if it is no longer needed.
+
+Relevant files:
+- client/src/App.tsx
+- client/src/lib/constants.ts
+- client/src/pages/services.tsx
+- client/src/pages/service-detail.tsx
+
+Out of scope:
+- industry pages
+- blog changes
+- case study content rewrite
+- backend/database changes
+
+Expected result:
+- 7 clean service pillar routes
+- shared reusable page template
+- updated services page with 7 cards
+- consistent outcome-focused structure across all service pages
+- no visual redesign
+```
+
+If you want, I can now do the next dev-style part too:
+
+```txt
+1. constants.ts structure
+2. all 7 page copy in data format
+3. full component structure for ServicePillarPage
+4. routing code plan
+```
+
+Best next step:
+I can write the `constants.ts` content in coding format now.

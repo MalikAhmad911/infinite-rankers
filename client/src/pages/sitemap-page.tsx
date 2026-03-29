@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import SEOHead from "@/components/seo-head";
-import { SERVICE_CATEGORIES, CASE_STUDIES } from "@/lib/constants";
+import { SERVICE_PILLARS, CASE_STUDIES } from "@/lib/constants";
 import { BLOG_POSTS_FULL } from "@/lib/blog-data";
 import { MapPin, FileText, Briefcase, BookOpen, Globe, Handshake, Scale, ChevronRight } from "lucide-react";
 
@@ -125,18 +125,18 @@ export default function SitemapPage() {
           </SitemapSection>
 
           <SitemapSection title="Services" icon={Briefcase} delay={0.05}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {SERVICE_CATEGORIES.map((category) => (
-                <div key={category.id}>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-2">{category.title}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {SERVICE_PILLARS.map((pillar) => (
+                <div key={pillar.slug}>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-2">{pillar.title}</h3>
                   <div className="space-y-0.5">
-                    {category.services.map((service) => (
-                      <SitemapLink
-                        key={service.slug}
-                        href={`/${service.slug}`}
-                        title={service.title}
-                        testId={`link-service-${service.slug}`}
-                      />
+                    <SitemapLink
+                      href={`/${pillar.slug}`}
+                      title={pillar.title}
+                      testId={`link-service-${pillar.slug}`}
+                    />
+                    {pillar.highlights?.slice(0, 3).map((highlight, i) => (
+                      <p key={i} className="text-xs text-gray-500 pl-2 py-0.5 leading-snug">{highlight}</p>
                     ))}
                   </div>
                 </div>

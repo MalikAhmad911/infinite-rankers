@@ -1,13 +1,13 @@
-# Infinite Rankers - AI Revenue Growth Agency Website
+# Infinite Rankers - AI Revenue Systems Agency Website
 
 ## Overview
-Premium multi-page business website for Infinite Rankers, an AI Revenue Growth Agency. Built with React + Tailwind CSS + Framer Motion animations. Features a dark luxury AI SaaS theme with deep navy/black gradients, electric blue/neon purple/cyan accents, and glassmorphism design.
+Premium multi-page business website for Infinite Rankers LLC — an AI Revenue Systems Agency at infiniterankers.io. Built with React + Tailwind CSS + Framer Motion animations. Features a clean, modern Stripe-inspired light theme with blue/indigo/purple gradient accents.
 
 ## Tech Stack
 - **Frontend**: React, Wouter (routing), TanStack React Query, Framer Motion, Tailwind CSS, shadcn/ui components
 - **Backend**: Express.js, Node.js
 - **Database**: PostgreSQL with Drizzle ORM (Replit built-in)
-- **Styling**: Tailwind CSS with dark luxury theme (deep navy backgrounds, blue/purple accents), glassmorphism cards, custom CSS animations
+- **Styling**: Tailwind CSS with permanent light mode (blue/purple gradient accents), glassmorphism cards, custom CSS animations
 
 ## Running the Project
 - **Dev**: `npm run dev` (starts Express + Vite on port 5000)
@@ -25,17 +25,19 @@ Premium multi-page business website for Infinite Rankers, an AI Revenue Growth A
 client/src/
   components/       # Shared components (navbar, footer, glass-card, ai-chatbot, seo-head, section-header, theme-provider, google-partner-badge)
   pages/            # All page components (home, about, services, portfolio, pricing, contact, blog, book-demo, service-detail)
-  lib/              # Utilities and constants (constants.ts has SERVICE_CATEGORIES, SERVICE_CONTENT, CASE_STUDIES, PRICING_TIERS, etc.)
+  lib/              # Utilities and constants (constants.ts has SERVICE_PILLARS, ALL_SERVICES, SERVICE_CONTENT, SERVICE_VISUAL_THEMES, CASE_STUDIES, PRICING_TIERS, etc.)
   hooks/            # Custom hooks
 
 server/
   index.ts          # Express app entry point (serves on port 5000)
-  routes.ts         # API endpoints for contacts and demo bookings
+  routes.ts         # API endpoints, 301 redirects (OLD_SERVICE_REDIRECT_MAP, URL_CONSOLIDATION_MAP)
   storage.ts        # Database storage interface
   db.ts             # Database connection
   vite.ts           # Vite dev server middleware
   static.ts         # Static file serving for production
   seo.ts            # SEO injection middleware
+  sitemap.ts        # XML sitemap, RSS feed, LLM-facing text content
+  google-indexing.ts # Google/Bing sitemap pinging
 
 shared/
   schema.ts         # Drizzle schema (contacts, demoBookings tables)
@@ -43,6 +45,25 @@ shared/
 script/
   build.ts          # Production build script (Vite + esbuild)
 ```
+
+## Service Architecture (7 Pillar Model)
+The site is positioned as an **AI Revenue Systems Agency** with 7 clean service pillars (replaced old 30+ service model):
+
+| Slug | Title |
+|------|-------|
+| `ai-lead-capture` | AI Lead Capture Systems |
+| `ai-appointment-agents` | AI Appointment & Sales Agents |
+| `crm-pipeline-automation` | CRM & Pipeline Automation |
+| `customer-support-ai` | Customer Support & Operations AI |
+| `reviews-reactivation-retention` | Reviews, Reactivation & Retention |
+| `custom-saas-tools` | Custom SaaS & Internal Tools |
+| `revenue-automation-consulting` | Revenue Automation Consulting |
+
+Key data structures in `client/src/lib/constants.ts`:
+- `SERVICE_PILLARS` — 7 pillar objects (slug, title, tagline, description, highlights, icon)
+- `ALL_SERVICES` — derived from SERVICE_PILLARS for routing/lookup
+- `SERVICE_CONTENT` — rich per-pillar content (hero, problems, solutions, features, FAQs, workflow steps, etc.)
+- `SERVICE_VISUAL_THEMES` — per-pillar visual theming (hero mockup type, gradient colors)
 
 ## Design System
 - **Theme**: Permanent light mode (Stripe-inspired aesthetic, no dark mode toggle)
@@ -55,16 +76,17 @@ script/
 ## Pages
 1. Homepage - Animated KPI counters, floating dashboard panels, auto-sliding service carousel, testimonial slider, glow effects
 2. About - Mission, vision, differentiators, AI philosophy
-3. Services Overview - 4 category grid linking to individual services
-4. Service Detail (dynamic) - Per-service pages at /services/:slug with problems/solutions, workflow, features, FAQs, related services, case studies
+3. Services Overview (`/services`) - 7 pillar cards with highlights and CTAs
+4. Service Detail (dynamic) - Per-pillar pages at `/{slug}` with problems/solutions, workflow, features, FAQs, related services, case studies
 5. Portfolio - Case studies with category filtering tabs
 6. Pricing - 3-tier SaaS pricing + ROI calculator
 7. Contact - Contact form, Google Maps, business info
-8. Blog - 6 blog post previews
+8. Blog - 15 blog post articles
 9. Book Demo - Calendar date picker, time slots, qualification form
 10. Landing Pages (8 noindex pages) - City/industry pages (NYC, LA, Chicago; real-estate, healthcare, law firms, e-commerce, restaurants) — noindexed, not in sitemap
-11. Terms of Service (/terms) - 14-section legal page
-12. Privacy Policy (/privacy) - 14-section privacy page
+11. Terms of Service (`/terms`) - 14-section legal page
+12. Privacy Policy (`/privacy`) - 14-section privacy page
+13. Sitemap (`/sitemap`) - Visual sitemap page
 
 ## Database Tables
 - `contacts` - name, email, phone, company, message
@@ -75,18 +97,17 @@ script/
 - **Build**: `npm run build`
 - **Run**: `npm run start`
 
-## SEO Architecture (Task #3 — URL Consolidation)
-- **Canonical service hubs**: `/seo-authority` (all SEO), `/google-ads` (all PPC), `/services` (all agency/marketing)
-- **301 redirects**: 33 cannibal URLs redirect to their canonical hub (see `server/routes.ts` → `URL_CONSOLIDATION_MAP`)
-- **Noindex pages**: 8 city/industry landing pages noindexed via `noindexPaths` in `server/seo.ts`
-- **Sitemap**: 4 child sitemaps only (main, services, cases, blog) — landing and partner sitemaps removed
-- **Partner pages** (`/infinite-rankers-*`): all 4 redirect to primary service pages (kept as React routes for backward compat)
-- **Blog post SEO**: resolved via BLOG_POSTS lookup (not STATIC_PAGES duplicates, which were cleaned up)
+## SEO Architecture
+- **301 redirects for old slugs**: All 30+ old service slugs redirect to the appropriate new pillar slug via `OLD_SERVICE_REDIRECT_MAP` in `server/routes.ts`
+- **URL consolidation**: Additional cannibal URL redirects via `URL_CONSOLIDATION_MAP` in `server/routes.ts`
+- **Noindex pages**: City/industry landing pages noindexed via `noindexPaths` in `server/seo.ts`
+- **Sitemap**: `server/sitemap.ts` — only the 7 new pillar slugs in `SERVICE_SLUGS`
+- **Partner pages** (`/infinite-rankers-*`): redirect to primary service pages
 
 ## User Preferences
-- Premium dark luxury AI SaaS design style
-- Blue/purple gradient accents with neon glow effects
+- Clean, modern AI SaaS design style (Stripe-inspired, light mode)
+- Blue/purple gradient accents
 - Revenue and automation focused copy
 - Inter font family
 - Advanced animations (floating, sliding, counting)
-- Futuristic glassmorphism aesthetic
+- Professional, trust-building aesthetic
