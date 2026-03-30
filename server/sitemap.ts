@@ -53,8 +53,7 @@ const BLOG_POST_SLUGS = [
   "website-conversion-optimization",
 ];
 
-// All 89 landing pages from the AI Revenue Systems SEO architecture.
-// These pages are AI-positioned and serve comparison, location, industry, and service search traffic.
+// All AI Revenue Systems landing pages — location, industry, service, and problem-focused search traffic.
 const LANDING_PAGE_SLUGS = [
   // Location pages
   "ai-automation-new-york", "ai-automation-los-angeles", "ai-automation-chicago",
@@ -67,8 +66,7 @@ const LANDING_PAGE_SLUGS = [
   "ai-lead-generation-usa", "ai-marketing-automation-usa", "ai-automation-agency",
   "ai-agent-development", "ai-receptionist", "ai-booking-agent", "ai-customer-support-agent",
   "ai-sales-agent", "lead-capture-automation", "crm-automation", "missed-call-text-back",
-  "revenue-automation-systems", "chatgpt-ads", "google-ads-for-service-businesses",
-  "meta-ads-for-service-businesses", "saas-project-development", "custom-saas-development",
+  "revenue-automation-systems", "saas-project-development", "custom-saas-development",
   "custom-ai-automation", "ai-receptionist-service-usa",
   // Vertical-specific AI pages
   "ai-receptionist-for-dentists", "ai-receptionist-for-law-firms", "ai-booking-agent-for-med-spas",
@@ -83,15 +81,8 @@ const LANDING_PAGE_SLUGS = [
   "missed-call-to-booking-system", "automate-customer-follow-up", "reactivate-old-leads",
   "ai-intake-system-for-law-firms", "automate-review-requests", "book-more-estimates-with-ai",
   "automate-front-desk-workflows", "improve-lead-response-time",
-  // Comparison / agency search pages (AI-positioned content for these queries)
-  "seo-agency", "seo-consultant", "ppc-agency", "digital-marketing-agency",
-  "social-media-marketing-agency", "content-marketing-services", "email-marketing-services",
-  "branding-agency", "b2b-lead-generation", "seo-services", "google-seo", "seo-specialist",
-  "best-seo-companies", "search-engine-marketing", "online-marketing-company",
-  "digital-marketing-firms", "social-media-marketing-agency-near-me", "automation-agency",
-  "website-ranking", "seo-agency-near-me", "seo-keywords", "digital-marketing-company",
-  "digital-marketing-services", "marketing-agency-near-me", "best-digital-marketing-agencies",
-  "paid-media-agency", "ppc-management-services", "digital-marketing-seo",
+  // AI agency positioning pages
+  "b2b-lead-generation", "automation-agency",
   // Competitor comparison pages
   "podium-alternative", "podium-alternative-for-home-services", "podium-vs-custom-ai-system",
   "best-ai-automation-agency-for-local-businesses",
