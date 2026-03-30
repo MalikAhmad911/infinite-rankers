@@ -14,6 +14,7 @@ import {
   type ServiceVisualTheme,
 } from "@/lib/constants";
 import TestimonialsMarquee from "@/components/testimonials-marquee";
+import CaseStudiesMarquee from "@/components/case-studies-marquee";
 import {
   ArrowRight, CheckCircle2, ArrowLeft, Zap, ChevronDown,
   Bot, CalendarCheck, Database, Headphones, Star, Code, TrendingUp,
@@ -516,45 +517,32 @@ export default function ServicePillarPage() {
               </GlassCard>
             </motion.div>
 
-            {/* Extra Case Study Grid */}
-            {extraCases.length > 0 && (
-              <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {extraCases.slice(0, 6).map((cs, i) => (
-                  <motion.div
-                    key={cs.slug}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.07 }}
-                  >
-                    <GlassCard className="h-full" delay={i * 0.07}>
-                      <Badge variant="secondary" className="text-xs mb-3 block w-fit">{cs.label}</Badge>
-                      <h4 className="font-semibold text-gray-900 text-sm mb-1">{cs.title}</h4>
-                      <p className="text-xs text-gray-500 mb-4">{cs.business}</p>
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        {[
-                          { value: cs.results.metric1, label: cs.results.label1 },
-                          { value: cs.results.metric2, label: cs.results.label2 },
-                          { value: cs.results.metric3, label: cs.results.label3 },
-                          { value: cs.results.metric4, label: cs.results.label4 },
-                        ].map((s) => (
-                          <div key={s.label} className="text-center p-2 rounded-lg bg-blue-50/60 border border-blue-100/40">
-                            <div className="text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{s.value}</div>
-                            <div className="text-[10px] text-gray-500 mt-0.5 leading-tight">{s.label}</div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="relative pl-3 border-l-2 border-blue-100">
-                        <p className="text-[11px] text-gray-500 italic leading-relaxed line-clamp-3">"{cs.testimonial.quote}"</p>
-                        <p className="text-[10px] text-gray-400 mt-1 font-medium">— {cs.testimonial.author}</p>
-                      </div>
-                    </GlassCard>
-                  </motion.div>
-                ))}
-              </div>
-            )}
           </div>
         </section>
+      )}
+
+      {/* ── More Case Studies Marquee ───────────────────────────────── */}
+      {extraCases.length > 0 && (
+        <CaseStudiesMarquee
+          cases={extraCases.map((cs) => ({
+            badge: cs.label,
+            title: cs.title,
+            business: cs.business,
+            slug: cs.slug,
+            metrics: [
+              { value: cs.results.metric1, label: cs.results.label1 },
+              { value: cs.results.metric2, label: cs.results.label2 },
+              { value: cs.results.metric3, label: cs.results.label3 },
+              { value: cs.results.metric4, label: cs.results.label4 },
+            ],
+            quote: cs.testimonial.quote,
+            author: cs.testimonial.author,
+          }))}
+          label="More Client Results"
+          title="Across Every Industry We Serve"
+          description="From healthcare to home services — AI Revenue Systems deliver measurable results for any business."
+          animationDuration="60s"
+        />
       )}
 
       {/* ── Section 6: FAQ ──────────────────────────────────────────── */}

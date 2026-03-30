@@ -18,6 +18,7 @@ import {
   Calendar, Heart, Briefcase, ChevronDown, Quote,
 } from "lucide-react";
 import { useState } from "react";
+import CaseStudiesMarquee from "@/components/case-studies-marquee";
 import TestimonialsMarquee from "@/components/testimonials-marquee";
 import NotFound from "@/pages/not-found";
 import { LiveServiceWidget } from "@/components/live-service-widget";
@@ -302,38 +303,20 @@ export default function LandingPage({ slug }: { slug?: string }) {
         </div>
       </section>
 
-      {/* Section 5: Case Study Style Results */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-results">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader label="Proven Results" title={page.results.title} description={page.results.subtitle} />
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {page.results.cases.map((cs, i) => (
-              <GlassCard key={i} delay={i * 0.1} glow>
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge variant="secondary" className="text-xs">
-                    {cs.industry}
-                  </Badge>
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-3 text-sm sm:text-base" data-testid={`result-business-${i}`}>{cs.business}</h3>
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  {cs.metrics.map((m, j) => (
-                    <div key={j} className="text-center p-2 rounded-lg bg-blue-50/60 border border-blue-100/40">
-                      <div className="text-base sm:text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                        {m.value}
-                      </div>
-                      <div className="text-[10px] sm:text-xs text-gray-500 mt-0.5">{m.label}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="relative pl-4 border-l-2 border-blue-200">
-                  <Quote className="w-3 h-3 text-blue-300 absolute -left-1.5 -top-0.5 bg-white" />
-                  <p className="text-xs sm:text-sm text-gray-600 italic leading-relaxed">{cs.quote}</p>
-                </div>
-              </GlassCard>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Section 5: Case Study Style Results — Scrolling Marquee */}
+      <CaseStudiesMarquee
+        cases={page.results.cases.map((cs: any) => ({
+          badge: cs.industry,
+          title: cs.business,
+          business: "",
+          metrics: cs.metrics,
+          quote: cs.quote,
+        }))}
+        label="Proven Results"
+        title={page.results.title}
+        description={page.results.subtitle}
+        animationDuration="50s"
+      />
 
       {/* Section 6: Service Features & Automation Tools */}
       <section className="py-16 sm:py-20 lg:py-24" data-testid="section-features">
