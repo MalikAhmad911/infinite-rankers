@@ -26,7 +26,6 @@ import Privacy from "@/pages/privacy";
 import ContentMethodology from "@/pages/content-methodology";
 import SitemapPage from "@/pages/sitemap-page";
 import AdminDashboard from "@/pages/admin-dashboard";
-import CompetitorAnalysis from "@/pages/competitor-analysis";
 import ROICalculator from "@/pages/roi-calculator";
 import PodiumCompetitiveAnalysis from "@/pages/podium-competitive-analysis";
 import NotFound from "@/pages/not-found";
@@ -60,7 +59,6 @@ function AppRouter() {
       <Route path="/content-methodology" component={ContentMethodology} />
       <Route path="/sitemap" component={SitemapPage} />
       <Route path="/admin/indexing" component={AdminDashboard} />
-      <Route path="/competitor-analysis" component={CompetitorAnalysis} />
       <Route path="/roi-calculator" component={ROICalculator} />
       <Route path="/competitive-analysis/podium" component={PodiumCompetitiveAnalysis} />
       <Route path="/:slug">{(params) => <SmartPage params={params} />}</Route>

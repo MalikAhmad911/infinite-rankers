@@ -65,6 +65,58 @@ const PILLAR_CASE_STUDY_MAP: Record<string, string> = {
   "revenue-automation-consulting": "case-study-wealth-management-digital-lead-generation",
 };
 
+const PILLAR_EXTRA_CASES: Record<string, string[]> = {
+  "ai-lead-capture": [
+    "case-study-home-services-plumbing-hvac-lead-machine",
+    "case-study-real-estate-ai-lead-generation",
+    "case-study-medical-clinic-patient-acquisition",
+    "case-study-law-firm-client-intake-automation",
+    "case-study-auto-dealership-ai-sales-acceleration",
+  ],
+  "ai-appointment-agents": [
+    "case-study-dental-practice-revenue-transformation",
+    "case-study-fitness-studio-membership-growth",
+    "case-study-medical-clinic-patient-acquisition",
+    "case-study-home-services-plumbing-hvac-lead-machine",
+    "case-study-auto-dealership-ai-sales-acceleration",
+  ],
+  "crm-pipeline-automation": [
+    "case-study-real-estate-ai-lead-generation",
+    "case-study-ecommerce-cart-recovery-scaling",
+    "case-study-law-firm-client-intake-automation",
+    "case-study-auto-dealership-ai-sales-acceleration",
+    "case-study-wealth-management-digital-lead-generation",
+  ],
+  "customer-support-ai": [
+    "case-study-ecommerce-cart-recovery-scaling",
+    "case-study-medical-clinic-patient-acquisition",
+    "case-study-saas-growth-acceleration",
+    "case-study-restaurant-chain-local-seo-transformation",
+    "case-study-fitness-studio-membership-growth",
+  ],
+  "reviews-reactivation-retention": [
+    "case-study-home-services-plumbing-hvac-lead-machine",
+    "case-study-fitness-studio-membership-growth",
+    "case-study-restaurant-chain-local-seo-transformation",
+    "case-study-medical-clinic-patient-acquisition",
+    "case-study-auto-dealership-ai-sales-acceleration",
+  ],
+  "custom-saas-tools": [
+    "case-study-saas-growth-acceleration",
+    "case-study-real-estate-ai-lead-generation",
+    "case-study-law-firm-client-intake-automation",
+    "case-study-wealth-management-digital-lead-generation",
+    "case-study-restaurant-chain-local-seo-transformation",
+  ],
+  "revenue-automation-consulting": [
+    "case-study-home-services-plumbing-hvac-lead-machine",
+    "case-study-ecommerce-cart-recovery-scaling",
+    "case-study-saas-growth-acceleration",
+    "case-study-real-estate-ai-lead-generation",
+    "case-study-auto-dealership-ai-sales-acceleration",
+  ],
+};
+
 const PILLAR_WHO_ITS_FOR: Record<string, string[]> = {
   "ai-lead-capture": [
     "Service businesses missing 30%+ of inbound calls and inquiries",
@@ -170,6 +222,8 @@ export default function ServicePillarPage() {
 
   const caseStudySlug = PILLAR_CASE_STUDY_MAP[slug];
   const caseStudy = CASE_STUDIES.find((cs) => cs.slug === caseStudySlug);
+  const extraCaseSlugs = PILLAR_EXTRA_CASES[slug] ?? [];
+  const extraCases = extraCaseSlugs.map((s) => CASE_STUDIES.find((cs) => cs.slug === s)).filter(Boolean) as typeof CASE_STUDIES;
 
   const heroGradient = theme.heroGradient.includes("#")
     ? "from-gray-50/80 via-blue-50/30 to-white"
@@ -459,6 +513,44 @@ export default function ServicePillarPage() {
                 </div>
               </GlassCard>
             </motion.div>
+
+            {/* Extra Case Study Grid */}
+            {extraCases.length > 0 && (
+              <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {extraCases.slice(0, 6).map((cs, i) => (
+                  <motion.div
+                    key={cs.slug}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.07 }}
+                  >
+                    <GlassCard className="h-full" delay={i * 0.07}>
+                      <Badge variant="secondary" className="text-xs mb-3 block w-fit">{cs.label}</Badge>
+                      <h4 className="font-semibold text-gray-900 text-sm mb-1">{cs.title}</h4>
+                      <p className="text-xs text-gray-500 mb-4">{cs.business}</p>
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        {[
+                          { value: cs.results.metric1, label: cs.results.label1 },
+                          { value: cs.results.metric2, label: cs.results.label2 },
+                          { value: cs.results.metric3, label: cs.results.label3 },
+                          { value: cs.results.metric4, label: cs.results.label4 },
+                        ].map((s) => (
+                          <div key={s.label} className="text-center p-2 rounded-lg bg-blue-50/60 border border-blue-100/40">
+                            <div className="text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{s.value}</div>
+                            <div className="text-[10px] text-gray-500 mt-0.5 leading-tight">{s.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="relative pl-3 border-l-2 border-blue-100">
+                        <p className="text-[11px] text-gray-500 italic leading-relaxed line-clamp-3">"{cs.testimonial.quote}"</p>
+                        <p className="text-[10px] text-gray-400 mt-1 font-medium">— {cs.testimonial.author}</p>
+                      </div>
+                    </GlassCard>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}

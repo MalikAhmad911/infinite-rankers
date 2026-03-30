@@ -12338,6 +12338,46 @@ export const LANDING_PAGES: LandingPageData[] = [
           ],
           quote: "We switched from Podium at the same monthly investment. Now we have everything Podium did plus an AI receptionist and booking automation. Added $18K per month in revenue Podium was never designed to generate.",
         },
+        {
+          business: "Greenway Roofing & Exteriors",
+          industry: "Roofing",
+          metrics: [
+            { value: "220+", label: "Google Reviews (was 47)" },
+            { value: "$240K", label: "Booked via AI Calls" },
+            { value: "Zero", label: "Monthly Missed Leads" },
+          ],
+          quote: "Podium collected reviews. Our AI system books jobs. That's the difference. We went from 47 Google reviews to over 220 and started closing roofing estimates at scale — all without adding headcount.",
+        },
+        {
+          business: "Meridian Auto Group",
+          industry: "Automotive",
+          metrics: [
+            { value: "62%", label: "More Test Drives Booked" },
+            { value: "$22K", label: "Extra Monthly Revenue" },
+            { value: "5★", label: "Avg Google Rating" },
+          ],
+          quote: "We were paying Podium to collect reviews while losing leads overnight. Now our AI books test drives at 2 AM and follows up on every inquiry. Revenue went up, reviews went up, and we pay the same monthly fee.",
+        },
+        {
+          business: "Peak Physical Therapy",
+          industry: "Healthcare",
+          metrics: [
+            { value: "3x", label: "New Patient Bookings" },
+            { value: "$14K", label: "Monthly Revenue Added" },
+            { value: "89%", label: "Appointment Show Rate" },
+          ],
+          quote: "We replaced Podium with a custom AI that handles after-hours inquiries, books initial consultations, and sends appointment reminders automatically. Cancellations dropped 40% and new patients tripled.",
+        },
+        {
+          business: "Silverline Plumbing Co.",
+          industry: "Plumbing",
+          metrics: [
+            { value: "$65K", label: "Monthly Revenue via AI" },
+            { value: "4.9★", label: "Google Rating (was 3.8)" },
+            { value: "0", label: "Missed Emergency Calls" },
+          ],
+          quote: "Podium was just a texting tool. Custom AI answers emergency calls at night, books appointments instantly, and follows up on every estimate. Our Google rating went from 3.8 to 4.9 stars in 90 days.",
+        },
       ],
     },
     features: {
@@ -12375,6 +12415,10 @@ export const LANDING_PAGES: LandingPageData[] = [
     testimonials: [
       { name: "Tony Hernandez", role: "Owner", company: "Apex HVAC Solutions", quote: "Podium was fine for reviews. But it never called a single lead or booked a single service appointment. Custom AI does everything Podium did and adds voice automation that generates $85K per month. No comparison.", rating: 5 },
       { name: "Dr. Sarah Ming", role: "Owner", company: "Harbor Dental", quote: "Same budget as Podium but four times the capability. Reviews, AI receptionist, booking automation — all in one system. $18K per month in additional revenue that Podium's messaging platform was never designed to generate.", rating: 5 },
+      { name: "Carlos Reyes", role: "Owner", company: "Greenway Roofing & Exteriors", quote: "Switching from Podium was the best business decision we made this year. Our AI system answers calls, books estimates, and follows up automatically. We closed $240K in new roofing contracts in the first quarter alone.", rating: 5 },
+      { name: "Jessica Park", role: "General Manager", company: "Meridian Auto Group", quote: "Podium gave us reviews. InfiniteRankers gave us a full AI sales team. Test drive bookings are up 62%, our Google rating hit 5 stars, and we added $22K monthly without hiring a single extra person.", rating: 5 },
+      { name: "Dr. Anita Sharma", role: "Clinic Director", company: "Peak Physical Therapy", quote: "We replaced Podium with a custom AI system and the difference is night and day. New patient bookings tripled, our no-show rate dropped to 11%, and the AI follows up on every inquiry while I sleep.", rating: 5 },
+      { name: "Kyle Morrison", role: "Owner", company: "Silverline Plumbing Co.", quote: "I was skeptical at first — Podium seemed fine for reviews. Then I saw how many emergency calls we were losing overnight. The AI answers at 2 AM, books the job, and our Google rating went from 3.8 to 4.9 in 90 days.", rating: 5 },
     ],
     faqs: [
       { q: "Can custom AI replace Podium completely?", a: "Yes. Custom AI automation handles everything Podium does — review generation, two-way SMS, web chat — and adds the revenue-generating capabilities Podium does not have. Most businesses that switch from Podium to custom AI see higher review volumes and significantly more revenue from the additional AI capabilities." },

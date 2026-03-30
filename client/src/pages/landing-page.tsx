@@ -288,8 +288,8 @@ export default function LandingPage({ slug }: { slug?: string }) {
                   )}
                   <div className="relative inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-200/30 mb-4">
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                    <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border-2 border-blue-500 text-xs font-bold text-blue-600 flex items-center justify-center">
-                      {step.step}
+                    <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border-2 border-blue-500 text-xs font-bold text-blue-600 flex items-center justify-center leading-none">
+                      {i + 1}
                     </span>
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">{step.title}</h3>
