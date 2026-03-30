@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { ArrowRight } from "lucide-react";
 
 export interface MarqueeCaseStudy {
@@ -18,6 +18,7 @@ interface CaseStudiesMarqueeProps {
   title?: string;
   description?: string;
   animationDuration?: string;
+  fallbackHref?: string;
 }
 
 export default function CaseStudiesMarquee({
@@ -26,9 +27,16 @@ export default function CaseStudiesMarquee({
   title = "Real Businesses. Real Revenue Growth.",
   description = "A representative sample of results our AI Revenue Systems have generated.",
   animationDuration = "55s",
+  fallbackHref,
 }: CaseStudiesMarqueeProps) {
   const [paused, setPaused] = useState(false);
+  const [, navigate] = useLocation();
   const duplicated = [...cases, ...cases];
+
+  const handleCardClick = (slug?: string) => {
+    const dest = slug ? `/${slug}` : fallbackHref;
+    if (dest) navigate(dest);
+  };
 
   return (
     <section
@@ -73,9 +81,21 @@ export default function CaseStudiesMarquee({
           }}
         >
           {duplicated.map((cs, i) => {
-            const cardContent = (
-              <>
-                <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 mb-2">
+            const isClickable = !!(cs.slug || fallbackHref);
+            return (
+              <div
+                key={i}
+                onClick={() => handleCardClick(cs.slug)}
+                role={isClickable ? "button" : undefined}
+                tabIndex={isClickable ? 0 : undefined}
+                onKeyDown={isClickable ? (e) => { if (e.key === "Enter") handleCardClick(cs.slug); } : undefined}
+                className={[
+                  "w-[300px] sm:w-[360px] flex-shrink-0 bg-white rounded-xl border border-gray-200/80 p-4 sm:p-5 shadow-sm flex flex-col select-none transition-all duration-200",
+                  isClickable ? "cursor-pointer hover:shadow-md hover:border-blue-200 active:scale-[0.99]" : "",
+                ].join(" ")}
+                data-testid={`case-study-card-${i}`}
+              >
+                <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 mb-2 w-fit">
                   {cs.badge}
                 </span>
                 <h3 className="font-semibold text-gray-900 text-sm leading-snug mb-0.5">
@@ -108,33 +128,12 @@ export default function CaseStudiesMarquee({
                   )}
                 </div>
 
-                {cs.slug && (
+                {isClickable && (
                   <div className="flex items-center gap-1 text-[11px] font-semibold text-blue-600 mt-auto pt-1">
-                    Read Case Study <ArrowRight className="w-3 h-3" />
+                    {cs.slug ? "Read Case Study" : "View All Results"}{" "}
+                    <ArrowRight className="w-3 h-3" />
                   </div>
                 )}
-              </>
-            );
-
-            const baseClass =
-              "w-[300px] sm:w-[360px] flex-shrink-0 bg-white rounded-xl border border-gray-200/80 p-4 sm:p-5 shadow-sm flex flex-col transition-shadow duration-200";
-
-            return cs.slug ? (
-              <Link
-                key={i}
-                href={`/${cs.slug}`}
-                className={`${baseClass} cursor-pointer hover:shadow-md hover:border-blue-200`}
-                data-testid={`case-study-card-${i}`}
-              >
-                {cardContent}
-              </Link>
-            ) : (
-              <div
-                key={i}
-                className={baseClass}
-                data-testid={`case-study-card-${i}`}
-              >
-                {cardContent}
               </div>
             );
           })}

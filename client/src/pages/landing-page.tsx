@@ -316,6 +316,7 @@ export default function LandingPage({ slug }: { slug?: string }) {
         title={page.results.title}
         description={page.results.subtitle}
         animationDuration="50s"
+        fallbackHref="/portfolio"
       />
 
       {/* Section 6: Service Features & Automation Tools */}
