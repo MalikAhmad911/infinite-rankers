@@ -1,0 +1,147 @@
+You are a senior technical SEO auditor with 10+ years of experience. Perform a complete, ruthless audit of this Next.js website's landing pages system. I need you to verify everything — no shortcuts.
+
+## AUDIT SCOPE
+
+### 1. SSR VERIFICATION
+- Confirm every landing page renders fully on server (SSR/SSG)
+- Check if content is in HTML source or only loads via JavaScript
+- Verify no content is hidden behind client-side rendering
+- Check page source for actual text content
+- Report: PASS / FAIL for each page type
+
+### 2. UNIQUE CONTENT AUDIT
+- Compare content across all 52 landing pages
+- Check for duplicate sentences, paragraphs, or sections
+- Identify any template text that appears on multiple pages unchanged
+- Check H1, H2, intro paragraph, FAQ uniqueness across pages
+- Flag any page where more than 20% content is shared with another page
+- Report: List all pages with duplicate content issues
+
+### 3. THIN CONTENT CHECK
+- Count word count on every landing page
+- Flag any page under 800 words
+- Check if content is meaningful or just keyword stuffing
+- Verify FAQs have real answers (not generic filler)
+- Report: Word count per page, flag thin pages
+
+### 4. SEO TECHNICAL AUDIT
+Check every page for:
+- Title tag (present, unique, under 60 chars, contains keyword)
+- Meta description (present, unique, under 160 chars, compelling)
+- H1 tag (exactly one per page, contains target keyword)
+- H2 tags (proper hierarchy, keyword variations)
+- Canonical tag (present and correct URL)
+- robots meta tag (index, follow)
+- Open Graph tags (og:title, og:description, og:url)
+- Image alt tags (if images exist)
+- Internal links (at least 3 per page)
+- External links (if any, check nofollow)
+Report: PASS/FAIL per tag per page
+
+### 5. SCHEMA MARKUP AUDIT
+Check every page for:
+- Schema type (LocalBusiness / Service / FAQPage)
+- Schema is valid JSON-LD (no syntax errors)
+- Required fields present (name, description, url)
+- FAQPage schema matches actual FAQ content
+- No duplicate schema on same page
+- Validate against schema.org requirements
+Report: Schema status per page
+
+### 6. AIO / GEO / AEO OPTIMIZATION CHECK
+AIO (AI Overview Optimization):
+- Check if content answers questions directly and concisely
+- Verify FAQ sections exist and are properly formatted
+- Check if content has clear definitions, lists, and structured answers
+- Confirm content would surface in AI Overviews / SGE
+
+GEO (Generative Engine Optimization):
+- Check if content has clear entity definitions
+- Verify business name, location, services are clearly stated
+- Check if content is structured for AI citation
+- Confirm content answers "who, what, where, why, how" clearly
+
+AEO (Answer Engine Optimization):
+- Check for featured snippet optimization (concise answers under 50 words)
+- Verify question-based H2/H3 headings
+- Check for definition boxes, step-by-step content
+- Confirm content structure matches People Also Ask format
+Report: AIO/GEO/AEO score per page
+
+### 7. DUPLICATE PAGES / GOOGLE CONFUSION CHECK
+- Check if any two pages target the same keyword
+- Verify URL slugs are unique and descriptive
+- Check for near-duplicate URLs (/podium-alternative vs /alternatives-to-podium)
+- Verify sitemap has no duplicate entries
+- Check canonical tags are not pointing to wrong pages
+- Identify any pages that could cannibalize each other
+Report: Cannibalization risk per page group
+
+### 8. SITEMAP AUDIT
+- Verify sitemap.xml exists and is accessible
+- Check all 52 pages are in sitemap
+- Verify sitemap URLs match actual page URLs exactly
+- Check lastmod dates are present
+- Verify priority and changefreq values
+- Check sitemap is under 50MB / 50,000 URL limit
+Report: Sitemap health status
+
+### 9. TEMPLATE DETECTION
+- Analyze page structure across all pages
+- Identify if pages are using same HTML structure with only keyword swapped
+- Check if intro paragraphs follow same sentence pattern
+- Verify CTAs are varied (not identical on every page)
+- Check if case studies / stats vary per page
+- Flag "Mad Libs" style content (same template, different keyword)
+Report: Template risk score per page (Low/Medium/High)
+
+### 10. INTERNAL LINKING AUDIT
+- Check if all 52 pages link to each other contextually
+- Verify homepage links to key landing pages
+- Check if related pages link to each other
+- Confirm no orphan pages (pages with zero internal links pointing to them)
+- Verify anchor text is varied and descriptive
+Report: Internal link map
+
+## OUTPUT FORMAT
+
+Give me results in this exact format:
+
+OVERALL SCORE: X/100
+
+CRITICAL ISSUES (Fix immediately):
+1. [Issue] — [Pages affected] — [How to fix]
+
+HIGH PRIORITY (Fix this week):
+1. [Issue] — [Pages affected] — [How to fix]
+
+MEDIUM PRIORITY (Fix this month):
+1. [Issue] — [Pages affected] — [How to fix]
+
+PAGE BY PAGE REPORT:
+| Page Slug | Words | Title OK | Meta OK | H1 OK | Schema OK | Unique % | AIO Ready | Risk |
+|-----------|-------|----------|---------|-------|-----------|----------|-----------|------|
+
+DUPLICATE CONTENT MAP:
+[List any pages sharing content]
+
+CANNIBALIZATION RISKS:
+[List keyword overlap issues]
+
+SITEMAP STATUS:
+[Pass/Fail with details]
+
+SCHEMA VALIDATION:
+[Per page schema status]
+
+FINAL RECOMMENDATIONS:
+[Top 10 actions to take in priority order]
+
+## IMPORTANT
+- Be ruthless. Do not sugarcoat issues.
+- If a page fails, say it fails clearly.
+- Give specific line numbers or content examples where issues exist.
+- Do not give generic SEO advice — only issues found in THIS codebase.
+- Run actual file checks, not assumptions.
+
+Start the audit now. Check every file. Report everything.
