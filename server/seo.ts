@@ -523,14 +523,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
     "telephone": "(703) 415-9373",
     "email": "contact@infiniterankers.io",
     "contactPoint": { "@type": "ContactPoint", "telephone": "(703) 415-9373", "contactType": "sales", "email": "contact@infiniterankers.io", "availableLanguage": ["English"], "areaServed": "US" },
-    "areaServed": "US",
-    "hasCredential": {
-      "@type": "EducationalOccupationalCredential",
-      "credentialCategory": "Professional Certification",
-      "name": "Google Partner",
-      "recognizedBy": { "@type": "Organization", "name": "Google" }
-    },
-    "knowsAbout": ["AI Automation", "Lead Generation", "Google Ads", "SEO", "CRM Automation", "AI Chatbot", "Digital Marketing", "Social Media Marketing", "Website Development"]
+    "areaServed": { "@type": "Country", "name": "United States" }
   };
 
   const breadcrumb = getBreadcrumbs(path, seo);
@@ -574,7 +567,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "Infinite Rankers",
-      "description": "AI Revenue Growth Agency providing AI automation, SEO, Google Ads, lead generation, and full-service digital marketing for businesses across the USA.",
+      "description": "AI Revenue Systems Agency that builds and deploys AI-powered lead capture, appointment agents, CRM automation, customer support AI, and custom SaaS tools for businesses across the USA.",
       "url": BASE_URL,
       "inLanguage": "en-US",
       "logo": `${BASE_URL}/images/logo-full.png`,
@@ -634,8 +627,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
         { "@type": "BusinessAudience", "name": "Small and mid-size businesses in the USA" }
       ],
       "serviceType": "AI Revenue Automation",
-      "offers": { "@type": "Offer", "availability": "https://schema.org/InStock", "priceCurrency": "USD", "url": `${BASE_URL}/pricing` },
-      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "87", "bestRating": "5" }
+      "offers": { "@type": "Offer", "availability": "https://schema.org/InStock", "priceCurrency": "USD", "url": `${BASE_URL}/pricing` }
     };
     const howToSchema = {
       "@context": "https://schema.org",
