@@ -996,14 +996,6 @@ export function injectSEO(html: string, url: string): string {
 
   const noindexPaths = [
     "/crawl-hub",
-    "/ai-automation-new-york",
-    "/ai-automation-los-angeles",
-    "/ai-automation-chicago",
-    "/ai-revenue-growth-real-estate",
-    "/ai-revenue-growth-healthcare",
-    "/ai-revenue-growth-law-firms",
-    "/ai-revenue-growth-ecommerce",
-    "/ai-revenue-growth-restaurants",
     // Old SEO-era blog posts intentionally noindexed (thin/off-brand content)
     "/content-marketing-seo-guide",
     "/local-business-digital-marketing",

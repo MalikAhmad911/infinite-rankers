@@ -5,6 +5,7 @@ import viteConfig from "../vite.config";
 import fs from "fs";
 import path from "path";
 import { nanoid } from "nanoid";
+import { injectSEO } from "./seo";
 
 const viteLogger = createLogger();
 
@@ -59,7 +60,8 @@ export async function setupVite(server: Server, app: Express) {
       } catch (ssrErr) {
         console.warn("SSR render failed in dev, falling back to CSR:", ssrErr);
       }
-      const html = template.replace("<!--ssr-outlet-->", appHtml);
+      let html = template.replace("<!--ssr-outlet-->", appHtml);
+      html = injectSEO(html, url);
       res.status(statusCode).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);

@@ -55,7 +55,7 @@ const BLOG_POST_SLUGS = [
 
 // All AI Revenue Systems landing pages — location, industry, service, and problem-focused search traffic.
 const LANDING_PAGE_SLUGS = [
-  // Location pages
+  // Location / geo-targeted pages
   "ai-automation-new-york", "ai-automation-los-angeles", "ai-automation-chicago",
   "ai-automation-agency-usa", "ai-automation-agency-texas", "ai-automation-agency-california",
   "ai-automation-agency-florida",
@@ -83,12 +83,39 @@ const LANDING_PAGE_SLUGS = [
   "automate-front-desk-workflows", "improve-lead-response-time",
   // AI agency positioning pages
   "b2b-lead-generation", "automation-agency",
-  // Competitor comparison pages
-  "podium-alternative", "podium-alternative-for-home-services", "podium-vs-custom-ai-system",
-  "best-ai-automation-agency-for-local-businesses",
-  // New keyword-targeted service pages
+  // Keyword-targeted service pages
   "ai-voice-agent", "ai-appointment-setter", "ai-answering-service", "ai-for-small-business",
   "ai-workflow-automation", "ai-for-business", "pipeline-automation", "ai-for-sales",
+  "ai-for-local-business", "ai-for-dental-practice", "ai-for-home-services",
+  "ai-receptionist-for-small-business", "ai-lead-generation-for-local-business",
+  "ai-chatbot-for-local-business", "ai-appointment-booking-software",
+  // Review management pages
+  "google-review-software", "get-more-google-reviews", "automated-review-requests",
+  "review-management-software", "reputation-management-for-small-business",
+  "reputation-management-platform", "google-review-management-tool",
+  "review-request-software", "local-business-reputation-management",
+  // SMS / texting pages
+  "business-texting-software", "text-message-marketing-for-small-business",
+  "two-way-text-messaging-for-business", "automated-text-messages-for-business",
+  "sms-marketing-platform", "automated-customer-texting", "sms-customer-follow-up",
+  // Industry verticals (new batch)
+  "hvac-marketing-automation", "plumber-marketing-software",
+  // Pain points / intent pages
+  "customer-retention-ai",
+  // Competitor comparison pages — core
+  "podium-alternative", "podium-alternative-for-home-services", "podium-vs-custom-ai-system",
+  "best-ai-automation-agency-for-local-businesses",
+  // Podium alternative — location-specific
+  "podium-alternative-new-york", "podium-alternative-texas", "podium-alternative-florida",
+  // Podium alternative — vertical-specific
+  "podium-alternative-for-auto-shops", "podium-alternative-for-contractors",
+  "podium-alternative-for-dentists", "podium-alternative-for-hvac",
+  // Podium alternative — intent/price pages
+  "podium-alternative-cheaper", "podium-alternative-no-contract",
+  "podium-pricing-too-expensive", "cancel-podium-contract",
+  "best-podium-alternative-2025", "podium-competitors",
+  // Podium vs competitor pages
+  "podium-vs-birdeye", "podium-vs-reputation-com", "podium-vs-thryv",
 ];
 
 function createEntriesFromPaths(paths: Array<{ path: string; changefreq: string; priority: string }>): SitemapURL[] {
