@@ -1,0 +1,78 @@
+You are an expert SEO developer. Build me a production-ready SEO page system in Next.js with the following strict requirements:
+
+## TECHNICAL SEO REQUIREMENTS
+
+1. Server Side Rendering (SSR) — every page must render fully on server, no client-side content
+2. Unique URL structure — /services/[service]/[location] or /[keyword-slug]
+3. Every page must have unique:
+   - Title tag (max 60 chars)
+   - Meta description (max 160 chars)
+   - H1 tag
+   - First paragraph
+   - Schema markup (LocalBusiness + Service)
+4. No duplicate content — even 1 sentence must not repeat across pages
+5. Canonical tags on every page
+6. robots.txt and sitemap.xml auto-generated
+7. Core Web Vitals optimized — LCP under 2.5s
+8. Mobile first design
+9. No thin pages — minimum 800 words of unique content per page
+10. Internal linking between related pages automatically
+
+## CONTENT REQUIREMENTS
+
+Each page must have:
+- Unique H1 with exact keyword
+- Unique intro paragraph (no templates)
+- 3-5 unique H2 sections with real content
+- Local/industry specific examples and context
+- FAQ section with unique questions per page (Schema marked up)
+- CTA section
+- Trust signals — reviews mention, years experience, results
+
+## GOOGLE TRUST REQUIREMENTS
+
+- E-E-A-T signals on every page (Experience, Expertise, Authority, Trust)
+- Author/company bio section
+- Real statistics and data mentions
+- Case study references
+- No AI-sounding filler content
+- Natural keyword usage — no stuffing
+
+## URL & STRUCTURE
+
+Base domain: infiniterankers.io
+Page types to build:
+- Service pages: /[service-name]
+- Location pages: /digital-marketing-agency-[city]
+- Service + Location: /[service]-[city]
+- Comparison pages: /[competitor]-alternative
+- Problem pages: /how-to-[problem-solution]
+
+## KEYWORD LIST TO BUILD PAGES FOR
+
+[PASTE YOUR KEYWORDS HERE]
+
+## DESIGN REQUIREMENTS
+
+- Clean professional design
+- Fast loading — no heavy animations
+- Trust-building layout — logo, nav, hero, content, FAQ, CTA, footer
+- Each page visually unique layout variation (rotate between 3-4 templates)
+- No two pages look exactly the same
+
+## ANTI-SPAM REQUIREMENTS
+
+- No doorway pages
+- No keyword stuffing
+- No hidden content
+- No cloaking
+- Every page must provide real value to the user
+- Content must read naturally for humans first, SEO second
+
+## DEPLOYMENT
+
+- Deploy on Replit with custom domain support
+- Environment variables for easy content updates
+- Admin panel to add new keywords/pages without code changes
+
+Build this system so I can scale to 500+ pages without Google penalizing me.
