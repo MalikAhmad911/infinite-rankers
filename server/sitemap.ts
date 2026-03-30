@@ -86,6 +86,9 @@ const LANDING_PAGE_SLUGS = [
   // Competitor comparison pages
   "podium-alternative", "podium-alternative-for-home-services", "podium-vs-custom-ai-system",
   "best-ai-automation-agency-for-local-businesses",
+  // New keyword-targeted service pages
+  "ai-voice-agent", "ai-appointment-setter", "ai-answering-service", "ai-for-small-business",
+  "ai-workflow-automation", "ai-for-business", "pipeline-automation", "ai-for-sales",
 ];
 
 function createEntriesFromPaths(paths: Array<{ path: string; changefreq: string; priority: string }>): SitemapURL[] {
