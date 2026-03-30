@@ -28,6 +28,7 @@ import SitemapPage from "@/pages/sitemap-page";
 import AdminDashboard from "@/pages/admin-dashboard";
 import CompetitorAnalysis from "@/pages/competitor-analysis";
 import ROICalculator from "@/pages/roi-calculator";
+import PodiumCompetitiveAnalysis from "@/pages/podium-competitive-analysis";
 import NotFound from "@/pages/not-found";
 import GooglePartnerPage from "@/pages/google-partner-page";
 import { ALL_SERVICES, CASE_STUDIES, INDUSTRY_VERTICALS } from "@/lib/constants";
@@ -61,6 +62,7 @@ function AppRouter() {
       <Route path="/admin/indexing" component={AdminDashboard} />
       <Route path="/competitor-analysis" component={CompetitorAnalysis} />
       <Route path="/roi-calculator" component={ROICalculator} />
+      <Route path="/competitive-analysis/podium" component={PodiumCompetitiveAnalysis} />
       <Route path="/:slug">{(params) => <SmartPage params={params} />}</Route>
       <Route component={NotFound} />
     </Switch>
