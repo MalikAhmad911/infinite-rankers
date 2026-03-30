@@ -10,8 +10,10 @@ import {
   SERVICE_CONTENT,
   SERVICE_VISUAL_THEMES,
   CASE_STUDIES,
+  TESTIMONIALS,
   type ServiceVisualTheme,
 } from "@/lib/constants";
+import TestimonialsMarquee from "@/components/testimonials-marquee";
 import {
   ArrowRight, CheckCircle2, ArrowLeft, Zap, ChevronDown,
   Bot, CalendarCheck, Database, Headphones, Star, Code, TrendingUp,
@@ -573,7 +575,15 @@ export default function ServicePillarPage() {
         </section>
       )}
 
-      {/* ── Section 7: Related Systems ───────────────────────────────── */}
+      {/* ── Section 7: Testimonials ─────────────────────────────────── */}
+      <TestimonialsMarquee
+        testimonials={TESTIMONIALS}
+        label="Client Proof"
+        title="Results-Led Testimonials"
+        description="Real outcomes from businesses powered by our AI Revenue Systems."
+      />
+
+      {/* ── Section 8: Related Systems ───────────────────────────────── */}
       <section className="py-12 sm:py-16 bg-gradient-to-b from-gray-50/60 to-white border-t border-gray-100" data-testid="section-related">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-5">Also in the AI Revenue System Stack</p>

@@ -18,6 +18,7 @@ import {
   Calendar, Heart, Briefcase, ChevronDown, Quote,
 } from "lucide-react";
 import { useState } from "react";
+import TestimonialsMarquee from "@/components/testimonials-marquee";
 import NotFound from "@/pages/not-found";
 import { LiveServiceWidget } from "@/components/live-service-widget";
 
@@ -483,34 +484,17 @@ export default function LandingPage({ slug }: { slug?: string }) {
       </section>
 
       {/* Section 8: Testimonials */}
-      <section className="py-16 sm:py-20 lg:py-24" data-testid="section-testimonials">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader label="Testimonials" title="What Our Clients Say" description="Real feedback from businesses using our AI automation systems." />
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {page.testimonials.map((test, i) => (
-              <GlassCard key={i} delay={i * 0.1}>
-                <div className="flex gap-0.5 mb-3">
-                  {Array.from({ length: test.rating }).map((_, j) => (
-                    <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-sm text-gray-700 leading-relaxed mb-4 italic" data-testid={`testimonial-quote-${i}`}>
-                  "{test.quote}"
-                </p>
-                <div className="flex items-center gap-3 pt-3 border-t border-gray-200/60">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold">
-                    {test.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">{test.name}</div>
-                    <div className="text-xs text-gray-500">{test.role}, {test.company}</div>
-                  </div>
-                </div>
-              </GlassCard>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialsMarquee
+        testimonials={page.testimonials.map((t) => ({
+          name: t.name,
+          role: `${t.role}, ${t.company}`,
+          text: t.quote,
+          rating: t.rating,
+        }))}
+        label="Testimonials"
+        title="What Our Clients Say"
+        description="Real feedback from businesses using our AI automation systems."
+      />
 
       {/* Section 9: FAQ */}
       <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50/60 to-white" data-testid="section-faq">

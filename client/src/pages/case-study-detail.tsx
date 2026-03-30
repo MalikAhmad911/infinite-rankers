@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
-import { CASE_STUDIES, ALL_SERVICES } from "@/lib/constants";
+import { CASE_STUDIES, ALL_SERVICES, TESTIMONIALS } from "@/lib/constants";
 import { ArrowRight, ArrowLeft, CheckCircle2, Clock, Users, TrendingUp, Zap, Star, Lightbulb, Building2 } from "lucide-react";
+import TestimonialsMarquee from "@/components/testimonials-marquee";
 
 const CASE_STUDY_INDUSTRY_VERTICAL: Record<string, { slug: string; name: string }> = {
   "case-study-dental-practice-revenue-transformation": { slug: "dental-ai", name: "Dental Practices" },
@@ -417,6 +418,13 @@ export default function CaseStudyDetail() {
           </motion.div>
         </div>
       </section>
+
+      <TestimonialsMarquee
+        testimonials={TESTIMONIALS}
+        label="More Client Stories"
+        title="What Our Clients Say"
+        description="Real outcomes from businesses powered by our AI Revenue Systems."
+      />
 
       <section className="py-12 sm:py-16" data-testid="section-case-study-framework-depth">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
