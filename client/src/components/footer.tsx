@@ -1,8 +1,28 @@
 import { Link } from "wouter";
 import { COMPANY } from "@/lib/constants";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
-import { SiLinkedin, SiFacebook, SiInstagram } from "react-icons/si";
+import { SiLinkedin, SiFacebook } from "react-icons/si";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ig-grad" cx="30%" cy="107%" r="150%">
+          <stop offset="0%" stopColor="#ffd879" />
+          <stop offset="20%" stopColor="#f9a849" />
+          <stop offset="40%" stopColor="#f2683c" />
+          <stop offset="60%" stopColor="#e94080" />
+          <stop offset="80%" stopColor="#a044bf" />
+          <stop offset="100%" stopColor="#4168c9" />
+        </radialGradient>
+      </defs>
+      <rect x="2" y="2" width="20" height="20" rx="6" ry="6" fill="url(#ig-grad)" />
+      <circle cx="12" cy="12" r="4.5" stroke="white" strokeWidth="1.8" fill="none" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="white" />
+    </svg>
+  );
+}
 
 const QUICK_LINKS = [
   { href: "/about", label: "About Us" },
@@ -46,16 +66,22 @@ const SOCIAL_LINKS = [
     href: "https://www.linkedin.com/company/infinite-rankers",
     label: "LinkedIn",
     icon: SiLinkedin,
+    color: "#0A66C2",
+    bg: "hover:bg-[#0A66C2]/20 hover:border-[#0A66C2]/40",
   },
   {
     href: "https://web.facebook.com/profile.php?id=61587996643238",
     label: "Facebook",
     icon: SiFacebook,
+    color: "#1877F2",
+    bg: "hover:bg-[#1877F2]/20 hover:border-[#1877F2]/40",
   },
   {
     href: "https://www.instagram.com/infiniterankers",
     label: "Instagram",
-    icon: SiInstagram,
+    icon: null,
+    color: null,
+    bg: "hover:bg-pink-600/20 hover:border-pink-500/40",
   },
 ];
 
@@ -137,9 +163,13 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label={s.label}
                   data-testid={`link-footer-social-${s.label.toLowerCase()}`}
-                  className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 hover:bg-blue-600/30 border border-white/5 hover:border-blue-500/30 text-gray-400 hover:text-blue-400 transition-all duration-200"
+                  className={`flex items-center justify-center w-9 h-9 rounded-xl bg-white/5 border border-white/8 transition-all duration-200 ${s.bg}`}
                 >
-                  <s.icon className="w-4 h-4" />
+                  {s.icon ? (
+                    <s.icon className="w-4 h-4" style={{ color: s.color ?? undefined }} />
+                  ) : (
+                    <InstagramIcon className="w-5 h-5" />
+                  )}
                 </a>
               ))}
             </div>
