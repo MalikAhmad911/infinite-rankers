@@ -174,6 +174,12 @@ function cellSymbol(v: CellVal) {
   if (v === "lose")    return "✗";
   return "–";
 }
+function cellBg(v: CellVal, isIR: boolean) {
+  if (v === "win")     return isIR ? "bg-green-100 text-green-700 font-bold" : "bg-red-50 text-red-600";
+  if (v === "partial") return isIR ? "bg-blue-100 text-blue-700 font-bold" : "bg-yellow-50 text-yellow-700";
+  if (v === "lose")    return "bg-gray-50 text-gray-300";
+  return "bg-gray-50 text-gray-300";
+}
 function cellClass(v: CellVal, isIR: boolean) {
   if (v === "win")     return isIR ? "text-green-600 font-bold" : "text-red-500";
   if (v === "partial") return isIR ? "text-blue-500 font-bold" : "text-yellow-600";
@@ -551,115 +557,183 @@ function generatePDF() {
   doc.save("Infinite-Rankers-Podium-Competitor-Analysis.pdf");
 }
 
-// ─── Web preview ──────────────────────────────────────────────────────────────
+// ─── Web page ─────────────────────────────────────────────────────────────────
 export default function CompetitorAnalysis() {
-  const [generated, setGenerated] = useState(false);
-
-  const handleDownload = () => { generatePDF(); setGenerated(true); };
+  const [pdfDone, setPdfDone] = useState(false);
+  const handleDownload = () => { generatePDF(); setPdfDone(true); };
 
   return (
-    <div className="min-h-screen bg-[#F4F7FB] pb-16">
+    <div className="min-h-screen bg-[#F4F7FB]">
       <SEOHead
-        title="Competitive Analysis Report | InfiniteRankers vs. Podium"
-        description="Confidential competitive analysis: InfiniteRankers vs. Podium — positioning, feature matrix, white space, 90-day action plan, and sales battlecard."
+        title="InfiniteRankers vs. Podium — Competitive Breakdown | Infinite Rankers"
+        description="See exactly how InfiniteRankers beats Podium on AI ownership, pricing, support, and revenue automation — with a full feature matrix, positioning map, and sales battlecard."
         noIndex={true}
       />
 
-      {/* Banner */}
-      <div style={{ background: "linear-gradient(135deg,#0F2B5B 0%,#0B8F8C 100%)" }} className="text-white px-6 py-12">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-xs uppercase tracking-widest text-blue-200 mb-2">INFINITERANKERS.IO — CONFIDENTIAL · Strategy Report · March 2026</p>
-          <h1 className="text-3xl font-bold mb-1">Competitive Analysis Report</h1>
-          <p className="text-lg text-blue-100 mb-1">InfiniteRankers.io vs. Podium.com</p>
-          <p className="text-blue-200 text-sm mb-5">Local Service Business AI Automation · March 2026</p>
-          <button
-            onClick={handleDownload}
-            data-testid="button-download-pdf"
-            className="inline-flex items-center gap-2 bg-white text-[#0F2B5B] font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-50 transition text-sm"
-          >
-            ⬇ Download PDF Report
-          </button>
-          {generated && <p className="mt-2 text-green-300 text-xs">PDF downloaded successfully.</p>}
+      {/* ── HERO ────────────────────────────────────────────────────────────── */}
+      <div style={{ background: "linear-gradient(135deg,#0B1120 0%,#0F2B5B 55%,#0B8F8C 100%)" }} className="text-white pt-14 pb-16 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 80% 40%, rgba(11,143,140,0.18) 0%, transparent 70%)" }} />
+        <div className="max-w-5xl mx-auto relative">
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+            <div>
+              <span className="inline-block text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-3" style={{ background: "rgba(11,143,140,0.25)", color: "#5EEAD4" }}>
+                Competitive Analysis · March 2026 · Confidential
+              </span>
+              <h1 className="text-4xl md:text-5xl font-black leading-tight mb-3">
+                InfiniteRankers<br />
+                <span style={{ color: "#5EEAD4" }}>vs. Podium</span>
+              </h1>
+              <p className="text-blue-100 text-lg max-w-xl leading-relaxed">
+                A full breakdown of why local service businesses are leaving Podium — and choosing custom AI they actually own.
+              </p>
+            </div>
+            <button
+              onClick={handleDownload}
+              data-testid="button-download-pdf"
+              className="flex-shrink-0 inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg border border-white/20 text-white/80 hover:bg-white/10 transition mt-2"
+            >
+              ⬇ Download PDF
+            </button>
+          </div>
+          {pdfDone && <p className="text-green-300 text-xs mb-4">PDF downloaded.</p>}
+
+          {/* Key stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
+            {[
+              { stat: "$500–$800+", label: "Podium true monthly cost", sub: "after add-ons & per-user fees" },
+              { stat: "75+",        label: "G2 support complaints",    sub: "documented since 2023" },
+              { stat: "229+",       label: "Messaging failures",       sub: "G2 reliability issues" },
+              { stat: "0",          label: "IR annual contracts",      sub: "you own everything you build" },
+            ].map((s) => (
+              <div key={s.stat} className="rounded-xl p-4 text-center" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}>
+                <p className="text-3xl font-black" style={{ color: "#5EEAD4" }}>{s.stat}</p>
+                <p className="text-white text-xs font-semibold mt-1">{s.label}</p>
+                <p className="text-blue-300 text-[10px] mt-0.5">{s.sub}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 mt-8 space-y-6">
+      <div className="max-w-5xl mx-auto px-4 py-10 space-y-10">
 
-        {/* Positioning Statement */}
-        <Section title="Positioning Statement (Dunford Format)">
-          <div className="bg-[#F0F4FF] border-l-4 border-[#0F4FBF] px-5 py-4 rounded text-sm text-gray-800 leading-relaxed">
-            For <strong>local service businesses</strong> who are missing leads and wasting money on rigid SaaS contracts, <strong>InfiniteRankers</strong> is a custom AI automation agency that builds done-for-you systems for lead capture, follow-up, booking, and review generation. Unlike <strong>Podium</strong>, InfiniteRankers builds custom AI infrastructure you own — not a monthly subscription to a platform that may not fit your workflow.
+        {/* ── POSITIONING STATEMENT ─────────────────────────────────────────── */}
+        <div className="rounded-2xl overflow-hidden shadow-sm" style={{ border: "1px solid #DBE4F0" }}>
+          <div className="px-6 py-4" style={{ background: "#0F2B5B" }}>
+            <p className="text-xs font-bold tracking-widest uppercase" style={{ color: "#93C5FD" }}>Positioning Statement (Dunford Format)</p>
           </div>
-        </Section>
+          <div className="bg-white px-6 py-6">
+            <p className="text-gray-800 leading-relaxed text-base">
+              For <strong>local service businesses</strong> who are missing leads and wasting money on rigid SaaS contracts,{" "}
+              <strong className="text-[#0F2B5B]">InfiniteRankers</strong> is a custom AI automation agency that builds done-for-you systems
+              for lead capture, follow-up, booking, and review generation. Unlike <strong className="text-red-600">Podium</strong>,
+              InfiniteRankers builds custom AI infrastructure <em>you own</em> — not a monthly subscription to a platform that may not fit your workflow.
+            </p>
+          </div>
+        </div>
 
-        {/* Top 3 Recommendations */}
-        <Section title="Top 3 Strategic Recommendations">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* ── TOP 3 RECOMMENDATIONS ─────────────────────────────────────────── */}
+        <div>
+          <SectionLabel>Top 3 Strategic Recommendations</SectionLabel>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             {[
-              { num: "1", title: "Target Podium's Price-Locked Accounts", detail: "Businesses paying $500–$800+/mo on Podium are your highest-propensity prospect. Lead with total cost of ownership, not feature comparison." },
-              { num: "2", title: "Counter-Position on AI Ownership", detail: "Podium's AI Employee still hallucinates. Promote InfiniteRankers' custom-trained, client-owned AI systems as the antidote — not a black-box SaaS add-on." },
-              { num: "3", title: "Win the Support & Flexibility Story", detail: "With 75+ G2 support complaints and 229+ messaging reliability issues, offer dedicated build teams, transparent workflows, and no annual lock-in." },
+              { num: "01", color: "#0B8F8C", bg: "#F0FDFA", title: "Target Podium's Price-Locked Accounts", detail: "Businesses paying $500–$800+/mo on Podium (after add-ons and per-user fees) are your highest-propensity prospect. Lead every sales conversation with total cost of ownership, not feature comparison." },
+              { num: "02", color: "#7C3AED", bg: "#FAF5FF", title: "Counter-Position on AI Ownership", detail: "Podium's AI Employee still hallucinates and customers detect it immediately. Promote InfiniteRankers' custom-trained, client-owned AI systems as the antidote — not a black-box SaaS add-on." },
+              { num: "03", color: "#0F4FBF", bg: "#EFF6FF", title: "Win the Support & Flexibility Story", detail: "With 75+ G2 mentions of Podium support decline and 229+ messaging reliability complaints, offer dedicated build teams, transparent workflows, and no annual contract lock-in as core differentiators." },
             ].map((r) => (
-              <div key={r.num} className="bg-white rounded-xl border border-blue-100 p-5 shadow-sm">
-                <span className="text-3xl font-black text-[#0B8F8C]">{r.num}</span>
-                <p className="font-bold text-[#0F2B5B] text-sm mt-1 mb-2">{r.title}</p>
+              <div key={r.num} className="rounded-2xl p-6 shadow-sm" style={{ background: r.bg, border: `1.5px solid ${r.color}22` }}>
+                <p className="text-4xl font-black mb-3" style={{ color: r.color }}>{r.num}</p>
+                <p className="font-bold text-[#0F2B5B] text-sm mb-2">{r.title}</p>
                 <p className="text-xs text-gray-600 leading-relaxed">{r.detail}</p>
               </div>
             ))}
           </div>
-        </Section>
+        </div>
 
-        {/* Competitive Landscape */}
-        <Section title="Competitive Landscape Overview">
-          <p className="text-xs text-gray-500 mb-3">The local business communication and reputation management market is dominated by Podium. InfiniteRankers occupies a distinct "done-for-you custom build" category that no SaaS competitor currently serves.</p>
-          <div className="overflow-x-auto">
+        {/* ── PODIUM PAIN POINTS ─────────────────────────────────────────────── */}
+        <div style={{ background: "#0B1120", borderRadius: 20 }} className="px-6 py-8">
+          <p className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: "#F87171" }}>Why Businesses Are Leaving Podium</p>
+          <h2 className="text-2xl font-black text-white mb-6">Podium's Core Vulnerabilities</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { icon: "💸", label: "Pricing Opacity",           color: "#FCA5A5", bg: "rgba(239,68,68,0.1)",  text: "Podium's pricing is 'nearly three times higher than comparable platforms' with opaque fees, annual lock-in, and aggressive renewal tactics. Real cost: $500–$800+/mo after add-ons." },
+              { icon: "🤖", label: "AI That Hallucinates",      color: "#FCD34D", bg: "rgba(245,158,11,0.1)", text: "Podium's AI Employee ('Jerry') is documented to 'send false information even after being corrected and trained multiple times.' Customers detect the AI, eroding trust instantly." },
+              { icon: "📵", label: "229+ Messaging Failures",   color: "#86EFAC", bg: "rgba(34,197,94,0.1)",  text: "Over 229 G2 reviews cite text messages not delivering with no alert sent. Leads fall through the cracks while the platform stays silent." },
+              { icon: "📞", label: "Support in Decline",        color: "#93C5FD", bg: "rgba(59,130,246,0.1)", text: "75+ G2 reviews cite support response time degradation, account managers who disappear after contract signing, and billing disputes going unresolved for months." },
+            ].map((p) => (
+              <div key={p.label} className="rounded-xl p-4 flex gap-4" style={{ background: p.bg, border: `1px solid ${p.color}33` }}>
+                <span className="text-2xl flex-shrink-0">{p.icon}</span>
+                <div>
+                  <p className="font-bold text-sm mb-1" style={{ color: p.color }}>{p.label}</p>
+                  <p className="text-blue-100 text-xs leading-relaxed">{p.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── COMPETITIVE LANDSCAPE ─────────────────────────────────────────── */}
+        <div>
+          <SectionLabel>Competitive Landscape Overview</SectionLabel>
+          <p className="text-sm text-gray-500 mt-1 mb-4">InfiniteRankers occupies a distinct "done-for-you custom build" category no SaaS competitor currently serves.</p>
+          <div className="overflow-x-auto rounded-2xl shadow-sm" style={{ border: "1px solid #DBE4F0" }}>
             <table className="w-full text-xs border-collapse">
               <thead>
-                <tr className="bg-[#0F2B5B] text-white">
+                <tr style={{ background: "#0F2B5B" }} className="text-white">
                   {["Company", "Stage / Scale", "Entry Price", "Strength", "Weakness", "Real Cost"].map(h => (
-                    <th key={h} className="text-left px-3 py-2 font-semibold whitespace-nowrap">{h}</th>
+                    <th key={h} className="text-left px-4 py-3 font-semibold whitespace-nowrap">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {COMPETITORS.map((c, i) => (
-                  <tr
-                    key={c.name}
-                    className={c.ir ? "bg-[#F0FDF4] border border-green-300" : (i % 2 === 0 ? "bg-white" : "bg-[#F4F7FB]")}
-                  >
-                    <td className={`px-3 py-2 font-bold ${c.ir ? "text-[#15A26B]" : "text-[#0F2B5B]"}`}>{c.name}{c.ir ? " ★" : ""}</td>
-                    <td className="px-3 py-2 text-gray-600">{c.stage}</td>
-                    <td className="px-3 py-2 font-semibold text-gray-800 whitespace-nowrap">{c.entry}</td>
-                    <td className="px-3 py-2 text-gray-700">{c.strength}</td>
-                    <td className="px-3 py-2 text-red-600">{c.weakness}</td>
-                    <td className="px-3 py-2 font-semibold text-gray-800 whitespace-nowrap">{c.realCost}</td>
+                  <tr key={c.name} style={c.ir ? { background: "#F0FDF4", borderTop: "2px solid #16A34A", borderBottom: "2px solid #16A34A" } : { background: i % 2 === 0 ? "#fff" : "#F8FAFC" }}>
+                    <td className="px-4 py-3 font-bold whitespace-nowrap" style={{ color: c.ir ? "#15803D" : "#0F2B5B" }}>
+                      {c.ir ? "★ " : ""}{c.name}
+                    </td>
+                    <td className="px-4 py-3 text-gray-500">{c.stage}</td>
+                    <td className="px-4 py-3 font-semibold whitespace-nowrap" style={{ color: c.name === "Podium" ? "#DC2626" : "#374151" }}>{c.entry}</td>
+                    <td className="px-4 py-3 text-gray-600">{c.strength}</td>
+                    <td className="px-4 py-3" style={{ color: c.ir ? "#6B7280" : "#DC2626" }}>{c.weakness}</td>
+                    <td className="px-4 py-3 font-bold whitespace-nowrap" style={{ color: c.name === "Podium" ? "#DC2626" : c.ir ? "#15803D" : "#374151" }}>{c.realCost}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </Section>
+        </div>
 
-        {/* Feature Matrix */}
-        <Section title="Feature Comparison Matrix">
-          <p className="text-xs text-gray-500 mb-3">Weight 1–5 based on buyer conversation frequency. &nbsp;<span className="text-green-600 font-bold">✓ = IR wins</span> &nbsp;<span className="text-blue-500 font-bold">~ = partial</span> &nbsp;<span className="text-red-500">✓ = competitor wins</span> &nbsp;<span className="text-gray-300">✗ / – = loses / N/A</span></p>
-          <div className="overflow-x-auto">
+        {/* ── FEATURE MATRIX ─────────────────────────────────────────────────── */}
+        <div>
+          <SectionLabel>Feature Comparison Matrix</SectionLabel>
+          <div className="flex flex-wrap gap-3 mt-2 mb-4 text-xs">
+            <span className="px-2.5 py-1 rounded-full font-bold bg-green-100 text-green-700">✓ InfiniteRankers wins</span>
+            <span className="px-2.5 py-1 rounded-full font-bold bg-blue-100 text-blue-700">~ Partial</span>
+            <span className="px-2.5 py-1 rounded-full font-bold bg-red-50 text-red-600">✓ Competitor wins</span>
+            <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-400">✗ / – Not offered</span>
+            <span className="ml-auto text-gray-400">Weight = buyer conversation frequency (1–5)</span>
+          </div>
+          <div className="overflow-x-auto rounded-2xl shadow-sm" style={{ border: "1px solid #DBE4F0" }}>
             <table className="w-full text-xs border-collapse">
               <thead>
-                <tr className="bg-[#0F2B5B] text-white">
-                  {["Feature", "Wt", "InfiniteRankers", "Podium", "Birdeye", "GHL", "NiceJob", "Broadly"].map(h => (
-                    <th key={h} className="text-left px-2 py-2 font-semibold whitespace-nowrap">{h}</th>
+                <tr style={{ background: "#0F2B5B" }} className="text-white">
+                  {["Feature", "Wt", "InfiniteRankers", "Podium", "Birdeye", "GHL", "NiceJob", "Broadly"].map((h, i) => (
+                    <th key={h} className={`px-3 py-3 font-semibold whitespace-nowrap ${i >= 2 ? "text-center" : "text-left"}`}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {FEATURES.map((f, i) => (
-                  <tr key={f.feature} className={i % 2 === 0 ? "bg-white" : "bg-[#F4F7FB]"}>
-                    <td className="px-2 py-1.5 font-semibold text-gray-800">{f.feature}</td>
-                    <td className="px-2 py-1.5 text-yellow-700 font-bold">{f.weight}</td>
+                {FEATURES.map((f, ri) => (
+                  <tr key={f.feature} style={{ background: ri % 2 === 0 ? "#fff" : "#F8FAFC" }}>
+                    <td className="px-3 py-2.5 font-semibold text-gray-800">{f.feature}</td>
+                    <td className="px-3 py-2.5 text-center">
+                      <span className="inline-block w-5 h-5 rounded-full text-center text-[10px] font-black leading-5" style={{ background: "#FEF3C7", color: "#92400E" }}>{f.weight}</span>
+                    </td>
                     {([f.ir, f.podium, f.birdeye, f.ghl, f.nicejob, f.broadly] as CellVal[]).map((v, ci) => (
-                      <td key={ci} className={`px-2 py-1.5 text-center font-bold ${cellClass(v, ci === 0)}`}>
-                        {cellSymbol(v)}
+                      <td key={ci} className="px-3 py-2.5 text-center">
+                        <span className={`inline-block px-2 py-0.5 rounded text-xs font-bold ${cellBg(v, ci === 0)}`}>
+                          {cellSymbol(v)}
+                        </span>
                       </td>
                     ))}
                   </tr>
@@ -667,144 +741,178 @@ export default function CompetitorAnalysis() {
               </tbody>
             </table>
           </div>
-        </Section>
+        </div>
 
-        {/* Positioning Map */}
-        <Section title="Positioning Map — Price vs. AI Customization">
-          <p className="text-xs text-gray-500 mb-4">Axes: (1) Pricing Transparency &amp; Flexibility — opaque/expensive → transparent/affordable. (2) AI Customization &amp; Ownership — generic black-box SaaS → fully custom, client-owned AI systems.</p>
-          <div className="relative bg-gray-50 rounded-xl border border-gray-200 overflow-hidden" style={{ height: 320 }}>
-            {/* Quadrants */}
+        {/* ── POSITIONING MAP ────────────────────────────────────────────────── */}
+        <div>
+          <SectionLabel>Positioning Map — Price vs. AI Customization</SectionLabel>
+          <p className="text-sm text-gray-500 mt-1 mb-4">The two axes buyers care about most: pricing transparency vs. AI customization & ownership.</p>
+          <div className="relative rounded-2xl overflow-hidden shadow-sm" style={{ height: 380, border: "1px solid #DBE4F0" }}>
             <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
-              <div className="bg-red-50 border-r border-b border-gray-200 flex items-start justify-start p-3">
-                <span className="text-xs text-gray-400 font-medium">Generic + Expensive</span>
+              <div className="flex flex-col items-start justify-start p-4" style={{ background: "#FEF2F2", borderRight: "1.5px dashed #FCA5A5", borderBottom: "1.5px dashed #FCA5A5" }}>
+                <span className="text-xs font-bold text-red-400">EXPENSIVE + GENERIC AI</span>
+                <span className="text-[10px] text-red-300 mt-1">Podium's problem zone</span>
               </div>
-              <div className="bg-yellow-50 border-b border-gray-200 flex items-start justify-start p-3">
-                <span className="text-xs text-gray-400 font-medium">Generic + Affordable</span>
+              <div className="flex flex-col items-start justify-start p-4" style={{ background: "#FFFBEB", borderBottom: "1.5px dashed #FCD34D" }}>
+                <span className="text-xs font-bold text-yellow-600">AFFORDABLE + GENERIC AI</span>
+                <span className="text-[10px] text-yellow-500 mt-1">DIY / self-serve tools</span>
               </div>
-              <div className="bg-blue-50 border-r border-gray-200 flex items-start justify-start p-3">
-                <span className="text-xs text-gray-400 font-medium">Custom + Expensive</span>
+              <div className="flex flex-col items-start justify-start p-4" style={{ background: "#EFF6FF", borderRight: "1.5px dashed #BFDBFE" }}>
+                <span className="text-xs font-bold text-blue-500">EXPENSIVE + CUSTOM AI</span>
+                <span className="text-[10px] text-blue-400 mt-1">Enterprise AI agencies</span>
               </div>
-              <div className="bg-green-50 flex items-start justify-start p-3">
-                <span className="text-xs text-green-700 font-bold">★ WHITE SPACE (Custom + Affordable)</span>
+              <div className="flex flex-col items-start justify-start p-4" style={{ background: "#F0FDF4" }}>
+                <span className="text-xs font-bold text-green-700">★ WHITE SPACE</span>
+                <span className="text-[10px] text-green-600 mt-1">Custom AI + Affordable</span>
               </div>
             </div>
+
             {/* Axis labels */}
-            <div className="absolute top-1/2 left-0 right-0 flex justify-between px-4 -translate-y-3 z-10">
-              <span className="text-[10px] font-bold text-gray-500 bg-white px-1 rounded">HIGH PRICE / OPAQUE</span>
-              <span className="text-[10px] font-bold text-gray-500 bg-white px-1 rounded">LOW PRICE / TRANSPARENT</span>
+            <div className="absolute inset-0 flex items-center justify-between px-5 z-10 pointer-events-none">
+              <span className="text-[10px] font-black text-gray-500 bg-white px-2 py-0.5 rounded shadow-sm border border-gray-200">← HIGH PRICE / OPAQUE</span>
+              <span className="text-[10px] font-black text-gray-500 bg-white px-2 py-0.5 rounded shadow-sm border border-gray-200">LOW PRICE / TRANSPARENT →</span>
             </div>
-            <div className="absolute left-1/2 top-0 bottom-0 flex flex-col justify-between py-4 -translate-x-12 z-10">
-              <span className="text-[10px] font-bold text-gray-500 bg-white px-1 rounded">GENERIC / SAAS AI</span>
-              <span className="text-[10px] font-bold text-gray-500 bg-white px-1 rounded">CUSTOM / OWNED AI</span>
+            <div className="absolute inset-0 flex flex-col items-center justify-between py-5 z-10 pointer-events-none">
+              <span className="text-[10px] font-black text-gray-500 bg-white px-2 py-0.5 rounded shadow-sm border border-gray-200">GENERIC / SAAS AI ↑</span>
+              <span className="text-[10px] font-black text-gray-500 bg-white px-2 py-0.5 rounded shadow-sm border border-gray-200">↓ CUSTOM / OWNED AI</span>
             </div>
-            {/* Competitor dots */}
+
+            {/* Dots */}
             {[
-              { label: "Podium",       left: "15%", top: "22%", ir: false },
-              { label: "Birdeye",      left: "42%", top: "26%", ir: false },
-              { label: "GoHighLevel",  left: "68%", top: "30%", ir: false },
-              { label: "NiceJob",      left: "62%", top: "24%", ir: false },
-              { label: "Broadly",      left: "36%", top: "28%", ir: false },
-              { label: "InfiniteRankers ★", left: "68%", top: "68%", ir: true },
+              { label: "Podium",      left: "14%", top: "18%", ir: false, red: true },
+              { label: "Birdeye",     left: "40%", top: "22%", ir: false },
+              { label: "GoHighLevel", left: "66%", top: "28%", ir: false },
+              { label: "NiceJob",     left: "60%", top: "19%", ir: false },
+              { label: "Broadly",     left: "34%", top: "26%", ir: false },
+              { label: "InfiniteRankers ★", left: "66%", top: "66%", ir: true },
             ].map((p) => (
-              <div key={p.label} className="absolute z-20" style={{ left: p.left, top: p.top }}>
-                <div className={`w-3 h-3 rounded-full border-2 border-white shadow ${p.ir ? "bg-green-500" : "bg-blue-600"}`} />
-                <span className={`text-[10px] font-bold ml-1 whitespace-nowrap ${p.ir ? "text-green-700" : "text-[#0F2B5B]"}`}>{p.label}</span>
+              <div key={p.label} className="absolute z-20 flex items-center gap-1.5" style={{ left: p.left, top: p.top }}>
+                <div className="rounded-full border-2 border-white shadow-md" style={{ width: p.ir ? 14 : 10, height: p.ir ? 14 : 10, background: p.ir ? "#16A34A" : p.red ? "#DC2626" : "#2563EB" }} />
+                <span className="text-[11px] font-bold whitespace-nowrap px-1.5 py-0.5 rounded" style={{ background: p.ir ? "#F0FDF4" : "rgba(255,255,255,0.85)", color: p.ir ? "#15803D" : p.red ? "#DC2626" : "#1E3A8A", border: p.ir ? "1px solid #86EFAC" : "1px solid #E5E7EB" }}>
+                  {p.label}
+                </span>
               </div>
             ))}
           </div>
-          <div className="mt-3 bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-xs text-green-800">
-            <strong>InfiniteRankers Positioning Insight:</strong> InfiniteRankers occupies the upper-left quadrant — the only player combining genuinely custom AI (client-owned, trained on their data, no hallucination) with transparent pricing and no annual contract. Podium sits in the expensive + generic AI quadrant, which is where its review complaints concentrate.
+          <div className="mt-3 rounded-xl px-5 py-4 text-sm" style={{ background: "#F0FDF4", border: "1px solid #86EFAC" }}>
+            <strong className="text-green-800">InfiniteRankers occupies the white-space quadrant</strong>
+            <span className="text-green-700"> — the only player combining genuinely custom AI (client-owned, trained on their data, no hallucination) with transparent pricing and no annual contract. No SaaS competitor operates here.</span>
           </div>
-        </Section>
+        </div>
 
-        {/* White Space */}
-        <Section title="White Space & Strategic Opportunities">
-          <div className="space-y-4">
-            {WHITESPACE.map((op) => (
-              <div key={op.gap} className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-                <div className="flex items-start gap-3 mb-2">
-                  <div className="flex-1">
-                    <h3 className="font-bold text-[#0F2B5B] text-base">{op.gap}</h3>
-                    <div className="flex gap-2 mt-1">
-                      <span className="text-xs px-2 py-0.5 rounded-full font-bold bg-blue-100 text-blue-700">{op.label}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${op.kano === "Delighter" ? "bg-green-100 text-green-700" : "bg-purple-100 text-purple-700"}`}>
-                        Kano: {op.kano}
-                      </span>
+        {/* ── WHITE SPACE & OPPORTUNITIES ──────────────────────────────────── */}
+        <div>
+          <SectionLabel>White Space & Strategic Opportunities</SectionLabel>
+          <p className="text-sm text-gray-500 mt-1 mb-5">Gaps where Podium's structural weaknesses align with InfiniteRankers' unique capabilities.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {WHITESPACE.map((op, i) => {
+              const colors = [
+                { border: "#FCA5A5", bg: "#FFF5F5", badge: "#FEE2E2", badgeText: "#991B1B", icon: "💰" },
+                { border: "#86EFAC", bg: "#F0FDF4", badge: "#DCFCE7", badgeText: "#166534", icon: "🤖" },
+                { border: "#93C5FD", bg: "#EFF6FF", badge: "#DBEAFE", badgeText: "#1E40AF", icon: "🔧" },
+                { border: "#C4B5FD", bg: "#FAF5FF", badge: "#EDE9FE", badgeText: "#6D28D9", icon: "🔒" },
+              ][i];
+              return (
+                <div key={op.gap} className="rounded-2xl p-5 shadow-sm" style={{ background: colors.bg, border: `1.5px solid ${colors.border}` }}>
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl flex-shrink-0">{colors.icon}</span>
+                    <div>
+                      <h3 className="font-bold text-[#0F2B5B] text-sm leading-tight">{op.gap}</h3>
+                      <div className="flex gap-2 mt-1.5">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ background: colors.badge, color: colors.badgeText }}>{op.label}</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-bold" style={{ background: op.kano === "Delighter" ? "#DCFCE7" : "#E0E7FF", color: op.kano === "Delighter" ? "#166534" : "#3730A3" }}>
+                          Kano: {op.kano}
+                        </span>
+                      </div>
                     </div>
                   </div>
+                  <p className="text-xs text-gray-700 leading-relaxed mb-2">{op.detail}</p>
+                  <p className="text-[10px] text-gray-400 italic">Evidence: {op.evidence}</p>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed mb-2">{op.detail}</p>
-                <p className="text-xs text-gray-400 italic">Evidence: {op.evidence}</p>
+              );
+            })}
+          </div>
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-3">
+            {[
+              { label: "Basic (Table Stakes)", color: "#374151", bg: "#F9FAFB", border: "#E5E7EB", text: "Review generation, unified inbox, CRM, payments. Losing here disqualifies — but winning here doesn't differentiate." },
+              { label: "Performance (More = Better)", color: "#1D4ED8", bg: "#EFF6FF", border: "#BFDBFE", text: "Pricing transparency, messaging reliability, support responsiveness. Podium is actively failing here. Exploit today." },
+              { label: "Delighter (Unexpected Win)", color: "#15803D", bg: "#F0FDF4", border: "#86EFAC", text: "Custom-owned AI, zero hallucination guarantee, system ownership on exit. No SaaS competitor offers this." },
+            ].map((k) => (
+              <div key={k.label} className="rounded-xl px-4 py-3 text-xs" style={{ background: k.bg, border: `1px solid ${k.border}` }}>
+                <p className="font-bold mb-1" style={{ color: k.color }}>{k.label}</p>
+                <p className="text-gray-600 leading-relaxed">{k.text}</p>
               </div>
             ))}
           </div>
-          <div className="mt-4 bg-[#F4F7FB] rounded-xl p-4 text-xs text-gray-700 space-y-2">
-            <p><strong>Basic (Table Stakes):</strong> Review generation, unified messaging inbox, basic CRM, payment processing. Losing here disqualifies — winning here doesn't differentiate.</p>
-            <p><strong>Performance (More = Better):</strong> Pricing transparency, messaging reliability, support responsiveness. Podium is actively failing here. Exploitable today.</p>
-            <p><strong>Delighter (Unexpected):</strong> Custom-owned AI, zero hallucination guarantee, system ownership on exit. No SaaS competitor offers this. Today's delighter, tomorrow's expectation.</p>
-          </div>
-        </Section>
+        </div>
 
-        {/* 90-Day Action Plan */}
-        <Section title="90-Day Action Plan">
+        {/* ── 90-DAY ACTION PLAN ────────────────────────────────────────────── */}
+        <div style={{ background: "#0B1120", borderRadius: 20 }} className="px-6 py-8">
+          <p className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: "#5EEAD4" }}>Strategy</p>
+          <h2 className="text-2xl font-black text-white mb-6">90-Day Action Plan</h2>
           <div className="space-y-4">
             {ACTIONS.map((a) => (
-              <div key={a.num} className="bg-white rounded-xl border border-blue-100 shadow-sm p-5">
-                <div className="flex items-start gap-4">
-                  <span className="text-3xl font-black text-[#0B8F8C] leading-none">{a.num}</span>
-                  <div>
-                    <h3 className="font-bold text-[#0F2B5B] text-base mb-1">{a.title}</h3>
-                    <p className="text-sm text-gray-700 leading-relaxed">{a.detail}</p>
-                    <p className="text-xs text-gray-400 mt-2">Sources: {a.sources}</p>
-                  </div>
+              <div key={a.num} className="rounded-xl p-5 flex gap-5" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xl font-black" style={{ background: "#0B8F8C", color: "#fff" }}>
+                  {a.num}
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-base mb-1">{a.title}</h3>
+                  <p className="text-blue-200 text-sm leading-relaxed">{a.detail}</p>
+                  <p className="text-blue-400 text-[10px] mt-2">Sources: {a.sources}</p>
                 </div>
               </div>
             ))}
           </div>
-        </Section>
+        </div>
 
-        {/* Battlecard */}
-        <Section title="Sales Battlecard — Trap-Setting Questions">
-          <p className="text-sm text-gray-600 mb-4">Use these questions to expose Podium's key vulnerabilities before the prospect self-identifies. Ask in a consultative tone — they surface pain, not attack. Once the prospect acknowledges the pain, pivot to InfiniteRankers' counter-positioning.</p>
+        {/* ── SALES BATTLECARD ─────────────────────────────────────────────── */}
+        <div>
+          <SectionLabel>Sales Battlecard — Trap-Setting Questions</SectionLabel>
+          <p className="text-sm text-gray-500 mt-1 mb-5">Use these questions in a consultative tone to surface Podium's pain before the prospect self-identifies. Once they acknowledge the pain, pivot to your counter-positioning.</p>
           <div className="space-y-3">
             {BATTLECARD.map((bc) => (
-              <div key={bc.q} className="bg-[#FEFCE8] border-l-4 border-[#CA8A04] rounded-r-xl px-5 py-3 flex gap-3">
-                <span className="font-black text-[#92400E] text-lg leading-none">Q{bc.q}</span>
-                <p className="text-sm text-gray-800 italic leading-relaxed">"{bc.text}"</p>
+              <div key={bc.q} className="rounded-xl flex gap-4 items-start px-5 py-4" style={{ background: "#FFFBEB", border: "1.5px solid #FCD34D" }}>
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black" style={{ background: "#92400E", color: "#FEF3C7" }}>
+                  Q{bc.q}
+                </div>
+                <p className="text-gray-800 text-sm italic leading-relaxed pt-0.5">"{bc.text}"</p>
               </div>
             ))}
           </div>
-        </Section>
+          <div className="mt-4 rounded-xl px-5 py-4 text-xs text-gray-600" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB" }}>
+            <strong className="text-gray-800">How to use:</strong> Ask all 5 before mentioning Podium. Let the prospect self-identify their pain. When they do, respond: "That's actually one of the top reasons businesses come to us — here's what we do differently."
+          </div>
+        </div>
 
-        {/* Sources */}
-        <Section title="Sources & Citations">
-          <p className="text-xs text-gray-500 mb-4">All claims supported by publicly available sources as of March 2026.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        {/* ── SOURCES ──────────────────────────────────────────────────────── */}
+        <div>
+          <SectionLabel>Sources & Citations</SectionLabel>
+          <p className="text-sm text-gray-500 mt-1 mb-4">All claims are supported by publicly available sources as of March 2026.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {SOURCES.map((s) => (
-              <div key={s.num} className="flex gap-2 text-xs">
-                <span className="font-bold text-[#0F2B5B] min-w-[28px]">[{s.num}]</span>
+              <div key={s.num} className="flex gap-3 rounded-xl px-4 py-3 text-xs" style={{ background: "#F8FAFC", border: "1px solid #E5E7EB" }}>
+                <span className="font-black text-[#0B8F8C] min-w-[28px]">[{s.num}]</span>
                 <div>
                   <p className="font-semibold text-gray-700">{s.label}</p>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline break-all">{s.url}</a>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline break-all">{s.url}</a>
                 </div>
               </div>
             ))}
           </div>
-          <div className="mt-4 bg-[#F4F7FB] rounded-lg px-4 py-3 text-xs text-gray-600">
-            This report was prepared for strategic sales and positioning use. The data represents publicly available information as of March 2026. For questions or a custom competitive analysis, contact InfiniteRankers.io.
-          </div>
-        </Section>
+          <p className="text-[10px] text-gray-400 mt-4 text-center">This report was prepared for strategic sales and positioning use. Data represents publicly available information as of March 2026. · InfiniteRankers.io</p>
+        </div>
 
       </div>
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-2xl border border-blue-50 shadow-sm p-6">
-      <h2 className="text-xl font-bold text-[#0F2B5B] border-b-2 border-[#0B8F8C] pb-2 mb-4">{title}</h2>
-      {children}
+    <div className="flex items-center gap-3">
+      <h2 className="text-xl font-black text-[#0F2B5B]">{children}</h2>
+      <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg,#0B8F8C,transparent)" }} />
     </div>
   );
 }
