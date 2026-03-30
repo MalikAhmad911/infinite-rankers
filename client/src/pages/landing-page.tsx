@@ -70,36 +70,138 @@ function buildLandingNarrative(page: any) {
   const painLine = page.painPoints.points.slice(0, 3).map((p: any) => p.title).join(", ");
   const capabilityLine = page.aiSystem.capabilities.slice(0, 4).map((c: any) => c.title).join(", ");
   const featureLine = page.features.items.slice(0, 4).map((f: any) => f.title).join(", ");
-  const pipelineLine = page.pipeline.steps.map((s: any) => s.title).join(" -> ");
+  const pipelineLine = page.pipeline.steps.map((s: any) => s.title).join(" → ");
   const faqLine = page.faqs.slice(0, 2).map((f: any) => f.q).join(" | ");
   const resultLine = page.results.cases.slice(0, 2).map((c: any) => `${c.business} (${c.industry})`).join(" and ");
+  const firstCase = page.results.cases[0];
+  const firstPain = page.painPoints.points[0];
+  
+  
   const hash = Array.from(page.slug as string).reduce((acc: number, ch: string) => acc + ch.charCodeAt(0), 0);
+  const variant = hash % 3;
 
-  const narrativeModes = [
-    "commercial-intent capture and conversion velocity",
-    "qualified pipeline growth with strict attribution visibility",
-    "scalable acquisition and lifecycle automation",
-    "high-trust demand generation with operational discipline",
-    "precision revenue acceleration across every buyer touchpoint",
-    "full-funnel optimization where every lead is tracked to its revenue outcome",
-    "compounding growth through intelligent automation and rapid iteration",
-    "systematic conversion uplift built on behavioral data and response timing",
-    "outcome-driven pipeline expansion without proportional headcount increases",
-    "market-share capture through speed, precision, and AI-powered engagement",
-    "deliberate authority positioning combined with relentless conversion execution",
-    "demand capture and qualification engineered for predictable monthly revenue",
-  ];
-  const selectedMode = narrativeModes[hash % narrativeModes.length];
+  const pageType: string = page.type || "service";
 
-  return [
-    `${page.hero.title} ${page.hero.titleHighlight} is built for ${selectedMode}. The objective is not only to increase traffic, but to convert high-intent demand into revenue through a systemized workflow. In competitive markets, this distinction matters because most brands publish surface-level pages that describe services without solving operational conversion gaps.`,
-    `Our analysis for this page highlights the most common blockers: ${painLine}. These constraints affect both enterprise operators and local businesses. The difference is usually execution quality and response speed. If inquiries are not handled with urgency and context, even strong visibility fails to produce stable sales outcomes.`,
-    `The operating layer is powered by capabilities such as ${capabilityLine}. Each capability is configured as part of one connected conversion environment. This avoids channel fragmentation and makes it easier for leadership teams to understand what is driving qualified opportunities versus low-intent volume.`,
-    `Implementation follows a deliberate sequence: ${pipelineLine}. This sequence protects performance while introducing automation. It also reduces deployment risk by forcing clear checkpoints for quality assurance, script performance, and handoff consistency between marketing and sales functions.`,
-    `From an execution standpoint, features like ${featureLine} are designed to improve close velocity and reduce lead waste. Instead of adding complexity, they remove repetitive manual work and create a repeatable model teams can scale across regions, segments, or service lines.`,
-    `Evidence from engagements such as ${resultLine} shows that predictable growth is possible when strategy and operations are aligned. That alignment is what converts campaign activity into measurable pipeline, booked appointments, and downstream revenue impact.`,
-    `This page also addresses decision-stage questions prospects actually ask, including: ${faqLine}. By solving intent-level concerns directly on-page, we increase trust, reduce ambiguity, and strengthen both SEO relevance and conversion readiness at the same time.`
+  if (pageType === "location") {
+    const locationName = page.hero.titleHighlight || "your area";
+    const locationVariants = [
+      [
+        `Every market has its own pace — and ${locationName} is no exception. Businesses competing for attention here face ${firstPain?.title || painLine} alongside rising customer expectations and shrinking margins for error. The window to capture a qualified lead and turn it into booked revenue is shorter than most owners realize.`,
+        `Infinite Rankers builds AI Revenue Systems specifically calibrated for local market dynamics. Instead of generic automation, our systems account for local search behavior, response timing patterns, and industry-specific buyer intent signals. The result is a pipeline that grows without proportional headcount increases.`,
+        `The system activates through a staged deployment: ${pipelineLine}. Each stage is validated before the next begins — protecting your existing customer relationships while introducing new automation layers. Most ${locationName} clients see qualified lead volume increase within the first 30 days of go-live.`,
+        `Core capabilities powering the system include ${capabilityLine}. These are not disconnected point solutions — they operate as one coordinated revenue engine. When a lead enters from any source, every subsequent touchpoint is automated, tracked, and attributed to real business outcomes.`,
+        `Businesses like ${resultLine} have used this system to capture market share in competitive local environments. Their results reflect what happens when speed and consistency are engineered into the lead management process rather than left to individual effort.`,
+        `Common questions from ${locationName} business owners cover: ${faqLine}. These questions get answered directly on this page because informed buyers convert faster and stay longer. Clarity at the decision stage is not just good content — it is a conversion asset.`,
+      ],
+      [
+        `${locationName} businesses are leaving revenue on the table every time an after-hours lead goes unanswered or a follow-up sequence stalls. The data is clear: the first business to respond with context and competence wins the deal. Speed alone is not enough — you need speed plus qualification plus booking, all running automatically.`,
+        `Three critical gaps we see consistently in ${locationName}: ${painLine}. Each gap represents a revenue leak. Individually they are manageable. Combined, they compound into a significant cap on growth — one that more marketing spend cannot fix without first solving the operational layer underneath.`,
+        `What changes when you deploy Infinite Rankers: ${capabilityLine} starts running in the background 24 hours a day. Every lead is captured, scored, and routed. Every follow-up fires on schedule. Every appointment is booked and confirmed. Your team handles conversations and closings — the system handles everything else.`,
+        `Implementation is structured as: ${pipelineLine}. This structure is non-negotiable. Rushing deployment creates performance risk and undermines the trust required for AI-assisted customer communication. We treat launch quality as a prerequisite, not an afterthought.`,
+        `${featureLine} — these features matter because they directly reduce the time between a prospect's first signal and a signed contract. Less friction, faster decisions, higher close rates. That is the formula ${locationName} businesses use to compound revenue without compounding overhead.`,
+        `Before committing, most owners ask: ${faqLine}. These questions reflect real concerns about implementation risk, ROI timeline, and operational fit. We address them here so that your evaluation is based on complete information rather than assumptions.`,
+      ],
+      [
+        `What separates thriving ${locationName} businesses from those stuck at a revenue plateau is rarely marketing budget — it is execution infrastructure. Without systems that capture, qualify, and convert leads consistently, even the best advertising spend underperforms.`,
+        `The problems that stall growth are predictable: ${painLine}. Each problem has a specific system-level solution. Infinite Rankers does not sell software that requires your team to change behavior — we build infrastructure that changes outcomes while your team keeps operating naturally.`,
+        `Deployed capabilities for this market include ${capabilityLine}. Each is configured specifically for ${locationName} buyer behavior and industry expectations. The configuration process takes the first two weeks of engagement, followed by a monitored launch and iterative performance improvement.`,
+        `The go-live process: ${pipelineLine}. Every business that has followed this sequence has launched with a stable, tested system. No surprises, no ramp period of "let's see what happens." Performance is validated before we consider launch complete.`,
+        `From a feature perspective, ${featureLine} handles the heavy lifting of lead conversion. Each feature was selected because it addresses a documented failure mode in traditional lead management — the kind of failure that costs real appointments and real revenue every week.`,
+        `${resultLine} are among the ${locationName} businesses that have used this system to build predictable pipelines. Their growth is not an accident — it is the output of a process that runs whether or not any single team member is available on a given day.`,
+      ],
+    ];
+    return locationVariants[variant];
+  }
+
+  if (pageType === "industry") {
+    const industryName = page.hero.titleHighlight || "your industry";
+    const industryVariants = [
+      [
+        `${industryName} businesses operate with a specific set of customer expectations, compliance requirements, and competitive dynamics that generic marketing tools simply do not account for. Lead management in this sector requires speed, specificity, and the kind of follow-up discipline that most teams cannot sustain manually.`,
+        `The three operational gaps costing ${industryName} businesses the most revenue right now: ${painLine}. These are not abstract inefficiencies — they translate directly into lost appointments, stalled pipelines, and competitors closing deals that should have been yours.`,
+        `Infinite Rankers builds systems for exactly this situation. Capabilities like ${capabilityLine} are configured around the real workflows of ${industryName} operations. Not templated automation that requires you to adapt your process — purpose-built infrastructure that adapts to yours.`,
+        `Deployment follows a validated sequence: ${pipelineLine}. Each phase includes quality checkpoints designed to protect patient, client, or customer relationships from automation errors. We treat industry-specific context as a core design constraint, not an afterthought.`,
+        `The feature set — ${featureLine} — directly targets the conversion gaps that keep ${industryName} businesses stuck. Each tool was selected based on what the data shows drives the most significant improvement in qualified appointment volume and close rate within this sector.`,
+        `${resultLine} demonstrate that systematic, AI-powered growth is achievable in ${industryName} without overhauling existing operations. The system layers in under your current workflow, not over it.`,
+      ],
+      [
+        `There is a reason top-performing ${industryName} businesses look different from average ones: they treat lead capture and follow-up as engineered systems, not team-dependent tasks. When a qualified prospect reaches out, every second of response delay reduces conversion probability — and most ${industryName} businesses have significant, measurable delays baked into their operations.`,
+        `Five years of ${industryName} client engagements have surfaced the same friction points again and again: ${painLine}. These are the exact problems that cause capable businesses to underperform their actual market opportunity. Solving them is not a talent question — it is an infrastructure question.`,
+        `The AI capabilities we deploy for ${industryName}: ${capabilityLine}. These work together as an integrated system. A prospect who contacts you at 11pm gets an immediate, intelligent response that qualifies their need, answers common questions, and schedules a consultation — all before your team arrives the next morning.`,
+        `System activation: ${pipelineLine}. This sequence is tested across dozens of ${industryName} businesses and refined based on what actually drives faster ROI. The order matters — each stage creates the data and process stability required for the next.`,
+        `${featureLine} are the specific mechanics that close the gap between lead volume and booked revenue. Business owners who have deployed these features consistently report a step-change in appointment rate — not a gradual improvement, but a structural increase that compounds month over month.`,
+        `If you are still evaluating, the questions worth considering first are: ${faqLine}. These reflect the exact concerns that matter most for ${industryName} buyers making a technology decision with real operational implications.`,
+      ],
+      [
+        `${industryName} runs on trust — and trust is built through consistent, professional communication from first contact through service delivery. The problem is that most ${industryName} businesses have inconsistent first-contact experiences because they depend on human availability rather than systematic processes.`,
+        `The gap between your current first-contact experience and best-in-class costs you ${painLine}. These are not hypothetical losses. They are measurable in missed appointments, unconverted estimates, and customers who called your competitor because you did not pick up.`,
+        `Infinite Rankers closes this gap using ${capabilityLine}. Each capability is mapped to a specific moment in the ${industryName} customer journey — from first contact through post-service review. The system handles every touchpoint so your team can focus on delivering excellent service rather than managing the surrounding logistics.`,
+        `Implementation sequence: ${pipelineLine}. This is how we consistently deliver live, performing systems in under 30 days for ${industryName} businesses without disrupting their existing operations.`,
+        `The tools — ${featureLine} — generate measurable output: more bookings from the same lead volume, faster response times, higher review ratings, and stronger Google rankings. The improvements are interrelated and compound over time.`,
+        `${resultLine} show what is achievable when these systems run inside ${industryName} operations that are already good at their craft. The AI does not replace expertise — it ensures that expertise gets in front of more qualified buyers.`,
+      ],
+    ];
+    return industryVariants[variant];
+  }
+
+  if (pageType === "comparison") {
+    const competitorName = (page.hero.title || "").split(" vs ")[1] || "legacy platforms";
+    const comparisonVariants = [
+      [
+        `Businesses switching from ${competitorName} to Infinite Rankers are not looking for a different version of the same product. They are looking for something the incumbent cannot deliver: a system that converts leads into revenue instead of a platform that manages contacts and sends requests.`,
+        `The core limitation of ${competitorName} is architectural. It was designed as a communication and review tool, not a revenue system. That means critical capabilities — ${capabilityLine} — are either absent, bolted on, or require separate tools that add cost and complexity.`,
+        `What the switch actually changes: ${painLine} get solved rather than managed. The distinction matters because managing problems requires ongoing human effort. Solving them means the system handles the workload while your team focuses on higher-value work.`,
+        `The implementation path to a fully operational alternative: ${pipelineLine}. Most businesses complete this transition without downtime or contact list disruption. Data migration from ${competitorName} is handled as part of the onboarding process.`,
+        `Features that ${competitorName} lacks or charges extra for — ${featureLine} — are included in a single Infinite Rankers deployment. There is no modular pricing that inflates the total as you add functionality. One system, full capability, one monthly cost.`,
+        `The businesses that have made this switch — including ${resultLine} — report that the decision accelerated revenue in ways their previous platform never could. That outcome is the point. Not feature parity. Revenue.`,
+      ],
+      [
+        `${competitorName} built a business on being first — but first-mover advantages erode when the market matures and buyers start demanding outcomes instead of features. The question businesses are asking now is not "does this platform send review requests?" — it is "does this platform generate measurable revenue?"`,
+        `Side by side, the gaps are significant. ${competitorName} offers contact management and basic automation. Infinite Rankers deploys ${capabilityLine} — a complete revenue infrastructure that captures leads, qualifies them, books appointments, and tracks everything to a revenue outcome.`,
+        `Where ${competitorName} requires manual intervention for: ${painLine} — Infinite Rankers automates every touchpoint. The operational difference is not marginal. It is the difference between a tool your team uses and a system that works without your team.`,
+        `Migration is straightforward: ${pipelineLine}. We have migrated hundreds of businesses off incumbent platforms without service interruption. Your customer data, review history, and contact lists transfer cleanly.`,
+        `Concrete feature advantages: ${featureLine}. Each of these capabilities solves a specific problem that ${competitorName} users report as a friction point in their current workflow. They are not edge cases — they are the daily operation of running a growing service business.`,
+        `Before switching, most businesses ask: ${faqLine}. These are fair questions with clear answers. We answer them here so that your evaluation is complete before you commit to a call.`,
+      ],
+      [
+        `The reason businesses leave ${competitorName} is rarely price. It is capability. Specifically: ${competitorName} does not have an answer to ${painLine}. These are the gaps that accumulate into real revenue loss over time.`,
+        `Infinite Rankers was built to solve exactly what ${competitorName} cannot. ${capabilityLine} are not feature additions — they are the foundation of how the system captures and converts demand that existing platforms let slip through.`,
+        `Functionally, the difference shows up in the numbers: ${resultLine} generated results that were not achievable on their previous platforms. Not because of magic — because of systematic lead capture, qualification, and follow-up that replaced manual processes with reliable automation.`,
+        `The transition process: ${pipelineLine}. This is fast, structured, and low-risk. You will not spend three months in implementation before seeing value. Most businesses are fully live within two weeks of kickoff.`,
+        `The features your ${competitorName} contract does not include — ${featureLine} — are standard in every Infinite Rankers deployment. No add-ons. No tier upgrades required to access the automation that actually moves revenue.`,
+        `If you are actively evaluating this switch, the first questions worth answering are: ${faqLine}. Understanding these answers will make the path forward clear before you spend another month on a platform that cannot get you where you are trying to go.`,
+      ],
+    ];
+    return comparisonVariants[variant];
+  }
+
+  const serviceVariants = [
+    [
+      `${page.hero.title} ${page.hero.titleHighlight} exists to solve a problem that most businesses feel but cannot precisely diagnose: qualified leads are reaching you, but the conversion rate between first contact and closed revenue is lower than it should be. The cause is almost always infrastructure — specifically, the absence of systems that capture, qualify, and follow up with consistency.`,
+      `The three operational constraints that limit growth in this area: ${painLine}. Each constraint has a clear system-level solution. Infinite Rankers does not address these problems with advice or templates — we build the infrastructure that eliminates them from your daily operation.`,
+      `The AI layer powering this system includes ${capabilityLine}. These capabilities work together rather than in isolation. A lead that enters through any channel gets the same intelligent, timely response — whether that channel is your website, a phone call, a missed contact form, or a referral text.`,
+      `System deployment follows: ${pipelineLine}. The sequence is validated across hundreds of business deployments and refined based on what produces the fastest time to measurable revenue improvement. Shortcuts in this process introduce risk — we do not take them.`,
+      `Execution features include ${featureLine}. Each feature was selected because it directly addresses a documented failure mode in traditional lead management. Removing those failure modes has a compounding effect on conversion rate, appointment volume, and revenue consistency.`,
+      `${resultLine} illustrate what becomes possible when these systems are deployed correctly. Their results are not exceptional — they reflect what most service businesses can achieve when lead management is treated as an engineered system rather than a team-dependent activity.`,
+    ],
+    [
+      `Most businesses grow to a point where individual effort can no longer drive the next stage of revenue expansion. The ceiling is not market size or service quality — it is operational throughput. How many leads can your current process handle without degradation in response time, follow-up consistency, or customer experience?`,
+      `The specific bottlenecks we address: ${painLine}. These show up in different ways across different businesses, but the root cause is the same — revenue-critical touchpoints are dependent on human availability rather than systematic execution.`,
+      `Infinite Rankers removes that dependency. Capabilities like ${capabilityLine} run continuously, requiring no supervision after deployment. Every lead is handled. Every follow-up fires. Every appointment is confirmed. The system does not have sick days, training gaps, or capacity limits.`,
+      `The activation process: ${pipelineLine}. Each stage builds the foundation for the next. Businesses that follow this sequence launch with systems that are already calibrated to their specific buyer behavior and service delivery workflow.`,
+      `${featureLine} are the tools that close deals. Not by replacing human judgment — by ensuring human judgment gets applied only when it actually moves the opportunity forward. Everything before that moment is automated, tracked, and optimized.`,
+      `${firstCase?.business || "Client businesses"} and others have used this system to build revenue pipelines that operate independently of any single team member's effort. That kind of operational resilience is what makes growth sustainable rather than exhausting.`,
+    ],
+    [
+      `The gap between marketing activity and revenue outcomes in most businesses is not a demand problem. Businesses generating strong traffic and lead volume still plateau because the conversion infrastructure between first contact and signed contract is unreliable. Fixing that infrastructure is the highest-leverage action available.`,
+      `Three common infrastructure gaps: ${painLine}. Each gap has a compounding effect. A delayed response reduces close probability. A missed follow-up loses a warm prospect. An unbooked callback is revenue that goes directly to a competitor who picked up. These are not hypothetical — they happen daily in most service businesses.`,
+      `The system that closes these gaps operates through ${capabilityLine}. The configuration process maps these capabilities to your specific customer journey — not a generic workflow, but one built around how your actual prospects behave and what they expect at each stage.`,
+      `Implementation path: ${pipelineLine}. This is not a rushed launch — it is a validated deployment that tests each automation layer before it goes live with real customers. The discipline is intentional: one error in a customer-facing automation undermines the trust the entire system depends on.`,
+      `Features like ${featureLine} generate the specific outcomes that matter: more booked appointments from the same lead volume, faster response times, higher review velocity, and compounding improvement in local search rankings. Each outcome feeds the next, creating a growth loop rather than a linear increase.`,
+      `If you are deciding whether to move forward, the questions most commonly asked at this stage are: ${faqLine}. These questions get answered here — not deferred to a sales call — because businesses that make informed decisions become better long-term clients.`,
+    ],
   ];
+  return serviceVariants[variant];
 }
 
 export default function LandingPage({ slug }: { slug?: string }) {

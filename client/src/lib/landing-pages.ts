@@ -8283,8 +8283,8 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "ai-voice-agent",
     "type": "service",
-    "seoTitle": "AI Voice Agent for Business | 24/7 Phone Automation | Infinite Rankers",
-    "seoDescription": "Deploy an AI voice agent that answers calls, qualifies leads, and books appointments 24/7. Never miss another call. Businesses capture 67% more leads with AI voice.",
+    "seoTitle": "AI Voice Agent for Business | 24/7 Phone Auto",
+    "seoDescription": "Deploy an AI voice agent that answers calls, qualifies leads, and books appointments 24/7. Capture 67% more leads. Never miss a call.",
     "seoKeywords": "ai voice agent, ai phone agent, automated voice agent, ai calling agent, voice ai for business",
     "canonical": "https://infiniterankers.io/ai-voice-agent",
     "hero": {
@@ -8619,7 +8619,7 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "ai-appointment-setter",
     "type": "service",
-    "seoTitle": "AI Appointment Setter | Book 3x More Meetings Automatically | Infinite Rankers",
+    "seoTitle": "AI Appointment Setter | Book 3x More Meetings",
     "seoDescription": "AI appointment setter that qualifies leads and fills your calendar 24/7. Clients book 3x more appointments without adding staff. Free demo — see it live.",
     "seoKeywords": "ai appointment setter, ai appointment scheduling, automated appointment setter, ai booking system, ai meeting scheduler",
     "canonical": "https://infiniterankers.io/ai-appointment-setter",
@@ -8955,8 +8955,8 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "ai-answering-service",
     "type": "service",
-    "seoTitle": "AI Answering Service | 24/7 Live Call Handling for Business | Infinite Rankers",
-    "seoDescription": "AI answering service that handles every business call 24/7 — qualifies leads, books appointments, and takes messages. Replace your answering service at 80% less cost.",
+    "seoTitle": "AI Answering Service | 24/7 Business Call Handling",
+    "seoDescription": "AI answering service that handles every business call 24/7 — qualifies leads, books appointments, takes messages. 80% less cost.",
     "seoKeywords": "ai answering service, ai call answering, automated answering service, ai phone answering, 24/7 answering service",
     "canonical": "https://infiniterankers.io/ai-answering-service",
     "hero": {
@@ -9291,8 +9291,8 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "ai-for-small-business",
     "type": "service",
-    "seoTitle": "AI for Small Business | Automate & Grow Without Hiring | Infinite Rankers",
-    "seoDescription": "AI tools built specifically for small businesses — capture more leads, book more appointments, and grow revenue without adding headcount. Starting at $997/month.",
+    "seoTitle": "AI for Small Business | Automate & Grow Revenue",
+    "seoDescription": "AI tools for small businesses — capture more leads, book more appointments, and grow revenue without adding headcount. From $997/month.",
     "seoKeywords": "ai for small business, small business ai tools, ai automation small business, ai business growth, small business automation",
     "canonical": "https://infiniterankers.io/ai-for-small-business",
     "hero": {
@@ -9627,8 +9627,8 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "ai-workflow-automation",
     "type": "service",
-    "seoTitle": "AI Workflow Automation for Business | Save 40+ Hours/Week | Infinite Rankers",
-    "seoDescription": "AI workflow automation that eliminates manual tasks, connects your tools, and runs your business operations on autopilot. Clients save 40+ hours per week. Free audit.",
+    "seoTitle": "AI Workflow Automation | Save 40+ Hours per Week",
+    "seoDescription": "AI workflow automation that eliminates manual tasks and runs operations on autopilot. Clients save 40+ hours per week. Free audit.",
     "seoKeywords": "ai workflow automation, business workflow automation, ai process automation, automated business workflows, ai operations automation",
     "canonical": "https://infiniterankers.io/ai-workflow-automation",
     "hero": {
@@ -9963,8 +9963,8 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "ai-for-business",
     "type": "service",
-    "seoTitle": "AI for Business | Revenue Growth Systems That Work 24/7 | Infinite Rankers",
-    "seoDescription": "AI built for business revenue growth — lead capture, appointment booking, CRM automation, and customer support AI. Used by 70+ USA businesses. Free strategy call.",
+    "seoTitle": "AI for Business | Revenue Growth Systems 24/7",
+    "seoDescription": "AI for business revenue growth — lead capture, appointment booking, CRM automation, and customer support AI. 70+ USA clients. Free call.",
     "seoKeywords": "ai for business, business ai tools, ai business automation, ai revenue growth, ai business solutions usa",
     "canonical": "https://infiniterankers.io/ai-for-business",
     "hero": {
@@ -10300,8 +10300,8 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "pipeline-automation",
     "type": "service",
-    "seoTitle": "Pipeline Automation | Self-Managing Revenue Pipeline | Infinite Rankers",
-    "seoDescription": "AI pipeline automation that moves deals through your CRM automatically — no manual updates, no dropped balls. Clients close 40% more deals with pipeline automation.",
+    "seoTitle": "Pipeline Automation | Self-Managing Revenue System",
+    "seoDescription": "AI pipeline automation that moves deals through your CRM automatically — no manual updates, no dropped balls. Close 40% more deals.",
     "seoKeywords": "pipeline automation, sales pipeline automation, ai pipeline management, crm pipeline automation, automated sales pipeline",
     "canonical": "https://infiniterankers.io/pipeline-automation",
     "hero": {
@@ -10636,7 +10636,7 @@ export const LANDING_PAGES: LandingPageData[] = [
   {
     "slug": "ai-for-sales",
     "type": "service",
-    "seoTitle": "AI for Sales | Close More Deals With Less Effort | Infinite Rankers",
+    "seoTitle": "AI for Sales | Close More Deals Automatically",
     "seoDescription": "AI sales tools that qualify leads, follow up automatically, and help your team close 40% more deals. Trusted by 70+ USA sales teams. Free sales AI audit today.",
     "seoKeywords": "ai for sales, ai sales tools, sales ai, ai sales automation, ai for sales teams",
     "canonical": "https://infiniterankers.io/ai-for-sales",
@@ -11304,8 +11304,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-vs-birdeye",
   "type": "comparison",
-  "seoTitle": "Podium vs Birdeye 2025 | Which Platform Wins? | Infinite Rankers",
-  "seoDescription": "Podium vs Birdeye compared on pricing, features, AI automation, and ROI. See which wins for your business — or why both miss what growing businesses really need.",
+  "seoTitle": "Podium vs Birdeye 2025 | Which Platform Wins?",
+  "seoDescription": "Podium vs Birdeye compared on pricing, features, AI automation, and ROI. See which wins — or why both miss what businesses really need.",
   "seoKeywords": "podium vs birdeye, birdeye vs podium, podium or birdeye, birdeye podium comparison, best reputation management platform",
   "canonical": "https://infiniterankers.io/podium-vs-birdeye",
   "hero": {
@@ -11636,7 +11636,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-pricing-too-expensive",
   "type": "comparison",
-  "seoTitle": "Podium Too Expensive? Better Alternatives That Cost Less | Infinite Rankers",
+  "seoTitle": "Podium Too Expensive? Better AI Alternatives",
   "seoDescription": "Podium pricing starts at $400+/month with forced annual contracts. See what you actually get — and discover better alternatives that deliver more for less.",
   "seoKeywords": "podium pricing too expensive, podium cost, podium pricing, podium alternative cheaper, podium price increase",
   "canonical": "https://infiniterankers.io/podium-pricing-too-expensive",
@@ -11968,7 +11968,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "best-podium-alternative-2025",
   "type": "comparison",
-  "seoTitle": "Best Podium Alternative 2025 | Top AI Revenue Systems | Infinite Rankers",
+  "seoTitle": "Best Podium Alternative 2025 | Top AI Systems",
   "seoDescription": "The best Podium alternatives in 2025 compared: features, pricing, AI automation, and real ROI. Find the platform that replaces Podium and grows your revenue.",
   "seoKeywords": "best podium alternative 2025, top podium alternatives, podium replacement 2025, podium alternative review, switch from podium",
   "canonical": "https://infiniterankers.io/best-podium-alternative-2025",
@@ -12300,7 +12300,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-no-contract",
   "type": "comparison",
-  "seoTitle": "Podium Alternative No Contract | Month-to-Month AI Tools | Infinite Rankers",
+  "seoTitle": "Podium Alternative No Contract | Month-to-Month AI",
   "seoDescription": "Find a Podium alternative with no annual contract. Month-to-month AI review management, texting, and lead automation — cancel anytime with no penalty.",
   "seoKeywords": "podium alternative no contract, podium no contract, cancel podium, podium month to month, podium contract escape",
   "canonical": "https://infiniterankers.io/podium-alternative-no-contract",
@@ -12965,7 +12965,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-cheaper",
   "type": "comparison",
-  "seoTitle": "Cheaper Podium Alternative | More AI, Lower Cost | Infinite Rankers",
+  "seoTitle": "Cheaper Podium Alternative | More AI, Lower Cost",
   "seoDescription": "Podium costs $400+/month with annual contracts. See affordable alternatives that deliver more automation and better ROI at a fraction of Podium's price.",
   "seoKeywords": "podium alternative cheaper, cheaper than podium, podium alternative lower cost, affordable podium alternative, podium price too high",
   "canonical": "https://infiniterankers.io/podium-alternative-cheaper",
@@ -13292,7 +13292,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-for-dentists",
   "type": "comparison",
-  "seoTitle": "Best Podium Alternative for Dentists | Dental AI Review System",
+  "seoTitle": "Best Podium Alternative for Dentists | AI Reviews",
   "seoDescription": "The best Podium alternative for dental practices — AI review automation, patient texting, appointment booking, and reputation management. No annual contract.",
   "seoKeywords": "podium alternative for dentists, dental review software, dental reputation management, dental AI automation, patient texting software",
   "canonical": "https://infiniterankers.io/podium-alternative-for-dentists",
@@ -13619,8 +13619,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-for-auto-shops",
   "type": "comparison",
-  "seoTitle": "Podium Alternative for Auto Shops | AI Review & Booking System",
-  "seoDescription": "The best Podium alternative for auto repair shops — AI review automation, service booking, customer follow-up, and reputation management without annual contracts.",
+  "seoTitle": "Podium Alternative for Auto Shops | AI Reviews",
+  "seoDescription": "Best Podium alternative for auto shops — AI review automation, service booking, customer follow-up, and reputation management. Free demo.",
   "seoKeywords": "podium alternative auto shop, auto repair review software, automotive reputation management, auto shop texting software, car repair AI automation",
   "canonical": "https://infiniterankers.io/podium-alternative-for-auto-shops",
   "hero": {
@@ -13947,7 +13947,7 @@ export const LANDING_PAGES: LandingPageData[] = [
   "slug": "podium-alternative-for-contractors",
   "type": "comparison",
   "seoTitle": "Podium Alternative for Contractors | AI Lead & Review System",
-  "seoDescription": "Best Podium alternative for contractors — AI lead capture, estimate booking, review automation, and follow-up. Stop losing jobs to faster competitors. No contract.",
+  "seoDescription": "Best Podium alternative for contractors — AI lead capture, estimate booking, review automation, and follow-up. No contract. Free demo.",
   "seoKeywords": "podium alternative contractors, contractor review software, contractor lead automation, contractor texting software, home services AI automation",
   "canonical": "https://infiniterankers.io/podium-alternative-for-contractors",
   "hero": {
@@ -14273,8 +14273,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-for-hvac",
   "type": "comparison",
-  "seoTitle": "Best Podium Alternative for HVAC Companies | AI Service Automation",
-  "seoDescription": "Best Podium alternative for HVAC companies — AI dispatch, service booking, review automation, and seasonal campaigns. More jobs booked, better reviews, no contract.",
+  "seoTitle": "Best Podium Alternative for HVAC | AI Automation",
+  "seoDescription": "Best Podium alternative for HVAC — AI dispatch, service booking, review automation, and seasonal campaigns. No contract. Free demo.",
   "seoKeywords": "podium alternative hvac, hvac review software, hvac texting software, hvac lead automation, hvac AI system",
   "canonical": "https://infiniterankers.io/podium-alternative-for-hvac",
   "hero": {
@@ -14600,7 +14600,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "google-review-software",
   "type": "service",
-  "seoTitle": "Google Review Software | AI-Powered Review Generation | Infinite Rankers",
+  "seoTitle": "Google Review Software | AI-Powered Generation",
   "seoDescription": "AI-powered Google review software that generates 5-star reviews automatically. Get 300%+ more Google reviews with our automated review request system.",
   "seoKeywords": "google review software, google review management software, automated google reviews, get more google reviews software",
   "canonical": "https://infiniterankers.io/google-review-software",
@@ -14936,8 +14936,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "get-more-google-reviews",
   "type": "service",
-  "seoTitle": "How to Get More Google Reviews | Automated Review System | Infinite Rankers",
-  "seoDescription": "Get more Google reviews automatically with AI-timed review requests. Our system generates 300%+ more reviews — boosting your local search ranking and star rating.",
+  "seoTitle": "How to Get More Google Reviews | AI Automation",
+  "seoDescription": "Get more Google reviews automatically with AI-timed requests. Generate 300%+ more reviews and boost your local search ranking. Free demo.",
   "seoKeywords": "get more google reviews, how to get more google reviews, increase google reviews, more google reviews",
   "canonical": "https://infiniterankers.io/get-more-google-reviews",
   "hero": {
@@ -15272,7 +15272,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "automated-review-requests",
   "type": "service",
-  "seoTitle": "Automated Review Requests | AI-Powered Review Generation | Infinite Rankers",
+  "seoTitle": "Automated Review Requests | AI Review Generation",
   "seoDescription": "Automated review request system that sends personalized SMS and email requests at the perfect moment — generating 3x more reviews with zero manual effort.",
   "seoKeywords": "automated review requests, automatic review requests, review request automation, automate review requests",
   "canonical": "https://infiniterankers.io/automated-review-requests",
@@ -15608,8 +15608,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "review-management-software",
   "type": "service",
-  "seoTitle": "Review Management Software | AI-Powered Platform | Infinite Rankers",
-  "seoDescription": "AI review management software that generates reviews, monitors all platforms, and helps you respond — all in one dashboard. 4.8+ star ratings for 90% of clients.",
+  "seoTitle": "Review Management Software | AI-Powered Platform",
+  "seoDescription": "AI review management software that generates reviews, monitors all platforms, and helps you respond — one dashboard. 4.8+ stars for 90%.",
   "seoKeywords": "review management software, online review management, reputation management software, review management platform",
   "canonical": "https://infiniterankers.io/review-management-software",
   "hero": {
@@ -15944,8 +15944,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "reputation-management-for-small-business",
   "type": "service",
-  "seoTitle": "Reputation Management for Small Business | AI Review System | Infinite Rankers",
-  "seoDescription": "AI reputation management for small businesses — automate review generation, monitor all platforms, and build a 4.8+ star rating. Trusted by 500+ small businesses.",
+  "seoTitle": "Reputation Management for Small Business | AI Reviews",
+  "seoDescription": "AI reputation management for small businesses — automate reviews, monitor all platforms, build a 4.8+ star rating. 500+ clients.",
   "seoKeywords": "reputation management small business, online reputation management small business, small business review management",
   "canonical": "https://infiniterankers.io/reputation-management-for-small-business",
   "hero": {
@@ -16280,8 +16280,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "reputation-management-platform",
   "type": "service",
-  "seoTitle": "Reputation Management Platform | AI-Powered Review & Rating System | Infinite Rankers",
-  "seoDescription": "Full-featured reputation management platform that generates reviews, monitors all platforms, and tracks revenue impact. Trusted by 70+ USA businesses. Free platform demo.",
+  "seoTitle": "Reputation Management Platform | AI Review System",
+  "seoDescription": "Reputation management platform that generates reviews, monitors all platforms, and tracks revenue impact. Trusted by 70+ USA businesses.",
   "seoKeywords": "reputation management platform, reputation management system, online reputation platform, review management platform",
   "canonical": "https://infiniterankers.io/reputation-management-platform",
   "hero": {
@@ -16616,8 +16616,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "google-review-management-tool",
   "type": "service",
-  "seoTitle": "Google Review Management Tool | Monitor, Generate & Respond | Infinite Rankers",
-  "seoDescription": "The Google review management tool that generates more reviews, monitors in real-time, and helps you respond professionally. 4.8+ star ratings for 90% of clients.",
+  "seoTitle": "Google Review Management Tool | AI-Powered Platform",
+  "seoDescription": "Google review management tool that generates more reviews, monitors in real-time, and helps you respond professionally. 4.8+ star ratings.",
   "seoKeywords": "google review management tool, google review tool, manage google reviews, google reviews tool",
   "canonical": "https://infiniterankers.io/google-review-management-tool",
   "hero": {
@@ -16952,8 +16952,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "review-request-software",
   "type": "service",
-  "seoTitle": "Review Request Software | AI-Automated Review Generation | Infinite Rankers",
-  "seoDescription": "Review request software that sends personalized SMS and email requests automatically — generating 3x more reviews than manual requests. Setup in 24 hours. Free demo.",
+  "seoTitle": "Review Request Software | AI Review Generation",
+  "seoDescription": "Review request software that sends personalized SMS and email requests automatically — 3x more reviews than manual. Setup in 24 hours.",
   "seoKeywords": "review request software, review request tool, automated review requests software, send review requests automatically",
   "canonical": "https://infiniterankers.io/review-request-software",
   "hero": {
@@ -17288,8 +17288,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "local-business-reputation-management",
   "type": "service",
-  "seoTitle": "Local Business Reputation Management | AI Review System | Infinite Rankers",
-  "seoDescription": "AI reputation management for local businesses — generate more reviews, monitor all platforms, and dominate local search. 500+ local business clients. Free reputation audit.",
+  "seoTitle": "Local Business Reputation Management | AI Reviews",
+  "seoDescription": "AI reputation management for local businesses — generate reviews, monitor all platforms, dominate local search. 500+ clients. Free audit.",
   "seoKeywords": "local business reputation management, reputation management local business, local reputation management, online reputation local business",
   "canonical": "https://infiniterankers.io/local-business-reputation-management",
   "hero": {
@@ -17624,7 +17624,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "business-texting-software",
   "type": "service",
-  "seoTitle": "Business Texting Software | AI Two-Way SMS for Local Business | Infinite Rankers",
+  "seoTitle": "Business Texting Software | AI SMS for Local Business",
   "seoDescription": "AI-powered business texting software that handles two-way SMS conversations, automates follow-ups, and books appointments via text. No annual contract.",
   "seoKeywords": "business texting software, business sms software, two way texting for business, business text messaging",
   "canonical": "https://infiniterankers.io/business-texting-software",
@@ -17960,7 +17960,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "text-message-marketing-for-small-business",
   "type": "service",
-  "seoTitle": "Text Message Marketing for Small Business | AI SMS Campaigns | Infinite Rankers",
+  "seoTitle": "Text Message Marketing for Small Business | AI SMS",
   "seoDescription": "Text message marketing for small businesses — AI-powered SMS campaigns with 98% open rates that drive real revenue. No annual contract. Free campaign demo.",
   "seoKeywords": "text message marketing small business, sms marketing small business, text marketing for local business, small business text campaigns",
   "canonical": "https://infiniterankers.io/text-message-marketing-for-small-business",
@@ -18296,7 +18296,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "two-way-text-messaging-for-business",
   "type": "service",
-  "seoTitle": "Two-Way Text Messaging for Business | AI SMS Conversations | Infinite Rankers",
+  "seoTitle": "Two-Way Text Messaging for Business | AI SMS",
   "seoDescription": "Two-way text messaging for business powered by AI — handle customer conversations, qualify leads, and book appointments via SMS automatically. Free demo.",
   "seoKeywords": "two way text messaging for business, two way texting business, business text conversation, two way sms",
   "canonical": "https://infiniterankers.io/two-way-text-messaging-for-business",
@@ -18632,7 +18632,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "automated-text-messages-for-business",
   "type": "service",
-  "seoTitle": "Automated Text Messages for Business | AI SMS Sequences | Infinite Rankers",
+  "seoTitle": "Automated Text Messages for Business | AI SMS",
   "seoDescription": "Automated text messages for business — AI-powered SMS sequences for follow-up, reminders, review requests, and lead nurturing. Set it up once. Free demo.",
   "seoKeywords": "automated text messages for business, automated sms for business, business text automation, automated text messaging",
   "canonical": "https://infiniterankers.io/automated-text-messages-for-business",
@@ -18968,7 +18968,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "sms-marketing-platform",
   "type": "service",
-  "seoTitle": "SMS Marketing Platform | AI-Powered Business SMS | Infinite Rankers",
+  "seoTitle": "SMS Marketing Platform | AI-Powered Business SMS",
   "seoDescription": "AI-powered SMS marketing platform for local businesses — manage campaigns, automate responses, and book appointments via text. 98% open rates. Free demo.",
   "seoKeywords": "sms marketing platform, sms marketing software, text marketing platform, sms marketing tool for business",
   "canonical": "https://infiniterankers.io/sms-marketing-platform",
@@ -19304,8 +19304,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "automated-customer-texting",
   "type": "service",
-  "seoTitle": "Automated Customer Texting | AI SMS for Business | Infinite Rankers",
-  "seoDescription": "Automated customer texting that follows up with every lead, reminds every appointment, and requests every review — automatically. Zero manual effort. Free demo.",
+  "seoTitle": "Automated Customer Texting | AI SMS for Business",
+  "seoDescription": "Automated customer texting that follows up with leads, reminds appointments, and requests reviews automatically. Zero manual effort.",
   "seoKeywords": "automated customer texting, automated customer sms, customer text automation, automatic text messaging customers",
   "canonical": "https://infiniterankers.io/automated-customer-texting",
   "hero": {
@@ -19640,8 +19640,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "sms-customer-follow-up",
   "type": "service",
-  "seoTitle": "SMS Customer Follow-Up | AI Automated Text Follow-Up | Infinite Rankers",
-  "seoDescription": "SMS customer follow-up that never misses a lead — AI sends personalized follow-up texts after estimates, appointments, and services automatically. 3x more conversions.",
+  "seoTitle": "SMS Customer Follow-Up | AI Text Automation",
+  "seoDescription": "SMS customer follow-up — AI sends personalized texts after estimates, appointments, and services automatically. 3x more conversions.",
   "seoKeywords": "sms customer follow-up, text follow up customers, sms follow up system, automated text follow up",
   "canonical": "https://infiniterankers.io/sms-customer-follow-up",
   "hero": {
@@ -19976,8 +19976,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-for-small-business",
   "type": "service",
-  "seoTitle": "AI for Small Business | Automate Leads, Bookings & Reviews | Infinite Rankers",
-  "seoDescription": "AI Revenue Systems for small businesses — automate lead capture, appointment booking, review generation, and customer follow-up. Save 20+ hours/week. Free demo.",
+  "seoTitle": "AI for Small Business | Automate Leads & Bookings",
+  "seoDescription": "AI Revenue Systems for small businesses — automate lead capture, appointment booking, and review generation. Save 20+ hours per week.",
   "seoKeywords": "ai for small business, artificial intelligence small business, ai tools small business, small business ai automation",
   "canonical": "https://infiniterankers.io/ai-for-small-business",
   "hero": {
@@ -20312,8 +20312,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-for-local-business",
   "type": "service",
-  "seoTitle": "AI for Local Business | Revenue Automation System | Infinite Rankers",
-  "seoDescription": "AI Revenue Systems for local businesses — capture more leads, book more appointments, generate more reviews, and outrank competitors on Google. Free local AI audit.",
+  "seoTitle": "AI for Local Business | Revenue Automation",
+  "seoDescription": "AI Revenue Systems for local businesses — capture more leads, book appointments, generate reviews, and outrank competitors. Free audit.",
   "seoKeywords": "ai for local business, ai local business, artificial intelligence local business, local business ai tools",
   "canonical": "https://infiniterankers.io/ai-for-local-business",
   "hero": {
@@ -20648,8 +20648,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-receptionist-for-small-business",
   "type": "service",
-  "seoTitle": "AI Receptionist for Small Business | 24/7 Call Answering | Infinite Rankers",
-  "seoDescription": "AI receptionist for small businesses — answers every call, qualifies every lead, and books every appointment 24/7. No missed calls, no missed revenue. Free demo.",
+  "seoTitle": "AI Receptionist for Small Business | 24/7 Calls",
+  "seoDescription": "AI receptionist for small businesses — answers every call, qualifies leads, and books appointments 24/7. No missed revenue. Free demo.",
   "seoKeywords": "ai receptionist small business, virtual receptionist small business, ai answering service small business, small business receptionist ai",
   "canonical": "https://infiniterankers.io/ai-receptionist-for-small-business",
   "hero": {
@@ -20984,7 +20984,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-lead-generation-for-local-business",
   "type": "service",
-  "seoTitle": "AI Lead Generation for Local Business | Capture More Local Leads | Infinite Rankers",
+  "seoTitle": "AI Lead Generation for Local Business | Infinite Rankers",
   "seoDescription": "AI lead generation for local businesses — capture, qualify, and convert local leads automatically. 24/7 lead coverage across phone, SMS, and web. Free audit.",
   "seoKeywords": "ai lead generation local business, local business lead generation, ai lead capture local, local lead generation ai",
   "canonical": "https://infiniterankers.io/ai-lead-generation-for-local-business",
@@ -21320,8 +21320,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-for-dental-practice",
   "type": "service",
-  "seoTitle": "AI for Dental Practices | Automated Patient Communication | Infinite Rankers",
-  "seoDescription": "AI Revenue Systems for dental practices — automate new patient capture, appointment reminders, post-visit review requests, and patient reactivation. Free dental AI audit.",
+  "seoTitle": "AI for Dental Practices | Automate Patient Comms",
+  "seoDescription": "AI Revenue Systems for dental practices — automate patient capture, appointment reminders, review requests, and reactivation. Free audit.",
   "seoKeywords": "ai for dental practice, dental ai, dental practice ai, ai dental software, dental automation",
   "canonical": "https://infiniterankers.io/ai-for-dental-practice",
   "hero": {
@@ -21656,7 +21656,7 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-appointment-booking-software",
   "type": "service",
-  "seoTitle": "AI Appointment Booking Software | Automate Scheduling | Infinite Rankers",
+  "seoTitle": "AI Appointment Booking Software | Auto-Scheduling",
   "seoDescription": "AI appointment booking software that books appointments through phone and SMS conversations automatically. No more phone tag. 3x more bookings. Free demo.",
   "seoKeywords": "ai appointment booking software, ai booking software, ai appointment scheduling, automated appointment booking",
   "canonical": "https://infiniterankers.io/ai-appointment-booking-software",
@@ -21992,8 +21992,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "improve-lead-response-time",
   "type": "service",
-  "seoTitle": "Improve Lead Response Time | AI Instant Lead Response | Infinite Rankers",
-  "seoDescription": "Improve your lead response time from hours to 30 seconds with AI. Businesses that respond within 5 minutes convert 9x more leads. Start responding instantly. Free demo.",
+  "seoTitle": "Improve Lead Response Time | AI Instant Response",
+  "seoDescription": "Improve lead response time from hours to 30 seconds with AI. Respond in 5 minutes and convert 9x more leads. Start instantly. Free demo.",
   "seoKeywords": "improve lead response time, faster lead response, instant lead response, lead response time, speed to lead",
   "canonical": "https://infiniterankers.io/improve-lead-response-time",
   "hero": {
@@ -22328,8 +22328,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-chatbot-for-local-business",
   "type": "service",
-  "seoTitle": "AI Chatbot for Local Business | 24/7 Website Lead Capture | Infinite Rankers",
-  "seoDescription": "AI chatbot for local businesses — capture website visitors, qualify leads, answer questions, and book appointments 24/7. Convert more visitors into customers. Free demo.",
+  "seoTitle": "AI Chatbot for Local Business | 24/7 Lead Capture",
+  "seoDescription": "AI chatbot for local businesses — capture visitors, qualify leads, answer questions, and book appointments 24/7. Free demo.",
   "seoKeywords": "ai chatbot local business, chatbot for local business, website chatbot small business, ai chat for local business",
   "canonical": "https://infiniterankers.io/ai-chatbot-for-local-business",
   "hero": {
@@ -22664,8 +22664,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "hvac-marketing-automation",
   "type": "service",
-  "seoTitle": "HVAC Marketing Automation | AI Revenue System for HVAC | Infinite Rankers",
-  "seoDescription": "HVAC marketing automation — AI captures every service call, books seasonal maintenance, generates reviews, and dominates local search. Built for HVAC companies. Free demo.",
+  "seoTitle": "HVAC Marketing Automation | AI Revenue System",
+  "seoDescription": "HVAC marketing automation — AI captures service calls, books maintenance, generates reviews, and dominates local search. Free demo.",
   "seoKeywords": "hvac marketing automation, hvac ai, hvac marketing software, hvac lead generation, hvac automation",
   "canonical": "https://infiniterankers.io/hvac-marketing-automation",
   "hero": {
@@ -23000,8 +23000,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "plumber-marketing-software",
   "type": "service",
-  "seoTitle": "Plumber Marketing Software | AI Revenue System for Plumbers | Infinite Rankers",
-  "seoDescription": "Plumber marketing software powered by AI — capture emergency calls 24/7, generate more Google reviews, and dominate local plumbing search. Free plumber marketing demo.",
+  "seoTitle": "Plumber Marketing Software | AI Revenue System",
+  "seoDescription": "Plumber marketing software — AI captures emergency calls 24/7, generates Google reviews, and dominates local plumbing search. Free demo.",
   "seoKeywords": "plumber marketing software, plumber marketing, plumbing lead generation, marketing for plumbers, plumbing marketing automation",
   "canonical": "https://infiniterankers.io/plumber-marketing-software",
   "hero": {
@@ -23336,8 +23336,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "missed-call-text-back",
   "type": "service",
-  "seoTitle": "Missed Call Text Back | AI Instant Text When You Miss a Call | Infinite Rankers",
-  "seoDescription": "Missed call text back service — AI instantly texts back every missed call within 30 seconds, qualifying the lead and booking appointments. Never lose a lead to voicemail again.",
+  "seoTitle": "Missed Call Text Back | AI Auto-Response System",
+  "seoDescription": "Missed call text back — AI texts every missed call within 30 seconds, qualifies the lead, and books appointments. Never lose a lead again.",
   "seoKeywords": "missed call text back, missed call text back service, text back missed calls, automatic text when you miss a call, missed call ai",
   "canonical": "https://infiniterankers.io/missed-call-text-back",
   "hero": {
@@ -23672,8 +23672,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-answering-service",
   "type": "service",
-  "seoTitle": "AI Answering Service | 24/7 Business Call Handling | Infinite Rankers",
-  "seoDescription": "AI answering service for local businesses — answers every call professionally, qualifies every lead, and books every appointment 24/7. No missed calls. No answering service costs.",
+  "seoTitle": "AI Answering Service | 24/7 Business Calls",
+  "seoDescription": "AI answering service for local businesses — answers every call, qualifies leads, and books appointments 24/7. No missed calls. Free demo.",
   "seoKeywords": "ai answering service, virtual answering service, ai call answering, business answering service, automated answering service",
   "canonical": "https://infiniterankers.io/ai-answering-service",
   "hero": {
@@ -24008,8 +24008,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "customer-retention-ai",
   "type": "service",
-  "seoTitle": "Customer Retention AI | Automated Reactivation & Loyalty System | Infinite Rankers",
-  "seoDescription": "Customer retention AI — automated reactivation campaigns, loyalty follow-up, and lapsed customer recovery. Reduce churn and grow revenue from your existing customer base.",
+  "seoTitle": "Customer Retention AI | Reactivation & Loyalty System",
+  "seoDescription": "Customer retention AI — automated reactivation campaigns, loyalty follow-up, and lapsed customer recovery. Reduce churn, grow revenue.",
   "seoKeywords": "customer retention ai, customer retention automation, automated customer retention, reactivation campaigns, reduce customer churn",
   "canonical": "https://infiniterankers.io/customer-retention-ai",
   "hero": {
@@ -24344,8 +24344,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "ai-for-home-services",
   "type": "service",
-  "seoTitle": "AI Revenue System for Home Services | Capture, Book, and Review | Infinite Rankers",
-  "seoDescription": "AI for home services businesses — capture every estimate request, book every job, generate reviews after every service. Built for HVAC, plumbing, roofing, and electrical.",
+  "seoTitle": "AI Revenue System for Home Services | Infinite Rankers",
+  "seoDescription": "AI for home services — capture every estimate, book every job, generate reviews after every service. Built for HVAC, plumbing, roofing.",
   "seoKeywords": "ai for home services, home services marketing automation, home service business ai, ai for contractors, contractor marketing ai",
   "canonical": "https://infiniterankers.io/ai-for-home-services",
   "hero": {
@@ -24680,8 +24680,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-new-york",
   "type": "service",
-  "seoTitle": "Podium Alternative in New York | AI Revenue System | Infinite Rankers",
-  "seoDescription": "Looking for a Podium alternative in New York? Infinite Rankers delivers more features — AI lead capture, two-way SMS, review automation, and no annual contract. Free demo.",
+  "seoTitle": "Podium Alternative in New York | AI System",
+  "seoDescription": "Podium alternative in New York — AI lead capture, two-way SMS, review automation, and no annual contract. More features. Free demo.",
   "seoKeywords": "podium alternative new york, podium competitor new york, business texting software new york, review management new york",
   "canonical": "https://infiniterankers.io/podium-alternative-new-york",
   "hero": {
@@ -25016,8 +25016,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-texas",
   "type": "service",
-  "seoTitle": "Podium Alternative in Texas | AI Revenue System | Infinite Rankers",
-  "seoDescription": "Looking for a Podium alternative in Texas? Infinite Rankers delivers complete AI Revenue Systems — more features, no annual contract, and built for Texas local businesses. Free demo.",
+  "seoTitle": "Podium Alternative in Texas | AI Revenue System",
+  "seoDescription": "Podium alternative in Texas — AI Revenue Systems with more features, no annual contract, built for Texas businesses. Free demo.",
   "seoKeywords": "podium alternative texas, podium competitor texas, business texting software texas, review management texas",
   "canonical": "https://infiniterankers.io/podium-alternative-texas",
   "hero": {
@@ -25352,8 +25352,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-alternative-florida",
   "type": "service",
-  "seoTitle": "Podium Alternative in Florida | AI Revenue System | Infinite Rankers",
-  "seoDescription": "Looking for a Podium alternative in Florida? Infinite Rankers delivers complete AI Revenue Systems for Florida local businesses — more features, no annual contract. Free demo.",
+  "seoTitle": "Podium Alternative in Florida | AI System",
+  "seoDescription": "Podium alternative in Florida — AI Revenue Systems with more features, no annual contract, built for Florida local businesses. Free demo.",
   "seoKeywords": "podium alternative florida, podium competitor florida, business texting software florida, review management florida",
   "canonical": "https://infiniterankers.io/podium-alternative-florida",
   "hero": {
@@ -25688,8 +25688,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-vs-reputation-com",
   "type": "service",
-  "seoTitle": "Podium vs Reputation.com | AI Revenue System Alternative | Infinite Rankers",
-  "seoDescription": "Comparing Podium vs Reputation.com? Infinite Rankers delivers everything both platforms offer — plus AI phone answering, appointment booking, and 24/7 lead capture. No annual contract.",
+  "seoTitle": "Podium vs Reputation.com | Better AI Alternative",
+  "seoDescription": "Comparing Podium vs Reputation.com? Infinite Rankers delivers AI phone answering, booking, and 24/7 lead capture. More features, no contract.",
   "seoKeywords": "podium vs reputation, podium vs reputation.com, reputation.com alternative, podium alternative reputation",
   "canonical": "https://infiniterankers.io/podium-vs-reputation-com",
   "hero": {
@@ -26024,8 +26024,8 @@ export const LANDING_PAGES: LandingPageData[] = [
 {
   "slug": "podium-vs-thryv",
   "type": "service",
-  "seoTitle": "Podium vs Thryv | AI Revenue System Alternative | Infinite Rankers",
-  "seoDescription": "Comparing Podium vs Thryv? Infinite Rankers delivers everything both platforms offer plus AI phone answering, 24/7 lead capture, and no annual contract. Free demo.",
+  "seoTitle": "Podium vs Thryv | Better AI Revenue Alternative",
+  "seoDescription": "Comparing Podium vs Thryv? Infinite Rankers delivers AI phone answering, 24/7 lead capture, and no annual contract. Free demo.",
   "seoKeywords": "podium vs thryv, thryv alternative, podium alternative thryv, thryv vs podium",
   "canonical": "https://infiniterankers.io/podium-vs-thryv",
   "hero": {

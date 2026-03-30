@@ -418,13 +418,13 @@ const STATIC_PAGES: Record<string, SEOMeta> = {
   "/": { title: "Infinite Rankers | AI Revenue Systems Agency USA", description: "Infinite Rankers builds and deploys AI Revenue Systems — lead capture, appointment agents, CRM automation, customer support AI, and custom SaaS tools. Free demo.", canonical: `${BASE}/` },
   "/about": { title: `About Infinite Rankers LLC | AI Revenue Systems Agency USA`, description: "Infinite Rankers LLC is a Delaware-registered AI Revenue Systems Agency. We build and deploy AI-powered lead capture, appointment booking, CRM. Free demo.", canonical: `${BASE}/about` },
   "/services": { title: "7 AI Revenue Systems | Full-Stack Automation Services", description: "Explore Infinite Rankers' 7 AI Revenue Systems: lead capture, appointment agents, CRM automation, customer support AI, reviews & retention, custom. Free demo.", canonical: `${BASE}/services` },
-  "/portfolio": { title: `21 Client Case Studies — Real Proven Results | ${BRAND}`, description: "Real results from real businesses. 21 case studies showing 100-195% revenue growth across healthcare, real estate, law firms & e-commerce. See proof.", canonical: `${BASE}/portfolio` },
-  "/pricing": { title: `Pricing Plans from $1,599/mo | No Hidden Fees | ${BRAND}`, description: "Transparent pricing with no contracts or hidden fees. Growth, Scale & Enterprise plans. Calculate your ROI before you buy. Book a free consultation.", canonical: `${BASE}/pricing` },
+  "/portfolio": { title: `21 Case Studies | Proven Results | ${BRAND}`, description: "Real results from real businesses. 21 case studies showing 100-195% revenue growth across healthcare, real estate, law firms & e-commerce. See proof.", canonical: `${BASE}/portfolio` },
+  "/pricing": { title: `Pricing Plans from $1,599/mo | No Hidden Fees`, description: "Transparent pricing with no contracts or hidden fees. Growth, Scale & Enterprise plans. Calculate your ROI before you buy. Book a free consultation.", canonical: `${BASE}/pricing` },
   "/contact": { title: `Contact Us — Get a Free Strategy Call | ${BRAND}`, description: "Book a free 30-minute strategy call with our AI marketing experts. No pitch — just a custom growth plan. We respond within 1 business hour.", canonical: `${BASE}/contact` },
   "/blog": { title: `AI Marketing & Automation Blog | ${BRAND}`, description: "Actionable insights on AI automation, SEO, Google Ads, lead generation & digital marketing. Updated weekly with tactics that drive real revenue growth.", canonical: `${BASE}/blog` },
   "/book-demo": { title: `Book Your Free 30-Min Strategy Call | ${BRAND}`, description: "See exactly how AI automation can grow your business. Get a custom growth plan, live demo & ROI projection — completely free. Book your slot today.", canonical: `${BASE}/book-demo` },
   "/sitemap": { title: `Sitemap - ${BRAND}`, description: "Browse all pages on infiniterankers.io — AI marketing services, blog posts, case studies, and landing pages.", canonical: `${BASE}/sitemap` },
-  "/roi-calculator": { title: `AI Revenue ROI Calculator — Estimate Your Revenue Uplift | ${BRAND}`, description: "Calculate how much revenue you're losing to missed leads and slow follow-up — and how much AI automation can recover. Free, instant estimate.", canonical: `${BASE}/roi-calculator` },
+  "/roi-calculator": { title: `ROI Calculator | Estimate Revenue Uplift | ${BRAND}`, description: "Calculate how much revenue you're losing to missed leads and slow follow-up — and how much AI automation can recover. Free, instant estimate.", canonical: `${BASE}/roi-calculator` },
   "/content-methodology": { title: `How We Create Content - ${BRAND}`, description: "Learn how Infinite Rankers creates and reviews content using expert research, editorial checks, and responsible AI assistance.", canonical: `${BASE}/content-methodology` },
   "/terms": { title: `Terms of Service - ${BRAND}`, description: "Terms of Service for Infinite Rankers AI Revenue Growth Agency. Read our terms governing use of infiniterankers.io.", canonical: `${BASE}/terms` },
   "/privacy": { title: `Privacy Policy - ${BRAND}`, description: "Privacy Policy for Infinite Rankers. Learn how we collect, use, and protect your data.", canonical: `${BASE}/privacy` },
@@ -921,6 +921,17 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "inLanguage": "en-US",
       "publisher": ORG_SCHEMA
     };
+    const getServiceType = (slug: string): string => {
+      if (slug.startsWith("podium") || slug.includes("birdeye") || slug.includes("reputation-com") || slug.includes("thryv")) return "Business Software Alternative";
+      if (slug.includes("review") || slug.includes("reputation") || slug.includes("google-review")) return "Review Management Service";
+      if (slug.startsWith("sms") || slug.startsWith("text") || slug.includes("texting") || slug.includes("messaging")) return "Business Text Messaging Service";
+      if (slug.includes("ai-receptionist") || slug.includes("ai-answering") || slug.includes("ai-calling")) return "AI Phone Answering Service";
+      if (slug.includes("ai-booking") || slug.includes("appointment") || slug.includes("booking")) return "AI Appointment Booking Service";
+      if (slug.includes("crm") || slug.includes("pipeline")) return "CRM Automation Service";
+      if (slug.includes("lead-generation") || slug.includes("lead-capture")) return "AI Lead Generation Service";
+      if (slug.includes("automation")) return "AI Business Automation Service";
+      return "AI Revenue Systems Service";
+    };
     const serviceSchema = {
       "@context": "https://schema.org",
       "@type": "Service",
@@ -930,7 +941,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "inLanguage": "en-US",
       "provider": ORG_SCHEMA,
       "areaServed": { "@type": "Country", "name": "United States" },
-      "serviceType": "AI Revenue Systems",
+      "serviceType": getServiceType(ssSlug),
       "offers": { "@type": "Offer", "availability": "https://schema.org/InStock", "priceCurrency": "USD", "url": `${BASE_URL}/pricing` }
     };
     const parts: object[] = [mainSchema, serviceSchema, breadcrumb, SITE_NAV_SCHEMA];
@@ -1036,10 +1047,16 @@ export function injectSEO(html: string, url: string): string {
   if (!/property="og:site_name"/.test(result)) {
     extraTags.push(`<meta property="og:site_name" content="Infinite Rankers" />`);
   }
-  extraTags.push(`<meta property="og:image" content="${BASE}/images/logo-full.png" />`);
+  const ogImageUrl = `${BASE}/images/logo-full.png`;
+  extraTags.push(`<meta property="og:image" content="${ogImageUrl}" />`);
+  extraTags.push(`<meta property="og:image:width" content="1200" />`);
+  extraTags.push(`<meta property="og:image:height" content="630" />`);
+  extraTags.push(`<meta property="og:image:type" content="image/png" />`);
+  extraTags.push(`<meta property="og:image:alt" content="${escapeAttr(seo.title)}" />`);
   extraTags.push(`<meta name="twitter:card" content="summary_large_image" />`);
   extraTags.push(`<meta name="twitter:site" content="@infiniterankers" />`);
   extraTags.push(`<meta name="twitter:creator" content="@infiniterankers" />`);
+  extraTags.push(`<meta name="twitter:image" content="${ogImageUrl}" />`);
   extraTags.push(`<meta name="twitter:title" content="${escapeAttr(seo.title)}" />`);
   extraTags.push(`<meta name="twitter:description" content="${escapeAttr(seo.description)}" />`);
   extraTags.push(`<link rel="alternate" type="application/rss+xml" title="Infinite Rankers Blog" href="${BASE}/rss.xml" />`);
