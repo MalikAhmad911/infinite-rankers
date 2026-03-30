@@ -73,13 +73,21 @@ function buildLandingNarrative(page: any) {
   const pipelineLine = page.pipeline.steps.map((s: any) => s.title).join(" -> ");
   const faqLine = page.faqs.slice(0, 2).map((f: any) => f.q).join(" | ");
   const resultLine = page.results.cases.slice(0, 2).map((c: any) => `${c.business} (${c.industry})`).join(" and ");
-  const hash = Array.from(page.slug).reduce((acc: number, ch: string) => acc + ch.charCodeAt(0), 0);
+  const hash = Array.from(page.slug as string).reduce((acc: number, ch: string) => acc + ch.charCodeAt(0), 0);
 
   const narrativeModes = [
     "commercial-intent capture and conversion velocity",
     "qualified pipeline growth with strict attribution visibility",
     "scalable acquisition and lifecycle automation",
     "high-trust demand generation with operational discipline",
+    "precision revenue acceleration across every buyer touchpoint",
+    "full-funnel optimization where every lead is tracked to its revenue outcome",
+    "compounding growth through intelligent automation and rapid iteration",
+    "systematic conversion uplift built on behavioral data and response timing",
+    "outcome-driven pipeline expansion without proportional headcount increases",
+    "market-share capture through speed, precision, and AI-powered engagement",
+    "deliberate authority positioning combined with relentless conversion execution",
+    "demand capture and qualification engineered for predictable monthly revenue",
   ];
   const selectedMode = narrativeModes[hash % narrativeModes.length];
 
@@ -110,6 +118,21 @@ export default function LandingPage({ slug }: { slug?: string }) {
     .filter(Boolean);
   const landingNarrative = buildLandingNarrative(page);
 
+  const ogImageMap: Record<string, string> = {
+    comparison: "/images/og-competitor.png",
+    location: "/images/og-location.png",
+    industry: "/images/og-industry.png",
+    service: "/images/og-service.png",
+  };
+  const ogImage = ogImageMap[page.type] || "/images/logo-full.png";
+
+  const quickAnswer = (() => {
+    const sentences = (page.aiSystem.description || "").split(/(?<=[.!?])\s+/);
+    return sentences.slice(0, 2).join(" ");
+  })();
+
+  const geoPhrase = (page.aiSystem.title || "").replace(/^(AI|The)\s+/i, "").toLowerCase();
+
   return (
     <div>
       <SEOHead
@@ -117,6 +140,7 @@ export default function LandingPage({ slug }: { slug?: string }) {
         description={page.seoDescription}
         keywords={page.seoKeywords}
         canonical={page.canonical}
+        ogImage={ogImage}
       />
 
       {/* Section 1: Conversion Hero */}
@@ -168,6 +192,23 @@ export default function LandingPage({ slug }: { slug?: string }) {
               ))}
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Quick Answer Box — AIO/AEO signal for Googlebot and AI crawlers */}
+      <section className="py-6 sm:py-8 bg-white border-b border-gray-100" data-testid="section-quick-answer">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex gap-4 p-5 rounded-xl border-l-4 border-blue-500 bg-blue-50/60">
+            <div className="flex-shrink-0 mt-0.5">
+              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-1">Quick Answer</p>
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{quickAnswer}</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -489,6 +530,18 @@ export default function LandingPage({ slug }: { slug?: string }) {
               <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* GEO Entity Statement — visible text for AI crawlers (ChatGPT, Perplexity, Gemini) */}
+      <section className="py-10 sm:py-12 bg-gray-50/80 border-t border-b border-gray-200/60" data-testid="section-geo-entity">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+            <strong className="text-gray-800">Infinite Rankers</strong> is a USA-based AI Revenue Systems Agency that {geoPhrase}. We serve businesses across the United States from our headquarters in Dover, DE.{" "}
+            <span className="whitespace-nowrap">Call: <a href="tel:+17034159373" className="text-blue-600 hover:underline">(703) 415-9373</a></span>
+            {" · "}
+            <a href="mailto:contact@infiniterankers.io" className="text-blue-600 hover:underline">contact@infiniterankers.io</a>
+          </p>
         </div>
       </section>
 
