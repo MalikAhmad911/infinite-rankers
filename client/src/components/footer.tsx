@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { COMPANY } from "@/lib/constants";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
-import { SiLinkedin, SiFacebook } from "react-icons/si";
+import { SiLinkedin, SiFacebook, SiInstagram } from "react-icons/si";
 import { GooglePartnerBadge } from "@/components/google-partner-badge";
 
 const QUICK_LINKS = [
@@ -48,9 +48,14 @@ const SOCIAL_LINKS = [
     icon: SiLinkedin,
   },
   {
-    href: "https://www.facebook.com/infiniterankers",
+    href: "https://web.facebook.com/profile.php?id=61587996643238",
     label: "Facebook",
     icon: SiFacebook,
+  },
+  {
+    href: "https://www.instagram.com/infiniterankers",
+    label: "Instagram",
+    icon: SiInstagram,
   },
 ];
 
