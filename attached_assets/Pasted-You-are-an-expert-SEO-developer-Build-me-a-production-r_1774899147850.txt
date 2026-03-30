@@ -1,0 +1,106 @@
+You are an expert SEO developer. Build me a production-ready SEO page system in Next.js with the following strict requirements:
+
+## TECHNICAL SEO REQUIREMENTS
+
+1. Server Side Rendering (SSR) — every page must render fully on server, no client-side content
+2. Unique URL structure — /services/[service]/[location] or /[keyword-slug]
+3. Every page must have unique:
+   - Title tag (max 60 chars)
+   - Meta description (max 160 chars)
+   - H1 tag
+   - First paragraph
+   - Schema markup (LocalBusiness + Service)
+4. No duplicate content — even 1 sentence must not repeat across pages
+5. Canonical tags on every page
+6. robots.txt and sitemap.xml auto-generated
+7. Core Web Vitals optimized — LCP under 2.5s
+8. Mobile first design
+9. No thin pages — minimum 800 words of unique content per page
+10. Internal linking between related pages automatically
+
+## CONTENT REQUIREMENTS
+
+Each page must have:
+- Unique H1 with exact keyword
+- Unique intro paragraph (no templates)
+- 3-5 unique H2 sections with real content
+- Industry/location specific examples and context
+- FAQ section with unique questions per page (Schema marked up)
+- CTA section pointing to infiniterankers.io
+- Trust signals — client results, years experience, Google Partner badge mention
+
+## GOOGLE TRUST REQUIREMENTS
+
+- E-E-A-T signals on every page
+- Company bio section — Infinite Rankers, USA premier digital marketing agency, Google Partner
+- Real statistics and data mentions
+- Case study references
+- No AI-sounding filler content
+- Natural keyword usage — no stuffing
+
+## BRAND DETAILS
+
+Company: Infinite Rankers
+Website: infiniterankers.io
+Tagline: We Don't Just Rank You, We Grow Your Revenue
+Position: USA Premier Digital Marketing & Google Partner Agency
+Services: SEO, Google Ads, Meta Ads, AI Automation, Social Media, Web Development
+
+## URL STRUCTURE
+
+- Competitor pages: /podium-alternative, /podium-vs-birdeye
+- Review pages: /google-review-software, /review-management-software
+- SMS pages: /business-texting-software
+- AI pages: /ai-receptionist-for-local-business
+- Vertical pages: /review-software-for-dentists
+- Location pages: /podium-alternative-new-york
+- Pain point pages: /how-to-get-more-google-reviews
+
+## KEYWORDS — BUILD ONE PAGE PER KEYWORD
+
+CATEGORY 1 — Competitor Pages:
+podium alternative, podium competitors, podium vs birdeye, podium pricing too expensive, cancel podium contract, podium alternative no contract, podium alternative cheaper, podium alternative for dentists, podium alternative for auto shops, podium alternative for contractors, podium alternative for hvac, podium vs reputation.com, podium vs thryv, podium vs birdeye for small business, best podium alternative 2025
+
+CATEGORY 2 — Review Management:
+google review software, get more google reviews, automated review requests, review management software, reputation management for small business, online review management, review generation software, how to get more google reviews, send review request by text, increase google star rating, review automation for local business, google review management tool, review request software, reputation management platform, reputation management for dentists, reputation management for contractors, reputation management for hvac, review management for home services, text to get reviews, local business reputation management
+
+CATEGORY 3 — SMS/Texting:
+business texting software, text message marketing for small business, two way text messaging for business, automated text messages for business, missed call text back, text to pay for small business, SMS marketing platform, business SMS software, text marketing for local business, automated customer texting, text message follow up software, bulk text messaging for business, SMS customer follow up, webchat to text for business, website chat widget for small business
+
+CATEGORY 4 — AI for Local Business:
+AI employee for small business, AI receptionist for local business, AI for local business, AI customer communication software, AI lead response software, AI webchat for small business, after hours AI answering, AI follow up software, automated customer communication, unified inbox for local business, omnichannel messaging for small business, AI chatbot for local business, AI assistant for service business, AI employee software, local business AI agent
+
+CATEGORY 5 — Industry Verticals:
+review software for dentists, messaging software for auto shops, text marketing for auto dealers, reputation management for law firms, review software for home services, texting software for contractors, AI for dental practice, review automation for med spas, customer texting for plumbers, review management for roofers, AI receptionist for chiropractors, text marketing for restaurants, reputation software for electricians, online reviews for real estate agents, customer communication for landscapers
+
+CATEGORY 6 — Pain Point Pages:
+stop losing leads after hours, how to respond to negative reviews, improve lead response time, automate customer follow up, book more appointments with AI, reduce no-shows with text reminders, how to get 5 star reviews automatically, turn website visitors into leads, automate review requests after service, increase revenue with AI automation
+
+CATEGORY 7 — Location Pages:
+podium alternative new york, podium alternative texas, podium alternative california, podium alternative florida, review management software new york, business texting software chicago, reputation management agency usa, AI agency for local business usa, review automation agency texas, AI customer communication platform usa
+
+## DESIGN REQUIREMENTS
+
+- Clean professional design matching infiniterankers.io style
+- Fast loading — no heavy images or animations
+- Rotate between 3 different page layouts so no two pages look identical
+- Every page: Hero, Problem, Solution, Features, FAQ, CTA, Footer
+- Mobile first
+
+## ANTI-SPAM REQUIREMENTS
+
+- No doorway pages
+- No keyword stuffing
+- No hidden content
+- Every page minimum 800 words unique content
+- Content written for humans first, SEO second
+- No duplicate sentences across any pages
+
+## DEPLOYMENT
+
+- Deploy ready for Replit
+- Custom domain support for infiniterankers.io
+- Sitemap auto-generates as new pages added
+- Admin panel to add keywords and generate new pages without touching code
+
+Build complete system. Start with folder structure, then core SSR setup, then page generation system, then content engine, then deploy config.
