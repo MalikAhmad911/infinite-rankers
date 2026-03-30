@@ -269,10 +269,130 @@ const PARTNER_PAGES: Record<string, { title: string; desc: string }> = {
   "infinite-rankers-ai-automation": { title: `AI Business Automation | 30+ Intelligent Systems | ${BRAND}`, desc: "AI automation solutions by Infinite Rankers. Chatbots, calling agents, email automation, CRM systems, and workflow automation that scale your business." },
 };
 
+const SERVICE_PILLAR_SEO: Record<string, {
+  title: string;
+  description: string;
+  faqs: { q: string; a: string }[];
+  howToSteps: { name: string; text: string }[];
+}> = {
+  "ai-lead-capture": {
+    title: "AI Lead Capture Systems | Never Miss a Lead Again | Infinite Rankers",
+    description: "AI-powered lead capture across website chat, phone, SMS, and WhatsApp — routes every inquiry to your CRM within 60 seconds, 24/7. Businesses capture 40–60% more inbound leads. Free audit.",
+    faqs: [
+      { q: "What channels can the AI lead capture system cover?", a: "We deploy capture across website chat, phone (missed-call text-back), SMS, WhatsApp, Instagram DMs, Facebook Messenger, and contact forms — all routed into a single CRM pipeline." },
+      { q: "How fast does the system respond to a new lead?", a: "Within 60 seconds or less for missed calls, and within a few seconds for website and social inquiries. Speed to lead is the #1 factor in conversion rates." },
+      { q: "Does it integrate with my existing CRM?", a: "Yes. We integrate with HubSpot, Salesforce, GoHighLevel, Pipedrive, Zoho, and most other CRMs. If you don't have a CRM, we'll recommend and set one up for you." },
+      { q: "Can it handle leads coming in after business hours?", a: "Yes. The AI capture systems run 24/7 with zero degradation. Every lead, regardless of time, is captured, qualified, and queued for your team." },
+    ],
+    howToSteps: [
+      { name: "Lead Flow Audit", text: "We map every channel where leads arrive and identify where they're being lost today." },
+      { name: "System Architecture", text: "We design the capture flows for web, phone, SMS, and social channels specific to your business." },
+      { name: "Build & Connect", text: "We deploy the AI agents, connect your CRM, and test every capture path end-to-end." },
+      { name: "Launch & Optimize", text: "We go live, monitor lead flow, and refine qualification scripts based on real data." },
+    ],
+  },
+  "ai-appointment-agents": {
+    title: "AI Appointment & Sales Agents | Book 3x More Meetings | Infinite Rankers",
+    description: "AI agents that follow up within 60 seconds, qualify leads across SMS, email, and voice, and book appointments directly into your calendar — 24/7, without human intervention. Free demo.",
+    faqs: [
+      { q: "How does the AI appointment agent book appointments?", a: "The AI agent reaches out via SMS, email, or voice within 60 seconds of a new lead, qualifies them through conversation, and books directly into your connected calendar — no human involvement needed." },
+      { q: "Can the AI handle objections during booking?", a: "Yes. We train the AI on your common objections and FAQs so it can address concerns, handle pushback, and still move toward booking completion." },
+      { q: "How many follow-up attempts does the AI make?", a: "We configure multi-step sequences — typically 6–10 touchpoints across SMS, email, and voice over 5–14 days — until the lead books, opts out, or is marked lost." },
+      { q: "What calendar systems does it integrate with?", a: "Google Calendar, Outlook, Calendly, Acuity, and GoHighLevel. We can also build custom integrations for industry-specific scheduling tools." },
+    ],
+    howToSteps: [
+      { name: "Lead & Booking Audit", text: "We audit your current lead response time and booking conversion rates to find where meetings are lost." },
+      { name: "Sequence Design", text: "We design multi-channel follow-up sequences: SMS, email, and voice — tuned to your specific ICP and sales cycle." },
+      { name: "Build & Integrate", text: "We connect the AI to your calendar, CRM, and communication tools and test end-to-end booking flows." },
+      { name: "Launch & Tune", text: "We launch, monitor booking rates, and continuously tune message sequences for higher conversion." },
+    ],
+  },
+  "crm-pipeline-automation": {
+    title: "CRM & Pipeline Automation | Self-Managing Revenue Pipeline | Infinite Rankers",
+    description: "Turn your CRM into a self-managing revenue machine — automatic lead entry, deal-stage movement, tagging, and real-time reporting inside HubSpot, Salesforce, GoHighLevel, or Pipedrive. Free CRM audit.",
+    faqs: [
+      { q: "Which CRMs do you support for pipeline automation?", a: "We work with HubSpot, Salesforce, GoHighLevel, Pipedrive, Zoho, and most major CRMs — including custom-built solutions via API." },
+      { q: "Will CRM automation break my existing workflows?", a: "No. We audit your current setup first and build automations that layer onto your existing processes without disrupting active deals or contacts." },
+      { q: "How much time does CRM automation save?", a: "Most teams save 15–20 hours per week on manual data entry, follow-up tasks, and reporting — time that goes directly back to selling." },
+      { q: "Can I see real-time pipeline visibility after automation?", a: "Yes. We build live dashboards showing pipeline value by stage, deal velocity, lead source ROI, and forecasted close rates — all updated automatically." },
+    ],
+    howToSteps: [
+      { name: "CRM Audit", text: "We audit your current CRM data quality, workflow gaps, and manual processes consuming your team's time." },
+      { name: "Pipeline Architecture", text: "We design the automated pipeline stages, tagging logic, and deal-movement rules specific to your sales process." },
+      { name: "Build & Automate", text: "We build all workflows inside your CRM, connect data sources, and test end-to-end pipeline automation." },
+      { name: "Train & Optimize", text: "We train your team on the new system and monitor data quality, pipeline velocity, and automation performance." },
+    ],
+  },
+  "customer-support-ai": {
+    title: "Customer Support & Operations AI | 24/7 Support Without Headcount | Infinite Rankers",
+    description: "AI agents that resolve tier-1 support instantly, route complex cases to the right human, and reduce support tickets by 60–80% — 24/7, without adding staff. Free support audit.",
+    faqs: [
+      { q: "What types of support issues can the AI handle?", a: "Tier-1 support: FAQs, order status, appointment questions, account lookups, and routine troubleshooting. Complex or escalated issues are routed to a human with full context." },
+      { q: "Does the AI support voice and chat?", a: "Yes. We deploy across your website chat, email inbox, phone system, WhatsApp, and SMS — wherever your customers reach out." },
+      { q: "How is the AI trained on my business?", a: "We build a knowledge base from your existing documentation, SOPs, FAQs, and product/service details — and train the AI to respond as your brand would." },
+      { q: "Can it escalate to a human when needed?", a: "Yes. The AI detects frustration signals and complex queries and routes to a human with full conversation context — no customer has to repeat themselves." },
+    ],
+    howToSteps: [
+      { name: "Support Audit", text: "We analyze your top support categories, ticket volume, and current resolution times to identify AI-ready workflows." },
+      { name: "Knowledge Base Build", text: "We build a comprehensive knowledge base from your documentation, FAQs, and product/service details." },
+      { name: "AI Agent Deployment", text: "We deploy the AI across your chat, email, voice, and messaging channels with escalation logic configured." },
+      { name: "Monitor & Improve", text: "We track resolution rates, escalation triggers, and CSAT scores and retrain the AI continuously." },
+    ],
+  },
+  "reviews-reactivation-retention": {
+    title: "Reviews, Reactivation & Retention | Turn Customers Into Revenue | Infinite Rankers",
+    description: "Automated systems that generate Google reviews, reactivate cold leads with proven sequences, and bring past customers back — without manual effort. Businesses see 3–5x more reviews in 30 days. Free audit.",
+    faqs: [
+      { q: "When is the best time to send a review request?", a: "Typically 1–4 hours after service completion for local services, or immediately after purchase for e-commerce. We A/B test timing for each client to find the highest response rate." },
+      { q: "What if a customer had a bad experience?", a: "Our system includes a satisfaction filter — customers indicating a negative experience are routed to a private feedback flow, not a public platform, giving you a chance to resolve the issue first." },
+      { q: "How large does my cold lead database need to be for reactivation?", a: "Reactivation campaigns work well with as few as 200 cold leads. Even a 5–10% response rate on a database of 500 can generate significant revenue, especially for high-ticket services." },
+      { q: "Does this work with Google Business Profile?", a: "Yes. We connect directly to Google and generate a specific review link for your business that makes the review process as easy as possible for customers." },
+    ],
+    howToSteps: [
+      { name: "Reputation & Database Audit", text: "We assess your current review volume, ratings, cold lead database size, and existing retention touchpoints." },
+      { name: "System Design", text: "We map the triggers for review requests, reactivation, and retention based on your service timeline and customer lifecycle." },
+      { name: "Build & Launch", text: "We deploy all automation sequences, connect your CRM or job management system, and launch campaigns." },
+      { name: "Monitor & Optimize", text: "We track review growth, reactivation response rates, and retention metrics and refine continuously." },
+    ],
+  },
+  "custom-saas-tools": {
+    title: "Custom SaaS & Internal Tools | Software Built for Your Workflow | Infinite Rankers",
+    description: "Custom-built dashboards, internal portals, white-label tools, and mini SaaS products designed for your exact business workflow — not off-the-shelf approximations. Free consultation.",
+    faqs: [
+      { q: "What kinds of custom tools do you build?", a: "Custom admin dashboards, white-label client portals, internal automation tools, industry-specific CRM builds, reporting platforms, and full mini SaaS products with user auth and billing." },
+      { q: "How long does it take to build a custom tool?", a: "Simple dashboards and internal tools typically take 2–4 weeks. More complex SaaS products with multi-user auth, billing, and API integrations typically take 6–12 weeks." },
+      { q: "What technologies do you use?", a: "We build primarily with React, TypeScript, Node.js, and PostgreSQL — with integrations to your existing stack via REST API, webhooks, or native connectors." },
+      { q: "Do you provide ongoing maintenance?", a: "Yes. We offer maintenance and hosting packages to keep your tool running, secure, and updated as your business needs evolve." },
+    ],
+    howToSteps: [
+      { name: "Discovery & Scoping", text: "We map your exact workflow needs, user roles, and integration requirements through a structured discovery process." },
+      { name: "Design & Architecture", text: "We design the data model, user flows, and UI architecture before writing a single line of code." },
+      { name: "Build & Integrate", text: "We build iteratively with regular demos, connecting your tool to your existing stack at each milestone." },
+      { name: "Launch & Support", text: "We handle deployment, training, and provide ongoing support and feature development as your needs evolve." },
+    ],
+  },
+  "revenue-automation-consulting": {
+    title: "Revenue Automation Consulting | AI Strategy & Implementation Roadmap | Infinite Rankers",
+    description: "Strategic consulting that audits your revenue gaps, prioritizes high-ROI automation, and builds a 90-day AI implementation roadmap — so you invest in systems that actually move the needle. Free strategy call.",
+    faqs: [
+      { q: "What does a revenue automation consulting engagement include?", a: "A full audit of your lead flow, follow-up processes, CRM, and tech stack — followed by a prioritized 90-day implementation roadmap that identifies the highest-ROI automation opportunities specific to your business." },
+      { q: "How long does the consulting engagement take?", a: "Initial strategy sessions are typically 2–3 hours. Full audit and roadmap delivery takes 1–2 weeks depending on business complexity." },
+      { q: "Do you implement the automation after consulting?", a: "Yes. Most consulting clients move into a full implementation engagement with Infinite Rankers after the strategy phase — with the roadmap as the guide." },
+      { q: "Who is this consulting service right for?", a: "Growth-stage businesses unsure where AI will move the needle, teams burned by past automation investments, and any leadership team that wants strategy before spending on implementation." },
+    ],
+    howToSteps: [
+      { name: "Revenue Gap Audit", text: "We audit your full revenue flow — lead sources, response processes, CRM, pipeline, and retention — to identify where money is being lost." },
+      { name: "Automation Prioritization", text: "We score every automation opportunity by ROI potential, implementation complexity, and time-to-value to build your priority stack." },
+      { name: "Roadmap Delivery", text: "We deliver a 90-day implementation roadmap with specific systems, tools, costs, and expected outcomes for each initiative." },
+      { name: "Implementation Kickoff", text: "We transition into implementation — building and deploying each system in priority order with clear milestones and accountability." },
+    ],
+  },
+};
+
 const STATIC_PAGES: Record<string, SEOMeta> = {
-  "/": { title: "Infinite Rankers | AI Revenue Growth & Digital Marketing Agency USA", description: "We don't just rank you — we grow your revenue. AI automation, SEO, Google Ads, social media marketing for USA businesses. Google Partner. Free strategy call.", canonical: `${BASE}/` },
-  "/about": { title: `About Infinite Rankers LLC | AI Revenue Growth Agency`, description: "Infinite Rankers LLC is a Delaware-registered AI Revenue Growth Agency helping service businesses automate lead capture, follow-up, and conversion. Google Partner.", canonical: `${BASE}/about` },
-  "/services": { title: "All Digital Marketing Services | 30+ AI-Powered Solutions | Infinite Rankers", description: "Browse all 30+ digital marketing and AI automation services. SEO, Google Ads, social media, AI agents, CRM.", canonical: `${BASE}/services` },
+  "/": { title: "Infinite Rankers | AI Revenue Systems Agency — Build & Deploy AI That Grows Revenue", description: "Infinite Rankers builds and deploys AI Revenue Systems — lead capture, appointment agents, CRM automation, customer support AI, and custom SaaS tools for USA businesses. Google Partner. Free strategy call.", canonical: `${BASE}/` },
+  "/about": { title: `About Infinite Rankers LLC | AI Revenue Systems Agency USA`, description: "Infinite Rankers LLC is a Delaware-registered AI Revenue Systems Agency. We build and deploy AI-powered lead capture, appointment booking, CRM automation, and customer support systems for USA businesses.", canonical: `${BASE}/about` },
+  "/services": { title: "7 AI Revenue Systems | Full-Stack Automation Services | Infinite Rankers", description: "Explore Infinite Rankers' 7 AI Revenue Systems: lead capture, appointment agents, CRM automation, customer support AI, reviews & retention, custom SaaS tools, and revenue consulting.", canonical: `${BASE}/services` },
   "/portfolio": { title: `21 Client Case Studies — Real Proven Results | ${BRAND}`, description: "Real results from real businesses. 21 case studies showing 100-195% revenue growth across healthcare, real estate, law firms & e-commerce. See proof.", canonical: `${BASE}/portfolio` },
   "/pricing": { title: `Pricing Plans from $1,599/mo | No Hidden Fees | ${BRAND}`, description: "Transparent pricing with no contracts or hidden fees. Growth, Scale & Enterprise plans. Calculate your ROI before you buy. Book a free consultation.", canonical: `${BASE}/pricing` },
   "/contact": { title: `Contact Us — Get a Free Strategy Call | ${BRAND}`, description: "Book a free 30-minute strategy call with our AI marketing experts. No pitch — just a custom growth plan. We respond within 1 business hour.", canonical: `${BASE}/contact` },
@@ -284,6 +404,15 @@ const STATIC_PAGES: Record<string, SEOMeta> = {
   "/terms": { title: `Terms of Service - ${BRAND}`, description: "Terms of Service for Infinite Rankers AI Revenue Growth Agency. Read our terms governing use of infiniterankers.io.", canonical: `${BASE}/terms` },
   "/privacy": { title: `Privacy Policy - ${BRAND}`, description: "Privacy Policy for Infinite Rankers. Learn how we collect, use, and protect your data.", canonical: `${BASE}/privacy` },
   "/google-partner": { title: "Google Partner Agency USA | Certified Google Ads Expert | Infinite Rankers", description: "Infinite Rankers is a certified Google Partner agency. Expert Google Ads management with exclusive tools access.", canonical: `${BASE}/google-partner` },
+
+  // 7 AI Revenue System pillar pages
+  "/ai-lead-capture": { title: SERVICE_PILLAR_SEO["ai-lead-capture"].title, description: SERVICE_PILLAR_SEO["ai-lead-capture"].description, canonical: `${BASE}/ai-lead-capture` },
+  "/ai-appointment-agents": { title: SERVICE_PILLAR_SEO["ai-appointment-agents"].title, description: SERVICE_PILLAR_SEO["ai-appointment-agents"].description, canonical: `${BASE}/ai-appointment-agents` },
+  "/crm-pipeline-automation": { title: SERVICE_PILLAR_SEO["crm-pipeline-automation"].title, description: SERVICE_PILLAR_SEO["crm-pipeline-automation"].description, canonical: `${BASE}/crm-pipeline-automation` },
+  "/customer-support-ai": { title: SERVICE_PILLAR_SEO["customer-support-ai"].title, description: SERVICE_PILLAR_SEO["customer-support-ai"].description, canonical: `${BASE}/customer-support-ai` },
+  "/reviews-reactivation-retention": { title: SERVICE_PILLAR_SEO["reviews-reactivation-retention"].title, description: SERVICE_PILLAR_SEO["reviews-reactivation-retention"].description, canonical: `${BASE}/reviews-reactivation-retention` },
+  "/custom-saas-tools": { title: SERVICE_PILLAR_SEO["custom-saas-tools"].title, description: SERVICE_PILLAR_SEO["custom-saas-tools"].description, canonical: `${BASE}/custom-saas-tools` },
+  "/revenue-automation-consulting": { title: SERVICE_PILLAR_SEO["revenue-automation-consulting"].title, description: SERVICE_PILLAR_SEO["revenue-automation-consulting"].description, canonical: `${BASE}/revenue-automation-consulting` },
 
   // Service pages
   "/workflow-automation": { title: "Workflow Automation Services | Save 20hrs/Week | Infinite Rankers", description: "Complete workflow automation using n8n, Make.com, Zapier. Automate repetitive tasks and save 20+ hours per week.", canonical: `${BASE}/workflow-automation` },
@@ -414,7 +543,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
     "legalName": "Infinite Rankers LLC",
     "url": BASE_URL,
     "logo": `${BASE_URL}/logo.png`,
-    "description": "AI Revenue Growth Agency providing 30+ AI-powered marketing and automation services for businesses across the USA and worldwide.",
+    "description": "AI Revenue Systems Agency that builds and deploys AI-powered lead capture, appointment agents, CRM automation, customer support AI, and custom SaaS tools for businesses across the USA.",
     "sameAs": [
       "https://www.linkedin.com/company/infinite-rankers",
       "https://www.facebook.com/infiniterankers"
@@ -486,12 +615,14 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "openingHoursSpecification": { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00" },
       "priceRange": "$$$",
       "areaServed": { "@type": "Country", "name": "United States" },
-      "hasOfferCatalog": { "@type": "OfferCatalog", "name": "AI Marketing & Automation Services", "itemListElement": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Calling Agent" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO Authority Growth System" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Google Ads Revenue Engine" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Lead Qualification" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "CRM Automation" } }
+      "hasOfferCatalog": { "@type": "OfferCatalog", "name": "AI Revenue Systems", "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Lead Capture Systems", "url": `${BASE_URL}/ai-lead-capture` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Appointment & Sales Agents", "url": `${BASE_URL}/ai-appointment-agents` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "CRM & Pipeline Automation", "url": `${BASE_URL}/crm-pipeline-automation` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Customer Support & Operations AI", "url": `${BASE_URL}/customer-support-ai` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reviews, Reactivation & Retention", "url": `${BASE_URL}/reviews-reactivation-retention` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom SaaS & Internal Tools", "url": `${BASE_URL}/custom-saas-tools` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Revenue Automation Consulting", "url": `${BASE_URL}/revenue-automation-consulting` } }
       ]},
       "sameAs": ["https://www.linkedin.com/company/infinite-rankers", "https://www.facebook.com/infiniterankers"],
       "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "87", "bestRating": "5" }
@@ -511,9 +642,66 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
   }
 
   const ssSlug = path.replace(/^\//, "");
+  const isPillarPage = ssSlug in SERVICE_PILLAR_SEO;
   const isServicePage = SERVICES.some(s => s.slug === ssSlug);
   const isBlogPage = BLOG_POSTS.some(b => b.slug === ssSlug);
   const isCasePage = !!CASE_STUDIES[ssSlug];
+
+  if (isPillarPage) {
+    const pillarData = SERVICE_PILLAR_SEO[ssSlug];
+    const serviceSchema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": pillarData.title.replace(" | Infinite Rankers", "").replace(/ \|.*$/, ""),
+      "description": pillarData.description,
+      "url": seo.canonical,
+      "inLanguage": "en-US",
+      "provider": ORG_SCHEMA,
+      "areaServed": { "@type": "Country", "name": "United States" },
+      "audience": [
+        { "@type": "BusinessAudience", "name": "Enterprise companies in the USA" },
+        { "@type": "BusinessAudience", "name": "Small and mid-size businesses in the USA" }
+      ],
+      "serviceType": "AI Revenue Automation",
+      "offers": { "@type": "Offer", "availability": "https://schema.org/InStock", "priceCurrency": "USD", "url": `${BASE_URL}/pricing` },
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "87", "bestRating": "5" }
+    };
+    const howToSchema = {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": `How ${pillarData.title.replace(" | Infinite Rankers", "").replace(/ \|.*$/, "")} Works`,
+      "description": pillarData.description,
+      "step": pillarData.howToSteps.map((s, i) => ({
+        "@type": "HowToStep",
+        "position": i + 1,
+        "name": s.name,
+        "text": s.text
+      }))
+    };
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": pillarData.faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    };
+    const webPageSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": seo.title,
+      "description": seo.description,
+      "url": seo.canonical,
+      "inLanguage": "en-US",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", ".hero-headline", ".hero-subheadline", ".pillar-description"]
+      },
+      "publisher": { ...ORG_SCHEMA, "@context": undefined }
+    };
+    return [webPageSchema, serviceSchema, howToSchema, faqSchema, breadcrumb, SITE_NAV_SCHEMA];
+  }
 
   if (isServicePage) {
     const serviceName = seo.title.replace(" - Infinite Rankers", "");
@@ -583,6 +771,34 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "author": ORG_SCHEMA
     };
     return [mainSchema, breadcrumb, SITE_NAV_SCHEMA];
+  }
+
+  if (path === "/services") {
+    const serviceListSchema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Infinite Rankers AI Revenue Systems",
+      "description": "7 AI Revenue Systems built to automate lead capture, appointments, CRM, support, retention, custom tools, and strategy for USA businesses.",
+      "numberOfItems": 7,
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "AI Lead Capture Systems", "url": `${BASE_URL}/ai-lead-capture`, "description": "Capture every lead automatically across website, phone, SMS, and WhatsApp — 24/7." },
+        { "@type": "ListItem", "position": 2, "name": "AI Appointment & Sales Agents", "url": `${BASE_URL}/ai-appointment-agents`, "description": "AI agents that book 3x more appointments without human involvement." },
+        { "@type": "ListItem", "position": 3, "name": "CRM & Pipeline Automation", "url": `${BASE_URL}/crm-pipeline-automation`, "description": "Self-managing revenue pipeline with automatic lead entry and deal movement." },
+        { "@type": "ListItem", "position": 4, "name": "Customer Support & Operations AI", "url": `${BASE_URL}/customer-support-ai`, "description": "24/7 AI support agents that resolve tier-1 issues without adding headcount." },
+        { "@type": "ListItem", "position": 5, "name": "Reviews, Reactivation & Retention", "url": `${BASE_URL}/reviews-reactivation-retention`, "description": "Automated systems to generate reviews, reactivate cold leads, and retain customers." },
+        { "@type": "ListItem", "position": 6, "name": "Custom SaaS & Internal Tools", "url": `${BASE_URL}/custom-saas-tools`, "description": "Custom dashboards, portals, and mini SaaS products built for your exact workflow." },
+        { "@type": "ListItem", "position": 7, "name": "Revenue Automation Consulting", "url": `${BASE_URL}/revenue-automation-consulting`, "description": "Strategic audit and 90-day AI implementation roadmap for highest-ROI automation." }
+      ]
+    };
+    mainSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": seo.title,
+      "description": seo.description,
+      "url": seo.canonical,
+      "publisher": { ...ORG_SCHEMA, "@context": undefined }
+    };
+    return [mainSchema, serviceListSchema, breadcrumb, SITE_NAV_SCHEMA];
   }
 
   if (path === "/about") {
@@ -771,6 +987,12 @@ export function injectSEO(html: string, url: string): string {
     "/ai-revenue-growth-law-firms",
     "/ai-revenue-growth-ecommerce",
     "/ai-revenue-growth-restaurants",
+    // Old SEO-era blog posts intentionally noindexed (thin/off-brand content)
+    "/content-marketing-seo-guide",
+    "/local-business-digital-marketing",
+    "/seo-vs-paid-ads-strategy",
+    "/social-media-marketing-strategy-2025",
+    "/brand-identity-business-growth",
   ];
   const urlPath = url.split("?")[0];
   const isAdminPath = urlPath.startsWith("/admin");
@@ -787,6 +1009,8 @@ export function injectSEO(html: string, url: string): string {
   }
   extraTags.push(`<meta property="og:image" content="${BASE}/images/logo-full.png" />`);
   extraTags.push(`<meta name="twitter:card" content="summary_large_image" />`);
+  extraTags.push(`<meta name="twitter:site" content="@infiniterankers" />`);
+  extraTags.push(`<meta name="twitter:creator" content="@infiniterankers" />`);
   extraTags.push(`<meta name="twitter:title" content="${escapeAttr(seo.title)}" />`);
   extraTags.push(`<meta name="twitter:description" content="${escapeAttr(seo.description)}" />`);
   extraTags.push(`<link rel="alternate" type="application/rss+xml" title="Infinite Rankers Blog" href="${BASE}/rss.xml" />`);

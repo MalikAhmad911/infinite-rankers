@@ -36,79 +36,79 @@ const PORTFOLIO_IMAGES: Record<string, string> = {
 };
 
 const CATEGORY_SERVICE_MAP: Record<string, string[]> = {
-  "AI Automation": ["ai-calling-agent", "ai-chatbot"],
-  "Lead Generation": ["google-ads", "seo-authority"],
-  "Sales Automation": ["ai-follow-up", "crm-automation"],
-  "Local Marketing": ["local-seo", "google-ads"],
-  "Strategy": ["conversion-funnels", "landing-page-optimization"],
-  "Social Media": ["social-media-marketing", "meta-ads"],
-  "Web Development": ["website-development", "landing-page-development"],
-  "Content Marketing": ["content-writing", "seo-authority"],
-  "E-Commerce": ["conversion-rate-optimization", "meta-ads"],
-  "Healthcare": ["ai-receptionist", "ai-appointment-booking"],
-  "Real Estate": ["ai-lead-qualification", "google-ads"],
-  "Branding": ["branding-design", "content-writing"],
+  "AI Automation": ["ai-lead-capture", "ai-appointment-agents"],
+  "Lead Generation": ["ai-lead-capture", "revenue-automation-consulting"],
+  "Sales Automation": ["ai-appointment-agents", "crm-pipeline-automation"],
+  "Local Marketing": ["reviews-reactivation-retention", "revenue-automation-consulting"],
+  "Strategy": ["revenue-automation-consulting", "crm-pipeline-automation"],
+  "Social Media": ["reviews-reactivation-retention", "revenue-automation-consulting"],
+  "Web Development": ["custom-saas-tools", "crm-pipeline-automation"],
+  "Content Marketing": ["revenue-automation-consulting", "ai-lead-capture"],
+  "E-Commerce": ["reviews-reactivation-retention", "crm-pipeline-automation"],
+  "Healthcare": ["customer-support-ai", "ai-appointment-agents"],
+  "Real Estate": ["ai-lead-capture", "ai-appointment-agents"],
+  "Branding": ["custom-saas-tools", "revenue-automation-consulting"],
 };
 
 const POST_SERVICE_MAP: Record<string, { services: string[]; caseStudySlug: string }> = {
   "ai-automation-revenue-growth-2025": {
-    services: ["ai-calling-agent", "ai-chatbot"],
+    services: ["ai-lead-capture", "ai-appointment-agents"],
     caseStudySlug: "case-study-dental-practice-revenue-transformation",
   },
   "google-ads-roi-local-business": {
-    services: ["google-ads", "local-seo"],
+    services: ["revenue-automation-consulting", "reviews-reactivation-retention"],
     caseStudySlug: "case-study-home-services-plumbing-hvac-lead-machine",
   },
   "ai-chatbot-lead-conversion": {
-    services: ["ai-chatbot", "ai-lead-qualification"],
+    services: ["ai-lead-capture", "customer-support-ai"],
     caseStudySlug: "case-study-auto-dealership-ai-sales-acceleration",
   },
   "crm-automation-sales-pipeline": {
-    services: ["crm-automation", "ai-follow-up"],
+    services: ["crm-pipeline-automation", "ai-appointment-agents"],
     caseStudySlug: "case-study-saas-growth-acceleration",
   },
   "seo-vs-paid-ads-strategy": {
-    services: ["seo-authority", "google-ads"],
+    services: ["revenue-automation-consulting", "ai-lead-capture"],
     caseStudySlug: "case-study-cnc-manufacturer-digital-lead-generation",
   },
   "ai-follow-up-sequences": {
-    services: ["ai-follow-up", "ai-email-automation"],
+    services: ["ai-appointment-agents", "crm-pipeline-automation"],
     caseStudySlug: "case-study-saas-growth-acceleration",
   },
   "social-media-marketing-strategy-2025": {
-    services: ["social-media-marketing", "meta-ads"],
+    services: ["reviews-reactivation-retention", "revenue-automation-consulting"],
     caseStudySlug: "case-study-luxury-salon-ai-booking-instagram-growth",
   },
   "local-business-digital-marketing": {
-    services: ["local-seo", "google-ads"],
+    services: ["reviews-reactivation-retention", "ai-lead-capture"],
     caseStudySlug: "case-study-restaurant-chain-local-seo-transformation",
   },
   "lead-generation-strategies-2025": {
-    services: ["ai-lead-qualification", "google-ads"],
+    services: ["ai-lead-capture", "ai-appointment-agents"],
     caseStudySlug: "case-study-real-estate-ai-lead-generation",
   },
   "website-conversion-optimization": {
-    services: ["conversion-rate-optimization", "landing-page-optimization"],
+    services: ["ai-lead-capture", "crm-pipeline-automation"],
     caseStudySlug: "case-study-ecommerce-cart-recovery-scaling",
   },
   "content-marketing-seo-guide": {
-    services: ["content-writing", "seo-authority"],
+    services: ["revenue-automation-consulting", "ai-lead-capture"],
     caseStudySlug: "case-study-commercial-contractor-brand-lead-growth",
   },
   "ecommerce-growth-strategies": {
-    services: ["meta-ads", "crm-automation"],
+    services: ["reviews-reactivation-retention", "crm-pipeline-automation"],
     caseStudySlug: "case-study-ecommerce-cart-recovery-scaling",
   },
   "brand-identity-business-growth": {
-    services: ["branding-design", "content-writing"],
+    services: ["custom-saas-tools", "revenue-automation-consulting"],
     caseStudySlug: "case-study-luxury-salon-ai-booking-instagram-growth",
   },
   "healthcare-marketing-patient-acquisition": {
-    services: ["ai-receptionist", "google-ads"],
+    services: ["customer-support-ai", "ai-appointment-agents"],
     caseStudySlug: "case-study-medical-clinic-patient-acquisition",
   },
   "real-estate-lead-generation-ai": {
-    services: ["ai-lead-qualification", "ai-calling-agent"],
+    services: ["ai-lead-capture", "ai-appointment-agents"],
     caseStudySlug: "case-study-real-estate-ai-lead-generation",
   },
 };

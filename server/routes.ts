@@ -104,6 +104,7 @@ export async function registerRoutes(
   registerIndexingRoutes(app);
   registerAIDiscoveryRoutes(app);
   registerIndexNowRoutes(app);
+
   app.post("/api/contacts", async (req, res) => {
     try {
       const parsed = insertContactSchema.safeParse(req.body);
