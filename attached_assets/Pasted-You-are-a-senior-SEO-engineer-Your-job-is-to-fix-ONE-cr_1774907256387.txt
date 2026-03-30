@@ -1,0 +1,247 @@
+You are a senior SEO engineer. Your job is to fix ONE critical problem: every landing page must have completely unique content, unique structure, and zero duplication. No templates. No keyword swapping. Real unique pages.
+
+Do not report. Do not suggest. Just fix everything now.
+
+## STEP 1 — AUDIT FIRST (Read Everything)
+
+Read these files completely before touching anything:
+- landing-pages.ts (all page data)
+- seo.ts (all meta/schema logic)
+- server/sitemap.ts (all slugs)
+- Any component that renders landing pages
+
+Map out:
+- Total pages count
+- Which pages share same narrative template
+- Which pages have duplicate or near-duplicate intros
+- Which pages share same FAQ questions
+- Which slugs are near-duplicates targeting same keyword
+- Which pages will cannibalize each other in Google
+
+Do not fix yet. Just map everything first. Print the map.
+
+## STEP 2 — REMOVE DUPLICATE SLUGS
+
+Find every pair of slugs targeting same keyword intent.
+Examples to look for:
+- automate-review-requests vs automated-review-requests
+- ai-receptionist vs ai-receptionist-for-small-business vs ai-receptionist-service-usa
+- ai-automation-agency vs automation-agency
+- Any two slugs where Google would rank them for identical query
+
+Action for each duplicate group:
+- Keep the BEST one (most content, best URL structure, most internal links pointing to it)
+- REDIRECT the weaker ones to the keeper using 301 redirect in Express
+- Remove weaker slugs from landing-pages.ts
+- Remove weaker slugs from sitemap
+- Update all internal links pointing to removed slugs
+
+Do not just delete — always redirect first.
+
+## STEP 3 — FIX NARRATIVE TEMPLATES
+
+Current problem: buildLandingNarrative() or similar function uses 4 rotating templates. 25% of pages share identical intro structure.
+
+Fix:
+- Write minimum 12 completely unique narrative opening styles
+- Each style must:
+  - Start with different sentence structure
+  - Use completely different vocabulary
+  - Have different paragraph rhythm
+  - Feel like it was written by a different writer
+  - Still naturally contain the primary keyword
+  - Be minimum 120 words
+
+Assign narratives so:
+- No two pages in same category share same narrative style
+- Competitor pages get aggressive/comparison tone
+- Review pages get problem-solution tone
+- SMS pages get efficiency/speed tone  
+- AI pages get innovation/future tone
+- Location pages get local/community tone
+- Pain point pages get empathy/understanding tone
+
+## STEP 4 — MAKE EVERY PAGE STRUCTURALLY UNIQUE
+
+Current problem: All pages likely follow same HTML section order.
+
+Fix — rotate between 4 different page structures:
+
+STRUCTURE A (Problem First):
+- Hero with problem statement
+- Why this problem is costly
+- Solution introduction
+- How Infinite Rankers solves it
+- Features
+- Case study snippet
+- FAQ
+- CTA
+
+STRUCTURE B (Solution First):
+- Hero with bold solution claim
+- Quick proof points
+- How it works (3 steps)
+- Who it is for
+- Features breakdown
+- FAQ
+- CTA
+
+STRUCTURE C (Comparison):
+- Hero with comparison hook
+- Old way vs New way table
+- Why competitors fall short
+- Infinite Rankers advantage
+- Features
+- FAQ
+- CTA
+
+STRUCTURE D (Results First):
+- Hero with specific result/stat
+- Client outcome story
+- What made the difference
+- The system behind the result
+- Features
+- FAQ
+- CTA
+
+Assign structures based on page category:
+- Competitor pages → Structure C
+- Pain point pages → Structure A
+- AI/Tech pages → Structure B
+- Location pages → Structure D
+- Review pages → Structure A or B
+- SMS pages → Structure B
+
+## STEP 5 — UNIQUE INTRO PARAGRAPH EVERY PAGE
+
+Every page intro must be completely unique. Rules:
+- First sentence must be different from every other page
+- Must mention the specific keyword naturally in first 2 sentences
+- Must mention a specific pain point relevant to THAT keyword only
+- Must not use phrases like "In today's digital landscape" or "In the competitive world"
+- Must not start with "Are you looking for"
+- Minimum 80 words
+- Maximum 150 words
+
+Write a completely unique intro for every page that does not have one already.
+For pages with templated intros — rewrite completely.
+
+## STEP 6 — UNIQUE FAQ PER PAGE
+
+Every FAQ must be completely unique. Rules:
+- Minimum 4 FAQs per page
+- No FAQ question can appear on more than one page
+- Questions must be specific to THAT page's keyword — not generic
+- Answers must be minimum 60 words
+- First sentence of answer must directly answer the question
+- No answer can share more than 5 words in sequence with another page's answer
+
+Bad FAQ example (DO NOT DO THIS):
+Q: What is [keyword]?
+A: [keyword] is a solution that helps businesses improve their [category].
+
+Good FAQ example:
+Q: How long does it take to see results from automated review requests?
+A: Most businesses using our automated review request system see their first batch of new Google reviews within 48-72 hours of going live. Full momentum typically builds over the first 30 days as the system learns your customer patterns and optimizes send timing for maximum response rates.
+
+Write unique FAQs for every page following this quality standard.
+
+## STEP 7 — UNIQUE PAGE TITLES AND META
+
+Check every page:
+- Title must contain primary keyword
+- Title must be under 60 characters
+- No two pages can share same title
+- No two pages can share same meta description
+- Meta must contain keyword + clear value proposition
+- Meta must be under 160 characters
+
+Rewrite any title or meta that:
+- Is over character limit
+- Is shared with another page
+- Does not contain primary keyword
+- Sounds generic
+
+## STEP 8 — TOPICAL CLUSTER CONTENT BRIDGES
+
+Add a unique "Related Resources" section to every page that:
+- Links to 3-5 genuinely related pages with descriptive anchor text
+- Anchor text describes destination page content — not generic "click here"
+- Creates logical content bridges between clusters
+- Is written as natural prose — not just a link list
+
+Example for /google-review-software:
+"If you are managing reviews manually today, our guide on automated review requests explains how to eliminate that process entirely. Businesses in specific industries may also benefit from our reputation management for dentists or reputation management for contractors pages which cover industry-specific review strategies."
+
+Write this section uniquely for every page.
+
+## STEP 9 — VERIFY NO THIN PAGES REMAIN
+
+After all fixes:
+- Check every page content length
+- Any page under 700 words — add content:
+  - Expand feature descriptions with real specifics
+  - Add "Common mistakes businesses make with [keyword]" section (3-4 points)
+  - Add "What to look for in [keyword solution]" section
+  - Expand FAQ answers
+  - Add industry-specific examples
+
+## STEP 10 — FINAL CLEANUP
+
+- Remove any page from sitemap that was deleted/redirected
+- Update sitemap lastmod to today for all modified pages
+- Verify robots.txt allows all fixed pages
+- Check all 301 redirects work correctly
+- Verify no redirect chains (A→B→C should be A→C)
+- Run build — fix any errors
+- Push to GitHub
+
+## OUTPUT AFTER ALL FIXES
+
+Print exactly:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTENT & DUPLICATION FIX REPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DUPLICATES REMOVED:
+[List every slug removed + where it now redirects]
+
+TEMPLATES FIXED:
+[List how many pages had templated content + now fixed]
+
+UNIQUE INTROS WRITTEN:
+[Count of pages with new unique intros]
+
+UNIQUE FAQS WRITTEN:
+[Count of new FAQs written]
+
+STRUCTURE ASSIGNMENTS:
+[Which pages got which structure A/B/C/D]
+
+THIN PAGES FIXED:
+[List pages that were under 700 words + now fixed]
+
+TITLES FIXED:
+[List titles that were rewritten]
+
+REDIRECTS ADDED:
+[List all 301 redirects added]
+
+FINAL PAGE COUNT:
+Total pages: [X]
+Unique content: [X]%
+Template risk: [Low/None]
+Cannibalization risk: [Low/None]
+
+HONEST VERDICT:
+[Is content now unique enough to rank without Google penalty?]
+
+## RULES
+- Fix in actual files — not suggestions
+- Commit to GitHub after all fixes
+- Do not ask questions — make best decisions and implement
+- Quality over speed — every page must genuinely be unique
+- Think like a human editor — would a real person find each page valuable?
+
+Start now. Read first. Then fix everything.
