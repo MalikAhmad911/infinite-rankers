@@ -51,6 +51,8 @@ const BLOG_POST_SLUGS = [
   "lead-generation-strategies-2025",
   "real-estate-lead-generation-ai",
   "website-conversion-optimization",
+  "brevo-review-2025",
+  "best-email-marketing-tool-local-business",
 ];
 
 // All AI Revenue Systems landing pages — location, industry, service, and problem-focused search traffic.

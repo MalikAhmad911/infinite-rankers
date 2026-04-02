@@ -15,7 +15,9 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertDemoBookingSchema } from "@shared/schema";
 import type { InsertDemoBooking } from "@shared/schema";
-import { CalendarCheck, CheckCircle2, ArrowRight, Clock, Star } from "lucide-react";
+import { CalendarCheck, CheckCircle2, ArrowRight, Clock, Star, Mail } from "lucide-react";
+
+const BREVO_REF = "https://get.brevo.com/sy6bleulv8gn";
 
 const timeSlots = [
   "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
@@ -296,6 +298,36 @@ export default function BookDemo() {
                 </div>
               </GlassCard>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10" style={{ background: "linear-gradient(to right, #0B2A6B, #1246B4, #0B2A6B)" }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl flex-shrink-0" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
+                <Mail className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-white font-bold text-base sm:text-lg leading-snug">
+                  Need email marketing too?
+                </p>
+                <p className="text-sm mt-0.5" style={{ color: "#93c5fd" }}>
+                  Start free with Brevo — unlimited contacts, email + SMS, built-in CRM.
+                </p>
+              </div>
+            </div>
+            <a
+              href={BREVO_REF}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              data-testid="link-brevo-book-demo"
+              className="flex-shrink-0 inline-flex items-center gap-2 font-bold text-sm px-6 py-3 rounded-xl transition-all duration-200 hover:shadow-lg whitespace-nowrap"
+              style={{ backgroundColor: "#ffffff", color: "#0B2A6B" }}
+            >
+              Start Free with Brevo <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </section>

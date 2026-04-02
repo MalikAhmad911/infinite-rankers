@@ -57,6 +57,8 @@ const BLOG_POSTS = [
   { slug: "brand-identity-business-growth", title: "How Strong Brand Identity Drives Revenue Growth: A Strategic Guide", desc: "Why branding is not just about logos — how strategic brand identity directly impacts customer acquisition, retention, and revenue. Free demo." },
   { slug: "healthcare-marketing-patient-acquisition", title: "Healthcare Marketing: How to Acquire More Patients with AI and Digital Strategy", desc: "HIPAA-compliant digital marketing strategies that help medical practices attract and retain patients. Free demo." },
   { slug: "real-estate-lead-generation-ai", title: "Real Estate Lead Generation: How AI Is Transforming Agent Success", desc: "AI-powered strategies that help real estate agents and brokerages generate, qualify, and convert more leads. Free demo." },
+  { slug: "brevo-review-2025", title: "Brevo Review 2025: Best Free Email Marketing Software for Small Business", desc: "Complete Brevo review 2025: features, pricing, pros & cons. See why 500,000+ businesses choose Brevo as their #1 email marketing platform." },
+  { slug: "best-email-marketing-tool-local-business", title: "Best Email Marketing Tool for Local Business in 2025 (Free Options Compared)", desc: "Compare the best email marketing tools for local businesses in 2025. Free plans, pricing, automation & deliverability reviewed." },
 ];
 
 const CASE_STUDIES: Record<string, { title: string; desc: string }> = {
@@ -649,8 +651,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom SaaS & Internal Tools", "url": `${BASE_URL}/custom-saas-tools` } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Revenue Automation Consulting", "url": `${BASE_URL}/revenue-automation-consulting` } }
       ]},
-      "sameAs": ["https://www.linkedin.com/company/infinite-rankers", "https://www.facebook.com/infiniterankers"],
-      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "87", "bestRating": "5" }
+      "sameAs": ["https://www.linkedin.com/company/infinite-rankers", "https://www.facebook.com/infiniterankers", "https://www.instagram.com/infiniterankers"]
     };
     const SPEAKABLE_SCHEMA = {
       "@context": "https://schema.org",

@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/seo-head";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/blog-data";
 import { ALL_SERVICES, CASE_STUDIES } from "@/lib/constants";
-import { ArrowLeft, ArrowRight, Clock, Calendar, User, Share2, Zap, BarChart3 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, Calendar, User, Share2, Zap, BarChart3, Mail } from "lucide-react";
 
 type ServiceItem = (typeof ALL_SERVICES)[number];
 
@@ -276,6 +276,25 @@ export default function BlogPost() {
                         </Button>
                       </Link>
                     </div>
+                  );
+                case "affiliate":
+                  return (
+                    <a key={i} href={section.href} target="_blank" rel="noopener noreferrer sponsored" className="block my-10 group no-underline" data-testid="link-blog-affiliate">
+                      <div className="rounded-2xl overflow-hidden p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-5 transition-all duration-300 hover:shadow-2xl" style={{ background: "linear-gradient(135deg, #0B2A6B 0%, #1A4FBA 100%)", border: "1px solid rgba(11,42,107,0.3)" }}>
+                        <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 rounded-xl" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
+                          <Mail className="w-7 h-7 text-white" />
+                        </div>
+                        <div className="flex-1 text-center sm:text-left">
+                          <p className="text-white font-bold text-base sm:text-lg leading-snug">{section.text}</p>
+                          <p className="text-sm mt-1.5" style={{ color: "#93c5fd" }}>Unlimited contacts · Email + SMS · Built-in CRM · Free forever plan</p>
+                        </div>
+                        <div className="flex-shrink-0">
+                          <span className="inline-flex items-center gap-2 font-bold text-sm px-5 py-3 rounded-xl transition-colors" style={{ backgroundColor: "#ffffff", color: "#0B2A6B" }}>
+                            Start Free <ArrowRight className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </a>
                   );
                 default:
                   return null;
