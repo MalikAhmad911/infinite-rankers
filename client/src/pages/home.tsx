@@ -616,19 +616,27 @@ function WhoWeServeSection() {
         </div>
 
         {/* All other industries — infinite marquee carousel */}
-        <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="bg-white border border-gray-200/60 rounded-2xl py-4 sm:py-5">
+        <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="bg-white border border-gray-200/60 rounded-2xl py-4 sm:py-5 overflow-hidden">
+          <style>{`
+            @keyframes ir-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+            .ir-marquee-track { animation: ir-marquee 28s linear infinite; }
+            .ir-marquee-track:hover { animation-play-state: paused; }
+          `}</style>
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3 px-5 sm:px-6">We also serve</p>
-          <div className="marquee-wrap" style={{ paddingBottom: 4 }}>
+          <div style={{ position: "relative", overflow: "hidden", width: "100%", paddingBottom: 4 }}>
             {/* Left fade */}
             <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 48, background: "linear-gradient(to right, white, transparent)", zIndex: 10, pointerEvents: "none" }} />
             {/* Right fade */}
             <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 48, background: "linear-gradient(to left, white, transparent)", zIndex: 10, pointerEvents: "none" }} />
-            <div className="marquee-track">
+            <div
+              className="ir-marquee-track"
+              style={{ display: "flex", width: "max-content", flexWrap: "nowrap", gap: 12, willChange: "transform" }}
+            >
               {[...WHO_WE_SERVE_MORE, ...WHO_WE_SERVE_MORE].map((item, i) => (
                 <Link key={`${item.label}-${i}`} href="/services">
                   <span
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors cursor-pointer border border-indigo-100"
-                    style={{ whiteSpace: "nowrap" }}
+                    style={{ whiteSpace: "nowrap", flexShrink: 0 }}
                     data-testid={i < WHO_WE_SERVE_MORE.length ? `industry-pill-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}` : undefined}
                   >
                     <span>{item.icon}</span>
