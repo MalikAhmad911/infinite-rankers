@@ -774,51 +774,54 @@ function HowItWorksSection() {
 }
 
 function PricingTeaserSection() {
-  const reasons = [
-    { icon: Shield, text: "No Long-Term Contracts" },
-    { icon: Clock, text: "Month-to-Month Retainer" },
-    { icon: CheckCircle2, text: "You Own What We Build" },
-    { icon: DollarSign, text: "Custom Pricing for Every Business" },
+  const bullets = [
+    { icon: Shield, text: "No long-term contracts" },
+    { icon: Clock, text: "Month-to-month retainer" },
+    { icon: CheckCircle2, text: "You own everything we build" },
   ];
   return (
-    <section className="py-14 sm:py-20 bg-white border-t border-gray-100" data-testid="pricing-teaser-section">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 px-8 py-12 sm:px-14 sm:py-16 text-center text-white shadow-xl relative overflow-hidden">
-          {/* Background glow */}
-          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 60% 0%, rgba(255,255,255,0.08) 0%, transparent 70%)" }} />
-
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-blue-200 mb-4">Investment</span>
-          <h2 className="font-bold text-white mb-4" style={{ fontSize: "clamp(1.6rem, 4vw, 2.4rem)", lineHeight: 1.15 }}>
-            Pricing Tailored to<br />Your Business Goals
-          </h2>
-          <p className="text-blue-100 max-w-xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
-            Every AI Revenue System we build is scoped to your specific industry, deal size, and growth targets. Contact us and we'll send you a custom investment breakdown — no commitment required.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            {reasons.map(({ icon: Icon, text }) => (
-              <span key={text} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/15 text-white border border-white/20">
-                <Icon className="w-3.5 h-3.5 text-blue-200" />
-                {text}
-              </span>
-            ))}
+    <section className="py-12 sm:py-16 bg-white border-t border-gray-100" data-testid="pricing-teaser-section">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="rounded-2xl border border-indigo-100 bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-8 sm:px-10 sm:py-10 flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12"
+        >
+          {/* Left — text */}
+          <div className="flex-1 min-w-0">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-indigo-500 mb-2">Investment</span>
+            <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.25rem, 3vw, 1.75rem)" }}>
+              Pricing Customised to<br className="hidden sm:block" /> Your Business & Goals
+            </h2>
+            <p className="text-gray-500 text-sm leading-relaxed max-w-md mb-5">
+              Every system is scoped to your industry, deal size, and growth targets. Contact us and we'll send a custom investment breakdown — no commitment required.
+            </p>
+            <ul className="flex flex-col gap-2">
+              {bullets.map(({ icon: Icon, text }) => (
+                <li key={text} className="flex items-center gap-2 text-sm text-gray-600">
+                  <Icon className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+                  {text}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {/* Right — CTAs */}
+          <div className="flex flex-col gap-3 w-full lg:w-auto lg:min-w-[220px]">
             <Link href="/contact">
-              <Button size="lg" className="bg-white text-indigo-700 hover:bg-blue-50 font-semibold px-8 shadow-md w-full sm:w-auto" data-testid="button-contact-for-pricing">
+              <Button size="lg" className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm" data-testid="button-contact-for-pricing">
                 Contact for Pricing <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             </Link>
             <Link href="/book-demo">
-              <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 w-full sm:w-auto" data-testid="button-book-call-pricing">
+              <Button size="lg" variant="outline" className="w-full border-indigo-200 text-indigo-700 hover:bg-indigo-50" data-testid="button-book-call-pricing">
                 Book a Free Strategy Call
               </Button>
             </Link>
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <GooglePartnerBadge variant="inline" />
+            <div className="flex justify-center pt-1">
+              <GooglePartnerBadge variant="inline" />
+            </div>
           </div>
         </motion.div>
       </div>
