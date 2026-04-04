@@ -783,58 +783,145 @@ function HowItWorksSection() {
 
 function PricingTeaserSection() {
   return (
-    <section className="py-14 sm:py-20 bg-gray-50/60 border-t border-gray-100" data-testid="pricing-teaser-section">
+    <section className="py-14 sm:py-20 lg:py-24 bg-white" data-testid="pricing-teaser-section">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+          className="text-center mb-10 sm:mb-14"
         >
-          <div className="grid lg:grid-cols-2">
-            {/* Left — text */}
-            <div className="p-8 sm:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-gray-100">
-              <span className="inline-block text-xs font-semibold tracking-widest uppercase text-indigo-500 mb-3">Investment</span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 leading-snug">
-                Pricing Customised to<br /> Your Business &amp; Goals
-              </h2>
-              <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-6">
-                Every system is scoped to your industry, deal size, and growth targets. Contact us and we'll send a custom investment breakdown — no commitment required.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  { icon: Shield, text: "No long-term contracts — month-to-month" },
-                  { icon: CheckCircle2, text: "You own everything we build" },
-                  { icon: Clock, text: "Live and generating ROI in 2–6 weeks" },
-                ].map(({ icon: Icon, text }) => (
-                  <li key={text} className="flex items-center gap-3 text-sm text-gray-600">
-                    <div className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-3.5 h-3.5 text-indigo-500" />
+          <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
+            <DollarSign className="w-3.5 h-3.5 text-blue-600" /> Pricing
+          </span>
+          <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
+            Transparent, Performance-First Pricing
+          </h2>
+          <p className="text-gray-500 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.0625rem)" }}>
+            Every engagement is scoped to your specific revenue gaps. No cookie-cutter packages — we price based on what you actually need to grow.
+          </p>
+        </motion.div>
+
+        {/* Main Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="rounded-3xl overflow-hidden shadow-xl border border-gray-100"
+          style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%)" }}
+        >
+          <div className="grid lg:grid-cols-[1fr_420px]">
+            {/* Left — value proposition */}
+            <div className="p-8 sm:p-10 lg:p-14 relative overflow-hidden">
+              {/* Decorative blobs */}
+              <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 border border-white/10 mb-6">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs font-semibold text-white/80">Currently accepting new clients</span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
+                  Your AI Revenue System,<br />
+                  <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    Priced for Your Results
+                  </span>
+                </h3>
+                <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-8 max-w-lg">
+                  We scope every system around your deal size, lead volume, and growth targets — so you only pay for what directly impacts your revenue.
+                </p>
+
+                {/* What's included grid */}
+                <div className="grid sm:grid-cols-2 gap-3 mb-8">
+                  {[
+                    { icon: Bot, title: "AI System Build", desc: "Full design, build & integration" },
+                    { icon: Settings, title: "Weekly Optimization", desc: "Ongoing tuning & performance reviews" },
+                    { icon: BarChart3, title: "Revenue Reporting", desc: "Real KPIs — calls, bookings, closed deals" },
+                    { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your build team" },
+                  ].map(({ icon: Icon, title, desc }) => (
+                    <div key={title} className="flex items-start gap-3 bg-white/[0.06] rounded-xl p-4 border border-white/[0.08]">
+                      <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Icon className="w-4 h-4 text-blue-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-white">{title}</p>
+                        <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
+                      </div>
                     </div>
-                    {text}
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                </div>
+
+                {/* Trust pills */}
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { icon: Shield, label: "No Long-Term Contracts" },
+                    { icon: CheckCircle2, label: "You Own Everything" },
+                    { icon: Clock, label: "Live in 2–6 Weeks" },
+                  ].map(({ icon: Icon, label }) => (
+                    <div key={label} className="inline-flex items-center gap-1.5 bg-white/[0.08] border border-white/[0.1] rounded-full px-3 py-1.5">
+                      <Icon className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-xs font-medium text-white/80">{label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Right — CTAs */}
-            <div className="p-8 sm:p-10 lg:p-12 bg-gradient-to-br from-indigo-50/60 to-blue-50/40 flex flex-col justify-center gap-4">
-              <div className="mb-2">
-                <p className="text-sm font-semibold text-gray-700 mb-1">Ready to get a custom quote?</p>
-                <p className="text-xs text-gray-500">Tell us about your business and we'll scope the exact system you need.</p>
+            {/* Right — CTA panel */}
+            <div className="bg-white p-8 sm:p-10 flex flex-col justify-between gap-6 border-t lg:border-t-0 lg:border-l border-white/10">
+              <div>
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400">Average response time</p>
+                    <p className="text-sm font-bold text-gray-900">Under 4 hours</p>
+                  </div>
+                </div>
+
+                <h4 className="text-xl font-bold text-gray-900 mb-2">Get Your Custom Pricing Proposal</h4>
+                <p className="text-sm text-gray-500 leading-relaxed mb-6">
+                  Tell us your industry and monthly revenue — we'll send a detailed scope and pricing breakdown within 24 hours. No commitment required.
+                </p>
+
+                {/* Pricing indicators */}
+                <div className="space-y-3 mb-6">
+                  {[
+                    { tier: "Starter System", range: "Lead capture + CRM setup", color: "bg-blue-500" },
+                    { tier: "Growth System", range: "AI agents + full automation", color: "bg-indigo-500" },
+                    { tier: "Enterprise System", range: "Custom build + dedicated team", color: "bg-purple-500" },
+                  ].map(({ tier, range, color }) => (
+                    <div key={tier} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                      <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${color}`} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-gray-800">{tier}</p>
+                        <p className="text-xs text-gray-400 truncate">{range}</p>
+                      </div>
+                      <span className="text-xs font-semibold text-gray-400">Custom</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <Link href="/contact">
-                <Button size="lg" className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm" data-testid="button-contact-for-pricing">
-                  Contact for Pricing <ArrowRight className="w-4 h-4 ml-1.5" />
-                </Button>
-              </Link>
-              <Link href="/book-demo">
-                <Button size="lg" variant="outline" className="w-full border-indigo-200 text-indigo-700 hover:bg-white" data-testid="button-book-call-pricing">
-                  Book a Free Strategy Call
-                </Button>
-              </Link>
-              <div className="flex justify-center pt-2">
-                <GooglePartnerBadge variant="inline" />
+
+              <div className="space-y-3">
+                <Link href="/contact">
+                  <Button size="lg" className="w-full font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md shadow-indigo-200" data-testid="button-contact-for-pricing">
+                    Get My Custom Pricing <ArrowRight className="w-4 h-4 ml-1.5" />
+                  </Button>
+                </Link>
+                <Link href="/book-demo">
+                  <Button size="lg" variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-gray-50" data-testid="button-book-call-pricing">
+                    Book a Free Strategy Call
+                  </Button>
+                </Link>
+                <div className="flex justify-center pt-1">
+                  <GooglePartnerBadge variant="inline" />
+                </div>
               </div>
             </div>
           </div>
