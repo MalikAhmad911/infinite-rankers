@@ -831,29 +831,31 @@ function PricingTeaserSection() {
                 <span className="text-xs font-semibold text-white">Currently accepting new clients</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl lg:text-[2.1rem] font-extrabold text-white leading-tight mb-5">
+              <h3 className="text-2xl sm:text-3xl lg:text-[2.2rem] font-extrabold text-white leading-tight mb-5">
                 Your AI Revenue System,<br />
-                <span className="text-yellow-300">Priced for Your Results</span>
+                <span className="bg-gradient-to-r from-amber-300 to-yellow-200 bg-clip-text text-transparent">
+                  Priced for Your Results
+                </span>
               </h3>
-              <p className="text-indigo-100 text-sm sm:text-base leading-relaxed mb-10 max-w-md">
+              <p className="text-white/75 text-sm sm:text-base leading-relaxed mb-10 max-w-md">
                 We scope every system around your deal size, lead volume, and growth targets — so you only pay for what directly impacts your bottom line.
               </p>
 
               {/* 4 feature tiles */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
                 {[
-                  { icon: Bot, title: "AI System Build", desc: "Full design, build & integration" },
-                  { icon: Settings, title: "Weekly Optimisation", desc: "Ongoing tuning & performance reviews" },
-                  { icon: BarChart3, title: "Revenue Reporting", desc: "Real KPIs — calls, bookings, revenue" },
-                  { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your build team" },
-                ].map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="flex items-start gap-3 bg-white/10 rounded-2xl p-4 border border-white/10 hover:bg-white/15 transition-colors">
-                    <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-4 h-4 text-yellow-300" />
+                  { icon: Bot, title: "AI System Build", desc: "Full design, build & integration", color: "#fbbf24" },
+                  { icon: Settings, title: "Weekly Optimisation", desc: "Ongoing tuning & performance reviews", color: "#34d399" },
+                  { icon: BarChart3, title: "Revenue Reporting", desc: "Real KPIs — calls, bookings, revenue", color: "#60a5fa" },
+                  { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your build team", color: "#f472b6" },
+                ].map(({ icon: Icon, title, desc, color }) => (
+                  <div key={title} className="flex items-start gap-3.5 bg-white/[0.08] rounded-2xl p-4 border border-white/[0.12] hover:bg-white/[0.14] transition-colors">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}22` }}>
+                      <Icon className="w-5 h-5" style={{ color }} />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-white">{title}</p>
-                      <p className="text-xs text-indigo-200 mt-0.5 leading-snug">{desc}</p>
+                      <p className="text-sm sm:text-base font-bold text-white leading-snug">{title}</p>
+                      <p className="text-xs sm:text-sm text-white/60 mt-1 leading-snug">{desc}</p>
                     </div>
                   </div>
                 ))}
