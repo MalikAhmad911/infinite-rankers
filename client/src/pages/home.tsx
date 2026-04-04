@@ -564,25 +564,28 @@ function ImplementationSection() {
   );
 }
 
-const WHO_WE_SERVE = [
+const WHO_WE_SERVE_FEATURED = [
   { label: "Healthcare & Dental", desc: "AI booking agents, patient follow-up, and reputation automation for clinics and practices.", icon: "🏥", href: "/dental-ai" },
   { label: "Real Estate", desc: "24/7 lead capture, AI showing schedulers, and CRM automation for agents and brokerages.", icon: "🏠", href: "/real-estate-ai" },
   { label: "Law Firms", desc: "Automated intake, consultation booking, and client follow-up for legal practices.", icon: "⚖️", href: "/law-firm-ai" },
   { label: "Home Services", desc: "Missed-call text-back, estimate follow-up, and review generation for contractors.", icon: "🔧", href: "/home-services-ai" },
   { label: "Medical Clinics", desc: "Patient acquisition, recall automation, and AI scheduling for medical practices.", icon: "💊", href: "/medical-ai" },
   { label: "E-Commerce & Retail", desc: "Cart recovery, repeat purchase campaigns, and support AI for online stores.", icon: "🛒", href: "/ecommerce-ai" },
-  { label: "Restaurants & Food", desc: "Reservation automation, review generation, and repeat-customer campaigns for restaurants and cafes.", icon: "🍽️", href: "/services" },
-  { label: "Auto Services", desc: "Appointment booking, follow-up automation, and review requests for auto repair and detailing shops.", icon: "🚗", href: "/services" },
-  { label: "Beauty & Salons", desc: "AI booking, no-show reduction, and loyalty campaigns for salons, spas, and barbershops.", icon: "💈", href: "/services" },
-  { label: "Pet Services", desc: "Automated reminders, booking agents, and follow-up for vets, groomers, and pet boarding.", icon: "🐾", href: "/services" },
-  { label: "Fitness & Gyms", desc: "Lead capture, trial conversion, and membership retention AI for gyms and fitness studios.", icon: "🏋️", href: "/services" },
-  { label: "Cleaning Services", desc: "Recurring booking automation, review generation, and upsell campaigns for cleaning businesses.", icon: "🧹", href: "/services" },
-  { label: "Financial Services", desc: "Lead qualification, appointment booking, and nurture sequences for advisors and tax preparers.", icon: "💰", href: "/services" },
-  { label: "Education & Tutoring", desc: "Enrollment automation, trial class follow-up, and parent nurture campaigns for schools and tutors.", icon: "📚", href: "/services" },
-  { label: "Moving & Logistics", desc: "Instant quote follow-up, booking automation, and review collection for moving companies.", icon: "🚚", href: "/services" },
-  { label: "Landscaping & Lawn Care", desc: "Seasonal campaign automation, estimate follow-up, and referral systems for outdoor service businesses.", icon: "🌿", href: "/services" },
-  { label: "Bars & Entertainment", desc: "Event promotion, reservation automation, and loyalty systems for bars and entertainment venues.", icon: "🎭", href: "/services" },
-  { label: "Contractors & Construction", desc: "Lead capture, estimate follow-up, and project close automation for contractors and remodelers.", icon: "🏗️", href: "/services" },
+];
+
+const WHO_WE_SERVE_MORE = [
+  { label: "Restaurants & Food", icon: "🍽️" },
+  { label: "Auto Services", icon: "🚗" },
+  { label: "Beauty & Salons", icon: "💈" },
+  { label: "Pet Services", icon: "🐾" },
+  { label: "Fitness & Gyms", icon: "🏋️" },
+  { label: "Cleaning Services", icon: "🧹" },
+  { label: "Financial Services", icon: "💰" },
+  { label: "Education & Tutoring", icon: "📚" },
+  { label: "Moving & Storage", icon: "🚚" },
+  { label: "Landscaping & Lawn Care", icon: "🌿" },
+  { label: "Bars & Entertainment", icon: "🎭" },
+  { label: "Contractors & Construction", icon: "🏗️" },
 ];
 
 function WhoWeServeSection() {
@@ -594,8 +597,10 @@ function WhoWeServeSection() {
           <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>AI Revenue Systems for Every Local Business</h2>
           <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.05rem)" }}>If you run a local service business in the USA, we build and run the AI systems that capture leads, follow up automatically, and fill your calendar — regardless of your industry.</p>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {WHO_WE_SERVE.map((item, i) => (
+
+        {/* Featured 6 — full cards with descriptions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6">
+          {WHO_WE_SERVE_FEATURED.map((item, i) => (
             <motion.div key={item.label} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
               <Link href={item.href}>
                 <div className="group bg-white rounded-xl p-5 sm:p-6 border border-gray-200/60 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex gap-4 items-start h-full" data-testid={`industry-card-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}>
@@ -609,6 +614,24 @@ function WhoWeServeSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* All other industries — compact pill row */}
+        <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="bg-white border border-gray-200/60 rounded-2xl px-5 py-4 sm:px-6 sm:py-5">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">We also serve</p>
+          <div className="flex flex-wrap gap-2">
+            {WHO_WE_SERVE_MORE.map((item) => (
+              <Link key={item.label} href="/services">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors cursor-pointer border border-indigo-100" data-testid={`industry-pill-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}>
+                  <span>{item.icon}</span>
+                  {item.label}
+                </span>
+              </Link>
+            ))}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-gray-50 text-gray-500 border border-gray-200">
+              + many more
+            </span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
