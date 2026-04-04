@@ -783,145 +783,147 @@ function HowItWorksSection() {
 
 function PricingTeaserSection() {
   return (
-    <section className="py-14 sm:py-20 lg:py-24 bg-white" data-testid="pricing-teaser-section">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-24 lg:py-28 relative overflow-hidden" data-testid="pricing-teaser-section"
+      style={{ background: "linear-gradient(160deg, #eef2ff 0%, #f5f3ff 45%, #eff6ff 100%)" }}>
+      <div className="absolute top-[-80px] left-[10%] w-[480px] h-[480px] bg-violet-300/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-60px] right-[8%] w-[400px] h-[400px] bg-blue-300/20 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10 sm:mb-14"
+          className="text-center mb-12 sm:mb-16"
         >
-          <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
-            <DollarSign className="w-3.5 h-3.5 text-blue-600" /> Pricing
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-violet-600 mb-3">
+            <DollarSign className="w-3.5 h-3.5" /> Pricing
           </span>
-          <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
+          <h2 className="font-extrabold text-gray-900 mb-4 leading-tight" style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)" }}>
             Transparent, Performance-First Pricing
           </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.0625rem)" }}>
-            Every engagement is scoped to your specific revenue gaps. No cookie-cutter packages — we price based on what you actually need to grow.
+          <p className="text-gray-500 max-w-xl mx-auto text-base">
+            Scoped to your revenue gaps — not a template. No retainers for things you don't need.
           </p>
         </motion.div>
 
-        {/* Main Card */}
+        {/* ─── Two-column card ─── */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="rounded-3xl overflow-hidden shadow-xl border border-gray-100"
-          style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%)" }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden shadow-2xl border border-white/80"
         >
-          <div className="grid lg:grid-cols-[1fr_420px]">
-            {/* Left — value proposition */}
-            <div className="p-8 sm:p-10 lg:p-14 relative overflow-hidden">
-              {/* Decorative blobs */}
-              <div className="absolute -top-20 -left-20 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute bottom-0 right-0 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+          {/* ── LEFT — dark gradient panel ── */}
+          <div
+            className="relative p-8 sm:p-10 lg:p-14 flex flex-col justify-between overflow-hidden"
+            style={{ background: "linear-gradient(145deg, #4f46e5 0%, #7c3aed 50%, #6d28d9 100%)" }}
+          >
+            {/* Decorative circles */}
+            <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.05] pointer-events-none" />
+            <div className="absolute -bottom-12 -left-12 w-56 h-56 rounded-full bg-black/10 pointer-events-none" />
 
-              <div className="relative">
-                <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 border border-white/10 mb-6">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-semibold text-white/80">Currently accepting new clients</span>
-                </div>
+            <div className="relative">
+              {/* Live badge */}
+              <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/20 mb-8">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+                <span className="text-xs font-semibold text-white">Currently accepting new clients</span>
+              </div>
 
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
-                  Your AI Revenue System,<br />
-                  <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                    Priced for Your Results
-                  </span>
-                </h3>
-                <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-8 max-w-lg">
-                  We scope every system around your deal size, lead volume, and growth targets — so you only pay for what directly impacts your revenue.
-                </p>
+              <h3 className="text-2xl sm:text-3xl lg:text-[2.1rem] font-extrabold text-white leading-tight mb-5">
+                Your AI Revenue System,<br />
+                <span className="text-yellow-300">Priced for Your Results</span>
+              </h3>
+              <p className="text-indigo-100 text-sm sm:text-base leading-relaxed mb-10 max-w-md">
+                We scope every system around your deal size, lead volume, and growth targets — so you only pay for what directly impacts your bottom line.
+              </p>
 
-                {/* What's included grid */}
-                <div className="grid sm:grid-cols-2 gap-3 mb-8">
-                  {[
-                    { icon: Bot, title: "AI System Build", desc: "Full design, build & integration" },
-                    { icon: Settings, title: "Weekly Optimization", desc: "Ongoing tuning & performance reviews" },
-                    { icon: BarChart3, title: "Revenue Reporting", desc: "Real KPIs — calls, bookings, closed deals" },
-                    { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your build team" },
-                  ].map(({ icon: Icon, title, desc }) => (
-                    <div key={title} className="flex items-start gap-3 bg-white/[0.06] rounded-xl p-4 border border-white/[0.08]">
-                      <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Icon className="w-4 h-4 text-blue-400" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-white">{title}</p>
-                        <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
-                      </div>
+              {/* 4 feature tiles */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+                {[
+                  { icon: Bot, title: "AI System Build", desc: "Full design, build & integration" },
+                  { icon: Settings, title: "Weekly Optimisation", desc: "Ongoing tuning & performance reviews" },
+                  { icon: BarChart3, title: "Revenue Reporting", desc: "Real KPIs — calls, bookings, revenue" },
+                  { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your build team" },
+                ].map(({ icon: Icon, title, desc }) => (
+                  <div key={title} className="flex items-start gap-3 bg-white/10 rounded-2xl p-4 border border-white/10 hover:bg-white/15 transition-colors">
+                    <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-4 h-4 text-yellow-300" />
                     </div>
-                  ))}
-                </div>
-
-                {/* Trust pills */}
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { icon: Shield, label: "No Long-Term Contracts" },
-                    { icon: CheckCircle2, label: "You Own Everything" },
-                    { icon: Clock, label: "Live in 2–6 Weeks" },
-                  ].map(({ icon: Icon, label }) => (
-                    <div key={label} className="inline-flex items-center gap-1.5 bg-white/[0.08] border border-white/[0.1] rounded-full px-3 py-1.5">
-                      <Icon className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-xs font-medium text-white/80">{label}</span>
+                    <div>
+                      <p className="text-sm font-bold text-white">{title}</p>
+                      <p className="text-xs text-indigo-200 mt-0.5 leading-snug">{desc}</p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Right — CTA panel */}
-            <div className="bg-white p-8 sm:p-10 flex flex-col justify-between gap-6 border-t lg:border-t-0 lg:border-l border-white/10">
-              <div>
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <MessageSquare className="w-4 h-4 text-indigo-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400">Average response time</p>
-                    <p className="text-sm font-bold text-gray-900">Under 4 hours</p>
-                  </div>
+            {/* Trust pills row */}
+            <div className="relative flex flex-wrap gap-2">
+              {[
+                { icon: Shield, label: "No Long-Term Contracts" },
+                { icon: CheckCircle2, label: "You Own Everything" },
+                { icon: Clock, label: "Live in 2–6 Weeks" },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="inline-flex items-center gap-1.5 bg-white/10 border border-white/15 rounded-full px-3 py-1.5">
+                  <Icon className="w-3.5 h-3.5 text-emerald-300 flex-shrink-0" />
+                  <span className="text-xs font-medium text-white/90">{label}</span>
                 </div>
+              ))}
+            </div>
+          </div>
 
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Get Your Custom Pricing Proposal</h4>
-                <p className="text-sm text-gray-500 leading-relaxed mb-6">
-                  Tell us your industry and monthly revenue — we'll send a detailed scope and pricing breakdown within 24 hours. No commitment required.
-                </p>
-
-                {/* Pricing indicators */}
-                <div className="space-y-3 mb-6">
-                  {[
-                    { tier: "Starter System", range: "Lead capture + CRM setup", color: "bg-blue-500" },
-                    { tier: "Growth System", range: "AI agents + full automation", color: "bg-indigo-500" },
-                    { tier: "Enterprise System", range: "Custom build + dedicated team", color: "bg-purple-500" },
-                  ].map(({ tier, range, color }) => (
-                    <div key={tier} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
-                      <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${color}`} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-gray-800">{tier}</p>
-                        <p className="text-xs text-gray-400 truncate">{range}</p>
-                      </div>
-                      <span className="text-xs font-semibold text-gray-400">Custom</span>
-                    </div>
-                  ))}
-                </div>
+          {/* ── RIGHT — white CTA panel ── */}
+          <div className="bg-white p-8 sm:p-10 lg:p-14 flex flex-col justify-between">
+            <div>
+              {/* Response time chip */}
+              <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-full px-4 py-1.5 mb-8">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                <span className="text-xs font-semibold text-emerald-700">Average reply: under 4 hours</span>
               </div>
 
-              <div className="space-y-3">
-                <Link href="/contact">
-                  <Button size="lg" className="w-full font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md shadow-indigo-200" data-testid="button-contact-for-pricing">
-                    Get My Custom Pricing <ArrowRight className="w-4 h-4 ml-1.5" />
-                  </Button>
-                </Link>
-                <Link href="/book-demo">
-                  <Button size="lg" variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-gray-50" data-testid="button-book-call-pricing">
-                    Book a Free Strategy Call
-                  </Button>
-                </Link>
-                <div className="flex justify-center pt-1">
-                  <GooglePartnerBadge variant="inline" />
-                </div>
+              <h4 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3 leading-tight">
+                Get Your Custom<br />Pricing Proposal
+              </h4>
+              <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-8">
+                Tell us your industry and revenue — we'll send a detailed scope and pricing breakdown within 24 hours. Zero commitment.
+              </p>
+
+              {/* Tier indicators */}
+              <div className="space-y-3 mb-8">
+                {[
+                  { tier: "Starter System", desc: "Lead capture + CRM setup", dot: "#6366f1" },
+                  { tier: "Growth System", desc: "AI agents + full automation", dot: "#7c3aed" },
+                  { tier: "Enterprise System", desc: "Custom build + dedicated team", dot: "#4f46e5" },
+                ].map(({ tier, desc, dot }) => (
+                  <div key={tier} className="flex items-center gap-3 p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:border-indigo-100 hover:bg-indigo-50/40 transition-colors">
+                    <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: dot }} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-gray-900">{tier}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{desc}</p>
+                    </div>
+                    <span className="text-xs font-bold text-indigo-500 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100 flex-shrink-0">Custom</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTAs */}
+            <div className="space-y-3">
+              <Link href="/contact">
+                <Button size="lg" className="w-full font-bold text-white shadow-lg shadow-indigo-200/60 hover:shadow-indigo-300/60 transition-shadow" style={{ background: "linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)" }} data-testid="button-contact-for-pricing">
+                  Get My Custom Pricing <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+              <Link href="/book-demo">
+                <Button size="lg" variant="outline" className="w-full border-gray-200 text-gray-700 hover:border-indigo-200 hover:text-indigo-700 hover:bg-indigo-50 transition-colors" data-testid="button-book-call-pricing">
+                  Book a Free Strategy Call
+                </Button>
+              </Link>
+              <div className="flex justify-center pt-2">
+                <GooglePartnerBadge variant="inline" />
               </div>
             </div>
           </div>
