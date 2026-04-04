@@ -28,7 +28,6 @@ const QUICK_LINKS = [
   { href: "/about", label: "About Us" },
   { href: "/services", label: "All AI Systems" },
   { href: "/portfolio", label: "Case Studies" },
-  { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
@@ -56,7 +55,7 @@ const RESOURCES = [
   { href: "/roi-calculator", label: "ROI Calculator" },
   { href: "/book-demo", label: "Book Free Strategy Call" },
   { href: "/blog", label: "AI Automation Blog" },
-  { href: "/pricing", label: "Transparent Pricing" },
+  { href: "/contact", label: "Get a Custom Quote" },
   { href: "/content-methodology", label: "Content Methodology" },
   { href: "/google-partner", label: "Google Partner" },
 ];

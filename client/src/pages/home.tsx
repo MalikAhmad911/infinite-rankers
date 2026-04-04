@@ -774,51 +774,53 @@ function HowItWorksSection() {
 }
 
 function PricingTeaserSection() {
-  const tiers = [
-    { name: "Starter System", setup: "$1,500", monthly: "$997/mo", note: "2 AI Revenue Pillars", popular: false },
-    { name: "Growth System", setup: "$2,500", monthly: "$2,497/mo", note: "4 AI Revenue Pillars", popular: true },
-    { name: "Revenue OS", setup: "$4,500", monthly: "$4,997/mo", note: "All 7 AI Revenue Pillars", popular: false },
+  const reasons = [
+    { icon: Shield, text: "No Long-Term Contracts" },
+    { icon: Clock, text: "Month-to-Month Retainer" },
+    { icon: CheckCircle2, text: "You Own What We Build" },
+    { icon: DollarSign, text: "Custom Pricing for Every Business" },
   ];
   return (
     <section className="py-14 sm:py-20 bg-white border-t border-gray-100" data-testid="pricing-teaser-section">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
-          <Badge variant="secondary" className="mb-4"><DollarSign className="w-3 h-3 mr-1" /> Transparent Pricing</Badge>
-          <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>
-            Setup Fee + Monthly Retainer. No Surprises.
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 px-8 py-12 sm:px-14 sm:py-16 text-center text-white shadow-xl relative overflow-hidden">
+          {/* Background glow */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 60% 0%, rgba(255,255,255,0.08) 0%, transparent 70%)" }} />
+
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-blue-200 mb-4">Investment</span>
+          <h2 className="font-bold text-white mb-4" style={{ fontSize: "clamp(1.6rem, 4vw, 2.4rem)", lineHeight: 1.15 }}>
+            Pricing Tailored to<br />Your Business Goals
           </h2>
-          <p className="text-gray-600 max-w-xl mx-auto text-sm sm:text-base">
-            Most AI agencies hide pricing. We don't. Every tier shows exactly what's included and what it costs.
+          <p className="text-blue-100 max-w-xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
+            Every AI Revenue System we build is scoped to your specific industry, deal size, and growth targets. Contact us and we'll send you a custom investment breakdown — no commitment required.
           </p>
-        </motion.div>
-        <div className="grid sm:grid-cols-3 gap-4 sm:gap-5 mb-8">
-          {tiers.map((tier, i) => (
-            <motion.div key={tier.name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-              <div className={`rounded-xl border p-5 text-center h-full ${tier.popular ? "border-blue-500 bg-blue-600 text-white shadow-lg" : "border-gray-200 bg-white"}`} data-testid={`pricing-teaser-${tier.name.toLowerCase().replace(/\s/g, "-")}`}>
-                {tier.popular && <div className="text-xs font-semibold text-blue-200 mb-1">Most Popular</div>}
-                <div className={`text-xs font-semibold mb-2 ${tier.popular ? "text-blue-200" : "text-blue-600"}`}>{tier.note}</div>
-                <h3 className={`font-bold text-base mb-3 ${tier.popular ? "text-white" : "text-gray-900"}`}>{tier.name}</h3>
-                <div className={`text-xs mb-1 ${tier.popular ? "text-blue-200" : "text-gray-400"}`}>Setup</div>
-                <div className={`text-lg font-bold mb-2 ${tier.popular ? "text-white" : "text-gray-900"}`}>{tier.setup}</div>
-                <div className={`text-xs mb-1 ${tier.popular ? "text-blue-200" : "text-gray-400"}`}>Monthly retainer</div>
-                <div className={`text-2xl font-extrabold ${tier.popular ? "text-white" : "text-gray-900"}`}>{tier.monthly}</div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mb-6 text-xs sm:text-sm text-muted-foreground">
-          <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary" /> No Long-Term Contracts</span>
-          <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary" /> Month-to-Month</span>
-          <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /> You Own What We Build</span>
-        </div>
-        <div className="text-center">
-          <Link href="/pricing">
-            <Button data-testid="button-view-full-pricing">See Full Pricing + Add-Ons <ArrowRight className="w-4 h-4 ml-1" /></Button>
-          </Link>
-          <div className="mt-3 flex justify-center">
+
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            {reasons.map(({ icon: Icon, text }) => (
+              <span key={text} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/15 text-white border border-white/20">
+                <Icon className="w-3.5 h-3.5 text-blue-200" />
+                {text}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/contact">
+              <Button size="lg" className="bg-white text-indigo-700 hover:bg-blue-50 font-semibold px-8 shadow-md w-full sm:w-auto" data-testid="button-contact-for-pricing">
+                Contact for Pricing <ArrowRight className="w-4 h-4 ml-1.5" />
+              </Button>
+            </Link>
+            <Link href="/book-demo">
+              <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 w-full sm:w-auto" data-testid="button-book-call-pricing">
+                Book a Free Strategy Call
+              </Button>
+            </Link>
+          </div>
+
+          <div className="mt-8 flex justify-center">
             <GooglePartnerBadge variant="inline" />
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

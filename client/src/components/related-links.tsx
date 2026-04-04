@@ -113,12 +113,11 @@ export default function RelatedLinks({ currentPath, type }: RelatedLinksProps) {
       <div className="mt-10 pt-6 border-t border-border/40 flex flex-wrap gap-x-6 gap-y-2 items-center justify-center">
         {[
           { href: "/", label: "Home" },
-          { href: "/pricing", label: "Pricing" },
           { href: "/about", label: "About Us" },
-          { href: "/contact", label: "Contact" },
+          { href: "/contact", label: "Contact Us" },
           { href: "/book-demo", label: "Book a Demo" },
         ].map(link => (
-          <Link key={link.href} href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link key={link.label} href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             {link.label}
           </Link>
         ))}

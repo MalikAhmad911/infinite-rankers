@@ -23,7 +23,7 @@ interface LeadData {
 
 const QUICK_ACTIONS = [
   { label: "Our Services", message: "What services do you offer?" },
-  { label: "Get Pricing", message: "What are your pricing plans?" },
+  { label: "Get Pricing", message: "I'd like to know about pricing and investment" },
   { label: "See Results", message: "Can you show me some case study results?" },
   { label: "Book a Call", message: "I'd like to book a strategy call" },
 ];
@@ -342,12 +342,12 @@ export default function AIChatbot() {
                 </a>
                 <span className="text-muted-foreground/40">|</span>
                 <a
-                  href="/pricing"
+                  href="/contact"
                   className="flex items-center gap-1 text-xs text-muted-foreground"
                   data-testid="link-chatbot-pricing"
                 >
                   <DollarSign className="w-3 h-3" />
-                  <span>Pricing</span>
+                  <span>Get Pricing</span>
                 </a>
               </div>
             </div>

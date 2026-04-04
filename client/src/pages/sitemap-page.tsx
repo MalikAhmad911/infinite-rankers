@@ -10,7 +10,6 @@ const MAIN_PAGES = [
   { title: "About", href: "/about" },
   { title: "Services", href: "/services" },
   { title: "Portfolio", href: "/portfolio" },
-  { title: "Pricing", href: "/pricing" },
   { title: "Contact", href: "/contact" },
   { title: "Blog", href: "/blog" },
   { title: "Book Demo", href: "/book-demo" },

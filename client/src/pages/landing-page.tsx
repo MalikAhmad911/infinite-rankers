@@ -270,9 +270,9 @@ export default function LandingPage({ slug }: { slug?: string }) {
                   Get Your Free Strategy Session <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
-              <Link href="/pricing">
+              <Link href="/contact">
                 <Button variant="outline" className="w-full sm:w-auto" data-testid="button-hero-pricing">
-                  View Pricing Plans
+                  Contact for Pricing
                 </Button>
               </Link>
             </div>

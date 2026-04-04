@@ -9,7 +9,6 @@ const NAV_LINKS = [
   { label: "Services", href: "/services", hasMegaMenu: true },
   { label: "Who We Serve", href: "/services", hasIndustryMenu: true },
   { label: "Results", href: "/portfolio" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
