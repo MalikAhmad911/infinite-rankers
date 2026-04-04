@@ -844,14 +844,14 @@ function PricingTeaserSection() {
               {/* 4 feature tiles */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
                 {[
-                  { icon: Bot, title: "AI System Build", desc: "Full design, build & integration", color: "#d97706", bg: "#d9770630" },
-                  { icon: Settings, title: "Weekly Optimisation", desc: "Ongoing tuning & performance reviews", color: "#059669", bg: "#05966930" },
-                  { icon: BarChart3, title: "Revenue Reporting", desc: "Real KPIs — calls, bookings, revenue", color: "#2563eb", bg: "#2563eb30" },
-                  { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your build team", color: "#db2777", bg: "#db277730" },
-                ].map(({ icon: Icon, title, desc, color, bg }) => (
+                  { icon: Bot, title: "AI System Build", desc: "Full design, build & integration", bg: "#f59e0b" },
+                  { icon: Settings, title: "Weekly Optimisation", desc: "Ongoing tuning & performance reviews", bg: "#10b981" },
+                  { icon: BarChart3, title: "Revenue Reporting", desc: "Real KPIs — calls, bookings, revenue", bg: "#3b82f6" },
+                  { icon: Headphones, title: "Dedicated Support", desc: "Direct access to your build team", bg: "#ec4899" },
+                ].map(({ icon: Icon, title, desc, bg }) => (
                   <div key={title} className="flex items-start gap-3.5 bg-white/[0.08] rounded-2xl p-4 border border-white/[0.12] hover:bg-white/[0.14] transition-colors">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: bg }}>
-                      <Icon className="w-5 h-5" style={{ color }} />
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <p className="text-sm sm:text-base font-bold text-white leading-snug">{title}</p>
