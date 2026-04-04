@@ -1,0 +1,30 @@
+"I want you to act as a Senior SEO Engineer and Frontend Developer. Analyze all the HTML, CSS, and JS files in this project. Your goal is to optimize this website to achieve a 100/100 score on Google Lighthouse for 'SEO' and 'Best Practices.'
+Please perform the following:
+Meta Optimization: Ensure every page has a unique, keyword-rich <title> (under 60 chars) and a compelling <meta name="description"> (under 160 chars).
+Semantic HTML: Replace generic <div> tags with semantic HTML5 elements like <header>, <main>, <footer>, <section>, and <article>.
+Heading Hierarchy: Ensure there is exactly one <h1> per page and that <h2> through <h6> follow a logical nested order.
+Accessibility: Add alt attributes to all images and ensure all anchor tags have descriptive text.
+Performance: Optimize the loading of scripts (add defer or async), minify CSS/JS, and ensure images are lazy-loaded.
+Technical Files: Create a professional robots.txt and a dynamic sitemap.xml for this site.
+Once finished, provide a report of every change you made and why it helps the SEO score."
+Option 2: If you want to BUILD an SEO Audit Tool
+Use this if you want Replit to code a software application where you can enter any URL (like infiniterankers.io) and it gives them a score.
+The Prompt:
+"Build a professional SEO Analyzer web application using Python (Flask or FastAPI) and a frontend using HTML/Tailwind CSS.
+The app should allow a user to input a URL and then perform the following checks to calculate an SEO score out of 100:
+Check for Meta Tags: Does the page have a Title and Meta Description? (20 points)
+Check Header Tags: Is there an H1 tag? Are H2-H6 used? (20 points)
+Check Image Alts: What percentage of images are missing alt tags? (20 points)
+Page Speed Integration: Integrate the Google PageSpeed Insights API to pull actual performance and SEO scores. (30 points)
+SSL Check: Verify if the site is running on HTTPS. (10 points)
+The results should be displayed in a beautiful dashboard with:
+A circular progress bar showing the final score.
+A 'Pass/Fail' checklist for each SEO element.
+A 'Recommendations' section that tells the user exactly how to move their score from their current number to 100.
+Please use 'BeautifulSoup' for scraping and 'Requests' for the API calls."
+Pro-Tips for getting that 100/100 score:
+If you really want that perfect score, you need to tell the Replit Agent to focus on Google Lighthouse metrics. Here is the secret checklist to tell the AI:
+LCP (Largest Contentful Paint): Tell it to "Optimize the critical rendering path and compress images."
+CLS (Cumulative Layout Shift): Tell it to "Ensure all images and ad slots have explicit width and height attributes to prevent layout jumping."
+Accessibility: Tell it to "Ensure a color contrast ratio of at least 4.5:1 for all text."
+Mobile First: Tell it to "Ensure there are no horizontal scrollbars on mobile devices (viewport width = device-width)."

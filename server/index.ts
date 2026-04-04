@@ -107,6 +107,7 @@ app.use((req, res, next) => {
         res.getHeader("content-type")?.toString().includes("text/html") &&
         typeof chunk === "string"
       ) {
+        (res as any).__seoInjected = true;
         chunk = injectSEO(chunk, req.originalUrl);
       }
       return originalEnd(chunk, encoding, cb);

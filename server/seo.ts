@@ -1026,6 +1026,10 @@ export function injectSEO(html: string, url: string): string {
     extraTags.push(ogUrlTag);
   }
 
+  result = result.replace(/<meta\s+property="og:image[^"]*"[^>]*\/?>/gi, "");
+  result = result.replace(/<meta\s+name="twitter:[^"]*"[^>]*\/?>/gi, "");
+  result = result.replace(/<link\s+rel="alternate"\s+type="application\/rss\+xml"[^>]*\/?>/gi, "");
+
   const noindexPaths = [
     "/crawl-hub",
     // Old SEO-era blog posts intentionally noindexed (thin/off-brand content)
@@ -1042,11 +1046,21 @@ export function injectSEO(html: string, url: string): string {
   } else if (!result.includes('name="robots"')) {
     extraTags.push(`<meta name="robots" content="index, follow" />`);
   }
-  if (!/property="og:type"/.test(result)) {
-    extraTags.push(`<meta property="og:type" content="website" />`);
+
+  const slug = urlPath.replace(/^\//, "");
+  const isBlogPost = BLOG_POSTS.some(b => b.slug === slug);
+  const ogType = isBlogPost ? "article" : "website";
+  if (/property="og:type"/.test(result)) {
+    result = result.replace(/<meta\s+property="og:type"\s+content="[^"]*"\s*\/?>/, `<meta property="og:type" content="${ogType}" />`);
+  } else {
+    extraTags.push(`<meta property="og:type" content="${ogType}" />`);
   }
+
   if (!/property="og:site_name"/.test(result)) {
     extraTags.push(`<meta property="og:site_name" content="Infinite Rankers" />`);
+  }
+  if (!/property="og:locale"/.test(result)) {
+    extraTags.push(`<meta property="og:locale" content="en_US" />`);
   }
   const ogImageUrl = `${BASE}/images/logo-full.png`;
   extraTags.push(`<meta property="og:image" content="${ogImageUrl}" />`);
