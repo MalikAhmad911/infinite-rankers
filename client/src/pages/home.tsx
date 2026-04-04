@@ -571,6 +571,18 @@ const WHO_WE_SERVE = [
   { label: "Home Services", desc: "Missed-call text-back, estimate follow-up, and review generation for contractors.", icon: "🔧", href: "/home-services-ai" },
   { label: "Medical Clinics", desc: "Patient acquisition, recall automation, and AI scheduling for medical practices.", icon: "💊", href: "/medical-ai" },
   { label: "E-Commerce & Retail", desc: "Cart recovery, repeat purchase campaigns, and support AI for online stores.", icon: "🛒", href: "/ecommerce-ai" },
+  { label: "Restaurants & Food", desc: "Reservation automation, review generation, and repeat-customer campaigns for restaurants and cafes.", icon: "🍽️", href: "/services" },
+  { label: "Auto Services", desc: "Appointment booking, follow-up automation, and review requests for auto repair and detailing shops.", icon: "🚗", href: "/services" },
+  { label: "Beauty & Salons", desc: "AI booking, no-show reduction, and loyalty campaigns for salons, spas, and barbershops.", icon: "💈", href: "/services" },
+  { label: "Pet Services", desc: "Automated reminders, booking agents, and follow-up for vets, groomers, and pet boarding.", icon: "🐾", href: "/services" },
+  { label: "Fitness & Gyms", desc: "Lead capture, trial conversion, and membership retention AI for gyms and fitness studios.", icon: "🏋️", href: "/services" },
+  { label: "Cleaning Services", desc: "Recurring booking automation, review generation, and upsell campaigns for cleaning businesses.", icon: "🧹", href: "/services" },
+  { label: "Financial Services", desc: "Lead qualification, appointment booking, and nurture sequences for advisors and tax preparers.", icon: "💰", href: "/services" },
+  { label: "Education & Tutoring", desc: "Enrollment automation, trial class follow-up, and parent nurture campaigns for schools and tutors.", icon: "📚", href: "/services" },
+  { label: "Moving & Logistics", desc: "Instant quote follow-up, booking automation, and review collection for moving companies.", icon: "🚚", href: "/services" },
+  { label: "Landscaping & Lawn Care", desc: "Seasonal campaign automation, estimate follow-up, and referral systems for outdoor service businesses.", icon: "🌿", href: "/services" },
+  { label: "Bars & Entertainment", desc: "Event promotion, reservation automation, and loyalty systems for bars and entertainment venues.", icon: "🎭", href: "/services" },
+  { label: "Contractors & Construction", desc: "Lead capture, estimate follow-up, and project close automation for contractors and remodelers.", icon: "🏗️", href: "/services" },
 ];
 
 function WhoWeServeSection() {
@@ -579,8 +591,8 @@ function WhoWeServeSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-12">
           <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">Who We Serve</span>
-          <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>AI Revenue Systems for 6 Core Industries</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.05rem)" }}>We specialize in high-growth service businesses and digital companies where automation creates the most leverage.</p>
+          <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}>AI Revenue Systems for Every Local Business</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1.05rem)" }}>If you run a local service business in the USA, we build and run the AI systems that capture leads, follow up automatically, and fill your calendar — regardless of your industry.</p>
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {WHO_WE_SERVE.map((item, i) => (
