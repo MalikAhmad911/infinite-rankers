@@ -615,21 +615,24 @@ function WhoWeServeSection() {
           ))}
         </div>
 
-        {/* All other industries — compact pill row */}
-        <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="bg-white border border-gray-200/60 rounded-2xl px-5 py-4 sm:px-6 sm:py-5">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">We also serve</p>
-          <div className="flex flex-wrap gap-2">
-            {WHO_WE_SERVE_MORE.map((item) => (
-              <Link key={item.label} href="/services">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors cursor-pointer border border-indigo-100" data-testid={`industry-pill-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}>
-                  <span>{item.icon}</span>
-                  {item.label}
-                </span>
-              </Link>
-            ))}
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-gray-50 text-gray-500 border border-gray-200">
-              + many more
-            </span>
+        {/* All other industries — infinite marquee carousel */}
+        <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="bg-white border border-gray-200/60 rounded-2xl px-0 py-4 sm:py-5 overflow-hidden">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3 px-5 sm:px-6">We also serve</p>
+          <div className="relative overflow-hidden">
+            {/* Left fade */}
+            <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+            {/* Right fade */}
+            <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+            <div className="flex animate-marquee gap-3 w-max">
+              {[...WHO_WE_SERVE_MORE, ...WHO_WE_SERVE_MORE].map((item, i) => (
+                <Link key={`${item.label}-${i}`} href="/services">
+                  <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors cursor-pointer border border-indigo-100 whitespace-nowrap" data-testid={i < WHO_WE_SERVE_MORE.length ? `industry-pill-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}` : undefined}>
+                    <span>{item.icon}</span>
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
