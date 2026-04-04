@@ -318,7 +318,7 @@ const PRIORITY_SERVICES = [
 
 function ServicesSection() {
   return (
-    <section className="py-14 sm:py-20 lg:py-24 bg-white" data-testid="services-section">
+    <section className="py-14 sm:py-20 lg:py-24 bg-gray-50/60" data-testid="services-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-16">
           <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent mb-3">
@@ -462,7 +462,7 @@ const WORKFLOW_EXAMPLES = [
 
 function WorkflowExamplesSection() {
   return (
-    <section className="py-14 sm:py-20 lg:py-24 bg-white" data-testid="workflow-examples-section">
+    <section className="py-14 sm:py-20 lg:py-24 bg-white border-t border-gray-100" data-testid="workflow-examples-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-16">
           <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
@@ -590,7 +590,7 @@ const WHO_WE_SERVE_MORE = [
 
 function WhoWeServeSection() {
   return (
-    <section className="py-14 sm:py-20 bg-gradient-to-b from-white to-indigo-50/30" data-testid="who-we-serve-section">
+    <section className="py-14 sm:py-20 lg:py-24 bg-white" data-testid="who-we-serve-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-12">
           <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">Who We Serve</span>
@@ -646,7 +646,7 @@ function WhoWeServeSection() {
 
 function PortfolioSection() {
   return (
-    <section className="py-14 sm:py-20 lg:py-24 bg-white" data-testid="portfolio-section">
+    <section className="py-14 sm:py-20 lg:py-24 bg-gray-50/60 border-t border-gray-100" data-testid="portfolio-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8 sm:mb-16">
           <span className="inline-block text-xs font-semibold tracking-widest uppercase bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">Client Results</span>
@@ -692,7 +692,7 @@ function PortfolioSection() {
 
 function HomeROITeaser() {
   return (
-    <section className="py-14 sm:py-20 bg-white border-t border-gray-100" data-testid="roi-teaser-section">
+    <section className="py-14 sm:py-20 bg-white" data-testid="roi-teaser-section">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 sm:p-12 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
@@ -774,53 +774,60 @@ function HowItWorksSection() {
 }
 
 function PricingTeaserSection() {
-  const bullets = [
-    { icon: Shield, text: "No long-term contracts" },
-    { icon: Clock, text: "Month-to-month retainer" },
-    { icon: CheckCircle2, text: "You own everything we build" },
-  ];
   return (
-    <section className="py-12 sm:py-16 bg-white border-t border-gray-100" data-testid="pricing-teaser-section">
+    <section className="py-14 sm:py-20 bg-gray-50/60 border-t border-gray-100" data-testid="pricing-teaser-section">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl border border-indigo-100 bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-8 sm:px-10 sm:py-10 flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12"
+          className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden"
         >
-          {/* Left — text */}
-          <div className="flex-1 min-w-0">
-            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-indigo-500 mb-2">Investment</span>
-            <h2 className="font-bold text-gray-900 mb-3" style={{ fontSize: "clamp(1.25rem, 3vw, 1.75rem)" }}>
-              Pricing Customised to<br className="hidden sm:block" /> Your Business & Goals
-            </h2>
-            <p className="text-gray-500 text-sm leading-relaxed max-w-md mb-5">
-              Every system is scoped to your industry, deal size, and growth targets. Contact us and we'll send a custom investment breakdown — no commitment required.
-            </p>
-            <ul className="flex flex-col gap-2">
-              {bullets.map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-center gap-2 text-sm text-gray-600">
-                  <Icon className="w-4 h-4 text-indigo-500 flex-shrink-0" />
-                  {text}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="grid lg:grid-cols-2">
+            {/* Left — text */}
+            <div className="p-8 sm:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-gray-100">
+              <span className="inline-block text-xs font-semibold tracking-widest uppercase text-indigo-500 mb-3">Investment</span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 leading-snug">
+                Pricing Customised to<br /> Your Business &amp; Goals
+              </h2>
+              <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-6">
+                Every system is scoped to your industry, deal size, and growth targets. Contact us and we'll send a custom investment breakdown — no commitment required.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  { icon: Shield, text: "No long-term contracts — month-to-month" },
+                  { icon: CheckCircle2, text: "You own everything we build" },
+                  { icon: Clock, text: "Live and generating ROI in 2–6 weeks" },
+                ].map(({ icon: Icon, text }) => (
+                  <li key={text} className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="w-6 h-6 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-3.5 h-3.5 text-indigo-500" />
+                    </div>
+                    {text}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Right — CTAs */}
-          <div className="flex flex-col gap-3 w-full lg:w-auto lg:min-w-[220px]">
-            <Link href="/contact">
-              <Button size="lg" className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm" data-testid="button-contact-for-pricing">
-                Contact for Pricing <ArrowRight className="w-4 h-4 ml-1.5" />
-              </Button>
-            </Link>
-            <Link href="/book-demo">
-              <Button size="lg" variant="outline" className="w-full border-indigo-200 text-indigo-700 hover:bg-indigo-50" data-testid="button-book-call-pricing">
-                Book a Free Strategy Call
-              </Button>
-            </Link>
-            <div className="flex justify-center pt-1">
-              <GooglePartnerBadge variant="inline" />
+            {/* Right — CTAs */}
+            <div className="p-8 sm:p-10 lg:p-12 bg-gradient-to-br from-indigo-50/60 to-blue-50/40 flex flex-col justify-center gap-4">
+              <div className="mb-2">
+                <p className="text-sm font-semibold text-gray-700 mb-1">Ready to get a custom quote?</p>
+                <p className="text-xs text-gray-500">Tell us about your business and we'll scope the exact system you need.</p>
+              </div>
+              <Link href="/contact">
+                <Button size="lg" className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm" data-testid="button-contact-for-pricing">
+                  Contact for Pricing <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Button>
+              </Link>
+              <Link href="/book-demo">
+                <Button size="lg" variant="outline" className="w-full border-indigo-200 text-indigo-700 hover:bg-white" data-testid="button-book-call-pricing">
+                  Book a Free Strategy Call
+                </Button>
+              </Link>
+              <div className="flex justify-center pt-2">
+                <GooglePartnerBadge variant="inline" />
+              </div>
             </div>
           </div>
         </motion.div>
