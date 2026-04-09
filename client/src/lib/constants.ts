@@ -3,7 +3,7 @@ export const COMPANY = {
   domain: "infiniterankers.io",
   email: "contact@infiniterankers.io",
   phone: "(703) 415-9373",
-  address: "203 N Caroline Pl, Dover, DE 19904, USA",
+  address: "1317 Edgewater Dr, Suite 5159, Orlando, FL 32804, USA",
   tagline: "AI Revenue Growth Agency",
 };
 
