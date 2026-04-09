@@ -264,7 +264,7 @@ export default function Footer() {
 
         <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-gray-500 text-center sm:text-left">
-            &copy; {new Date().getFullYear()} {COMPANY.name}. All rights reserved. Delaware LLC · AI Revenue Systems Agency.
+            &copy; {new Date().getFullYear()} {COMPANY.name}. All rights reserved. Florida LLC · AI Revenue Systems Agency.
           </p>
           <div className="flex items-center gap-5 flex-wrap justify-center">
             <Link href="/privacy" className="text-xs text-gray-500 hover:text-gray-300 transition-colors" data-testid="link-footer-privacy">Privacy Policy</Link>

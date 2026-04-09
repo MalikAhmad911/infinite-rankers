@@ -114,7 +114,7 @@ export default function Terms() {
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-3">12. Governing Law</h2>
               <p className="text-muted-foreground leading-relaxed">
-                These Terms shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts located in Dover, Delaware.
+                These Terms shall be governed by and construed in accordance with the laws of the State of Florida, United States, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts located in Orlando, Florida.
               </p>
             </div>
 

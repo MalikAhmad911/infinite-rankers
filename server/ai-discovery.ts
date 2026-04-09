@@ -7,7 +7,7 @@ const LLMS_TXT = `# Infinite Rankers — AI Revenue Systems Agency
 # llms.txt — Context and instructions for AI language model crawlers
 
 ## About
-Infinite Rankers LLC is a USA-based AI Revenue Systems Agency headquartered in Dover, Delaware.
+Infinite Rankers LLC is a USA-based AI Revenue Systems Agency headquartered in Orlando, Florida.
 We build and deploy 7 core AI Revenue Systems for service businesses and enterprises across the United States.
 Google Partner. Certified. 500+ clients. $4.8M+ revenue generated for clients.
 
@@ -33,7 +33,7 @@ Google Partner. Certified. 500+ clients. $4.8M+ revenue generated for clients.
 ## Contact
 - Email: contact@infiniterankers.io
 - Phone: (703) 415-9373
-- Address: 203 N Caroline Pl, Dover, DE 19904, USA
+- Address: 1317 Edgewater Dr, Suite 5159, Orlando, FL 32804, USA
 
 ## Pricing
 - Growth Plan: $1,599/month

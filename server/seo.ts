@@ -418,7 +418,7 @@ const SERVICE_PILLAR_SEO: Record<string, {
 
 const STATIC_PAGES: Record<string, SEOMeta> = {
   "/": { title: "Infinite Rankers | AI Revenue Systems Agency USA", description: "Infinite Rankers builds and deploys AI Revenue Systems — lead capture, appointment agents, CRM automation, customer support AI, and custom SaaS tools. Free demo.", canonical: `${BASE}/` },
-  "/about": { title: `About Infinite Rankers LLC | AI Revenue Systems Agency USA`, description: "Infinite Rankers LLC is a Delaware-registered AI Revenue Systems Agency. We build and deploy AI-powered lead capture, appointment booking, CRM. Free demo.", canonical: `${BASE}/about` },
+  "/about": { title: `About Infinite Rankers LLC | AI Revenue Systems Agency USA`, description: "Infinite Rankers LLC is a Florida-registered AI Revenue Systems Agency. We build and deploy AI-powered lead capture, appointment booking, CRM. Free demo.", canonical: `${BASE}/about` },
   "/services": { title: "7 AI Revenue Systems | Full-Stack Automation Services", description: "Explore Infinite Rankers' 7 AI Revenue Systems: lead capture, appointment agents, CRM automation, customer support AI, reviews & retention, custom. Free demo.", canonical: `${BASE}/services` },
   "/portfolio": { title: `21 Case Studies | Proven Results | ${BRAND}`, description: "Real results from real businesses. 21 case studies showing 100-195% revenue growth across healthcare, real estate, law firms & e-commerce. See proof.", canonical: `${BASE}/portfolio` },
   "/pricing": { title: `Pricing Plans from $1,599/mo | No Hidden Fees`, description: "Transparent pricing with no contracts or hidden fees. Growth, Scale & Enterprise plans. Calculate your ROI before you buy. Book a free consultation.", canonical: `${BASE}/pricing` },
@@ -582,7 +582,7 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "https://www.linkedin.com/company/infinite-rankers",
       "https://www.facebook.com/infiniterankers"
     ],
-    "address": { "@type": "PostalAddress", "streetAddress": "203 N Caroline Pl", "addressLocality": "Dover", "addressRegion": "DE", "postalCode": "19904", "addressCountry": "US" },
+    "address": { "@type": "PostalAddress", "streetAddress": "1317 Edgewater Dr, Suite 5159", "addressLocality": "Orlando", "addressRegion": "FL", "postalCode": "32804", "addressCountry": "US" },
     "telephone": "(703) 415-9373",
     "email": "contact@infiniterankers.io",
     "contactPoint": { "@type": "ContactPoint", "telephone": "(703) 415-9373", "contactType": "sales", "email": "contact@infiniterankers.io", "availableLanguage": ["English"], "areaServed": "US" },
@@ -637,8 +637,8 @@ function getStructuredData(url: string, seo: SEOMeta): object[] {
       "image": `${BASE_URL}/images/logo-full.png`,
       "telephone": "(703) 415-9373",
       "email": "contact@infiniterankers.io",
-      "address": { "@type": "PostalAddress", "streetAddress": "203 N Caroline Pl", "addressLocality": "Dover", "addressRegion": "DE", "postalCode": "19904", "addressCountry": "US" },
-      "geo": { "@type": "GeoCoordinates", "latitude": "39.1582", "longitude": "-75.5244" },
+      "address": { "@type": "PostalAddress", "streetAddress": "1317 Edgewater Dr, Suite 5159", "addressLocality": "Orlando", "addressRegion": "FL", "postalCode": "32804", "addressCountry": "US" },
+      "geo": { "@type": "GeoCoordinates", "latitude": "28.5715", "longitude": "-81.3958" },
       "openingHoursSpecification": { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00" },
       "priceRange": "$$$",
       "areaServed": { "@type": "Country", "name": "United States" },

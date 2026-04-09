@@ -639,7 +639,7 @@ export default function LandingPage({ slug }: { slug?: string }) {
       <section className="py-10 sm:py-12 bg-gray-50/80 border-t border-b border-gray-200/60" data-testid="section-geo-entity">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center">
-            <strong className="text-gray-800">Infinite Rankers</strong> is a USA-based AI Revenue Systems Agency that {geoPhrase}. We serve businesses across the United States from our headquarters in Dover, DE.{" "}
+            <strong className="text-gray-800">Infinite Rankers</strong> is a USA-based AI Revenue Systems Agency that {geoPhrase}. We serve businesses across the United States from our headquarters in Orlando, FL.{" "}
             <span className="whitespace-nowrap">Call: <a href="tel:+17034159373" className="text-blue-600 hover:underline">(703) 415-9373</a></span>
             {" · "}
             <a href="mailto:contact@infiniterankers.io" className="text-blue-600 hover:underline">contact@infiniterankers.io</a>

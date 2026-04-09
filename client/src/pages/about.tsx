@@ -15,7 +15,7 @@ const TIMELINE = [
   {
     year: "2020",
     title: "Founded",
-    desc: "Infinite Rankers LLC incorporated in Delaware, USA. Initial focus on SEO and Google Ads for service businesses.",
+    desc: "Infinite Rankers LLC incorporated in Florida, USA. Initial focus on SEO and Google Ads for service businesses.",
     icon: Flag,
     color: "from-blue-500 to-blue-600",
   },
@@ -61,7 +61,7 @@ export default function About() {
     <div className="overflow-x-hidden">
       <SEOHead
         title="About Infinite Rankers LLC | AI Revenue Systems Agency"
-        description="Infinite Rankers LLC is a Delaware-registered AI Revenue Systems Agency that builds AI automation systems for service businesses — lead capture, appointment booking, CRM, and more. Google Partner. Est. 2020."
+        description="Infinite Rankers LLC is a Florida-registered AI Revenue Systems Agency that builds AI automation systems for service businesses — lead capture, appointment booking, CRM, and more. Google Partner. Est. 2020."
       />
       <section className="relative pt-32 pb-16 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50/80 via-blue-50/30 to-white" />
@@ -174,7 +174,7 @@ export default function About() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
                 { icon: Building2, label: "Legal Name", value: "Infinite Rankers LLC" },
-                { icon: MapPin, label: "Registered Address", value: "203 N Caroline Pl, Dover, DE 19904, USA" },
+                { icon: MapPin, label: "Registered Address", value: "1317 Edgewater Dr, Suite 5159, Orlando, FL 32804, USA" },
                 { icon: Phone, label: "Phone", value: "(703) 415-9373" },
                 { icon: Mail, label: "Email", value: "contact@infiniterankers.io" },
                 { icon: Award, label: "Certification", value: "Certified Google Partner" },

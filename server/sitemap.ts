@@ -750,7 +750,7 @@ Book a free demo: infiniterankers.io/book-demo
 <h2>2. Business Citation - Consistent NAP Format</h2>
 <div class="nap">
 <strong>Business Name:</strong> Infinite Rankers<br>
-<strong>Address:</strong> 203 N Caroline Pl, Dover, DE 19904, USA<br>
+<strong>Address:</strong> 1317 Edgewater Dr, Suite 5159, Orlando, FL 32804, USA<br>
 <strong>Phone:</strong> (703) 415-9373<br>
 <strong>Email:</strong> contact@infiniterankers.io<br>
 <strong>Website:</strong> https://infiniterankers.io<br>

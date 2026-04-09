@@ -16,7 +16,7 @@ BRAND DETAILS:
 - Partner Platform: infiniterankers.com (marketing authority & content platform)
 - Email: contact@infiniterankers.io
 - Phone: (703) 415-9373
-- Location: 203 N Caroline Pl, Dover, DE 19904, USA
+- Location: 1317 Edgewater Dr, Suite 5159, Orlando, FL 32804, USA
 - Tagline: AI Revenue Growth Agency
 - Google Partner Certified
 
